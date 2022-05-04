@@ -1,0 +1,21 @@
+included:
+  - Animal-Crossing-Wiki # 프로젝트 이름
+excluded: # 린트 과정에서 무시할 파일 경로. `included`보다 우선순위 높음
+  - Animal-Crossing-Wiki/AppDelegate.swift
+  - Animal-Crossing-Wiki/SceneDelegate.swift
+type_body_length: # 타입 길이
+    warning: 200
+    error: 250
+identifier_name:
+    min_length:
+    - 2  # only min_length
+    error: 4 # only error
+    excluded: # 제외할 문자열 목록 사용
+disabled_rules: # 실행에서 제외할 룰 식별자들
+  - colon
+  - control_statement
+  - trailing_whitespace
+  - vertical_parameter_alignment
+opt_in_rules: # 일부 룰은 옵트 인 형태로 제공
+  - empty_count
+  - conditional_returns_on_newline
