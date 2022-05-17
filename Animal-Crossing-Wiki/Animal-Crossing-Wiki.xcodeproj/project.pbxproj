@@ -16,6 +16,9 @@
 		9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8028225F8E001B57FD /* RxCocoa */; };
 		9A541B8328225F8E001B57FD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8228225F8E001B57FD /* RxRelay */; };
 		9A541B8528225F8E001B57FD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8428225F8E001B57FD /* RxSwift */; };
+		9A6891972833532D0061AAF1 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891962833532D0061AAF1 /* HTTPMethod.swift */; };
+		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
+		9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919E28335B130061AAF1 /* APIResponce.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +30,9 @@
 		9A541B7128220A73001B57FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A541B7428220A73001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A541B7628220A73001B57FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A6891962833532D0061AAF1 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		9A68919E28335B130061AAF1 /* APIResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponce.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +75,27 @@
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
 				9A541B7628220A73001B57FD /* Info.plist */,
+				9A6891A128335B2D0061AAF1 /* Networking */,
 			);
 			path = "Animal-Crossing-Wiki";
+			sourceTree = "<group>";
+		};
+		9A6891A028335B250061AAF1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				9A68919E28335B130061AAF1 /* APIResponce.swift */,
+				9A68919C28335AFF0061AAF1 /* APIRequest.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		9A6891A128335B2D0061AAF1 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A028335B250061AAF1 /* Protocol */,
+				9A6891962833532D0061AAF1 /* HTTPMethod.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,9 +199,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A6891972833532D0061AAF1 /* HTTPMethod.swift in Sources */,
+				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
+				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
