@@ -82,7 +82,9 @@ enum Shadow: String, Codable {
 
 enum Size: String, Codable {
     case the1X1 = "1x1"
+    case the1X2 = "1x2"
     case the2X1 = "2x1"
+    case the2X15 = "2x1.5"
     case the2X2 = "2x2"
     case the3X2 = "3x2"
 }

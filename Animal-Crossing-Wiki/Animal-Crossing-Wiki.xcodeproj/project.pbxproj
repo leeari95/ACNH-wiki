@@ -34,6 +34,8 @@
 		9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */; };
 		9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */; };
 		9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */; };
+		9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C0283380CD0061AAF1 /* ArtRequest.swift */; };
+		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,8 @@
 		9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FossilsResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesRequest.swift; sourceTree = "<group>"; };
 		9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891C0283380CD0061AAF1 /* ArtRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtRequest.swift; sourceTree = "<group>"; };
+		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
 				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
 				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
+				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
 				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
 				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
+				9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -277,6 +283,7 @@
 				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
+				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
@@ -289,6 +296,7 @@
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
+				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 			);
