@@ -28,8 +28,10 @@ extension APIRequest {
             let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
             return URLQueryItem(name: key, value: value)
         }
-
-        urlComponents?.percentEncodedQueryItems = urlQuries
+        
+        if urlQuries.isEmpty == false {
+            urlComponents?.percentEncodedQueryItems = urlQuries
+        }
 
         return urlComponents?.url
     }
