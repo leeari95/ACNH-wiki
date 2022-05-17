@@ -30,6 +30,8 @@
 		9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */; };
 		9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B4283376E50061AAF1 /* BugRequest.swift */; };
 		9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B6283377010061AAF1 /* BugResponseDTO.swift */; };
+		9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B8283378630061AAF1 /* FossilsRequest.swift */; };
+		9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891B4283376E50061AAF1 /* BugRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugRequest.swift; sourceTree = "<group>"; };
 		9A6891B6283377010061AAF1 /* BugResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891B8283378630061AAF1 /* FossilsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FossilsRequest.swift; sourceTree = "<group>"; };
+		9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FossilsResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +138,7 @@
 				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
 				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
 				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
+				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
 				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
 				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
+				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -258,6 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
 				9A6891972833532D0061AAF1 /* HTTPMethod.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
@@ -271,6 +278,7 @@
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
+				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
