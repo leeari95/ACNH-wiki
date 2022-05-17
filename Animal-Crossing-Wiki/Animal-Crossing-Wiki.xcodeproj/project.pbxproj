@@ -130,11 +130,10 @@
 			isa = PBXGroup;
 			children = (
 				9A6891A028335B250061AAF1 /* Protocol */,
-				9A6891962833532D0061AAF1 /* HTTPMethod.swift */,
-				9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */,
-				9A6891A5283361F60061AAF1 /* Request */,
-				9A6891AA283366B10061AAF1 /* Response */,
 				9A6891AB283367180061AAF1 /* Utilities */,
+				9A6891AA283366B10061AAF1 /* Response */,
+				9A6891A5283361F60061AAF1 /* Request */,
+				9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -170,6 +169,7 @@
 		9A6891AB283367180061AAF1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				9A6891962833532D0061AAF1 /* HTTPMethod.swift */,
 				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
 			);
 			path = Utilities;
