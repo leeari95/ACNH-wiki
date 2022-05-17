@@ -28,6 +28,8 @@
 		9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */; };
 		9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B0283371A60061AAF1 /* FishRequest.swift */; };
 		9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */; };
+		9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B4283376E50061AAF1 /* BugRequest.swift */; };
+		9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B6283377010061AAF1 /* BugResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnipResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891B0283371A60061AAF1 /* FishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishRequest.swift; sourceTree = "<group>"; };
 		9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891B4283376E50061AAF1 /* BugRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugRequest.swift; sourceTree = "<group>"; };
+		9A6891B6283377010061AAF1 /* BugResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +133,7 @@
 				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
 				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
 				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
+				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -139,6 +144,7 @@
 				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
 				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
 				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
+				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -254,6 +260,7 @@
 			files = (
 				9A6891972833532D0061AAF1 /* HTTPMethod.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
+				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
@@ -264,6 +271,7 @@
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
+				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
