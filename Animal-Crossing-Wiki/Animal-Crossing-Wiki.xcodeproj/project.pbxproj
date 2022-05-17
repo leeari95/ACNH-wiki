@@ -21,6 +21,9 @@
 		9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919A28335AE90061AAF1 /* APIProvider.swift */; };
 		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
 		9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919E28335B130061AAF1 /* APIResponce.swift */; };
+		9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A3283361F20061AAF1 /* VillagersRequest.swift */; };
+		9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */; };
+		9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,10 @@
 		9A68919A28335AE90061AAF1 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		9A68919E28335B130061AAF1 /* APIResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponce.swift; sourceTree = "<group>"; };
+		9A6891A228335FB50061AAF1 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		9A6891A3283361F20061AAF1 /* VillagersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRequest.swift; sourceTree = "<group>"; };
+		9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentsVariable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +63,7 @@
 		9A541B5C28220A72001B57FD = {
 			isa = PBXGroup;
 			children = (
+				9A6891A228335FB50061AAF1 /* Secrets.xcconfig */,
 				9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */,
 				9A541B6628220A72001B57FD /* Products */,
 			);
@@ -100,8 +108,35 @@
 				9A6891A028335B250061AAF1 /* Protocol */,
 				9A6891962833532D0061AAF1 /* HTTPMethod.swift */,
 				9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */,
+				9A6891A5283361F60061AAF1 /* Request */,
+				9A6891AA283366B10061AAF1 /* Response */,
+				9A6891AB283367180061AAF1 /* Utilities */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		9A6891A5283361F60061AAF1 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		9A6891AA283366B10061AAF1 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		9A6891AB283367180061AAF1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,9 +243,12 @@
 				9A6891972833532D0061AAF1 /* HTTPMethod.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
+				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
+				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
+				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 			);
@@ -240,6 +278,7 @@
 /* Begin XCBuildConfiguration section */
 		9A541B7728220A73001B57FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -301,6 +340,7 @@
 		};
 		9A541B7828220A73001B57FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
