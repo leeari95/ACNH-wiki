@@ -31,7 +31,7 @@ struct SeaCreaturesResponseDTO: Codable, APIResponse {
     let unlocked: Bool
     let internalId: Int
     let uniqueEntryId: String
-    let translations: Translations
+    let translations: [String: String]
     let hemispheres: Hemispheres
     let colors: [Color]?
 }

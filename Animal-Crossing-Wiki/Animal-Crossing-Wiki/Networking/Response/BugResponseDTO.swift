@@ -28,7 +28,7 @@ struct BugResponseDTO: Codable, APIResponse {
     let furnitureFilename: String
     let internalId: Int
     let uniqueEntryId: String
-    let translations: Translations
+    let translations: [String: String]
     let hemispheres: Hemispheres
     let colors: [Color]
 

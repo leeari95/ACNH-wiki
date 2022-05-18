@@ -29,34 +29,16 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let furnitureList: [Int]
     let furnitureNameList: [String]
     let diyWorkbench: String
-    let kitchenEquipment: KitchenEquipment
+    let kitchenEquipment: String
     let nameColor: String
     let bubbleColor: String
     let filename: String
     let uniqueEntryId: String
-    let catchphrases: Translations
-    let translations: Translations
+    let catchphrases: [String: String]
+    let translations: [String: String]
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
-}
-
-// MARK: - Translations
-struct Translations: Codable {
-    let eUde: String
-    let eUen: String
-    let eUit: String
-    let eUnl: String
-    let eUru: String
-    let eUfr: String
-    let eUes: String
-    let uSen: String
-    let uSfr: String
-    let uSes: String
-    let jPja: String
-    let kRko: String
-    let tWzh: String
-    let cNzh: String
 }
 
 enum Color: Codable {
@@ -90,11 +72,6 @@ enum Hobby: Codable {
     case play
 }
 
-enum KitchenEquipment: Codable {
-    case integer(Int)
-    case string(String)
-}
-
 enum Personality: Codable {
     case bigSister
     case cranky
@@ -115,7 +92,7 @@ enum Style: Codable {
     case simple
 }
 
-enum Subtype:Codable {
+enum Subtype: Codable {
     case a
     case b
 }
