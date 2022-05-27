@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
+		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6828220A72001B57FD /* AppDelegate.swift */; };
 		9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6A28220A72001B57FD /* SceneDelegate.swift */; };
 		9A541B6D28220A72001B57FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* ViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animal-Crossing-Wiki.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A541B6828220A72001B57FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A541B6A28220A72001B57FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
+				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
 			);
 			path = "Animal-Crossing-Wiki";
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
+				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
