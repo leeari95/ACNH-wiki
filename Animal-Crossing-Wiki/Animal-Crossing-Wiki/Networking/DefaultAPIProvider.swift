@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import OSLog
 
 struct DefaultAPIProvider: APIProvider {
     func request<T: APIRequest>(_ request: T, completion: @escaping (Result<T.Response, Error>) -> Void) {
@@ -15,7 +16,11 @@ struct DefaultAPIProvider: APIProvider {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                print(error.localizedDescription)
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 네트워크 요청에 실패하였습니다.\n에러내용: \(error.localizedDescription)"
+                )
             }
         }
     }
@@ -26,7 +31,11 @@ struct DefaultAPIProvider: APIProvider {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                print(error.localizedDescription)
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 네트워크 요청에 실패하였습니다.\n에러내용: \(error.localizedDescription)"
+                )
             }
         }
     }
