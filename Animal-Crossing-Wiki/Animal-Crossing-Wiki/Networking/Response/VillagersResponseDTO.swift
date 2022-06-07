@@ -135,4 +135,26 @@ struct Translations: Codable {
     let eUru, eUfr, eUes, uSen: String
     let uSfr, uSes, jPja, kRko: String
     let tWzh, cNzh: String
+    
+    enum LanguageCode: String {
+        case de, en, it, nl, ru, fr, es, ja, ko, zh
+    }
+    
+    func localizedName() -> String {
+        guard let code = Locale.current.languageCode, let languageCode = LanguageCode(rawValue: code) else {
+            return eUen
+        }
+        switch languageCode {
+        case .de: return eUde
+        case .en: return uSen
+        case .it: return eUit
+        case .nl: return eUnl
+        case .ru: return eUru
+        case .fr: return eUfr
+        case .es: return eUes
+        case .ja: return jPja
+        case .ko: return kRko
+        case .zh: return cNzh
+        }
+    }
 }
