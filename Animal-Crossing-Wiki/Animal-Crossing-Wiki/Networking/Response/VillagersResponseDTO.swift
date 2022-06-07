@@ -55,7 +55,12 @@ enum KitchenEquipment: Codable {
             self = .string(element)
             return
         }
-        throw DecodingError.typeMismatch(KitchenEquipment.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for KitchenEquipment"))
+        throw DecodingError.typeMismatch(
+            KitchenEquipment.self,
+            DecodingError.Context(
+                codingPath: decoder.codingPath,
+                debugDescription: "Wrong type for KitchenEquipment")
+        )
     }
 
     func encode(to encoder: Encoder) throws {
