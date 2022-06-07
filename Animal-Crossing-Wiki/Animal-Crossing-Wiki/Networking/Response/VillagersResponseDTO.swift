@@ -29,70 +29,105 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let furnitureList: [Int]
     let furnitureNameList: [String]
     let diyWorkbench: String
-    let kitchenEquipment: String
+    let kitchenEquipment: KitchenEquipment
     let nameColor: String
     let bubbleColor: String
     let filename: String
     let uniqueEntryId: String
-    let catchphrases: [String: String]
-    let translations: [String: String]
+    let catchphrases: Translations
+    let translations: Translations
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
 }
 
-enum Color: Codable {
-    case aqua
-    case beige
-    case black
-    case blue
-    case brown
-    case colorful
-    case gray
-    case green
-    case orange
-    case pink
-    case purple
-    case red
-    case white
-    case yellow
+enum KitchenEquipment: Codable {
+    case integer(Int)
+    case string(String)
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let element = try? container.decode(Int.self) {
+            self = .integer(element)
+            return
+        }
+        if let element = try? container.decode(String.self) {
+            self = .string(element)
+            return
+        }
+        throw DecodingError.typeMismatch(KitchenEquipment.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for KitchenEquipment"))
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .integer(let element):
+            try container.encode(element)
+        case .string(let element):
+            try container.encode(element)
+        }
+    }
 }
 
-enum Gender: Codable {
-    case female
-    case male
+enum Color: String, Codable {
+    case aqua = "Aqua"
+    case beige = "Beige"
+    case black = "Black"
+    case blue = "Blue"
+    case brown = "Brown"
+    case colorful = "Colorful"
+    case gray = "Gray"
+    case green = "Green"
+    case orange = "Orange"
+    case pink = "Pink"
+    case purple = "Purple"
+    case red = "Red"
+    case white = "White"
+    case yellow = "Yellow"
 }
 
-enum Hobby: Codable {
-    case education
-    case fashion
-    case fitness
-    case music
-    case nature
-    case play
+enum Gender: String, Codable {
+    case female = "Female"
+    case male = "Male"
 }
 
-enum Personality: Codable {
-    case bigSister
-    case cranky
-    case jock
-    case normal
-    case peppy
-    case personalityLazy
-    case smug
-    case snooty
+enum Hobby: String, Codable {
+    case education = "Education"
+    case fashion = "Fashion"
+    case fitness = "Fitness"
+    case music = "Music"
+    case nature = "Nature"
+    case play = "Play"
 }
 
-enum Style: Codable {
-    case active
-    case cool
-    case cute
-    case elegant
-    case gorgeous
-    case simple
+enum Personality: String, Codable {
+    case bigSister = "Big Sister"
+    case cranky = "Cranky"
+    case jock = "Jock"
+    case normal = "Normal"
+    case peppy = "Peppy"
+    case personalityLazy = "Lazy"
+    case smug = "Smug"
+    case snooty = "Snooty"
 }
 
-enum Subtype: Codable {
-    case a
-    case b
+enum Style: String, Codable {
+    case active = "Active"
+    case cool = "Cool"
+    case cute = "Cute"
+    case elegant = "Elegant"
+    case gorgeous = "Gorgeous"
+    case simple = "Simple"
+}
+
+enum Subtype: String, Codable {
+    case a = "A"
+    case b = "B"
+}
+
+struct Translations: Codable {
+    let eUde, eUen, eUit, eUnl: String
+    let eUru, eUfr, eUes, uSen: String
+    let uSfr, uSes, jPja, kRko: String
+    let tWzh, cNzh: String
 }

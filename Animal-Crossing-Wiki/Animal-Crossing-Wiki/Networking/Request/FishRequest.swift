@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct FishRequest: APIRequest {
     typealias Response = FishResponseDTO

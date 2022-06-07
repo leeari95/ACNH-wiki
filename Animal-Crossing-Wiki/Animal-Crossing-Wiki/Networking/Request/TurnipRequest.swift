@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 // MARK: - TurnipRequest
 struct TurnipRequest: APIRequest {

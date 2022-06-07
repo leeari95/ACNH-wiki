@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Alamofire
 
 struct SeaCreaturesRequest: APIRequest {
     typealias Response = SeaCreaturesResponseDTO
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
-    let path: String = "Sea%20Creatures.json"
+    let path: String = "Sea Creatures.json"
     var headers: [String : String]? = [:]
     var parameters: [String : String] {
         return [:]

@@ -6,22 +6,22 @@
 //
 
 import Foundation
+import Alamofire
 
-protocol APIRequest {
+protocol APIRequest: URLConvertible, URLRequestConvertible {
     associatedtype Response: APIResponse
 
     var method: HTTPMethod { get }
     var baseURL: URL? { get }
     var path: String { get }
-    var url: URL? { get }
     var parameters: [String: String] { get }
     var headers: [String: String]? { get }
 }
 
 extension APIRequest {
-    var url: URL? {
+    func asURL() throws -> URL {
         guard let url = self.baseURL?.appendingPathComponent(self.path) else {
-            return nil
+            throw APIError.invalidURL(self.baseURL?.absoluteString ?? "")
         }
         var urlComponents = URLComponents(string: url.absoluteString)
         let urlQuries = self.parameters.map { key, value -> URLQueryItem in
@@ -32,14 +32,12 @@ extension APIRequest {
         if urlQuries.isEmpty == false {
             urlComponents?.percentEncodedQueryItems = urlQuries
         }
-
-        return urlComponents?.url
+        return url
     }
-
-    var urlReqeust: URLRequest? {
-        guard let url = self.url else {
-            return nil
-        }
+    
+    func asURLRequest() throws -> URLRequest {
+        let url = try self.asURL()
+        
         var request = URLRequest(url: url)
         request.httpMethod = self.method.rawValue
 

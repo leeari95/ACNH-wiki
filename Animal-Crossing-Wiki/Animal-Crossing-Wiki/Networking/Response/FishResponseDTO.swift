@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AnyCodable
 
 // MARK: - FishResponseDTO
 struct FishResponseDTO: Codable, APIResponse {
@@ -28,7 +29,7 @@ struct FishResponseDTO: Codable, APIResponse {
     let iconFilename, critterpediaFilename, furnitureFilename: String
     let internalId: Int
     let uniqueEntryId: String
-    let translations: [String: String]
+    let translations: Translations
     let hemispheres: Hemispheres
     let colors: [Color]
 }
@@ -49,19 +50,10 @@ struct Hemispheres: Codable {
 
 // MARK: - North
 struct EmergenceInfo: Codable {
-    let time: [Time]
-    let timeArray: [Int]
+    let time: [String]
+    let timeArray: AnyCodable
     let months: [String]
     let monthsArray: [Int]
-}
-
-enum Time: String, Codable {
-    case allDay = "All day"
-    case the4Am9Pm = "4 AM – 9 PM"
-    case the4Pm9Am = "4 PM – 9 AM"
-    case the9Am4Pm = "9 AM – 4 PM"
-    case the9Pm4Am = "9 PM – 4 AM"
-    case time9Pm4Am = "9 PM – 4 AM"
 }
 
 enum LightingType: String, Codable {

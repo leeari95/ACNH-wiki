@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct FossilsRequest: APIRequest {
     typealias Response = FossilsResponseDTO

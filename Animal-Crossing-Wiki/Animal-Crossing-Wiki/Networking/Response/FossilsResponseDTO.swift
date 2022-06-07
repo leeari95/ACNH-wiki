@@ -22,7 +22,7 @@ struct FossilsResponseDTO: Codable, APIResponse {
     let filename: String
     let internalId: Int
     let uniqueEntryId: String
-    let translations: [String: String]
+    let translations: Translations
     let colors: [Color]
 }
 

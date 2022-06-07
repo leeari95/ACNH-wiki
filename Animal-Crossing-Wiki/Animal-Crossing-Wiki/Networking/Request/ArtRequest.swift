@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct ArtRequest: APIRequest {
     typealias Response = ArtResponseDTO

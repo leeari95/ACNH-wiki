@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct BugRequest: APIRequest {
     typealias Response = BugResponseDTO

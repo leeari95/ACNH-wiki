@@ -26,7 +26,7 @@ struct ArtResponseDTO: Codable, APIResponse {
     let filename: String
     let internalId: Int
     let uniqueEntryId: String
-    let translations: [String: String]
+    let translations: Translations
     let colors: [Color]
     let concepts: [Concept]
 }
