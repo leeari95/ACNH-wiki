@@ -8,9 +8,11 @@ type_body_length: # 타입 길이
     error: 250
 identifier_name:
     min_length:
-    - 2  # only min_length
+      - 2  # only min_length
     error: 4 # only error
     excluded: # 제외할 문자열 목록 사용
+      - a
+      - b
 disabled_rules: # 실행에서 제외할 룰 식별자들
   - colon
   - control_statement

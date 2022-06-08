@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
+		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
+		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
+		9A1DB1D92840857300689F11 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D82840857300689F11 /* APIError.swift */; };
 		9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6828220A72001B57FD /* AppDelegate.swift */; };
 		9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6A28220A72001B57FD /* SceneDelegate.swift */; };
 		9A541B6D28220A72001B57FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* ViewController.swift */; };
@@ -16,9 +20,30 @@
 		9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8028225F8E001B57FD /* RxCocoa */; };
 		9A541B8328225F8E001B57FD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8228225F8E001B57FD /* RxRelay */; };
 		9A541B8528225F8E001B57FD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8428225F8E001B57FD /* RxSwift */; };
+		9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */; };
+		9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919A28335AE90061AAF1 /* APIProvider.swift */; };
+		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
+		9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919E28335B130061AAF1 /* APIResponce.swift */; };
+		9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A3283361F20061AAF1 /* VillagersRequest.swift */; };
+		9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */; };
+		9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */; };
+		9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */; };
+		9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */; };
+		9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B0283371A60061AAF1 /* FishRequest.swift */; };
+		9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */; };
+		9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B4283376E50061AAF1 /* BugRequest.swift */; };
+		9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B6283377010061AAF1 /* BugResponseDTO.swift */; };
+		9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891B8283378630061AAF1 /* FossilsRequest.swift */; };
+		9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */; };
+		9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */; };
+		9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */; };
+		9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C0283380CD0061AAF1 /* ArtRequest.swift */; };
+		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
+		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animal-Crossing-Wiki.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A541B6828220A72001B57FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A541B6A28220A72001B57FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,6 +52,26 @@
 		9A541B7128220A73001B57FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A541B7428220A73001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A541B7628220A73001B57FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIProvider.swift; sourceTree = "<group>"; };
+		9A68919A28335AE90061AAF1 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
+		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		9A68919E28335B130061AAF1 /* APIResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponce.swift; sourceTree = "<group>"; };
+		9A6891A228335FB50061AAF1 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		9A6891A3283361F20061AAF1 /* VillagersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRequest.swift; sourceTree = "<group>"; };
+		9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentsVariable.swift; sourceTree = "<group>"; };
+		9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnipRequest.swift; sourceTree = "<group>"; };
+		9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnipResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891B0283371A60061AAF1 /* FishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishRequest.swift; sourceTree = "<group>"; };
+		9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891B4283376E50061AAF1 /* BugRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugRequest.swift; sourceTree = "<group>"; };
+		9A6891B6283377010061AAF1 /* BugResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891B8283378630061AAF1 /* FossilsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FossilsRequest.swift; sourceTree = "<group>"; };
+		9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FossilsResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesRequest.swift; sourceTree = "<group>"; };
+		9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesResponseDTO.swift; sourceTree = "<group>"; };
+		9A6891C0283380CD0061AAF1 /* ArtRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtRequest.swift; sourceTree = "<group>"; };
+		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */,
+				9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */,
 				9A541B8528225F8E001B57FD /* RxSwift in Frameworks */,
 				9A541B8328225F8E001B57FD /* RxRelay in Frameworks */,
 				9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */,
@@ -46,6 +93,7 @@
 		9A541B5C28220A72001B57FD = {
 			isa = PBXGroup;
 			children = (
+				9A6891A228335FB50061AAF1 /* Secrets.xcconfig */,
 				9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */,
 				9A541B6628220A72001B57FD /* Products */,
 			);
@@ -69,8 +117,69 @@
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
 				9A541B7628220A73001B57FD /* Info.plist */,
+				9A6891A128335B2D0061AAF1 /* Networking */,
+				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
 			);
 			path = "Animal-Crossing-Wiki";
+			sourceTree = "<group>";
+		};
+		9A6891A028335B250061AAF1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				9A68919A28335AE90061AAF1 /* APIProvider.swift */,
+				9A68919E28335B130061AAF1 /* APIResponce.swift */,
+				9A68919C28335AFF0061AAF1 /* APIRequest.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		9A6891A128335B2D0061AAF1 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A028335B250061AAF1 /* Protocol */,
+				9A6891AB283367180061AAF1 /* Utilities */,
+				9A6891AA283366B10061AAF1 /* Response */,
+				9A6891A5283361F60061AAF1 /* Request */,
+				9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		9A6891A5283361F60061AAF1 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
+				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
+				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
+				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
+				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
+				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
+				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		9A6891AA283366B10061AAF1 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
+				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
+				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
+				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
+				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
+				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
+				9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		9A6891AB283367180061AAF1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
+				9A1DB1D82840857300689F11 /* APIError.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -94,6 +203,8 @@
 				9A541B8028225F8E001B57FD /* RxCocoa */,
 				9A541B8228225F8E001B57FD /* RxRelay */,
 				9A541B8428225F8E001B57FD /* RxSwift */,
+				9A1DB1CD2840504B00689F11 /* Kingfisher */,
+				9A1DB1D6284081E400689F11 /* Alamofire */,
 			);
 			productName = "Animal-Crossing-Wiki";
 			productReference = 9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */;
@@ -125,6 +236,9 @@
 			mainGroup = 9A541B5C28220A72001B57FD;
 			packageReferences = (
 				9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */,
+				9A1DB1CC2840504B00689F11 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				9A4B4C2B284EEA2D00CC687C /* XCRemoteSwiftPackageReference "AnyCodable" */,
 			);
 			productRefGroup = 9A541B6628220A72001B57FD /* Products */;
 			projectDirPath = "";
@@ -174,9 +288,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
+				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
+				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
+				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
+				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
+				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
+				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
+				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
+				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
+				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
+				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
+				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
+				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
+				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
+				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
+				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
+				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
+				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
+				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
+				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
+				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +339,7 @@
 /* Begin XCBuildConfiguration section */
 		9A541B7728220A73001B57FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -265,6 +401,7 @@
 		};
 		9A541B7828220A73001B57FD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -398,6 +535,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9A1DB1CC2840504B00689F11 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		9A4B4C2B284EEA2D00CC687C /* XCRemoteSwiftPackageReference "AnyCodable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Flight-School/AnyCodable.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.5;
+			};
+		};
 		9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -409,6 +570,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9A1DB1CD2840504B00689F11 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A1DB1CC2840504B00689F11 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		9A1DB1D6284081E400689F11 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		9A541B8028225F8E001B57FD /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */;
