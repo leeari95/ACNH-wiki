@@ -158,3 +158,30 @@ struct Translations: Codable {
         }
     }
 }
+
+extension VillagersResponseDTO {
+    func toDomain() -> Villager {
+        return Villager(
+            name: self.name,
+            iconImage: self.iconImage,
+            photoImage: self.photoImage,
+            houseImage: self.houseImage,
+            species: self.species,
+            gender: self.gender,
+            personality: self.personality,
+            subtype: self.subtype,
+            hobby: self.hobby,
+            birthday: self.birthday,
+            catchphrase: self.catchphrase,
+            favoriteSong: self.favoriteSong,
+            furnitureList: self.furnitureList,
+            furnitureNameList: self.furnitureNameList,
+            diyWorkbench: self.diyWorkbench,
+            kitchenEquipment: self.kitchenEquipment,
+            catchphrases: self.catchphrases,
+            translations: self.translations,
+            styles: self.styles,
+            colors: self.colors
+        )
+    }
+}

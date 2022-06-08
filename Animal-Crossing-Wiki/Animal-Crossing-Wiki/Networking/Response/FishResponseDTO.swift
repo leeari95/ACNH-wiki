@@ -11,7 +11,9 @@ import Foundation
 struct FishResponseDTO: Codable, APIResponse {
     let num: Int
     let name: String
-    let iconImage, critterpediaImage, furnitureImage: String
+    let iconImage: String
+    let critterpediaImage: String
+    let furnitureImage: String
     let sell: Int
     let whereHow: WhereHow
     let shadow: Shadow
@@ -25,7 +27,9 @@ struct FishResponseDTO: Codable, APIResponse {
     let catchPhrase: [String]
     let hhaBasePoints: Int
     let lightingType: LightingType?
-    let iconFilename, critterpediaFilename, furnitureFilename: String
+    let iconFilename: String
+    let critterpediaFilename: String
+    let furnitureFilename: String
     let internalId: Int
     let uniqueEntryId: String
     let translations: Translations
@@ -139,4 +143,23 @@ enum WhereHow: String, Codable {
     case riverMouth = "River (mouth)"
     case sea = "Sea"
     case seaRainyDays = "Sea (rainy days)"
+}
+
+extension FishResponseDTO {
+    func toDomain() -> Fish {
+        return Fish(
+            name: self.name,
+            iconImage: self.iconImage,
+            critterpediaImage: self.critterpediaImage,
+            furnitureImage: self.furnitureImage,
+            sell: self.sell,
+            whereHow: self.whereHow,
+            shadow: self.shadow,
+            catchDifficulty: self.catchDifficulty,
+            vision: self.vision,
+            translations: self.translations,
+            hemispheres: self.hemispheres,
+            colors: self.colors
+        )
+    }
 }

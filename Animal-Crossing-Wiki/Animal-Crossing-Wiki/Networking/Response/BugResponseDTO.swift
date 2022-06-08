@@ -31,11 +31,29 @@ struct BugResponseDTO: Codable, APIResponse {
     let translations: Translations
     let hemispheres: Hemispheres
     let colors: [Color]
-
 }
 
 enum Weather: String, Codable {
     case anyExceptRain = "Any except rain"
     case anyWeather = "Any weather"
     case rainOnly = "Rain only"
+}
+
+extension BugResponseDTO {
+    func toDomain() -> Bug {
+        return Bug(
+            name: self.name,
+            iconImage: self.iconImage,
+            critterpediaImage: self.critterpediaImage,
+            furnitureImage: self.furnitureImage,
+            sell: self.sell,
+            whereHow: self.whereHow,
+            weather: self.weather,
+            spawnRates: self.spawnRates,
+            size: self.size,
+            translations: self.translations,
+            hemispheres: self.hemispheres,
+            colors: self.colors
+        )
+    }
 }

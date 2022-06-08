@@ -13,7 +13,7 @@ struct ArtResponseDTO: Codable, APIResponse {
     let image: String
     let highResTexture: String?
     let genuine: Bool
-    let category: Category
+    let category: ArtCategory
     let buy: Int
     let sell: Int?
     let size: Size
@@ -31,7 +31,7 @@ struct ArtResponseDTO: Codable, APIResponse {
     let concepts: [Concept]
 }
 
-enum Category: String, Codable {
+enum ArtCategory: String, Codable {
     case housewares = "Housewares"
     case miscellaneous = "Miscellaneous"
     case wallMounted = "Wall-mounted"
@@ -50,4 +50,26 @@ enum Concept: String, Codable {
 enum Tag: String, Codable {
     case picture = "Picture"
     case sculpture = "Sculpture"
+}
+
+extension ArtResponseDTO {
+    func toDomain() -> Art {
+        let isFake = self.filename.contains("Fake")
+        return Art(
+            name: self.name,
+            image: self.image,
+            highResTexture: self.highResTexture,
+            genuine: self.genuine,
+            artCategory: self.category,
+            buy: self.buy,
+            sell: self.sell ?? 0,
+            size: self.size,
+            tag: self.tag,
+            unlocked: self.unlocked,
+            isFake: isFake,
+            translations: self.translations,
+            colors: self.colors,
+            concepts: self.concepts
+        )
+    }
 }

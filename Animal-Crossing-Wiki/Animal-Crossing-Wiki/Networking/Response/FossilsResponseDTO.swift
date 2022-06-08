@@ -31,3 +31,18 @@ enum Museum: String, Codable {
     case room2 = "Room 2"
     case room3 = "Room 3"
 }
+
+extension FossilsResponseDTO {
+    func toDomain() -> Fossils {
+        return Fossils(
+            name: self.name,
+            image: self.image,
+            buy: self.buy,
+            sell: self.sell,
+            size: self.size,
+            museum: self.museum,
+            translations: self.translations,
+            colors: self.colors
+        )
+    }
+}
