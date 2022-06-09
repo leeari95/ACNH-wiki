@@ -13,11 +13,15 @@ identifier_name:
     excluded: # 제외할 문자열 목록 사용
       - a
       - b
+function_body_length:
+  warning: 100
+  error: 200
 disabled_rules: # 실행에서 제외할 룰 식별자들
   - colon
   - control_statement
   - trailing_whitespace
   - vertical_parameter_alignment
+  - cyclomatic_complexity
 opt_in_rules: # 일부 룰은 옵트 인 형태로 제공
   - empty_count
   - conditional_returns_on_newline
