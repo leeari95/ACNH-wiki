@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Category: CaseIterable {
+enum Category: String, CaseIterable {
     case bugs
     case fish
     case seaCreatures
