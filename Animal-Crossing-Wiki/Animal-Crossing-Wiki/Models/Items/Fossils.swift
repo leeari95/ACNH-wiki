@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Fossils {
+struct Fossils: Item {
     let name: String
     let category: Category = .fossils
     let image: String
