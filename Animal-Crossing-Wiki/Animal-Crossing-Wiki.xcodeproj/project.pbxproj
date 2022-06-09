@@ -42,6 +42,7 @@
 		9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */; };
 		9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C0283380CD0061AAF1 /* ArtRequest.swift */; };
 		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
+		9AF0418828503B9400C51449 /* UserCollectionEntity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* UserCollectionEntity.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
 		9AF0418E285045EF00C51449 /* Bug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418D285045EF00C51449 /* Bug.swift */; };
@@ -49,6 +50,8 @@
 		9AF0419228505AE900C51449 /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419128505AE900C51449 /* Art.swift */; };
 		9AF0419428505AF800C51449 /* Fossils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419328505AF800C51449 /* Fossils.swift */; };
 		9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419528505B1100C51449 /* SeaCreature.swift */; };
+		9AF0419E28506B6100C51449 /* UserCollectionEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419C28506B6100C51449 /* UserCollectionEntity+CoreDataClass.swift */; };
+		9AF0419F28506B6100C51449 /* UserCollectionEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419D28506B6100C51449 /* UserCollectionEntity+CoreDataProperties.swift */; };
 		9AF041A128507B8100C51449 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041A028507B8100C51449 /* Items.swift */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +89,7 @@
 		9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891C0283380CD0061AAF1 /* ArtRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtRequest.swift; sourceTree = "<group>"; };
 		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
+		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		9AF0418D285045EF00C51449 /* Bug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bug.swift; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 		9AF0419128505AE900C51449 /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
 		9AF0419328505AF800C51449 /* Fossils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fossils.swift; sourceTree = "<group>"; };
 		9AF0419528505B1100C51449 /* SeaCreature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreature.swift; sourceTree = "<group>"; };
+		9AF0419C28506B6100C51449 /* UserCollectionEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		9AF0419D28506B6100C51449 /* UserCollectionEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9AF041A028507B8100C51449 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,6 +124,7 @@
 				9A4B4C32285033B300CC687C /* Fruit.swift */,
 				9A4B4C34285034BA00CC687C /* Villager.swift */,
 				9A4B4C3628503A0400CC687C /* DailyTask.swift */,
+				9AF0418528503B9400C51449 /* UserCollectionEntity.xcdatamodeld */,
 				9AF0419728505B1C00C51449 /* Items */,
 				9AF041A028507B8100C51449 /* Items.swift */,
 			);
@@ -127,6 +134,8 @@
 		9A541B5C28220A72001B57FD = {
 			isa = PBXGroup;
 			children = (
+				9AF0419C28506B6100C51449 /* UserCollectionEntity+CoreDataClass.swift */,
+				9AF0419D28506B6100C51449 /* UserCollectionEntity+CoreDataProperties.swift */,
 				9A6891A228335FB50061AAF1 /* Secrets.xcconfig */,
 				9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */,
 				9A541B6628220A72001B57FD /* Products */,
@@ -360,8 +369,11 @@
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
+				9AF0419E28506B6100C51449 /* UserCollectionEntity+CoreDataClass.swift in Sources */,
+				9AF0418828503B9400C51449 /* UserCollectionEntity.xcdatamodeld in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
+				9AF0419F28506B6100C51449 /* UserCollectionEntity+CoreDataProperties.swift in Sources */,
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
@@ -656,6 +668,19 @@
 			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		9AF0418528503B9400C51449 /* UserCollectionEntity.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */,
+			);
+			currentVersion = 9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */;
+			path = UserCollectionEntity.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9A541B5D28220A72001B57FD /* Project object */;
 }
