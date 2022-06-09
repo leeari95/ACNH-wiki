@@ -121,12 +121,12 @@
 		9A4B4C3828503A6100CC687C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9A4B4C32285033B300CC687C /* Fruit.swift */,
-				9A4B4C34285034BA00CC687C /* Villager.swift */,
 				9A4B4C3628503A0400CC687C /* DailyTask.swift */,
-				9AF0418528503B9400C51449 /* UserCollectionEntity.xcdatamodeld */,
-				9AF0419728505B1C00C51449 /* Items */,
+				9A4B4C32285033B300CC687C /* Fruit.swift */,
 				9AF041A028507B8100C51449 /* Items.swift */,
+				9A4B4C34285034BA00CC687C /* Villager.swift */,
+				9AF0419728505B1C00C51449 /* Items */,
+				9AF0418528503B9400C51449 /* UserCollectionEntity.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -153,16 +153,16 @@
 		9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */ = {
 			isa = PBXGroup;
 			children = (
+				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
 				9A541B6C28220A72001B57FD /* ViewController.swift */,
-				9A4B4C3828503A6100CC687C /* Models */,
-				9A541B6E28220A72001B57FD /* Main.storyboard */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
+				9AF041A42851ADFF00C51449 /* Extension */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
-				9A541B7628220A73001B57FD /* Info.plist */,
+				9A541B6E28220A72001B57FD /* Main.storyboard */,
+				9A4B4C3828503A6100CC687C /* Models */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
-				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
 			);
 			path = "Animal-Crossing-Wiki";
 			sourceTree = "<group>";
@@ -171,8 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				9A68919A28335AE90061AAF1 /* APIProvider.swift */,
-				9A68919E28335B130061AAF1 /* APIResponce.swift */,
 				9A68919C28335AFF0061AAF1 /* APIRequest.swift */,
+				9A68919E28335B130061AAF1 /* APIResponce.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -180,11 +180,11 @@
 		9A6891A128335B2D0061AAF1 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891A028335B250061AAF1 /* Protocol */,
-				9A6891AB283367180061AAF1 /* Utilities */,
-				9A6891AA283366B10061AAF1 /* Response */,
-				9A6891A5283361F60061AAF1 /* Request */,
 				9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */,
+				9A6891A028335B250061AAF1 /* Protocol */,
+				9A6891A5283361F60061AAF1 /* Request */,
+				9A6891AA283366B10061AAF1 /* Response */,
+				9A6891AB283367180061AAF1 /* Utilities */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -192,13 +192,13 @@
 		9A6891A5283361F60061AAF1 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
-				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
-				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
+				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
 				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
+				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
 				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
 				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
-				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
+				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
+				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -206,13 +206,13 @@
 		9A6891AA283366B10061AAF1 /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
-				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
-				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
-				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
-				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
-				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
 				9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */,
+				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
+				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
+				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
+				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
+				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
+				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -220,8 +220,8 @@
 		9A6891AB283367180061AAF1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
 				9A1DB1D82840857300689F11 /* APIError.swift */,
+				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -229,15 +229,23 @@
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				9AF0418928503F7900C51449 /* Item.swift */,
-				9AF0418B2850451100C51449 /* Category.swift */,
-				9AF0418D285045EF00C51449 /* Bug.swift */,
-				9AF0418F28505AE200C51449 /* Fish.swift */,
 				9AF0419128505AE900C51449 /* Art.swift */,
+				9AF0418D285045EF00C51449 /* Bug.swift */,
+				9AF0418B2850451100C51449 /* Category.swift */,
+				9AF0418F28505AE200C51449 /* Fish.swift */,
 				9AF0419328505AF800C51449 /* Fossils.swift */,
+				9AF0418928503F7900C51449 /* Item.swift */,
 				9AF0419528505B1100C51449 /* SeaCreature.swift */,
 			);
 			path = Items;
+			sourceTree = "<group>";
+		};
+		9AF041A42851ADFF00C51449 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
