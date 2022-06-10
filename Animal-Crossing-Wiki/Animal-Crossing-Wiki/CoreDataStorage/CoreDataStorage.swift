@@ -8,7 +8,25 @@
 import Foundation
 import CoreData
 
+enum CoreDataStorageError: LocalizedError {
+    case readError(Error)
+    case notFound
+    case categoryNotFound
+    
+    var errorDescription: String? {
+        switch self {
+        case .readError(let error):
+            return "⛔️ 데이터 불러오기 실패\n에러내용: \(error.localizedDescription)"
+        case .notFound:
+            return "⛔️ 삭제할 데이터를 찾지 못했습니다."
+        case .categoryNotFound:
+            return "⛔️ 카테고리가 존재하지 않는 아이템입니다."
+        }
+    }
+}
+
 final class CoreDataStorage {
+    
     static let shared = CoreDataStorage()
     private init() {}
 
@@ -21,58 +39,28 @@ final class CoreDataStorage {
         })
         return container
     }()
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
+
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        persistentContainer.performBackgroundTask(block)
     }
 }
 
 extension CoreDataStorage {
-    func insert(entityName: String, items: [String: Any]) {
-        let context = persistentContainer.viewContext
-        let managedObject = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context)
-        update(entityName: entityName, managedObject: managedObject, items: items)
+    func getUserCollection(_ context: NSManagedObjectContext) throws -> UserCollectionEntity? {
+        let request = UserCollectionEntity.fetchRequest()
+        return try context.fetch(request).first
     }
-    
-    @discardableResult
-    func fetch(
-        entityName: String,
-        predicate: NSPredicate? = nil,
-        sortDescriptors: [NSSortDescriptor]? = nil
-    ) -> [NSManagedObject]? {
-        let context = persistentContainer.viewContext
-        let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
-        request.predicate = predicate
-        request.returnsObjectsAsFaults = false
-        request.sortDescriptors = sortDescriptors
-        guard let newData = try? context.fetch(request) else {
-            return nil
-        }
-        return newData
-    }
-    
-    func update(entityName: String, managedObject: NSManagedObject, items: [String: Any]) {
-        let keys = managedObject.entity.attributesByName.keys
-        for key in keys {
-            if let value = items[key] {
-                managedObject.setValue(value, forKey: key)
+}
+
+extension NSManagedObjectContext {
+    func saveContext() {
+        if self.hasChanges {
+            do {
+                try save()
+            } catch {
+                let nserror = error as NSError
+                debugPrint("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
-        saveContext()
-        fetch(entityName: entityName)
-    }
-    
-    func delete(_ managedObject: NSManagedObject) {
-        let context = persistentContainer.viewContext
-        context.delete(managedObject)
-        saveContext()
     }
 }
