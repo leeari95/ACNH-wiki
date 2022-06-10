@@ -53,9 +53,15 @@
 		9AF041A128507B8100C51449 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041A028507B8100C51449 /* Items.swift */; };
 		9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */; };
 		9AF042042852F2F500C51449 /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042032852F2F500C51449 /* Keyword.swift */; };
+		9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420528530C1E00C51449 /* CoreDataVillagersLikeStorage.swift */; };
+		9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420728530C2D00C51449 /* CoreDataVillagersHouseStorage.swift */; };
 		9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420928530C3800C51449 /* CoreDataItemsStorage.swift */; };
+		9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420B28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift */; };
+		9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420D28530C8600C51449 /* VillagersHouseEntity+Mapping.swift */; };
 		9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */; };
+		9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421428530CFE00C51449 /* VillagersHouseStorage.swift */; };
 		9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421828530D8D00C51449 /* ItemsStorage.swift */; };
+		9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421C28530DD100C51449 /* VillagersLikeStorage.swift */; };
 		9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */; };
 		9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */; };
 		9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042242853133200C51449 /* DailyTaskStorage.swift */; };
@@ -109,9 +115,15 @@
 		9AF041A028507B8100C51449 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		9AF042032852F2F500C51449 /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
+		9AF0420528530C1E00C51449 /* CoreDataVillagersLikeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVillagersLikeStorage.swift; sourceTree = "<group>"; };
+		9AF0420728530C2D00C51449 /* CoreDataVillagersHouseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVillagersHouseStorage.swift; sourceTree = "<group>"; };
 		9AF0420928530C3800C51449 /* CoreDataItemsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataItemsStorage.swift; sourceTree = "<group>"; };
+		9AF0420B28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VillagersLikeEntity+Mapping.swift"; sourceTree = "<group>"; };
+		9AF0420D28530C8600C51449 /* VillagersHouseEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VillagersHouseEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemEntity+Mapping.swift"; sourceTree = "<group>"; };
+		9AF0421428530CFE00C51449 /* VillagersHouseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersHouseStorage.swift; sourceTree = "<group>"; };
 		9AF0421828530D8D00C51449 /* ItemsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsStorage.swift; sourceTree = "<group>"; };
+		9AF0421C28530DD100C51449 /* VillagersLikeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersLikeStorage.swift; sourceTree = "<group>"; };
 		9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDailyTaskStorage.swift; sourceTree = "<group>"; };
 		9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyTaskEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9AF042242853133200C51449 /* DailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTaskStorage.swift; sourceTree = "<group>"; };
@@ -272,10 +284,30 @@
 				9AF042222853132300C51449 /* DailyTaskStorage */,
 				9AF0421628530D6E00C51449 /* ItemsStorage */,
 				9AF0422A2853160500C51449 /* UserInfoStorage */,
+				9AF0421228530CDB00C51449 /* VillagersHouseStorage */,
+				9AF0421A28530DBD00C51449 /* VillagersLikeStorage */,
 				9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */,
 				9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */,
 			);
 			path = CoreDataStorage;
+			sourceTree = "<group>";
+		};
+		9AF0421228530CDB00C51449 /* VillagersHouseStorage */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0421428530CFE00C51449 /* VillagersHouseStorage.swift */,
+				9AF0420728530C2D00C51449 /* CoreDataVillagersHouseStorage.swift */,
+				9AF0421328530CE200C51449 /* EntityMapping */,
+			);
+			path = VillagersHouseStorage;
+			sourceTree = "<group>";
+		};
+		9AF0421328530CE200C51449 /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0420D28530C8600C51449 /* VillagersHouseEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
 			sourceTree = "<group>";
 		};
 		9AF0421628530D6E00C51449 /* ItemsStorage */ = {
@@ -292,6 +324,24 @@
 			isa = PBXGroup;
 			children = (
 				9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
+			sourceTree = "<group>";
+		};
+		9AF0421A28530DBD00C51449 /* VillagersLikeStorage */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0421C28530DD100C51449 /* VillagersLikeStorage.swift */,
+				9AF0420528530C1E00C51449 /* CoreDataVillagersLikeStorage.swift */,
+				9AF0421B28530DC200C51449 /* EntityMapping */,
+			);
+			path = VillagersLikeStorage;
+			sourceTree = "<group>";
+		};
+		9AF0421B28530DC200C51449 /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0420B28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift */,
 			);
 			path = EntityMapping;
 			sourceTree = "<group>";
@@ -448,9 +498,12 @@
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
+				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
+				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
+				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
@@ -460,6 +513,7 @@
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
+				9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
@@ -468,6 +522,8 @@
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
+				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
+				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
