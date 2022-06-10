@@ -1,4 +1,4 @@
-//U
+//
 //  ItemEntity+Mapping.swift
 //  Animal-Crossing-Wiki
 //
@@ -156,8 +156,6 @@ extension Hemispheres {
             ]
         ]
     }
-
-
 
     init(_ dictionary: [String: [String: Any]]) {
         self.init(
