@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DailyTaskEntity" representedClassName="DailyTaskEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="icon" attributeType="String"/>
+        <attribute name="isCompleted" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="dailyTasks" inverseEntity="UserCollectionEntity"/>
+    </entity>
+    <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="artCategory" optional="YES" attributeType="String"/>
+        <attribute name="buy" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="catchDifficulty" optional="YES" attributeType="String"/>
+        <attribute name="category" attributeType="String"/>
+        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="concepts" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="critterpediaImage" optional="YES" attributeType="String"/>
+        <attribute name="furnitureImage" optional="YES" attributeType="String"/>
+        <attribute name="genuine" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hemispheres" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String: Any]]"/>
+        <attribute name="highResTexture" optional="YES" attributeType="String"/>
+        <attribute name="iconImage" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isFake" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="keyword" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String]]"/>
+        <attribute name="movementSpeed" optional="YES" attributeType="String"/>
+        <attribute name="museum" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="sell" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shadow" optional="YES" attributeType="String"/>
+        <attribute name="size" optional="YES" attributeType="String"/>
+        <attribute name="spawnRates" optional="YES" attributeType="String"/>
+        <attribute name="styles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="unlocked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="vision" optional="YES" attributeType="String"/>
+        <attribute name="weather" optional="YES" attributeType="String"/>
+        <attribute name="whereHow" optional="YES" attributeType="String"/>
+        <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
+    </entity>
+    <entity name="UserCollectionEntity" representedClassName="UserCollectionEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="islandFruit" optional="YES" attributeType="String"/>
+        <attribute name="islandName" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="critters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="userColletion" inverseEntity="ItemEntity"/>
+        <relationship name="dailyTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyTaskEntity" inverseName="userCollection" inverseEntity="DailyTaskEntity"/>
+        <relationship name="vilagersHouse" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersHouseEntity" inverseName="userCollection" inverseEntity="VillagersHouseEntity"/>
+        <relationship name="vilagersLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersLikeEntity" inverseName="userCollection" inverseEntity="VillagersLikeEntity"/>
+    </entity>
+    <entity name="VillagersHouseEntity" representedClassName="VillagersHouseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="birthday" attributeType="String"/>
+        <attribute name="catchphrase" attributeType="String"/>
+        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="diyWorkbench" attributeType="String"/>
+        <attribute name="favoriteSong" attributeType="String"/>
+        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
+        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="gender" attributeType="String"/>
+        <attribute name="hobby" attributeType="String"/>
+        <attribute name="houseImage" optional="YES" attributeType="String"/>
+        <attribute name="iconImage" attributeType="String"/>
+        <attribute name="kitchenEquipment" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="personality" attributeType="String"/>
+        <attribute name="photoImage" attributeType="String"/>
+        <attribute name="species" attributeType="String"/>
+        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="subtype" attributeType="String"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="vilagersHouse" inverseEntity="UserCollectionEntity"/>
+    </entity>
+    <entity name="VillagersLikeEntity" representedClassName="VillagersLikeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="birthday" attributeType="String"/>
+        <attribute name="catchphrase" attributeType="String"/>
+        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="diyWorkbench" attributeType="String"/>
+        <attribute name="favoriteSong" attributeType="String"/>
+        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
+        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="gender" attributeType="String"/>
+        <attribute name="hobby" attributeType="String"/>
+        <attribute name="houseImage" optional="YES" attributeType="String"/>
+        <attribute name="iconImage" attributeType="String"/>
+        <attribute name="kitchenEquipment" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="personality" attributeType="String"/>
+        <attribute name="photoImage" attributeType="String"/>
+        <attribute name="species" attributeType="String"/>
+        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="subtype" attributeType="String"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="vilagersLike" inverseEntity="UserCollectionEntity"/>
+    </entity>
+    <elements>
+        <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="74"/>
+        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="464"/>
+        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="134"/>
+        <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
+        <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>
+    </elements>
+</model>
