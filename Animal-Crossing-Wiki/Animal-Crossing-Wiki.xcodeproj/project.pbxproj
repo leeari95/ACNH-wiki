@@ -53,6 +53,9 @@
 		9AF041A128507B8100C51449 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041A028507B8100C51449 /* Items.swift */; };
 		9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */; };
 		9AF042042852F2F500C51449 /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042032852F2F500C51449 /* Keyword.swift */; };
+		9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */; };
+		9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */; };
+		9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042242853133200C51449 /* DailyTaskStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +103,9 @@
 		9AF041A028507B8100C51449 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		9AF042032852F2F500C51449 /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
+		9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDailyTaskStorage.swift; sourceTree = "<group>"; };
+		9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyTaskEntity+Mapping.swift"; sourceTree = "<group>"; };
+		9AF042242853133200C51449 /* DailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTaskStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,10 +256,29 @@
 		9AF041CD2851DDE700C51449 /* CoreDataStorage */ = {
 			isa = PBXGroup;
 			children = (
+				9AF042222853132300C51449 /* DailyTaskStorage */,
 				9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */,
 				9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */,
 			);
 			path = CoreDataStorage;
+			sourceTree = "<group>";
+		};
+		9AF042222853132300C51449 /* DailyTaskStorage */ = {
+			isa = PBXGroup;
+			children = (
+				9AF042242853133200C51449 /* DailyTaskStorage.swift */,
+				9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */,
+				9AF042232853132800C51449 /* EntityMapping */,
+			);
+			path = DailyTaskStorage;
+			sourceTree = "<group>";
+		};
+		9AF042232853132800C51449 /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */,
 				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
@@ -381,8 +407,10 @@
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
+				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
+				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,

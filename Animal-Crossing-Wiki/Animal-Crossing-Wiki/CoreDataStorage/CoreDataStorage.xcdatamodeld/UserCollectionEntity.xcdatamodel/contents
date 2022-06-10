@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DailyTaskEntity" representedClassName="DailyTaskEntity" syncable="YES" codeGenerationType="class">
         <attribute name="icon" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isCompleted" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="dailyTasks" inverseEntity="UserCollectionEntity"/>
     </entity>
@@ -92,7 +93,7 @@
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="vilagersLike" inverseEntity="UserCollectionEntity"/>
     </entity>
     <elements>
-        <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="74"/>
+        <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="89"/>
         <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="464"/>
         <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="134"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>

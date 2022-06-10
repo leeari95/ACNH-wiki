@@ -8,6 +8,7 @@
 import Foundation
 
 struct DailyTask {
+    let id: UUID = UUID()
     let icon: String
     private(set) var isCompleted: Bool
     
