@@ -53,6 +53,9 @@
 		9AF041A128507B8100C51449 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041A028507B8100C51449 /* Items.swift */; };
 		9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */; };
 		9AF042042852F2F500C51449 /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042032852F2F500C51449 /* Keyword.swift */; };
+		9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420928530C3800C51449 /* CoreDataItemsStorage.swift */; };
+		9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */; };
+		9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421828530D8D00C51449 /* ItemsStorage.swift */; };
 		9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */; };
 		9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */; };
 		9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042242853133200C51449 /* DailyTaskStorage.swift */; };
@@ -103,6 +106,9 @@
 		9AF041A028507B8100C51449 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		9AF042032852F2F500C51449 /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
+		9AF0420928530C3800C51449 /* CoreDataItemsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataItemsStorage.swift; sourceTree = "<group>"; };
+		9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemEntity+Mapping.swift"; sourceTree = "<group>"; };
+		9AF0421828530D8D00C51449 /* ItemsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsStorage.swift; sourceTree = "<group>"; };
 		9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDailyTaskStorage.swift; sourceTree = "<group>"; };
 		9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyTaskEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9AF042242853133200C51449 /* DailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTaskStorage.swift; sourceTree = "<group>"; };
@@ -257,10 +263,29 @@
 			isa = PBXGroup;
 			children = (
 				9AF042222853132300C51449 /* DailyTaskStorage */,
+				9AF0421628530D6E00C51449 /* ItemsStorage */,
 				9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */,
 				9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */,
 			);
 			path = CoreDataStorage;
+			sourceTree = "<group>";
+		};
+		9AF0421628530D6E00C51449 /* ItemsStorage */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0421828530D8D00C51449 /* ItemsStorage.swift */,
+				9AF0420928530C3800C51449 /* CoreDataItemsStorage.swift */,
+				9AF0421728530D8000C51449 /* EntityMapping */,
+			);
+			path = ItemsStorage;
+			sourceTree = "<group>";
+		};
+		9AF0421728530D8000C51449 /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0420F28530CA300C51449 /* ItemEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
 			sourceTree = "<group>";
 		};
 		9AF042222853132300C51449 /* DailyTaskStorage */ = {
@@ -390,6 +415,7 @@
 				9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */,
 				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
+				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
@@ -409,6 +435,7 @@
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
+				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
@@ -425,6 +452,7 @@
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
 				9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */,
+				9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,

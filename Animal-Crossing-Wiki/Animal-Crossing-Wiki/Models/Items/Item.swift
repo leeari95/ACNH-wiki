@@ -110,3 +110,45 @@ extension Item {
         return .the1X1
     }
 }
+
+extension Item {
+    
+    func toKeyword() -> [String: [String]] {
+        var keywordList = [String: [String]]()
+        self.keyword.forEach { key, value in
+            keywordList[key.rawValue] = value
+        }
+        return keywordList
+    }
+    
+    func toDictionary() -> [String: Any] {
+        return [
+            "name": self.name,
+            "category": self.category.rawValue,
+            "sell": self.sell,
+            "translations": self.translations.toDictionary(),
+            "colors": self.colors.map { $0.rawValue },
+            "keyword": toKeyword(),
+            "image": self.image,
+            "iconImage": self.iconImage,
+            "critterpediaImage": self.critterpediaImage,
+            "furnitureImage": self.furnitureImage,
+            "hemispheres": self.hemispheres.toDictionary(),
+            "whereHow": self.whereHow.rawValue,
+            "weather": self.weather.rawValue,
+            "spawnRates": self.spawnRates,
+            "catchDifficulty": self.catchDifficulty.rawValue,
+            "vision": self.vision.rawValue,
+            "shadow": self.shadow.rawValue,
+            "movementSpeed": self.movementSpeed.rawValue,
+            "buy": self.buy,
+            "museum": self.museum.rawValue,
+            "highResTexture": self.highResTexture,
+            "genuine": self.genuine,
+            "artCategory": self.artCategory.rawValue,
+            "unlocked": self.unlocked,
+            "isFake": self.isFake,
+            "size": self.size.rawValue
+        ]
+    }
+}
