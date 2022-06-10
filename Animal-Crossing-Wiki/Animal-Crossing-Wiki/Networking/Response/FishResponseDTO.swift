@@ -54,52 +54,8 @@ struct Hemispheres: Codable {
 // MARK: - North
 struct EmergenceInfo: Codable {
     let time: [String]
-    let timeArray: TimeArray
     let months: [String]
     let monthsArray: [Int]
-}
-
-enum TimeArray: Codable {
-    case integer(Int)
-    case integerArray([Int])
-    case integer2DArray([[Int]])
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let element = try? container.decode(Int.self) {
-            self = .integer(element)
-            return
-        }
-        if let element = try? container.decode([Int].self) {
-            self = .integerArray(element)
-            return
-        }
-        
-        if let element = try? container.decode([[Int]].self) {
-            self = .integer2DArray(element)
-            return
-        }
-        
-        throw DecodingError.typeMismatch(
-            TimeArray.self,
-            DecodingError.Context(
-                codingPath: decoder.codingPath,
-                debugDescription: "Wrong type for TimeArray"
-            )
-        )
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch self {
-        case .integer(let element):
-            try container.encode(element)
-        case .integerArray(let element):
-            try container.encode(element)
-        case .integer2DArray(let element):
-            try container.encode(element)
-        }
-    }
 }
 
 enum LightingType: String, Codable {

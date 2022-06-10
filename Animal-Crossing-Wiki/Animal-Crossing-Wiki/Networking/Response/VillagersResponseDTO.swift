@@ -29,7 +29,7 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let furnitureList: [Int]
     let furnitureNameList: [String]
     let diyWorkbench: String
-    let kitchenEquipment: KitchenEquipment
+    let kitchenEquipment: String
     let nameColor: String
     let bubbleColor: String
     let filename: String
@@ -39,39 +39,6 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
-}
-
-enum KitchenEquipment: Codable {
-    case integer(Int)
-    case string(String)
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let element = try? container.decode(Int.self) {
-            self = .integer(element)
-            return
-        }
-        if let element = try? container.decode(String.self) {
-            self = .string(element)
-            return
-        }
-        throw DecodingError.typeMismatch(
-            KitchenEquipment.self,
-            DecodingError.Context(
-                codingPath: decoder.codingPath,
-                debugDescription: "Wrong type for KitchenEquipment")
-        )
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch self {
-        case .integer(let element):
-            try container.encode(element)
-        case .string(let element):
-            try container.encode(element)
-        }
-    }
 }
 
 enum Color: String, Codable {

@@ -23,7 +23,7 @@ struct Villager {
     let furnitureList: [Int]
     let furnitureNameList: [String]
     let diyWorkbench: String
-    let kitchenEquipment: KitchenEquipment
+    let kitchenEquipment: String
     let catchphrases: Translations
     let translations: Translations
     let styles: [Style]
