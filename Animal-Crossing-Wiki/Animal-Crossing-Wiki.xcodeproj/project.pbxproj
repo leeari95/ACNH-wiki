@@ -59,6 +59,9 @@
 		9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */; };
 		9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */; };
 		9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042242853133200C51449 /* DailyTaskStorage.swift */; };
+		9AF04227285313ED00C51449 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF04226285313ED00C51449 /* UserInfo.swift */; };
+		9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */; };
+		9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0422B2853161500C51449 /* UserInfoStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +115,9 @@
 		9AF0421E285312FB00C51449 /* CoreDataDailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDailyTaskStorage.swift; sourceTree = "<group>"; };
 		9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyTaskEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9AF042242853133200C51449 /* DailyTaskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTaskStorage.swift; sourceTree = "<group>"; };
+		9AF04226285313ED00C51449 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUserInfoStorage.swift; sourceTree = "<group>"; };
+		9AF0422B2853161500C51449 /* UserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +144,7 @@
 				9AF041A028507B8100C51449 /* Items.swift */,
 				9A4B4C34285034BA00CC687C /* Villager.swift */,
 				9AF0419728505B1C00C51449 /* Items */,
+				9AF04226285313ED00C51449 /* UserInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -264,6 +271,7 @@
 			children = (
 				9AF042222853132300C51449 /* DailyTaskStorage */,
 				9AF0421628530D6E00C51449 /* ItemsStorage */,
+				9AF0422A2853160500C51449 /* UserInfoStorage */,
 				9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */,
 				9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */,
 			);
@@ -304,6 +312,15 @@
 				9AF042202853131400C51449 /* DailyTaskEntity+Mapping.swift */,
 			);
 			path = EntityMapping;
+			sourceTree = "<group>";
+		};
+		9AF0422A2853160500C51449 /* UserInfoStorage */ = {
+			isa = PBXGroup;
+			children = (
+				9AF0422B2853161500C51449 /* UserInfoStorage.swift */,
+				9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */,
+			);
+			path = UserInfoStorage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,8 +450,11 @@
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
+				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
+				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
+				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
