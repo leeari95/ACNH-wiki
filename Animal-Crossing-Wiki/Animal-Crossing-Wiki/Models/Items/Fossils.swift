@@ -17,4 +17,5 @@ struct Fossils: Item {
     let museum: Museum
     let translations: Translations
     let colors: [Color]
+    var keyword: [Keyword : [String]]
 }

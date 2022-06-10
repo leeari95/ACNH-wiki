@@ -20,5 +20,6 @@ struct SeaCreature: Item {
     let size: Size
     let translations: Translations
     let hemispheres: Hemispheres
-    let colors: [Color]?
+    let colors: [Color]
+    let keyword: [Keyword : [String]]
 }

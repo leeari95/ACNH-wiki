@@ -69,7 +69,12 @@ extension ArtResponseDTO {
             isFake: isFake,
             translations: self.translations,
             colors: self.colors,
-            concepts: self.concepts
+            concepts: self.concepts,
+            keyword: [
+                .color: self.colors.map { $0.rawValue },
+                .concept: self.concepts.map { $0.rawValue },
+                .tag: [self.tag.rawValue]
+            ]
         )
     }
 }

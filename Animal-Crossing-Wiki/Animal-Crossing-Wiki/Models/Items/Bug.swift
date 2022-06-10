@@ -21,4 +21,5 @@ struct Bug: Item {
     let translations: Translations
     let hemispheres: Hemispheres
     let colors: [Color]
+    let keyword: [Keyword : [String]]
 }

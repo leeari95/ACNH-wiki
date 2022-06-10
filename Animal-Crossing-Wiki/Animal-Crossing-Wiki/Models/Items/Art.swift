@@ -23,4 +23,5 @@ struct Art: Item {
     let translations: Translations
     let colors: [Color]
     let concepts: [Concept]
+    let keyword: [Keyword : [String]]
 }
