@@ -16,11 +16,8 @@ struct DefaultAPIProvider: APIProvider {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 네트워크 요청에 실패하였습니다.\n에러내용: \(error.localizedDescription)"
-                )
+                debugPrint(error)
+                completion(.failure(error))
             }
         }
     }
@@ -31,11 +28,8 @@ struct DefaultAPIProvider: APIProvider {
             case .success(let response):
                 completion(.success(response))
             case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 네트워크 요청에 실패하였습니다.\n에러내용: \(error.localizedDescription)"
-                )
+                debugPrint(error)
+                completion(.failure(error))
             }
         }
     }

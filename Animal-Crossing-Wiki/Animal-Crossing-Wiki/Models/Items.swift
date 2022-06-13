@@ -7,24 +7,37 @@
 
 import Foundation
 import OSLog
+import RxSwift
+import RxRelay
 
 final class Items {
     static let shared = Items()
     
+    var villagerList: Observable<[Villager]> {
+        return self.villagers.asObservable()
+    }
+    var categoryList: Observable<[Category: [Item]]> {
+        return self.categories.asObservable()
+    }
+    var isLoading: Observable<Bool> {
+        return self.isLoad.asObservable()
+    }
+    
+    // MARK: - Private
     private let network: APIProvider = DefaultAPIProvider()
+    private let villagers = BehaviorRelay<[Villager]>(value: [])
+    private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
+    private var isLoad = BehaviorRelay<Bool>(value: false)
     
-    private(set) var villagers: [Villager] = []
-    private(set) var categories: [Category: [Item]] = [:]
-    private(set) var isLoad = false
-    
-    init() {
+    private init() {
         let group = DispatchGroup()
+        var itemList: [Category: [Item]] = [:]
         group.enter()
         network.requestList(VillagersRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.villagers.append(contentsOf: items)
+                self.villagers.accept(items)
             case .failure(let error):
                 os_log(
                     .error,
@@ -39,7 +52,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.categories[.bugs] = items
+                itemList[.bugs] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -54,7 +67,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.categories[.fish] = items
+                itemList[.fish] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -69,7 +82,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.categories[.fossils] = items
+                itemList[.fossils] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -84,7 +97,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.categories[.art] = items
+                itemList[.art] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -99,7 +112,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                self.categories[.seaCreatures] = items
+                itemList[.seaCreatures] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -110,7 +123,8 @@ final class Items {
             group.leave()
         }
         group.notify(queue: .main) {
-            self.isLoad = true
+            self.categories.accept(itemList)
+            self.isLoad.accept(true)
         }
     }
 
