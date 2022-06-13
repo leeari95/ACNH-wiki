@@ -22,7 +22,8 @@ final class CoreDataUserInfoStorage {
                 let userInfo = UserInfo(
                     name: object?.name ?? "",
                     islandName: object?.islandName ?? "",
-                    islandFruit: Fruit(rawValue: object?.islandFruit ?? "") ?? .apple
+                    islandFruit: Fruit(rawValue: object?.islandFruit ?? "") ?? .apple,
+                    hemisphere: Hemisphere(rawValue: object?.hemisphere ?? "") ?? .north
                 )
                 completion(.success(userInfo))
             } catch {
@@ -38,6 +39,7 @@ final class CoreDataUserInfoStorage {
                 object?.name = userInfo.name
                 object?.islandName = userInfo.islandName
                 object?.islandFruit = userInfo.islandFruit.rawValue
+                object?.hemisphere = userInfo.hemisphere.rawValue
                 context.saveContext()
                 completion(.success(userInfo))
             } catch {
@@ -52,6 +54,7 @@ final class CoreDataUserInfoStorage {
             object?.name = nil
             object?.islandName = nil
             object?.islandFruit = nil
+            object?.hemisphere = nil
             context.saveContext()
         }
     }

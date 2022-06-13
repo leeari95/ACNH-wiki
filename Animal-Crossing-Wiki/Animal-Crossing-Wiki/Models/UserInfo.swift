@@ -11,6 +11,7 @@ struct UserInfo {
     private(set) var name: String
     private(set) var islandName: String
     private(set) var islandFruit: Fruit
+    private(set) var hemisphere: Hemisphere = .north
     
     mutating func updateName(_ name: String) {
         self.name = name
@@ -22,5 +23,9 @@ struct UserInfo {
     
     mutating func updateFruit(_ fruit: Fruit) {
         self.islandFruit = fruit
+    }
+    
+    mutating func updateHemisphere(_ hemisphere: Hemisphere) {
+        self.hemisphere = hemisphere
     }
 }

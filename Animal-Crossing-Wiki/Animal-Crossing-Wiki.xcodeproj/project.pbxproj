@@ -69,6 +69,7 @@
 		9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */; };
 		9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0422B2853161500C51449 /* UserInfoStorage.swift */; };
 		9AF042362856C86600C51449 /* AnimalCrossingWikiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042352856C86600C51449 /* AnimalCrossingWikiTests.swift */; };
+		9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0423F2856F4C000C51449 /* Hemisphere.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,7 @@
 		9AF0422B2853161500C51449 /* UserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStorage.swift; sourceTree = "<group>"; };
 		9AF042332856C86600C51449 /* AnimalCrossingWikiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimalCrossingWikiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF042352856C86600C51449 /* AnimalCrossingWikiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalCrossingWikiTests.swift; sourceTree = "<group>"; };
+		9AF0423F2856F4C000C51449 /* Hemisphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hemisphere.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 				9A4B4C34285034BA00CC687C /* Villager.swift */,
 				9AF0419728505B1C00C51449 /* Items */,
 				9AF04226285313ED00C51449 /* UserInfo.swift */,
+				9AF0423F2856F4C000C51449 /* Hemisphere.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
+				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,

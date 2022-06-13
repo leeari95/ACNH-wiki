@@ -38,6 +38,7 @@
         <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="UserCollectionEntity" representedClassName="UserCollectionEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="hemisphere" optional="YES" attributeType="String"/>
         <attribute name="islandFruit" optional="YES" attributeType="String"/>
         <attribute name="islandName" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -95,7 +96,7 @@
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="89"/>
         <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="464"/>
-        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="134"/>
+        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
         <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>
     </elements>

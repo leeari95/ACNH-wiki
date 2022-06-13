@@ -13,4 +13,8 @@ enum Fruit: String {
     case pear
     case cherry
     case peach
+    
+    var imageName: String {
+        return self.rawValue.capitalized
+    }
 }
