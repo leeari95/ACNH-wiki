@@ -94,6 +94,21 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.requestList(SeaCreaturesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                self.categories[.seaCreatures] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 해산물을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.isLoad = true
         }
