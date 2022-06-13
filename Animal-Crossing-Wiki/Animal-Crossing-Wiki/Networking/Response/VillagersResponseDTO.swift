@@ -29,7 +29,7 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let furnitureList: [Int]
     let furnitureNameList: [String]
     let diyWorkbench: String
-    let kitchenEquipment: String
+    let kitchenEquipment: KitchenEquipment
     let nameColor: String
     let bubbleColor: String
     let filename: String
@@ -39,6 +39,39 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
+}
+
+enum KitchenEquipment: Codable {
+    case integer(Int)
+    case string(String)
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let element = try? container.decode(Int.self) {
+            self = .integer(element)
+            return
+        }
+        if let element = try? container.decode(String.self) {
+            self = .string(element)
+            return
+        }
+        throw DecodingError.typeMismatch(
+            KitchenEquipment.self,
+            DecodingError.Context(
+                codingPath: decoder.codingPath,
+                debugDescription: "Wrong type for KitchenEquipment")
+        )
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .integer(let element):
+            try container.encode(element)
+        case .string(let element):
+            try container.encode(element)
+        }
+    }
 }
 
 enum Color: String, Codable {
@@ -128,6 +161,13 @@ struct Translations: Codable {
 
 extension VillagersResponseDTO {
     func toDomain() -> Villager {
+        let kitchenEquipment: String
+        switch self.kitchenEquipment {
+        case .integer(let number):
+            kitchenEquipment = number.description
+        case .string(let text):
+            kitchenEquipment = text
+        }
         return Villager(
             name: self.name,
             iconImage: self.iconImage,
@@ -144,7 +184,7 @@ extension VillagersResponseDTO {
             furnitureList: self.furnitureList,
             furnitureNameList: self.furnitureNameList,
             diyWorkbench: self.diyWorkbench,
-            kitchenEquipment: self.kitchenEquipment,
+            kitchenEquipment: kitchenEquipment,
             catchphrases: self.catchphrases,
             translations: self.translations,
             styles: self.styles,
