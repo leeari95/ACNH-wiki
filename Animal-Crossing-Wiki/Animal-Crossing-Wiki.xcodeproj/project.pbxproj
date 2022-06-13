@@ -99,7 +99,6 @@
 		9A68919A28335AE90061AAF1 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		9A68919E28335B130061AAF1 /* APIResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponce.swift; sourceTree = "<group>"; };
-		9A6891A228335FB50061AAF1 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		9A6891A3283361F20061AAF1 /* VillagersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRequest.swift; sourceTree = "<group>"; };
 		9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentsVariable.swift; sourceTree = "<group>"; };
@@ -184,7 +183,6 @@
 		9A541B5C28220A72001B57FD = {
 			isa = PBXGroup;
 			children = (
-				9A6891A228335FB50061AAF1 /* Secrets.xcconfig */,
 				9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */,
 				9AF042342856C86600C51449 /* AnimalCrossingWikiTests */,
 				9A541B6628220A72001B57FD /* Products */,
@@ -635,7 +633,6 @@
 /* Begin XCBuildConfiguration section */
 		9A541B7728220A73001B57FD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -697,7 +694,6 @@
 		};
 		9A541B7828220A73001B57FD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A6891A228335FB50061AAF1 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
