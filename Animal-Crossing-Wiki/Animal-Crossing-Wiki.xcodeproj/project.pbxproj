@@ -68,7 +68,18 @@
 		9AF04227285313ED00C51449 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF04226285313ED00C51449 /* UserInfo.swift */; };
 		9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */; };
 		9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0422B2853161500C51449 /* UserInfoStorage.swift */; };
+		9AF042362856C86600C51449 /* AnimalCrossingWikiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042352856C86600C51449 /* AnimalCrossingWikiTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9AF042372856C86600C51449 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A541B5D28220A72001B57FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A541B6428220A72001B57FD;
+			remoteInfo = "Animal-Crossing-Wiki";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
@@ -130,6 +141,8 @@
 		9AF04226285313ED00C51449 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUserInfoStorage.swift; sourceTree = "<group>"; };
 		9AF0422B2853161500C51449 /* UserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStorage.swift; sourceTree = "<group>"; };
+		9AF042332856C86600C51449 /* AnimalCrossingWikiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimalCrossingWikiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AF042352856C86600C51449 /* AnimalCrossingWikiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalCrossingWikiTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +155,13 @@
 				9A541B8528225F8E001B57FD /* RxSwift in Frameworks */,
 				9A541B8328225F8E001B57FD /* RxRelay in Frameworks */,
 				9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF042302856C86600C51449 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +186,7 @@
 			children = (
 				9A6891A228335FB50061AAF1 /* Secrets.xcconfig */,
 				9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */,
+				9AF042342856C86600C51449 /* AnimalCrossingWikiTests */,
 				9A541B6628220A72001B57FD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -174,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */,
+				9AF042332856C86600C51449 /* AnimalCrossingWikiTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -373,6 +395,14 @@
 			path = UserInfoStorage;
 			sourceTree = "<group>";
 		};
+		9AF042342856C86600C51449 /* AnimalCrossingWikiTests */ = {
+			isa = PBXGroup;
+			children = (
+				9AF042352856C86600C51449 /* AnimalCrossingWikiTests.swift */,
+			);
+			path = AnimalCrossingWikiTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -401,6 +431,24 @@
 			productReference = 9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9AF042322856C86600C51449 /* AnimalCrossingWikiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AF0423B2856C86600C51449 /* Build configuration list for PBXNativeTarget "AnimalCrossingWikiTests" */;
+			buildPhases = (
+				9AF0422F2856C86600C51449 /* Sources */,
+				9AF042302856C86600C51449 /* Frameworks */,
+				9AF042312856C86600C51449 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AF042382856C86600C51449 /* PBXTargetDependency */,
+			);
+			name = AnimalCrossingWikiTests;
+			productName = AnimalCrossingWikiTests;
+			productReference = 9AF042332856C86600C51449 /* AnimalCrossingWikiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -413,6 +461,10 @@
 				TargetAttributes = {
 					9A541B6428220A72001B57FD = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					9AF042322856C86600C51449 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 9A541B6428220A72001B57FD;
 					};
 				};
 			};
@@ -436,6 +488,7 @@
 			projectRoot = "";
 			targets = (
 				9A541B6428220A72001B57FD /* Animal-Crossing-Wiki */,
+				9AF042322856C86600C51449 /* AnimalCrossingWikiTests */,
 			);
 		};
 /* End PBXProject section */
@@ -448,6 +501,13 @@
 				9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */,
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A541B7028220A72001B57FD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF042312856C86600C51449 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,7 +595,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9AF0422F2856C86600C51449 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF042362856C86600C51449 /* AnimalCrossingWikiTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9AF042382856C86600C51449 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A541B6428220A72001B57FD /* Animal-Crossing-Wiki */;
+			targetProxy = 9AF042372856C86600C51449 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9A541B6E28220A72001B57FD /* Main.storyboard */ = {
@@ -731,6 +807,44 @@
 			};
 			name = Release;
 		};
+		9AF042392856C86600C51449 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RCVFD6XLU9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leeari.AnimalCrossingWiki.net.AnimalCrossingWikiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Animal-Crossing-Wiki.app/Animal-Crossing-Wiki";
+			};
+			name = Debug;
+		};
+		9AF0423A2856C86600C51449 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RCVFD6XLU9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leeari.AnimalCrossingWiki.net.AnimalCrossingWikiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Animal-Crossing-Wiki.app/Animal-Crossing-Wiki";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -748,6 +862,15 @@
 			buildConfigurations = (
 				9A541B7A28220A73001B57FD /* Debug */,
 				9A541B7B28220A73001B57FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AF0423B2856C86600C51449 /* Build configuration list for PBXNativeTarget "AnimalCrossingWikiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF042392856C86600C51449 /* Debug */,
+				9AF0423A2856C86600C51449 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
