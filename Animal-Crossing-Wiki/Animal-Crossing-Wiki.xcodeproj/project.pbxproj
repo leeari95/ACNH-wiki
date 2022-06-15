@@ -56,6 +56,9 @@
 		9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */; };
 		9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2D28597D7400629C4A /* TasksStackView.swift */; };
 		9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2F285998AF00629C4A /* TaskButton.swift */; };
+		9A99AA322859BA8200629C4A /* VillagerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA312859BA8200629C4A /* VillagerButton.swift */; };
+		9A99AA342859C84E00629C4A /* VillagersStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA332859C84E00629C4A /* VillagersStackView.swift */; };
+		9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA352859C8BD00629C4A /* VillagersSection.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -143,6 +146,9 @@
 		9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesction.swift; sourceTree = "<group>"; };
 		9A99AA2D28597D7400629C4A /* TasksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksStackView.swift; sourceTree = "<group>"; };
 		9A99AA2F285998AF00629C4A /* TaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskButton.swift; sourceTree = "<group>"; };
+		9A99AA312859BA8200629C4A /* VillagerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerButton.swift; sourceTree = "<group>"; };
+		9A99AA332859C84E00629C4A /* VillagersStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersStackView.swift; sourceTree = "<group>"; };
+		9A99AA352859C8BD00629C4A /* VillagersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSection.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -315,10 +321,13 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA252858827900629C4A /* UserInfoSection.swift */,
+				9A99AA272858832D00629C4A /* InfoStackView.swift */,
 				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
 				9A99AA2D28597D7400629C4A /* TasksStackView.swift */,
-				9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */,
 				9A99AA2F285998AF00629C4A /* TaskButton.swift */,
+				9A99AA352859C8BD00629C4A /* VillagersSection.swift */,
+				9A99AA332859C84E00629C4A /* VillagersStackView.swift */,
+				9A99AA312859BA8200629C4A /* VillagerButton.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -327,7 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA1D2858743F00629C4A /* SectionView.swift */,
-				9A99AA272858832D00629C4A /* InfoStackView.swift */,
+				9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -603,7 +612,9 @@
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
+				9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */,
 				9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */,
+				9A99AA322859BA8200629C4A /* VillagerButton.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
@@ -628,6 +639,7 @@
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
+				9A99AA342859C84E00629C4A /* VillagersStackView.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
