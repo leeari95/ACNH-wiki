@@ -16,7 +16,7 @@
 		9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C3628503A0400CC687C /* DailyTask.swift */; };
 		9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6828220A72001B57FD /* AppDelegate.swift */; };
 		9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6A28220A72001B57FD /* SceneDelegate.swift */; };
-		9A541B6D28220A72001B57FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* ViewController.swift */; };
+		9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* DashboardViewController.swift */; };
 		9A541B7028220A72001B57FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B6E28220A72001B57FD /* Main.storyboard */; };
 		9A541B7228220A73001B57FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B7128220A73001B57FD /* Assets.xcassets */; };
 		9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B7328220A73001B57FD /* LaunchScreen.storyboard */; };
@@ -42,6 +42,9 @@
 		9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */; };
 		9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C0283380CD0061AAF1 /* ArtRequest.swift */; };
 		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
+		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
+		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
+		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -91,7 +94,7 @@
 		9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animal-Crossing-Wiki.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A541B6828220A72001B57FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A541B6A28220A72001B57FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9A541B6C28220A72001B57FD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9A541B6C28220A72001B57FD /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		9A541B6F28220A72001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9A541B7128220A73001B57FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A541B7428220A73001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -115,6 +118,9 @@
 		9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891C0283380CD0061AAF1 /* ArtRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtRequest.swift; sourceTree = "<group>"; };
 		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
+		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -204,10 +210,13 @@
 		9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */ = {
 			isa = PBXGroup;
 			children = (
+				9A99AA052858247700629C4A /* Coordinator.swift */,
+				9A99AA072858248600629C4A /* AppCoordinator.swift */,
+				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
-				9A541B6C28220A72001B57FD /* ViewController.swift */,
+				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9AF041A42851ADFF00C51449 /* Extension */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
@@ -547,7 +556,7 @@
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
-				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
+				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
@@ -557,8 +566,10 @@
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
+				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
+				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
@@ -577,6 +588,7 @@
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
+				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
@@ -762,7 +774,6 @@
 				INFOPLIST_FILE = "Animal-Crossing-Wiki/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -789,7 +800,6 @@
 				INFOPLIST_FILE = "Animal-Crossing-Wiki/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
