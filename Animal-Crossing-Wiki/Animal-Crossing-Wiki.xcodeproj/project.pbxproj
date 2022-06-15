@@ -53,6 +53,9 @@
 		9A99AA242858803D00629C4A /* UIStackView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA232858803D00629C4A /* UIStackView+extension.swift */; };
 		9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA252858827900629C4A /* UserInfoSection.swift */; };
 		9A99AA282858832D00629C4A /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA272858832D00629C4A /* InfoStackView.swift */; };
+		9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */; };
+		9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2D28597D7400629C4A /* TasksStackView.swift */; };
+		9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2F285998AF00629C4A /* TaskButton.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -137,6 +140,9 @@
 		9A99AA232858803D00629C4A /* UIStackView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+extension.swift"; sourceTree = "<group>"; };
 		9A99AA252858827900629C4A /* UserInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSection.swift; sourceTree = "<group>"; };
 		9A99AA272858832D00629C4A /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
+		9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesction.swift; sourceTree = "<group>"; };
+		9A99AA2D28597D7400629C4A /* TasksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksStackView.swift; sourceTree = "<group>"; };
+		9A99AA2F285998AF00629C4A /* TaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskButton.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -309,7 +315,10 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA252858827900629C4A /* UserInfoSection.swift */,
+				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
+				9A99AA2D28597D7400629C4A /* TasksStackView.swift */,
 				9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */,
+				9A99AA2F285998AF00629C4A /* TaskButton.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -594,6 +603,7 @@
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
+				9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
@@ -607,6 +617,7 @@
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
 				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
+				9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
@@ -633,6 +644,7 @@
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
+				9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */,
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
