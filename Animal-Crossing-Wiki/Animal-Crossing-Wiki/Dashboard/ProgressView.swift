@@ -14,22 +14,12 @@ class ProgressView: UIStackView {
     
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         return imageView
     }()
     
-    private lazy var progressBar: UIProgressView = {
-        let progressBar = UIProgressView()
-        progressBar.heightAnchor.constraint(equalToConstant: height / 2.5).isActive = true
-        let radius = progressBar.layer.bounds.height * 1.5
-        progressBar.layer.cornerRadius = radius
-        progressBar.clipsToBounds = true
-        progressBar.layer.sublayers?.first?.cornerRadius = radius
-        progressBar.subviews.first?.clipsToBounds = true
-        progressBar.layer.sublayers?[1].cornerRadius = radius
-        progressBar.subviews[1].clipsToBounds = true
-        progressBar.tintColor = .acHeaderBackground
+    private lazy var progressBar: ProgressBar = {
+        let progressBar = ProgressBar()
+        progressBar.setHeight(height/2.8)
         return progressBar
     }()
     
@@ -39,7 +29,6 @@ class ProgressView: UIStackView {
         label.font = .preferredFont(for: .footnote, weight: .semibold)
         label.textColor = .acText
         label.textAlignment = .right
-        label.widthAnchor.constraint(equalToConstant: 46).isActive = true
         return label
     }()
 
@@ -60,8 +49,8 @@ class ProgressView: UIStackView {
         
         addArrangedSubviews(iconImageView, progressBar, progressLabel)
         NSLayoutConstraint.activate([
-            progressBar.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 10),
-            progressLabel.leadingAnchor.constraint(equalTo: progressBar.trailingAnchor, constant: 10)
+            iconImageView.heightAnchor.constraint(equalToConstant: height),
+            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
         ])
     }
 }
