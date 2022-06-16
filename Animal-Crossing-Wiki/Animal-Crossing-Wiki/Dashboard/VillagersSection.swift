@@ -13,7 +13,7 @@ class VillagersSection: UIView {
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .leading
+        stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = 20
         return stackView

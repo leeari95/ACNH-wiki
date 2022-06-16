@@ -38,7 +38,7 @@ class TodaysTasksSesction: UIView {
             button?.setTitleColor(.acText, for: .normal)
             button?.titleLabel?.font = .preferredFont(for: .footnote, weight: .bold)
             button?.backgroundColor = .acText.withAlphaComponent(0.2)
-            button?.layer.cornerRadius = 10
+            button?.layer.cornerRadius = 12
             button?.widthAnchor.constraint(equalToConstant: 56).isActive = true
             button?.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
