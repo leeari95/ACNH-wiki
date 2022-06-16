@@ -12,7 +12,7 @@ import OSLog
 extension UIImageView {
     func setImage(with urlString: String, options: KingfisherOptionsInfo? = nil) {
         self.kf.indicatorType = .activity
-        ImageCache.default.retrieveImage(forKey: urlString, options: nil) { result in
+        ImageCache.default.retrieveImage(forKey: urlString, options: options) { result in
             switch result {
             case .success(let value):
                 if let image = value.image {
