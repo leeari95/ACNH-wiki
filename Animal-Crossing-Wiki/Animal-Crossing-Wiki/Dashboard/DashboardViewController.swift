@@ -30,7 +30,7 @@ class DashboardViewController: UIViewController {
             image: UIImage(systemName: "slider.horizontal.3"),
             style: .plain,
             target: self,
-            action: nil
+            action: #selector(didTapSettingButton(_:))
         )
         
         view.addSubviews(sectionsScrollView)
@@ -42,4 +42,9 @@ class DashboardViewController: UIViewController {
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
+    
+    @objc private func didTapSettingButton(_ sender: UIBarButtonItem) {
+        coordinator?.present(SettingViewController())
+    }
+    
 }

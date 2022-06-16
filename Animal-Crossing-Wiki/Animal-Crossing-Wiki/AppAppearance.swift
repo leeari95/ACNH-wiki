@@ -17,5 +17,6 @@ final class AppAppearance {
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationBar.appearance().barTintColor = .acSecondaryBackground
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.acText]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.acText]
     }
 }

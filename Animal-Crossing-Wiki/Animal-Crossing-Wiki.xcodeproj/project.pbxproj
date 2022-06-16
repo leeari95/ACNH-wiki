@@ -63,6 +63,7 @@
 		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
 		9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */; };
 		9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3D285AEA1700629C4A /* Date+extension.swift */; };
+		9A99AA44285AF03D00629C4A /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA43285AF03D00629C4A /* SettingViewController.swift */; };
 		9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */; };
 		9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
@@ -159,6 +160,7 @@
 		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
 		9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		9A99AA3D285AEA1700629C4A /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
+		9A99AA43285AF03D00629C4A /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsScrollView.swift; sourceTree = "<group>"; };
 		9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCoordinator.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
+				9A99AA43285AF03D00629C4A /* SettingViewController.swift */,
 				9A99AA2A285890F400629C4A /* shared */,
 				9A99AA29285890D500629C4A /* Dashboard */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
@@ -662,6 +665,7 @@
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
 				9A99AA342859C84E00629C4A /* VillagersStackView.swift in Sources */,
+				9A99AA44285AF03D00629C4A /* SettingViewController.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
