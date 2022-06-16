@@ -63,7 +63,8 @@
 		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
 		9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */; };
 		9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3D285AEA1700629C4A /* Date+extension.swift */; };
-		9A99AA42285AEC0B00629C4A /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */; };
+		9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */; };
+		9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -158,7 +159,8 @@
 		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
 		9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		9A99AA3D285AEA1700629C4A /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
-		9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsScrollView.swift; sourceTree = "<group>"; };
+		9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCoordinator.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 			children = (
 				9A99AA052858247700629C4A /* Coordinator.swift */,
 				9A99AA072858248600629C4A /* AppCoordinator.swift */,
+				9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */,
 				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
@@ -330,7 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
-				9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */,
+				9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */,
 				9A99AA252858827900629C4A /* UserInfoSection.swift */,
 				9A99AA272858832D00629C4A /* InfoStackView.swift */,
 				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
@@ -582,7 +585,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */,
-				9A99AA42285AEC0B00629C4A /* Dashboard.storyboard in Resources */,
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A541B7028220A72001B57FD /* Main.storyboard in Resources */,
 			);
@@ -640,6 +642,7 @@
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
+				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
 				9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */,
@@ -653,6 +656,7 @@
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
+				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,

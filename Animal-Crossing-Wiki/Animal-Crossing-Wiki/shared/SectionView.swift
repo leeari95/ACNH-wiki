@@ -38,9 +38,10 @@ class SectionView: UIView {
 }
 
 extension SectionView {
-    convenience init(title: String, iconName: String) {
+    convenience init(title: String, iconName: String, contentView: UIView) {
         self.init(frame: .zero)
         headerView.setUp(title: title, iconName: iconName)
+        setUpContent(contentView)
     }
     
     private func configure() {
@@ -63,7 +64,7 @@ extension SectionView {
         ])
     }
     
-    func setUpContent(_ view: UIView) {
+    private func setUpContent(_ view: UIView) {
         contentView = view
         
         containerView.addSubviews(contentView)

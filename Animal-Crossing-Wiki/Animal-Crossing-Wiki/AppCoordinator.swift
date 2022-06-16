@@ -16,27 +16,20 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        let iconImage = UIImage(named: "Inv1")?.withRenderingMode(.alwaysOriginal)
-        
-        let dashboardItem = UITabBarItem(title: "Dashboard", image: iconImage, tag: 0)
-        dashboardItem.imageInsets = UIEdgeInsets(top: 15, left: 18, bottom: 15, right: 18)
-        
-        let dashboardVC = UIStoryboard.instantiateDashboardViewController()
-        dashboardVC.tabBarItem = dashboardItem
-        
-        rootViewController.viewControllers = [dashboardVC]
-    }
-}
-
-extension UIStoryboard {
-    private static var main: UIStoryboard {
-        return UIStoryboard(name: "Dashboard", bundle: nil)
+        let dashboardCoordinator = DashboardCoordinator()
+        dashboardCoordinator.start()
+        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard", icon: "Inv1")
+        childCoordinators.append(dashboardCoordinator)
     }
     
-    static func instantiateDashboardViewController() -> UINavigationController {
-        let viewController = main.instantiateViewController(
-            withIdentifier: "DashboardViewController"
-        ) as? UINavigationController ?? UINavigationController()
-        return viewController
+    private func addViewController(_ viewController: UIViewController, title: String, icon: String) {
+        let iconImage = UIImage(named: icon)?.withRenderingMode(.alwaysOriginal)
+        let imageInsets = UIEdgeInsets(top: 15, left: 18, bottom: 15, right: 18)
+        
+        let tabBarItem = UITabBarItem(title: title, image: iconImage, tag: childCoordinators.count)
+        tabBarItem.imageInsets = imageInsets
+        viewController.tabBarItem = tabBarItem
+        
+        rootViewController.addChild(viewController)
     }
 }
