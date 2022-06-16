@@ -62,6 +62,8 @@
 		9A99AA382859F74900629C4A /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA372859F74900629C4A /* ProgressView.swift */; };
 		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
 		9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */; };
+		9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3D285AEA1700629C4A /* Date+extension.swift */; };
+		9A99AA42285AEC0B00629C4A /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -155,6 +157,8 @@
 		9A99AA372859F74900629C4A /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
 		9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		9A99AA3D285AEA1700629C4A /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
+		9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -250,7 +254,6 @@
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
-				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
 				9A99AA2A285890F400629C4A /* shared */,
 				9A99AA29285890D500629C4A /* Dashboard */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
@@ -326,6 +329,8 @@
 		9A99AA29285890D500629C4A /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
+				9A99AA41285AEC0B00629C4A /* Dashboard.storyboard */,
 				9A99AA252858827900629C4A /* UserInfoSection.swift */,
 				9A99AA272858832D00629C4A /* InfoStackView.swift */,
 				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
@@ -373,6 +378,7 @@
 				9A99AA1328584C9B00629C4A /* UIFont+extension.swift */,
 				9A99AA212858802B00629C4A /* UIView+extension.swift */,
 				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
+				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -576,6 +582,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */,
+				9A99AA42285AEC0B00629C4A /* Dashboard.storyboard in Resources */,
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A541B7028220A72001B57FD /* Main.storyboard in Resources */,
 			);
@@ -668,6 +675,7 @@
 				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
 				9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */,
+				9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */,
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,

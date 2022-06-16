@@ -20,5 +20,23 @@ final class AppCoordinator: Coordinator {
         
         let dashboardItem = UITabBarItem(title: "Dashboard", image: iconImage, tag: 0)
         dashboardItem.imageInsets = UIEdgeInsets(top: 15, left: 18, bottom: 15, right: 18)
+        
+        let dashboardVC = UIStoryboard.instantiateDashboardViewController()
+        dashboardVC.tabBarItem = dashboardItem
+        
+        rootViewController.viewControllers = [dashboardVC]
+    }
+}
+
+extension UIStoryboard {
+    private static var main: UIStoryboard {
+        return UIStoryboard(name: "Dashboard", bundle: nil)
+    }
+    
+    static func instantiateDashboardViewController() -> UINavigationController {
+        let viewController = main.instantiateViewController(
+            withIdentifier: "DashboardViewController"
+        ) as? UINavigationController ?? UINavigationController()
+        return viewController
     }
 }
