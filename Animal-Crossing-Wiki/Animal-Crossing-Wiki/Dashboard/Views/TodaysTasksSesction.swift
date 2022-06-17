@@ -42,6 +42,8 @@ class TodaysTasksSesction: UIView {
             button?.widthAnchor.constraint(equalToConstant: 56).isActive = true
             button?.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
+        
+        resetButton.addTarget(self, action: #selector(didTapReset(_:)), for: .touchUpInside)
                 
         return stackView
     }()
@@ -90,6 +92,17 @@ class TodaysTasksSesction: UIView {
     private func addTasksStackView() {
         backgroundStackView.addArrangedSubviews(TasksStackView())
     }
+    
+    @objc private func didTapReset(_ sender: UIButton) {
+        backgroundStackView.arrangedSubviews.forEach { view in
+            view.subviews.forEach { view in
+                view.alpha = 0.5
+            }
+        }
+    }
+}
+
+extension TodaysTasksSesction {
     
     func addTask(_ view: UIView) {
         if backgroundStackView.subviews.isEmpty {
