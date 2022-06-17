@@ -61,7 +61,7 @@ class PreferencesViewController: UIViewController {
     @objc private func didTapFruit(_ sender: UIButton) {
         showSeletedItemAlert(
             Fruit.allCases.map { $0.imageName },
-            currentItem: settingSection.currentFruit
+            currentItem: settingSection.currentFruit.imageName
         ).subscribe(onNext: { title in
             self.settingSection.updateFruit(Fruit(rawValue: title.lowercased()) ?? .apple)
         }).disposed(by: disposeBag)

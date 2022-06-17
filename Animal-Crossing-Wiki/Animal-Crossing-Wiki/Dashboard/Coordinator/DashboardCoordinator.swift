@@ -23,6 +23,7 @@ final class DashboardCoordinator: Coordinator {
     
     func present(_ viewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isModalInPresentation = true
         rootViewController.present(navigationController, animated: true)
     }
 }

@@ -9,7 +9,8 @@ import UIKit
 
 class PreferencesSection: UIView {
     
-    var currentFruit: String = Fruit.apple.imageName
+    private(set) var currentFruit: Fruit = .apple
+    private var currentHeisphere: Hemisphere = .north
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -22,44 +23,24 @@ class PreferencesSection: UIView {
     
     private lazy var islandNameTextField: UITextField = {
         let textField = UITextField()
-        textField.tintColor = .acText
-        textField.textColor = .acText.withAlphaComponent(0.8)
-        textField.borderStyle = .none
-        textField.backgroundColor = .clear
-        textField.font = .preferredFont(forTextStyle: .footnote)
-        textField.textAlignment = .right
         textField.placeholder = "Your island name"
-        textField.delegate = self
         return textField
     }()
     
     private lazy var userNameTextField: UITextField = {
         let textField = UITextField()
-        textField.tintColor = .acText
-        textField.textColor = .acText.withAlphaComponent(0.8)
-        textField.borderStyle = .none
-        textField.backgroundColor = .clear
-        textField.font = .preferredFont(forTextStyle: .footnote)
-        textField.textAlignment = .right
         textField.placeholder = "Your user name"
-        textField.delegate = self
         return textField
     }()
     
     private lazy var hemisphereButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
-        button.contentHorizontalAlignment = .right
         button.setTitle(Hemisphere.north.rawValue.capitalized, for: .normal)
-        button.setTitleColor(.acText.withAlphaComponent(0.8), for: .normal)
         return button
     }()
     
     private lazy var startingFruitButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
-        button.contentHorizontalAlignment = .right
-        button.setTitleColor(.acText.withAlphaComponent(0.8), for: .normal)
         let image = UIImage(named: Fruit.apple.imageName)?
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
@@ -87,6 +68,22 @@ class PreferencesSection: UIView {
             userNameTextField.heightAnchor.constraint(equalToConstant: hemisphereButton.intrinsicContentSize.height)
         ])
         
+        [islandNameTextField, userNameTextField].forEach {
+            $0.tintColor = .acText
+            $0.textColor = .acText.withAlphaComponent(0.8)
+            $0.borderStyle = .none
+            $0.backgroundColor = .clear
+            $0.font = .preferredFont(forTextStyle: .footnote)
+            $0.textAlignment = .right
+            $0.delegate = self
+        }
+        
+        [hemisphereButton, startingFruitButton].forEach {
+            $0.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+            $0.contentHorizontalAlignment = .right
+            $0.setTitleColor(.acText.withAlphaComponent(0.8), for: .normal)
+        }
+        
         backgroundStackView.addArrangedSubviews(
             PreferencesContentView(title: "Island Name", contentView: islandNameTextField),
             PreferencesContentView(title: "User Name", contentView: userNameTextField),
@@ -97,6 +94,15 @@ class PreferencesSection: UIView {
 }
 extension PreferencesSection {
     
+    var userInfo: UserInfo {
+        return UserInfo(
+            name: userNameTextField.text ?? "",
+            islandName: islandNameTextField.text ?? "",
+            islandFruit: currentFruit,
+            hemisphere: currentHeisphere
+        )
+    }
+    
     func addTargets(_ viewContrller: UIViewController, hemisphere: Selector, fruit: Selector) {
         hemisphereButton.addTarget(viewContrller, action: hemisphere, for: .touchUpInside)
         startingFruitButton.addTarget(viewContrller, action: fruit, for: .touchUpInside)
@@ -104,6 +110,7 @@ extension PreferencesSection {
     
     func updateHemisphere(_ hemisphere: Hemisphere) {
         hemisphereButton.setTitle(hemisphere.rawValue.capitalized, for: .normal)
+        currentHeisphere = hemisphere
     }
     
     func updateFruit(_ fruit: Fruit) {
@@ -111,7 +118,7 @@ extension PreferencesSection {
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
-        currentFruit = fruit.imageName
+        currentFruit = fruit
     }
 }
 
