@@ -48,7 +48,7 @@ class SectionsScrollView: UIView {
         ])
         
         let heightAnchor = contentStackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
-        heightAnchor.priority = .defaultHigh
+        heightAnchor.priority = .defaultLow
         
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 30),

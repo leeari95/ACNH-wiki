@@ -44,7 +44,7 @@ class DashboardViewController: UIViewController {
     }
     
     @objc private func didTapSettingButton(_ sender: UIBarButtonItem) {
-        coordinator?.present(SettingViewController())
+        coordinator?.present(PreferencesViewController())
     }
     
 }

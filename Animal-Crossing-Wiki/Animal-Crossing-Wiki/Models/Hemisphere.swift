@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Hemisphere: String {
-    case north
-    case south
+enum Hemisphere: String, CaseIterable {
+    case north = "North"
+    case south = "Sorth"
 }

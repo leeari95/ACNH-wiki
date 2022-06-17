@@ -1,20 +1,28 @@
 //
-//  SettingViewController.swift
+//  PreferencesViewController.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/16.
 //
 
 import UIKit
+import RxSwift
 
-class SettingViewController: UIViewController {
+class PreferencesViewController: UIViewController {
     
+    private let disposeBag = DisposeBag()
+    
+    private lazy var settingSection = PreferencesSection()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
-        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoSection())
+        SectionView(title: "Island", iconName: "sun.haze", contentView: settingSection)
     )
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUp()
+    }
+    
+    private func setUp() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Preferences"
         navigationItem.largeTitleDisplayMode = .never
@@ -33,9 +41,30 @@ class SettingViewController: UIViewController {
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+        
+        settingSection.addTargets(self, hemisphere: #selector(didTapHemisphere(_:)), fruit: #selector(didTapFruit(_:)))
     }
     
     @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
+    
+    @objc private func didTapHemisphere(_ sender: UIButton) {
+        showSeletedItemAlert(
+            Hemisphere.allCases.map { $0.rawValue },
+            currentItem: sender.titleLabel?.text ?? ""
+        ).subscribe(onNext: { title in
+            self.settingSection.updateHemisphere(Hemisphere(rawValue: title) ?? .north)
+        }).disposed(by: disposeBag)
+    }
+    
+    @objc private func didTapFruit(_ sender: UIButton) {
+        showSeletedItemAlert(
+            Fruit.allCases.map { $0.imageName },
+            currentItem: settingSection.currentFruit
+        ).subscribe(onNext: { title in
+            self.settingSection.updateFruit(Fruit(rawValue: title.lowercased()) ?? .apple)
+        }).disposed(by: disposeBag)
+    }
+    
 }

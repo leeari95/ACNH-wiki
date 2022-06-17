@@ -62,10 +62,13 @@
 		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
 		9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */; };
 		9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3D285AEA1700629C4A /* Date+extension.swift */; };
-		9A99AA44285AF03D00629C4A /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA43285AF03D00629C4A /* SettingViewController.swift */; };
+		9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */; };
 		9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */; };
 		9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */; };
 		9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */; };
+		9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA51285C32C300629C4A /* PreferencesSection.swift */; };
+		9A99AA54285C341E00629C4A /* PreferencesContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA53285C341E00629C4A /* PreferencesContentView.swift */; };
+		9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA55285C422200629C4A /* UIViewController+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -159,10 +162,13 @@
 		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
 		9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		9A99AA3D285AEA1700629C4A /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
-		9A99AA43285AF03D00629C4A /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsScrollView.swift; sourceTree = "<group>"; };
 		9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extension.swift"; sourceTree = "<group>"; };
+		9A99AA51285C32C300629C4A /* PreferencesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesSection.swift; sourceTree = "<group>"; };
+		9A99AA53285C341E00629C4A /* PreferencesContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesContentView.swift; sourceTree = "<group>"; };
+		9A99AA55285C422200629C4A /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -333,7 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
-				9A99AA43285AF03D00629C4A /* SettingViewController.swift */,
+				9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */,
 				9A99AA4E285B11F300629C4A /* Coordinator */,
 				9A99AA4D285B11DA00629C4A /* Views */,
 			);
@@ -364,6 +370,8 @@
 				9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */,
 				9A99AA372859F74900629C4A /* ProgressView.swift */,
 				9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */,
+				9A99AA51285C32C300629C4A /* PreferencesSection.swift */,
+				9A99AA53285C341E00629C4A /* PreferencesContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -401,6 +409,7 @@
 				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
 				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
 				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
+				9A99AA55285C422200629C4A /* UIViewController+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -673,18 +682,21 @@
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
+				9A99AA54285C341E00629C4A /* PreferencesContentView.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
+				9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
 				9A99AA342859C84E00629C4A /* VillagersStackView.swift in Sources */,
-				9A99AA44285AF03D00629C4A /* SettingViewController.swift in Sources */,
+				9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
 				9A99AA282858832D00629C4A /* InfoStackView.swift in Sources */,
+				9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */,
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
 				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
