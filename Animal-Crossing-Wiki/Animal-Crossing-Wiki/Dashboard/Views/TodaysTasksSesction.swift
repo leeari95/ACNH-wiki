@@ -24,28 +24,19 @@ class TodaysTasksSesction: UIView {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 50
-        
-        let editButton = UIButton(type: .system)
-        editButton.setTitle("Edit", for: .normal)
-        
-        let resetButton = UIButton(type: .system)
-        resetButton.setTitle("Reset", for: .normal)
-        
-        stackView.addArrangedSubviews(editButton, resetButton)
-        
-        stackView.arrangedSubviews.forEach { view in
-            let button = view as? UIButton
-            button?.setTitleColor(.acText, for: .normal)
-            button?.titleLabel?.font = .preferredFont(for: .footnote, weight: .bold)
-            button?.backgroundColor = .acText.withAlphaComponent(0.2)
-            button?.layer.cornerRadius = 12
-            button?.widthAnchor.constraint(equalToConstant: 56).isActive = true
-            button?.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        }
-        
-        resetButton.addTarget(self, action: #selector(didTapReset(_:)), for: .touchUpInside)
-                
         return stackView
+    }()
+    
+    private lazy var editButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Edit", for: .normal)
+        return button
+    }()
+    
+    private lazy var resetButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Reset", for: .normal)
+        return button
     }()
     
     required init?(coder: NSCoder) {
@@ -71,34 +62,25 @@ class TodaysTasksSesction: UIView {
             heightAnchor
         ])
         
-        let defaultTasks = [
-            ("Inv167", 6),
-            ("Inv60", 4),
-            ("Inv63", 2),
-            ("Inv48", 1),
-            ("Inv105", 1),
-            ("Inv107", 1),
-            ("Inv192", 1),
-            ("Inv6", 1),
-            ("Inv199", 1)
-        ]
-        defaultTasks.forEach { (icon, count) in
-            (0..<count).forEach { _ in
-                addTask(TaskButton(iconName: icon))
+        [editButton, resetButton].forEach {
+            $0.setTitleColor(.acText, for: .normal)
+            $0.titleLabel?.font = .preferredFont(for: .footnote, weight: .bold)
+            $0.backgroundColor = .acText.withAlphaComponent(0.2)
+            $0.layer.cornerRadius = 12
+            $0.widthAnchor.constraint(equalToConstant: 56).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        }
+        buttonStackView.addArrangedSubviews(editButton, resetButton)
+        
+        DailyTask.tasks.forEach { task in
+            (0..<task.amount).forEach { _ in
+                addTask(TaskButton(iconName: task.icon))
             }
         }
     }
     
     private func addTasksStackView() {
         backgroundStackView.addArrangedSubviews(TasksStackView())
-    }
-    
-    @objc private func didTapReset(_ sender: UIButton) {
-        backgroundStackView.arrangedSubviews.forEach { view in
-            view.subviews.forEach { view in
-                view.alpha = 0.5
-            }
-        }
     }
 }
 
@@ -116,5 +98,10 @@ extension TodaysTasksSesction {
         } else {
             currentTasksView?.addButton(view)
         }
+    }
+    
+    func addTarget(edit: Selector, reset: Selector) {
+        editButton.addTarget(self, action: edit, for: .touchUpInside)
+        resetButton.addTarget(self, action: reset, for: .touchUpInside)
     }
 }
