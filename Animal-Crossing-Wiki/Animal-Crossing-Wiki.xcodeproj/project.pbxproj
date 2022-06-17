@@ -65,6 +65,7 @@
 		9A99AA44285AF03D00629C4A /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA43285AF03D00629C4A /* SettingViewController.swift */; };
 		9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */; };
 		9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */; };
+		9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -161,6 +162,7 @@
 		9A99AA43285AF03D00629C4A /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsScrollView.swift; sourceTree = "<group>"; };
 		9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCoordinator.swift; sourceTree = "<group>"; };
+		9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				9A99AA212858802B00629C4A /* UIView+extension.swift */,
 				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
 				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
+				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
 				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
+				9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
 				9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */,
