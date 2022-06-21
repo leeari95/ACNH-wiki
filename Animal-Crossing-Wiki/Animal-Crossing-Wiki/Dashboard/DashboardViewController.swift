@@ -11,9 +11,10 @@ class DashboardViewController: UIViewController {
     
     var coordinator: DashboardCoordinator?
     
+    private lazy var tasksSection = TodaysTasksSesction()
     private lazy var sectionsScrollView = SectionsScrollView(
         SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoSection()),
-        SectionView(title: "Today's Tasks", iconName: "checkmark.seal.fill", contentView: TodaysTasksSesction()),
+        SectionView(title: "Today's Tasks", iconName: "checkmark.seal.fill", contentView: tasksSection),
         SectionView(title: "My Villagers", iconName: "person.circle.fill", contentView: VillagersSection()),
         SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressSection())
     )
@@ -44,7 +45,7 @@ class DashboardViewController: UIViewController {
     }
     
     @objc private func didTapSettingButton(_ sender: UIBarButtonItem) {
-        coordinator?.present(PreferencesViewController())
+        coordinator?.presentToSetting()
     }
     
 }
