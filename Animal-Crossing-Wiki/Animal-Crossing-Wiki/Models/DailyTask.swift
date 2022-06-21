@@ -11,15 +11,34 @@ struct DailyTask {
     let id: UUID = UUID()
     let name: String
     let icon: String
-    private(set) var isCompleted: Bool
+    private(set) var progressList: [Bool]
     let amount: Int
     
-    mutating func toggleCompleted() {
-        self.isCompleted.toggle()
+    mutating func toggleCompleted(_ index: Int) {
+        self.progressList[index].toggle()
+    }
+    
+    mutating func reset() {
+        self.progressList = Array(repeating: false, count: amount)
     }
 }
 
 extension DailyTask {
+    
+    init() {
+        self.name = ""
+        self.icon = ""
+        self.progressList = Array(repeating: false, count: 1)
+        self.amount = 1
+    }
+    
+    init(name: String, icon: String, isCompleted: Bool, amount: Int) {
+        self.name = name
+        self.icon = icon
+        self.progressList = Array(repeating: isCompleted, count: amount)
+        self.amount = amount
+    }
+    
     static var tasks: [DailyTask] {
         return [
             DailyTask(name: "Hit rocks", icon: "Inv167", isCompleted: false, amount: 6),

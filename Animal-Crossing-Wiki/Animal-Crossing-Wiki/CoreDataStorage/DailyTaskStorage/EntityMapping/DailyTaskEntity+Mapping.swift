@@ -15,7 +15,7 @@ extension DailyTaskEntity {
         self.id = task.id
         self.name = task.name
         self.icon = task.icon
-        self.isCompleted = task.isCompleted
+        self.progressList = task.progressList
         self.amount = Int64(task.amount)
     }
     
@@ -23,7 +23,7 @@ extension DailyTaskEntity {
         return DailyTask(
             name: self.name ?? "",
             icon: self.icon ?? "",
-            isCompleted: self.isCompleted,
+            progressList: self.progressList ?? [],
             amount: Int(self.amount)
         )
     }
