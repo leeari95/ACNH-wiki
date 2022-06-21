@@ -30,4 +30,11 @@ final class DashboardCoordinator: Coordinator {
         navigationController.isModalInPresentation = true
         present(navigationController)
     }
+    
+    func presentToTaskEdit() {
+        let tasksEditCoordinator = TasksEditCoordinator()
+        tasksEditCoordinator.start()
+        childCoordinators.append(tasksEditCoordinator)
+        present(tasksEditCoordinator.rootViewController)
+    }
 }
