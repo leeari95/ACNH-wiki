@@ -29,7 +29,6 @@ class VillagerButton: UIButton {
     
     @objc private func tappedButton(_ sender: UIButton) {
         alpha = alpha == 0.5 ? 1 : 0.5
-        debugPrint(villager)
     }
 
 }
