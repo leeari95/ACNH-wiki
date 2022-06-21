@@ -8,6 +8,9 @@
 import UIKit
 
 class TaskButton: UIButton {
+    
+    private var task: DailyTask?
+    private var index: Int = 0
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -27,13 +30,22 @@ class TaskButton: UIButton {
     
     @objc private func tappedButton(_ sender: UIButton) {
         alpha = alpha == 0.5 ? 1 : 0.5
+        task?.toggleCompleted(self.index)
     }
 }
 
 extension TaskButton {
-    convenience init(iconName: String) {
+    convenience init(_ task: DailyTask, index: Int) {
         self.init(frame: .zero)
-        let image = UIImage(named: iconName)?.withRenderingMode(.alwaysOriginal)
+        self.task = task
+        self.index = index
+        let image = UIImage(named: task.icon)?.withRenderingMode(.alwaysOriginal)
         setImage(image, for: .normal)
+        alpha = task.progressList[index] ? 1 : 0.5
+    }
+    
+    func reset() {
+        self.task?.reset()
+        alpha = 0.5
     }
 }

@@ -35,5 +35,12 @@ class TasksStackView: UIStackView {
         }
         addArrangedSubviews(view)
     }
+    
+    func reset() {
+        arrangedSubviews.forEach { view in
+            let taskButton = view as? TaskButton
+            taskButton?.reset()
+        }
+    }
 
 }

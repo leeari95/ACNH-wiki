@@ -73,8 +73,8 @@ class TodaysTasksSesction: UIView {
         buttonStackView.addArrangedSubviews(editButton, resetButton)
         
         DailyTask.tasks.forEach { task in
-            (0..<task.amount).forEach { _ in
-                addTask(TaskButton(iconName: task.icon))
+            (0..<task.amount).forEach { index in
+                addTask(TaskButton(task, index: index))
             }
         }
     }
@@ -100,8 +100,15 @@ extension TodaysTasksSesction {
         }
     }
     
-    func addTarget(edit: Selector, reset: Selector) {
-        editButton.addTarget(self, action: edit, for: .touchUpInside)
-        resetButton.addTarget(self, action: reset, for: .touchUpInside)
+    func addTarget(_ viewController: UIViewController, edit: Selector, reset: Selector) {
+        editButton.addTarget(viewController, action: edit, for: .touchUpInside)
+        resetButton.addTarget(viewController, action: reset, for: .touchUpInside)
+    }
+    
+    func reset() {
+        backgroundStackView.arrangedSubviews.forEach { view in
+            let tasksStaskView = view as? TasksStackView
+            tasksStaskView?.reset()
+        }
     }
 }
