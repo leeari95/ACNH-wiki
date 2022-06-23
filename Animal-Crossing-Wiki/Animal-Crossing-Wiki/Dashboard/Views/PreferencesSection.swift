@@ -85,10 +85,10 @@ class PreferencesSection: UIView {
         }
         
         backgroundStackView.addArrangedSubviews(
-            PreferencesContentView(title: "Island Name", contentView: islandNameTextField),
-            PreferencesContentView(title: "User Name", contentView: userNameTextField),
-            PreferencesContentView(title: "Hemisphere", contentView: hemisphereButton),
-            PreferencesContentView(title: "Starting Fruit", contentView: startingFruitButton)
+            InfoContentView(title: "Island Name", contentView: islandNameTextField),
+            InfoContentView(title: "User Name", contentView: userNameTextField),
+            InfoContentView(title: "Hemisphere", contentView: hemisphereButton),
+            InfoContentView(title: "Starting Fruit", contentView: startingFruitButton)
         )
     }
 }

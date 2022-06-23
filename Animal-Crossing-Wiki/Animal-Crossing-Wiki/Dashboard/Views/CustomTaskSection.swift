@@ -77,9 +77,9 @@ class CustomTaskSection: UIView {
         }
         
         backgroundStackView.addArrangedSubviews(
-            PreferencesContentView(title: "Task Name", contentView: taskNameTextField),
-            PreferencesContentView(title: "Icon", contentView: iconButton),
-            PreferencesContentView(title: "Max amount", contentView: maxAmountButton)
+            InfoContentView(title: "Task Name", contentView: taskNameTextField),
+            InfoContentView(title: "Icon", contentView: iconButton),
+            InfoContentView(title: "Max amount", contentView: maxAmountButton)
         )
     }
 }

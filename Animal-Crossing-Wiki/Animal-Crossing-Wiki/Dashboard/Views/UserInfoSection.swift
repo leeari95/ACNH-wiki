@@ -19,32 +19,32 @@ class UserInfoSection: UIView {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 8
+        stackView.spacing = 4
         return stackView
     }()
     
-    private lazy var userNameView: InfoStackView = {
-        let stackView = InfoStackView(
-            title: "User Name",
-            description: "Please set a name."
-        )
-        return stackView
+    private lazy var userNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please set a name."
+        return label
     }()
     
-    private lazy var fruitInfoView: InfoStackView = {
-        let stackView = InfoStackView(
-            title: "Starting Fruit",
-            description: "Please set a Fruit."
-        )
-        return stackView
+    private lazy var fruitImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: Fruit.apple.imageName)
+        return imageView
     }()
     
-    private lazy var islandNameView: InfoStackView = {
-        let stackView = InfoStackView(
-            title: "Island Name",
-            description: "Please set a Island Name."
-        )
-        return stackView
+    private lazy var islandNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please set a Island Name."
+        return label
+    }()
+    
+    private lazy var hemisphereLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please set a Hemisphere."
+        return label
     }()
     
     required init?(coder: NSCoder) {
@@ -58,12 +58,28 @@ class UserInfoSection: UIView {
     
     private func configure() {
         addSubviews(backgroundStackView)
-        backgroundStackView.addArrangedSubviews(userNameView, fruitInfoView, islandNameView)
+        backgroundStackView.addArrangedSubviews(
+            InfoContentView(title: "Island Name", contentView: islandNameLabel),
+            InfoContentView(title: "User name", contentView: userNameLabel),
+            InfoContentView(title: "Hemisphere", contentView: hemisphereLabel),
+            InfoContentView(title: "Starting Fruit", contentView: fruitImageView)
+            
+        )
+        
+        [islandNameLabel, userNameLabel, hemisphereLabel].forEach { label in
+            label.textColor = .acSecondaryText
+            label.font = .preferredFont(forTextStyle: .footnote)
+            label.textAlignment = .right
+            label.heightAnchor.constraint(equalTo: fruitImageView.heightAnchor).isActive = true
+        }
         
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 67),
-            backgroundStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            backgroundStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
+            backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
+            backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor),
+            fruitImageView.widthAnchor.constraint(equalToConstant: 30),
+            fruitImageView.heightAnchor.constraint(equalTo: fruitImageView.widthAnchor)
         ])
     }
     
@@ -82,9 +98,10 @@ class UserInfoSection: UIView {
         guard userInfo != UserInfo() else {
             return
         }
-        userNameView.editDescription(userInfo.name)
-        fruitInfoView.editDescription(userInfo.islandFruit.imageName)
-        islandNameView.editDescription(userInfo.islandName)
+        userNameLabel.text = userInfo.name
+        islandNameLabel.text = userInfo.islandName
+        fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
+        hemisphereLabel.text = userInfo.hemisphere.rawValue.capitalized
     }
 }
 

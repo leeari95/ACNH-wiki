@@ -7,11 +7,11 @@
 
 import UIKit
 
-class PreferencesContentView: UIStackView {
+class InfoContentView: UIStackView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .callout)
+        label.font = .preferredFont(for: .callout, weight: .medium)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.textColor = .black
         return label
@@ -35,7 +35,7 @@ class PreferencesContentView: UIStackView {
     }
 }
 
-extension PreferencesContentView {
+extension InfoContentView {
     convenience init(title: String, contentView: UIView...) {
         self.init(frame: .zero)
         self.titleLabel.text = title
