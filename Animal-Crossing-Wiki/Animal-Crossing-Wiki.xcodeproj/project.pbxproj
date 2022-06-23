@@ -77,6 +77,8 @@
 		9A99AA6228603CB800629C4A /* ItemRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA6028603CB800629C4A /* ItemRow.xib */; };
 		9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA632860401400629C4A /* UICollectionView+extension.swift */; };
 		9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA652860431A00629C4A /* IconChooserViewController.swift */; };
+		9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */; };
+		9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -185,6 +187,8 @@
 		9A99AA6028603CB800629C4A /* ItemRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemRow.xib; sourceTree = "<group>"; };
 		9A99AA632860401400629C4A /* UICollectionView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+extension.swift"; sourceTree = "<group>"; };
 		9A99AA652860431A00629C4A /* IconChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconChooserViewController.swift; sourceTree = "<group>"; };
+		9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 				9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */,
 				9A99AA652860431A00629C4A /* IconChooserViewController.swift */,
 				9A99AA4E285B11F300629C4A /* Coordinator */,
+				9A99AA6B28618C8500629C4A /* ViewModels */,
 				9A99AA4D285B11DA00629C4A /* Views */,
 			);
 			path = Dashboard;
@@ -405,6 +410,15 @@
 				9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		9A99AA6B28618C8500629C4A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
+				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		9AF0419728505B1C00C51449 /* Items */ = {
@@ -710,6 +724,7 @@
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9A99AA54285C341E00629C4A /* PreferencesContentView.swift in Sources */,
+				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
 				9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */,
@@ -730,6 +745,7 @@
 				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
+				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
