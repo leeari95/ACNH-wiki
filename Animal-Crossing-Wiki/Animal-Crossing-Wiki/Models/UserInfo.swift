@@ -29,3 +29,12 @@ struct UserInfo {
         self.hemisphere = hemisphere
     }
 }
+
+extension UserInfo: Equatable {
+    init() {
+        self.name = ""
+        self.islandName = ""
+        self.islandFruit = .apple
+        self.hemisphere = .north
+    }
+}

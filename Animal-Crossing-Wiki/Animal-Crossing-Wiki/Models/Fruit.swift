@@ -18,3 +18,18 @@ enum Fruit: String, CaseIterable {
         return self.rawValue.capitalized
     }
 }
+
+extension Fruit: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.apple, .apple),
+            (.orange, .orange),
+            (.pear, .pear),
+            (.cherry, .cherry),
+            (.peach, .peach):
+            return true
+        default:
+            return false
+        }
+    }
+}
