@@ -22,16 +22,31 @@ final class Items {
     var isLoading: Observable<Bool> {
         return self.isLoad.asObservable()
     }
+    var userInfo: Observable<UserInfo?> {
+        return self.currentUserInfo.asObservable()
+    }
     
     // MARK: - Private
     private let network: APIProvider = DefaultAPIProvider()
+    private let userInfoStorage = CoreDataUserInfoStorage()
+    private let disposeBag = DisposeBag()
+    
     private let villagers = BehaviorRelay<[Villager]>(value: [])
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
     private var isLoad = BehaviorRelay<Bool>(value: false)
+    private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     
     private init() {
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
+
+        userInfoStorage.fetchUserInfo()
+            .subscribe(onSuccess: { userInfo in
+                userInfo.flatMap { self.currentUserInfo.accept($0) }
+            }, onFailure: { error in
+                print(error.localizedDescription)
+            }).disposed(by: disposeBag)
+        
         group.enter()
         network.requestList(VillagersRequest()) { result in
             switch result {
@@ -128,4 +143,11 @@ final class Items {
         }
     }
 
+}
+
+extension Items {
+    
+    func updateUserInfo(_ userInfo: UserInfo) {
+        self.currentUserInfo.accept(userInfo)
+    }
 }
