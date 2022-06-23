@@ -79,6 +79,7 @@
 		9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA652860431A00629C4A /* IconChooserViewController.swift */; };
 		9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */; };
 		9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */; };
+		9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6E28643CA700629C4A /* UIImage+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -189,6 +190,7 @@
 		9A99AA652860431A00629C4A /* IconChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconChooserViewController.swift; sourceTree = "<group>"; };
 		9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionViewModel.swift; sourceTree = "<group>"; };
 		9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		9A99AA6E28643CA700629C4A /* UIImage+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
 				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
 				9A99AA55285C422200629C4A /* UIViewController+extension.swift */,
+				9A99AA6E28643CA700629C4A /* UIImage+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
+				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
