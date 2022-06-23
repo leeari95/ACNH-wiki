@@ -26,7 +26,9 @@ final class DashboardCoordinator: Coordinator {
     }
     
     func presentToSetting() {
-        let navigationController = UINavigationController(rootViewController: PreferencesViewController())
+        let preferencesVC = PreferencesViewController()
+        preferencesVC.viewModel = PreferencesViewModel()
+        let navigationController = UINavigationController(rootViewController: preferencesVC)
         navigationController.isModalInPresentation = true
         present(navigationController)
     }

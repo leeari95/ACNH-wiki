@@ -10,6 +10,10 @@ import RxSwift
 
 class PreferencesViewController: UIViewController {
     
+    var viewModel: PreferencesViewModel?
+    
+    private let currentHemisphere = BehaviorSubject<Hemisphere?>(value: nil)
+    private let currentFruit = BehaviorSubject<Fruit?>(value: nil)
     private let disposeBag = DisposeBag()
     
     private lazy var settingSection = PreferencesSection()
@@ -43,6 +47,35 @@ class PreferencesViewController: UIViewController {
         ])
         
         settingSection.addTargets(self, hemisphere: #selector(didTapHemisphere(_:)), fruit: #selector(didTapFruit(_:)))
+        
+        bind()
+    }
+    
+    private func bind() {
+        let input = PreferencesViewModel.Input(
+            islandNameText: settingSection.islandNameObservable,
+            userNameText: settingSection.userNameObservable,
+            hemisphereButtonTitle: currentHemisphere.asObservable(),
+            startingFruitButtonTitle: currentFruit.asObservable()
+        )
+        
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+
+        output?.userInfo
+            .compactMap { $0 }
+            .withUnretained(self)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { owner, userInfo in
+                owner.settingSection.setUpViews(userInfo)
+        }, onError: { error in
+            print(error.localizedDescription)
+        }).disposed(by: disposeBag)
+        
+        output?.errorMessage
+            .filter { $0 != "" }
+            .subscribe(onNext: { errorMessage in
+                print(errorMessage)
+            }).disposed(by: disposeBag)
     }
     
     @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
@@ -52,9 +85,13 @@ class PreferencesViewController: UIViewController {
     @objc private func didTapHemisphere(_ sender: UIButton) {
         showSeletedItemAlert(
             Hemisphere.allCases.map { $0.rawValue },
-            currentItem: sender.titleLabel?.text ?? ""
+            currentItem: sender.titleLabel?.text
         ).subscribe(onNext: { title in
-            self.settingSection.updateHemisphere(Hemisphere(rawValue: title) ?? .north)
+            Hemisphere(rawValue: title)
+                .flatMap {
+                    self.settingSection.updateHemisphere($0)
+                    self.currentHemisphere.onNext($0)
+                }
         }).disposed(by: disposeBag)
     }
     
@@ -63,8 +100,11 @@ class PreferencesViewController: UIViewController {
             Fruit.allCases.map { $0.imageName },
             currentItem: settingSection.currentFruit.imageName
         ).subscribe(onNext: { title in
-            self.settingSection.updateFruit(Fruit(rawValue: title.lowercased()) ?? .apple)
+            Fruit(rawValue: title.lowercased())
+                .flatMap {
+                    self.settingSection.updateFruit($0)
+                    self.currentFruit.onNext($0)
+                }
         }).disposed(by: disposeBag)
     }
-    
 }

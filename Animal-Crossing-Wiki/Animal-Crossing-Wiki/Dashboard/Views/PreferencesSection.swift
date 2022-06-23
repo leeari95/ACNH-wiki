@@ -6,12 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class PreferencesSection: UIView {
     
     private(set) var currentFruit: Fruit = .apple
-    private var currentHeisphere: Hemisphere = .north
-    
+
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -92,15 +92,28 @@ class PreferencesSection: UIView {
         )
     }
 }
+
+extension PreferencesSection: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+    }
+}
+
 extension PreferencesSection {
     
-    var userInfo: UserInfo {
-        return UserInfo(
-            name: userNameTextField.text ?? "",
-            islandName: islandNameTextField.text ?? "",
-            islandFruit: currentFruit,
-            hemisphere: currentHeisphere
-        )
+    var islandNameObservable: Observable<String?> {
+        return islandNameTextField.rx.text.asObservable()
+    }
+    
+    var userNameObservable: Observable<String?> {
+        return userNameTextField.rx.text.asObservable()
+    }
+    
+    func setUpViews(_ userInfo: UserInfo) {
+        userNameTextField.text = userInfo.name
+        islandNameTextField.text = userInfo.islandName
+        updateHemisphere(userInfo.hemisphere)
+        updateFruit(userInfo.islandFruit)
     }
     
     func addTargets(_ viewContrller: UIViewController, hemisphere: Selector, fruit: Selector) {
@@ -110,7 +123,6 @@ extension PreferencesSection {
     
     func updateHemisphere(_ hemisphere: Hemisphere) {
         hemisphereButton.setTitle(hemisphere.rawValue.capitalized, for: .normal)
-        currentHeisphere = hemisphere
     }
     
     func updateFruit(_ fruit: Fruit) {
@@ -119,11 +131,5 @@ extension PreferencesSection {
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
         currentFruit = fruit
-    }
-}
-
-extension PreferencesSection: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
     }
 }
