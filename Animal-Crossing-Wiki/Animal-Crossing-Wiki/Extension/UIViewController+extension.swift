@@ -10,7 +10,7 @@ import RxSwift
 
 extension UIViewController {
     
-    func showSeletedItemAlert(_ items: [String], currentItem: String) -> Observable<String> {
+    func showSeletedItemAlert(_ items: [String], currentItem: String?) -> Observable<String> {
         return Observable.create { observer in
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             items.forEach { item in
