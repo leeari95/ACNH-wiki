@@ -80,6 +80,7 @@
 		9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */; };
 		9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */; };
 		9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6E28643CA700629C4A /* UIImage+extension.swift */; };
+		9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -191,6 +192,7 @@
 		9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionViewModel.swift; sourceTree = "<group>"; };
 		9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		9A99AA6E28643CA700629C4A /* UIImage+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extension.swift"; sourceTree = "<group>"; };
+		9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -423,6 +425,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		9A99AA722864435100629C4A /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
+			sourceTree = "<group>";
+		};
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -546,6 +556,7 @@
 			children = (
 				9AF0422B2853161500C51449 /* UserInfoStorage.swift */,
 				9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */,
+				9A99AA722864435100629C4A /* EntityMapping */,
 			);
 			path = UserInfoStorage;
 			sourceTree = "<group>";
@@ -763,6 +774,7 @@
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
 				9A99AA6128603CB800629C4A /* ItemRow.swift in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
+				9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
 				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
