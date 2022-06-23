@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class UserInfoSection: UIView {
     
-    var userInfo: UserInfo?
+    var viewModel: UserInfoSectionViewModel?
+    let disposeBag = DisposeBag()
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -23,7 +26,7 @@ class UserInfoSection: UIView {
     private lazy var userNameView: InfoStackView = {
         let stackView = InfoStackView(
             title: "User Name",
-            description: userInfo?.name ?? "Please set a name."
+            description: "Please set a name."
         )
         return stackView
     }()
@@ -31,7 +34,7 @@ class UserInfoSection: UIView {
     private lazy var fruitInfoView: InfoStackView = {
         let stackView = InfoStackView(
             title: "Starting Fruit",
-            description: userInfo?.islandFruit.rawValue ?? "Please set a Fruit."
+            description: "Please set a Fruit."
         )
         return stackView
     }()
@@ -39,7 +42,7 @@ class UserInfoSection: UIView {
     private lazy var islandNameView: InfoStackView = {
         let stackView = InfoStackView(
             title: "Island Name",
-            description: userInfo?.islandName ?? "Please set a Island Name."
+            description: "Please set a Island Name."
         )
         return stackView
     }()
@@ -63,13 +66,32 @@ class UserInfoSection: UIView {
             backgroundStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
+    
+    private func bind() {
+        let output = viewModel?.transform(disposeBag: disposeBag)
+        output?.userInfo
+            .compactMap { $0 }
+            .withUnretained(self)
+            .observe(on: MainScheduler.instance)
+            .bind { (owner, userInfo) in
+                owner.updateInfo(userInfo)
+        }.disposed(by: disposeBag)
+    }
+    
+    private func updateInfo(_ userInfo: UserInfo) {
+        guard userInfo != UserInfo() else {
+            return
+        }
+        userNameView.editDescription(userInfo.name)
+        fruitInfoView.editDescription(userInfo.islandFruit.imageName)
+        islandNameView.editDescription(userInfo.islandName)
+    }
 }
 
 extension UserInfoSection {
-
-    func updateInfo(_ userInfo: UserInfo?) {
-        userNameView.editDescription(userInfo?.name)
-        fruitInfoView.editDescription(userInfo?.islandFruit.imageName)
-        islandNameView.editDescription(userInfo?.islandName)
+    convenience init(_ viewModel: UserInfoSectionViewModel) {
+        self.init(frame: .zero)
+        self.viewModel = viewModel
+        bind()
     }
 }

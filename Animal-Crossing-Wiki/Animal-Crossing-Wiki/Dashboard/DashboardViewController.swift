@@ -13,7 +13,7 @@ class DashboardViewController: UIViewController {
     
     private lazy var tasksSection = TodaysTasksSesction()
     private lazy var sectionsScrollView = SectionsScrollView(
-        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoSection()),
+        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoSection(UserInfoSectionViewModel())),
         SectionView(title: "Today's Tasks", iconName: "checkmark.seal.fill", contentView: tasksSection),
         SectionView(title: "My Villagers", iconName: "person.circle.fill", contentView: VillagersSection()),
         SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressSection())

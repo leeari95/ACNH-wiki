@@ -67,6 +67,9 @@ extension InfoStackView {
     }
     
     func editDescription(_ text: String?) {
-        text.flatMap { descriptionLabel.text = $0}
+        guard text != "" else {
+            return
+        }
+        descriptionLabel.text = text
     }
 }
