@@ -8,7 +8,7 @@
 import Foundation
 
 struct DailyTask {
-    let id: UUID = UUID()
+    let id: UUID
     let name: String
     let icon: String
     private(set) var progressList: [Bool]
@@ -26,17 +26,17 @@ struct DailyTask {
 extension DailyTask {
     
     init() {
-        self.name = ""
-        self.icon = ""
-        self.progressList = Array(repeating: false, count: 1)
-        self.amount = 1
+        self.init(id: UUID(), name: "", icon: "", progressList: Array(repeating: false, count: 1), amount: 1)
     }
     
     init(name: String, icon: String, isCompleted: Bool, amount: Int) {
-        self.name = name
-        self.icon = icon
-        self.progressList = Array(repeating: isCompleted, count: amount)
-        self.amount = amount
+        self.init(
+            id: UUID(),
+            name: name,
+            icon: icon,
+            progressList: Array(repeating: isCompleted, count: amount),
+            amount: amount
+        )
     }
     
     static var tasks: [DailyTask] {

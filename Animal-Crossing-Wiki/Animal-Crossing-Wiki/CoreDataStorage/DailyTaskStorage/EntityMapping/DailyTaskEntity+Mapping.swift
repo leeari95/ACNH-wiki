@@ -21,6 +21,7 @@ extension DailyTaskEntity {
     
     func toDomain() -> DailyTask {
         return DailyTask(
+            id: self.id ?? UUID(),
             name: self.name ?? "",
             icon: self.icon ?? "",
             progressList: self.progressList ?? [],
