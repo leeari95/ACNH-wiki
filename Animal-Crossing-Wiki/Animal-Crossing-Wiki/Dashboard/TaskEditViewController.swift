@@ -6,23 +6,23 @@
 //
 
 import UIKit
+import RxSwift
 
 class TaskEditViewController: UIViewController {
     
-    weak var coordinator: TasksEditCoordinator?
+    var viewModel: TasksEditViewModel?
+    private let disposeBag = DisposeBag()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.dataSource = self
-        tableView.delegate = self
         tableView.backgroundColor = .clear
-
         return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
     }
     
     private func setUp() {
@@ -33,13 +33,13 @@ class TaskEditViewController: UIViewController {
             image: UIImage(systemName: "plus"),
             style: .plain,
             target: self,
-            action: #selector(didTapAddButton(_:))
+            action: nil
         )
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "xmark.app.fill"),
             style: .plain,
             target: self,
-            action: #selector(didTapCancelButton(_:))
+            action: nil
         )
         
         view.addSubviews(tableView)
@@ -52,44 +52,35 @@ class TaskEditViewController: UIViewController {
         ])
     }
     
-    @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true) {
-            self.coordinator?.finish()
-        }
-    }
-    
-    @objc private func didTapAddButton(_ sender: UIBarButtonItem) {
-        coordinator?.presentToAddTask()
+    private func bind() {
+        let input = TasksEditViewModel.Input(
+            didSeletedTask: tableView.rx.itemSelected.asObservable(),
+            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
+            didTapAdd: navigationItem.rightBarButtonItem?.rx.tap.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        
+        output?.tasks
+            .bind(to: tableView.rx.items) { _, _, task in
+                let cell = UITableViewCell()
+                var content = cell.defaultContentConfiguration()
+                content.image = UIImage(named: task.icon)?.resizedImage(Size: CGSize(width: 30, height: 30))
+                content.imageToTextPadding = 5
+                content.text = task.name
+                content.textProperties.color = .acText
+                content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
+                cell.backgroundColor = .acSecondaryBackground
+                cell.contentConfiguration = content
+                cell.accessoryType = .disclosureIndicator
+                cell.selectedBackgroundView = UIView()
+                cell.selectedBackgroundView?.backgroundColor = .acText.withAlphaComponent(0.3)
+                return cell
+            }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(onNext: { indexPath in
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }).disposed(by: disposeBag)
     }
 
-}
-
-extension TaskEditViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DailyTask.tasks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        let item = DailyTask.tasks[indexPath.row]
-        var content = cell.defaultContentConfiguration()
-        content.image = UIImage(named: item.icon)?.resizedImage(Size: CGSize(width: 30, height: 30))
-        content.imageToTextPadding = 5
-        content.text = item.name
-        content.textProperties.color = .acText
-        content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
-        cell.backgroundColor = .acSecondaryBackground
-        cell.contentConfiguration = content
-        cell.accessoryType = .disclosureIndicator
-        cell.selectedBackgroundView = UIView()
-        cell.selectedBackgroundView?.backgroundColor = .acText.withAlphaComponent(0.3)
-        return cell
-    }
-}
-
-extension TaskEditViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        coordinator?.pushToEditTask(DailyTask.tasks[indexPath.row])
-    }
 }

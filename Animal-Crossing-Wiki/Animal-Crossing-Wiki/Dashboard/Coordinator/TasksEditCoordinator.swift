@@ -24,7 +24,7 @@ final class TasksEditCoordinator: Coordinator {
     
     func start() {
         let tasksEditVC = TaskEditViewController()
-        tasksEditVC.coordinator = self
+        tasksEditVC.viewModel = TasksEditViewModel(coordinator: self)
         rootViewController.isModalInPresentation = true
         rootViewController.addChild(tasksEditVC)
     }
@@ -72,6 +72,8 @@ final class TasksEditCoordinator: Coordinator {
     }
     
     func finish() {
-        parentCoordinator?.childDidFinish(self)
+        rootViewController.dismiss(animated: true) {
+            self.parentCoordinator?.childDidFinish(self)
+        }
     }
 }
