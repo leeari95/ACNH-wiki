@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol DailyTaskStorage {
-    func fetchTasks(completion: @escaping (Result<[DailyTask], Error>) -> Void)
-    func insertTask(_ task: DailyTask, completion: @escaping (Result<DailyTask, Error>) -> Void)
-    func deleteTaskDelete(_ task: DailyTask, completion: @escaping (Result<DailyTask, Error>) -> Void)
+    
+    func fetchTasks() -> Single<[DailyTask]>
+    func insertTask(_ task: DailyTask) -> Single<DailyTask>
+    func updateTask(_ task: DailyTask)
+    func toggleCompleted(_ task: DailyTask, progressIndex: Int)
+    func deleteTaskDelete(_ task: DailyTask) -> Single<DailyTask>
 }
