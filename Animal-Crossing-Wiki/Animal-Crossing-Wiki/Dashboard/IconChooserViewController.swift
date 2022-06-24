@@ -71,7 +71,7 @@ extension IconChooserViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(ItemRow.self, for: indexPath) else {
             return UICollectionViewCell()
         }
-        cell.setUp("Inv\(indexPath.row)")
+        cell.setImage(icon: "Inv\(indexPath.row)")
         return cell
     }
 }

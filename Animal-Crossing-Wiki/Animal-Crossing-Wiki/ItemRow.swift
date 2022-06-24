@@ -16,7 +16,10 @@ class ItemRow: UICollectionViewCell {
         imageView.image = nil
     }
 
-    func setUp(_ icon: String) {
+    func setImage(icon: String) {
         imageView.image = UIImage(named: icon)
+    }
+    func setImage(url: String) {
+        imageView.setImage(with: url)
     }
 }
