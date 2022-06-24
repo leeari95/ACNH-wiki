@@ -42,7 +42,7 @@ final class Items {
 
         userInfoStorage.fetchUserInfo()
             .subscribe(onSuccess: { userInfo in
-                userInfo.flatMap { self.currentUserInfo.accept($0) }
+                self.currentUserInfo.accept(userInfo)
             }, onFailure: { error in
                 print(error.localizedDescription)
             }).disposed(by: disposeBag)

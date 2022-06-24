@@ -46,9 +46,10 @@ final class CoreDataStorage {
 }
 
 extension CoreDataStorage {
-    func getUserCollection(_ context: NSManagedObjectContext) throws -> UserCollectionEntity? {
+    
+    func getUserCollection(_ context: NSManagedObjectContext) throws -> UserCollectionEntity {
         let request = UserCollectionEntity.fetchRequest()
-        return try context.fetch(request).first
+        return try context.fetch(request).first ?? UserCollectionEntity(UserInfo(), context: context)
     }
 }
 

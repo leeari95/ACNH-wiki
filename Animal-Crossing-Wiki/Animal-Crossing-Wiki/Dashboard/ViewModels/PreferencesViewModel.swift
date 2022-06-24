@@ -35,11 +35,7 @@ final class PreferencesViewModel {
         let errorMessage = BehaviorRelay<String>(value: "")
         
         storage.fetchUserInfo().subscribe(onSuccess: { userInfo in
-            if let userInfo = userInfo {
-                currentUserInfo.accept(userInfo)
-            } else {
-                currentUserInfo.accept(UserInfo())
-            }
+            currentUserInfo.accept(userInfo)
             currentUserInfo
                 .compactMap { $0 }
                 .withUnretained(self)

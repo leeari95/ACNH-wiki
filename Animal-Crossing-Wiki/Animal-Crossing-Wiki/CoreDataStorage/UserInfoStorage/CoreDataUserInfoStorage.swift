@@ -16,16 +16,13 @@ final class CoreDataUserInfoStorage {
         self.coreDataStorage = coreDataStorage
     }
     
-    func fetchUserInfo() -> Single<UserInfo?> {
+    func fetchUserInfo() -> Single<UserInfo> {
         return Single.create {  single in
             self.coreDataStorage.performBackgroundTask { context in
                 do {
-                    if let object = try self.coreDataStorage.getUserCollection(context) {
-                        let userInfo = object.toDomain()
-                        single(.success(userInfo))
-                    } else {
-                        single(.success(nil))
-                    }
+                    let object = try self.coreDataStorage.getUserCollection(context)
+                    let userInfo = object.toDomain()
+                    single(.success(userInfo))
                 } catch {
                     single(.failure(CoreDataStorageError.readError(error)))
                 }
@@ -34,18 +31,15 @@ final class CoreDataUserInfoStorage {
         }
         
     }
- 
+    
     func updateUserInfo(_ userInfo: UserInfo) {
         self.coreDataStorage.performBackgroundTask { context in
             do {
-                if let object = try self.coreDataStorage.getUserCollection(context) {
-                    object.name = userInfo.name
-                    object.islandName = userInfo.islandName
-                    object.islandFruit = userInfo.islandFruit.rawValue
-                    object.hemisphere = userInfo.hemisphere.rawValue
-                } else {
-                    _ = UserCollectionEntity(userInfo, context: context)
-                }
+                let object = try self.coreDataStorage.getUserCollection(context)
+                object.name = userInfo.name
+                object.islandName = userInfo.islandName
+                object.islandFruit = userInfo.islandFruit.rawValue
+                object.hemisphere = userInfo.hemisphere.rawValue
                 context.saveContext()
             } catch {
                 debugPrint(error)
