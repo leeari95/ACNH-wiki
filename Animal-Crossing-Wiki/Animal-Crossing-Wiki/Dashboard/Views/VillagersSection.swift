@@ -22,6 +22,7 @@ class VillagersSection: UIView {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.registerNib(ItemRow.self)
         return collectionView
     }()
     
@@ -46,7 +47,6 @@ class VillagersSection: UIView {
     }
     
     private func configure() {
-        collectionView.registerNib(ItemRow.self)
         addSubviews(collectionView)
 
         self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: .zero)
