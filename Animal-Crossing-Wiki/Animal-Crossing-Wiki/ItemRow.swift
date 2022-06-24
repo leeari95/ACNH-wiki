@@ -22,4 +22,12 @@ class ItemRow: UICollectionViewCell {
     func setImage(url: String) {
         imageView.setImage(with: url)
     }
+    
+    func setAlpha(_ alpha: CGFloat) {
+        self.imageView.alpha = alpha
+    }
+    
+    func toggle() {
+        self.imageView.alpha = imageView.alpha == 1 ? 0.5 : 1
+    }
 }

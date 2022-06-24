@@ -6,16 +6,24 @@
 //
 
 import UIKit
+import RxSwift
 
 class TodaysTasksSesction: UIView {
 
-    private lazy var backgroundStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 10
-        return stackView
+    var viewModel: TodaysTasksSesctionViewModel?
+    var coordinator: DashboardCoordinator?
+    private let disposeBag = DisposeBag()
+    private var heightConstraint: NSLayoutConstraint!
+    
+    private lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: 40, height: 40)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.registerNib(ItemRow.self)
+        return collectionView
     }()
     
     private lazy var buttonStackView: UIStackView = {
@@ -48,20 +56,32 @@ class TodaysTasksSesction: UIView {
         configure()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height + 40
+        self.heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        self.heightConstraint.constant = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+    }
+    
     private func configure() {
-        addSubviews(backgroundStackView, buttonStackView)
+        addSubviews(collectionView, buttonStackView)
         
-        let heightAnchor = backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor, constant: -40)
-        heightAnchor.priority = .defaultHigh
+        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 40)
+        heightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             buttonStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
-            heightAnchor
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            heightConstraint
         ])
-        
+
         [editButton, resetButton].forEach {
             $0.setTitleColor(.acText, for: .normal)
             $0.titleLabel?.font = .preferredFont(for: .footnote, weight: .bold)
@@ -71,44 +91,48 @@ class TodaysTasksSesction: UIView {
             $0.heightAnchor.constraint(equalToConstant: 28).isActive = true
         }
         buttonStackView.addArrangedSubviews(editButton, resetButton)
-        
-        DailyTask.tasks.forEach { task in
-            (0..<task.amount).forEach { index in
-                addTask(TaskButton(task, index: index))
-            }
-        }
     }
     
-    private func addTasksStackView() {
-        backgroundStackView.addArrangedSubviews(TasksStackView())
+    func bind() {
+        let input = TodaysTasksSesctionViewModel.Input(
+            didSelectItem: collectionView.rx.itemSelected.asObservable(),
+            didTapReset: resetButton.rx.tap.asObservable(),
+            didTapEdit: editButton.rx.tap.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        
+        output?.tasks
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: ItemRow.className,
+                    cellType: ItemRow.self
+                )
+            ) { _, item, cell in
+                cell.setImage(icon: item.task.icon)
+                item.task.progressList[item.progressIndex] ? cell.setAlpha(1) : cell.setAlpha(0.5)
+            }.disposed(by: disposeBag)
+        
+        output?.tasks
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    self.layoutIfNeeded()
+                }
+            }).disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { indexPath in
+                let cell = self.collectionView.cellForItem(at: indexPath) as? ItemRow
+                cell?.toggle()
+            }).disposed(by: disposeBag)
     }
 }
 
 extension TodaysTasksSesction {
     
-    func addTask(_ view: UIView) {
-        if backgroundStackView.subviews.isEmpty {
-            addTasksStackView()
-        }
-        var currentTasksView = backgroundStackView.subviews.last as? TasksStackView
-        if currentTasksView?.isFull == true {
-            addTasksStackView()
-            currentTasksView = backgroundStackView.subviews.last as? TasksStackView
-            currentTasksView?.addButton(view)
-        } else {
-            currentTasksView?.addButton(view)
-        }
-    }
-    
-    func addTarget(_ viewController: UIViewController, edit: Selector, reset: Selector) {
-        editButton.addTarget(viewController, action: edit, for: .touchUpInside)
-        resetButton.addTarget(viewController, action: reset, for: .touchUpInside)
-    }
-    
-    func reset() {
-        backgroundStackView.arrangedSubviews.forEach { view in
-            let tasksStaskView = view as? TasksStackView
-            tasksStaskView?.reset()
-        }
+    convenience init(_ viewModel: TodaysTasksSesctionViewModel) {
+        self.init(frame: .zero)
+        self.viewModel = viewModel
+        bind()
     }
 }

@@ -52,8 +52,6 @@
 		9A99AA242858803D00629C4A /* UIStackView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA232858803D00629C4A /* UIStackView+extension.swift */; };
 		9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA252858827900629C4A /* UserInfoSection.swift */; };
 		9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */; };
-		9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2D28597D7400629C4A /* TasksStackView.swift */; };
-		9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2F285998AF00629C4A /* TaskButton.swift */; };
 		9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA352859C8BD00629C4A /* VillagersSection.swift */; };
 		9A99AA382859F74900629C4A /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA372859F74900629C4A /* ProgressView.swift */; };
 		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
@@ -79,6 +77,7 @@
 		9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6E28643CA700629C4A /* UIImage+extension.swift */; };
 		9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */; };
 		9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */; };
+		9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -162,8 +161,6 @@
 		9A99AA232858803D00629C4A /* UIStackView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+extension.swift"; sourceTree = "<group>"; };
 		9A99AA252858827900629C4A /* UserInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSection.swift; sourceTree = "<group>"; };
 		9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesction.swift; sourceTree = "<group>"; };
-		9A99AA2D28597D7400629C4A /* TasksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksStackView.swift; sourceTree = "<group>"; };
-		9A99AA2F285998AF00629C4A /* TaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskButton.swift; sourceTree = "<group>"; };
 		9A99AA352859C8BD00629C4A /* VillagersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSection.swift; sourceTree = "<group>"; };
 		9A99AA372859F74900629C4A /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
@@ -189,6 +186,7 @@
 		9A99AA6E28643CA700629C4A /* UIImage+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extension.swift"; sourceTree = "<group>"; };
 		9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+Mapping.swift"; sourceTree = "<group>"; };
 		9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSectionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesctionViewModel.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -390,8 +388,6 @@
 				9A99AA2A285890F400629C4A /* shared */,
 				9A99AA252858827900629C4A /* UserInfoSection.swift */,
 				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
-				9A99AA2D28597D7400629C4A /* TasksStackView.swift */,
-				9A99AA2F285998AF00629C4A /* TaskButton.swift */,
 				9A99AA352859C8BD00629C4A /* VillagersSection.swift */,
 				9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */,
 				9A99AA51285C32C300629C4A /* PreferencesSection.swift */,
@@ -415,6 +411,7 @@
 				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
 				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
 				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
+				9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -706,7 +703,6 @@
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */,
-				9A99AA2E28597D7400629C4A /* TasksStackView.swift in Sources */,
 				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
@@ -750,6 +746,7 @@
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
 				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
+				9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
 				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
@@ -760,7 +757,6 @@
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
-				9A99AA30285998AF00629C4A /* TaskButton.swift in Sources */,
 				9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */,
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
 				9A99AA6128603CB800629C4A /* ItemRow.swift in Sources */,
