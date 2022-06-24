@@ -9,7 +9,7 @@ import UIKit
 
 class IconChooserViewController: UIViewController {
     
-    var coordinator: TasksEditCoordinator?
+    weak var coordinator: TasksEditCoordinator?
     
     private let itemSize = 50
     private let iconCount = 199
@@ -30,10 +30,6 @@ class IconChooserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
-    }
-    
-    deinit {
-        coordinator = nil
     }
     
     private func setUp() {

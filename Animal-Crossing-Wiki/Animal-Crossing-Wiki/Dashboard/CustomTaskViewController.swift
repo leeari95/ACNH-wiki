@@ -10,8 +10,14 @@ import RxSwift
 
 class CustomTaskViewController: UIViewController {
     
+    enum Mode {
+        case add
+        case edit
+    }
+    
     var task: DailyTask?
-    var coordinator: TasksEditCoordinator?
+    var mode: Mode?
+    weak var coordinator: TasksEditCoordinator?
 
     private let disposeBag = DisposeBag()
     
@@ -23,10 +29,6 @@ class CustomTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
-    }
-    
-    deinit {
-        coordinator = nil
     }
     
     private func setUpView() {

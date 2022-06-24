@@ -12,6 +12,8 @@ protocol CustomTaskViewControllerDelegate: AnyObject {
 }
 
 final class TasksEditCoordinator: Coordinator {
+    let type: CoordinatorType = .taskEdit
+    weak var parentCoordinator: DashboardCoordinator?
     var childCoordinators: [Coordinator] = []
     weak var delegate: CustomTaskViewControllerDelegate?
     private(set) var rootViewController: UINavigationController!
@@ -35,6 +37,7 @@ final class TasksEditCoordinator: Coordinator {
         let customTaskVC = CustomTaskViewController()
         delegate = customTaskVC
         customTaskVC.coordinator = self
+        customTaskVC.mode = .add
         let navigationVC = UINavigationController(rootViewController: customTaskVC)
         navigationVC.isModalInPresentation = true
         present(navigationVC)
@@ -44,6 +47,7 @@ final class TasksEditCoordinator: Coordinator {
         let customTaskVC = CustomTaskViewController()
         delegate = customTaskVC
         customTaskVC.coordinator = self
+        customTaskVC.mode = .edit
         customTaskVC.task = task
         rootViewController.pushViewController(customTaskVC, animated: true)
     }
@@ -55,7 +59,7 @@ final class TasksEditCoordinator: Coordinator {
     }
     
     func dismiss(_ viewController: UIViewController) {
-        if (viewController as? CustomTaskViewController)?.task == nil {
+        if (viewController as? CustomTaskViewController)?.mode == .add {
             rootViewController.dismiss(animated: true)
         } else {
             rootViewController.popViewController(animated: true)
@@ -65,5 +69,9 @@ final class TasksEditCoordinator: Coordinator {
     
     func selectedIcon(_ icon: String) {
         delegate?.seletedIcon(icon)
+    }
+    
+    func finish() {
+        parentCoordinator?.childDidFinish(self)
     }
 }

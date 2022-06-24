@@ -9,7 +9,7 @@ import UIKit
 
 class TaskEditViewController: UIViewController {
     
-    var coordinator: TasksEditCoordinator?
+    weak var coordinator: TasksEditCoordinator?
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -53,7 +53,9 @@ class TaskEditViewController: UIViewController {
     }
     
     @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.coordinator?.finish()
+        }
     }
     
     @objc private func didTapAddButton(_ sender: UIBarButtonItem) {

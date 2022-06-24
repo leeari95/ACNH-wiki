@@ -8,6 +8,7 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
+    var type: CoordinatorType = .main
     var childCoordinators: [Coordinator] = []
     private(set) var rootViewController: UITabBarController!
     

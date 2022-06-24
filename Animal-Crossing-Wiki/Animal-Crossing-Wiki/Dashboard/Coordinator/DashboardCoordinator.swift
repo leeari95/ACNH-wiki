@@ -8,6 +8,7 @@
 import UIKit
 
 final class DashboardCoordinator: Coordinator {
+    let type: CoordinatorType = .dashboard
     var childCoordinators: [Coordinator] = []
     private(set) var rootViewController: UINavigationController!
     
@@ -35,6 +36,7 @@ final class DashboardCoordinator: Coordinator {
     
     func presentToTaskEdit() {
         let tasksEditCoordinator = TasksEditCoordinator()
+        tasksEditCoordinator.parentCoordinator = self
         tasksEditCoordinator.start()
         childCoordinators.append(tasksEditCoordinator)
         present(tasksEditCoordinator.rootViewController)
