@@ -10,13 +10,19 @@ import RxSwift
 
 class VillagersSection: UIView {
     
-    private lazy var backgroundStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 20
-        return stackView
+    private var viewModel: VillagersSectionViewModel?
+    private let disposeBag = DisposeBag()
+    
+    private var heightConstraint: NSLayoutConstraint!
+    
+    private lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: 50, height: 50)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
     }()
     
     required init?(coder: NSCoder) {
@@ -28,49 +34,59 @@ class VillagersSection: UIView {
         configure()
     }
     
-    let disposeBag = DisposeBag()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+        self.heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        self.heightConstraint.constant = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+    }
     
     private func configure() {
-        addSubviews(backgroundStackView)
-        
-        let heightAnchor = backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
-        heightAnchor.priority = .defaultHigh
+        collectionView.registerNib(ItemRow.self)
+        addSubviews(collectionView)
+
+        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: .zero)
+        heightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
-            heightAnchor
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            heightConstraint
         ])
-        Items.shared.villagerList.subscribe(onNext: { villagers in
-            let villagers = villagers.filter {
-                $0.translations.kRko == "젤리" || $0.translations.kRko == "애플"
-                || $0.translations.kRko == "존" || $0.translations.kRko == "리처드"
-                || $0.translations.kRko == "병태" || $0.translations.kRko == "잭슨"
-                || $0.translations.kRko == "미애" || $0.translations.kRko == "스피카"
-                || $0.translations.kRko == "타마" || $0.translations.kRko == "미첼"
-            }
-            villagers.forEach { villager in
-                self.addTask(VillagerButton(villager))
-            }
-            
-        }).disposed(by: disposeBag)
     }
     
-    private func addVillagersStackView() {
-        backgroundStackView.addArrangedSubviews(VillagersStackView())
+    private func bind() {
+        let input = VillagersSectionViewModel.Input(didSelectItem: collectionView.rx.itemSelected.asObservable())
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+
+        output?.villagers
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: ItemRow.className,
+                    cellType: ItemRow.self
+                )
+            ) { _, villager, cell in
+                cell.setImage(url: villager.iconImage)
+            }.disposed(by: disposeBag)
+        
+        output?.villagers
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.layoutIfNeeded()
+            }).disposed(by: disposeBag)
     }
-    
-    func addTask(_ view: UIView) {
-        if backgroundStackView.subviews.isEmpty {
-            addVillagersStackView()
-        }
-        var currentVillagersView = backgroundStackView.subviews.last as? VillagersStackView
-        if currentVillagersView?.isFull == true {
-            addVillagersStackView()
-            currentVillagersView = backgroundStackView.subviews.last as? VillagersStackView
-            currentVillagersView?.addButton(view)
-        } else {
-            currentVillagersView?.addButton(view)
-        }
+}
+
+extension VillagersSection {
+    convenience init(_ viewModel: VillagersSectionViewModel) {
+        self.init(frame: .zero)
+        self.viewModel = viewModel
+        bind()
     }
 }
