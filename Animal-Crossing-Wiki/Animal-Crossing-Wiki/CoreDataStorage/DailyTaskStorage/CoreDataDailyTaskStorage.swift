@@ -28,7 +28,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                         object.addToDailyTasks(NSSet(array: itemEntities))
                         context.saveContext()
                     }
-                    let tasks = itemEntities.map { $0.toDomain() }
+                    let tasks = itemEntities.map { $0.toDomain() }.sorted(by: { $0.createdDate < $1.createdDate })
                     single(.success(tasks))
                 } catch {
                     single(.failure(CoreDataStorageError.readError(error)))
@@ -67,6 +67,9 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                     itemEntities[index].icon = task.icon
                     itemEntities[index].progressList = task.progressList
                     itemEntities[index].amount = Int64(task.amount)
+                } else {
+                    let newTask = DailyTaskEntity(task, context: context)
+                    object.addToDailyTasks(newTask)
                 }
                 context.saveContext()
             } catch {

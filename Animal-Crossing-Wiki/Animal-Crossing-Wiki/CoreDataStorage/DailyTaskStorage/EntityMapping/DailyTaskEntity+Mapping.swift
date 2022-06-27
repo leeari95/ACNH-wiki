@@ -17,6 +17,7 @@ extension DailyTaskEntity {
         self.icon = task.icon
         self.progressList = task.progressList
         self.amount = Int64(task.amount)
+        self.date = task.createdDate
     }
     
     func toDomain() -> DailyTask {
@@ -25,7 +26,8 @@ extension DailyTaskEntity {
             name: self.name ?? "",
             icon: self.icon ?? "",
             progressList: self.progressList ?? [],
-            amount: Int(self.amount)
+            amount: Int(self.amount),
+            createdDate: self.date ?? Date()
         )
     }
 }
