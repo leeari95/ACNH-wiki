@@ -35,21 +35,16 @@ final class TasksEditCoordinator: Coordinator {
         rootViewController.visibleViewController?.present(viewController, animated: true)
     }
     
-    func presentToAddTask() {
+    func pushToCustomTaskVC(_ task: DailyTask) {
         let customTaskVC = CustomTaskViewController()
         delegate = customTaskVC
-        customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: nil)
-        customTaskVC.mode = .add
-        let navigationVC = UINavigationController(rootViewController: customTaskVC)
-        navigationVC.isModalInPresentation = true
-        present(navigationVC)
-    }
-    
-    func pushToEditTask(_ task: DailyTask) {
-        let customTaskVC = CustomTaskViewController()
-        delegate = customTaskVC
-        customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: task)
-        customTaskVC.mode = .edit
+        if task.icon == "plus" {
+            customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: nil)
+            customTaskVC.mode = .add
+        } else {
+            customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: task)
+            customTaskVC.mode = .edit
+        }
         rootViewController.pushViewController(customTaskVC, animated: true)
     }
     
@@ -68,13 +63,8 @@ final class TasksEditCoordinator: Coordinator {
         }).disposed(by: disposeBag)
     }
     
-    func dismiss(_ viewController: UIViewController) {
-        if (viewController as? CustomTaskViewController)?.mode == .add {
-            dismiss(animated: true)
-        } else {
-            rootViewController.popViewController(animated: true)
-        }
-        delegate = nil
+    func popVC(animated: Bool) {
+        rootViewController.popViewController(animated: animated)
     }
     
     func dismiss(animated: Bool) {

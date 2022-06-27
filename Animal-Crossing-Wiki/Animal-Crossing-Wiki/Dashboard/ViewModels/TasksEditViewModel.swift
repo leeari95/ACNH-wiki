@@ -21,9 +21,8 @@ final class TasksEditViewModel {
     private var tasks = [DailyTask]()
     
     struct Input {
-        let didSeletedTask: Observable<IndexPath>
+        let didSeletedTask: Observable<DailyTask>
         let didTapCancel: Observable<Void>?
-        let didTapAdd: Observable<Void>?
         let didDeleted: Observable<IndexPath>
     }
     
@@ -35,20 +34,25 @@ final class TasksEditViewModel {
         let currentTasks = BehaviorRelay<[DailyTask]>(value: [])
         
         Items.shared.dailyTasks
-            .subscribe(onNext: {  tasks in
+            .subscribe(onNext: { tasks in
+                var tasks = tasks
+                tasks.append(
+                    DailyTask(
+                        name: "Add a custom task",
+                        icon: "plus",
+                        isCompleted: false,
+                        amount: 1,
+                        createdDate: Date()
+                    )
+                )
                 currentTasks.accept(tasks)
                 self.tasks = tasks
             }).disposed(by: disposeBag)
         
         input.didSeletedTask
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { indexPath in
-                self.coordinator.pushToEditTask(self.tasks[indexPath.row])
-            }).disposed(by: disposeBag)
-        
-        input.didTapAdd?
-            .subscribe(onNext: { _ in
-                self.coordinator.presentToAddTask()
+            .subscribe(onNext: { task in
+                self.coordinator.pushToCustomTaskVC(task)
             }).disposed(by: disposeBag)
         
         input.didTapCancel?

@@ -44,20 +44,13 @@ class CustomTaskViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "checkmark"),
+            image: UIImage(systemName: "checkmark.circle"),
             style: .plain,
             target: self,
             action: nil
         )
-        if mode == .add {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                image: UIImage(systemName: "xmark.app.fill"),
-                style: .plain,
-                target: self,
-                action: nil
-            )
-        }
-        
+        navigationItem.rightBarButtonItem?.tintColor = .acHeaderBackground
+
         view.addSubviews(sectionsScrollView)
         
         NSLayoutConstraint.activate([
@@ -71,7 +64,6 @@ class CustomTaskViewController: UIViewController {
     private func bind() {
         let input = CustomTaskViewModel.Input(
             didTapCheck: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
-            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
             didTapIcon: self.customTaskSection.iconButtonObservable,
             didTapAmount: self.customTaskSection.maxAmountButtonObservable,
             taskNameText: self.customTaskSection.taskNameObservable,

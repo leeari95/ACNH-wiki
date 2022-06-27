@@ -20,9 +20,12 @@ final class CustomTaskViewModel {
         self.task = task
     }
     
+    deinit {
+        coordinator.delegate = nil
+    }
+    
     struct Input {
         let didTapCheck: Observable<Void>?
-        let didTapCancel: Observable<Void>?
         let didTapIcon: Observable<Void>
         let didTapAmount: Observable<Void>
         let taskNameText: Observable<String?>
@@ -39,12 +42,6 @@ final class CustomTaskViewModel {
         let title = BehaviorRelay<String?>(value: nil)
         let icon = BehaviorRelay<String?>(value: nil)
         let amount = BehaviorRelay<String?>(value: nil)
-    
-        input.didTapCancel?
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                owner.coordinator.dismiss(animated: true)
-        }).disposed(by: disposeBag)
         
         input.didTapCheck?
             .withUnretained(self)
@@ -71,8 +68,7 @@ final class CustomTaskViewModel {
                 }
                 owner.storage.updateTask(newTask)
                 Items.shared.updateTasks(newTask)
-                owner.coordinator.rootViewController.visibleViewController.flatMap { owner.coordinator.dismiss($0) }
-                
+                owner.coordinator.popVC(animated: true)
             }).disposed(by: disposeBag)
         
         input.didTapIcon

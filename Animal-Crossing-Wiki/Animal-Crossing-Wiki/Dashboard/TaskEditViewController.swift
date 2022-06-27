@@ -29,12 +29,6 @@ class TaskEditViewController: UIViewController {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Today's Tasks"
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "plus"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "xmark.app.fill"),
             style: .plain,
@@ -54,9 +48,8 @@ class TaskEditViewController: UIViewController {
     
     private func bind() {
         let input = TasksEditViewModel.Input(
-            didSeletedTask: tableView.rx.itemSelected.asObservable(),
+            didSeletedTask: tableView.rx.modelSelected(DailyTask.self).asObservable(),
             didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
-            didTapAdd: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
             didDeleted: tableView.rx.itemDeleted.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -65,11 +58,17 @@ class TaskEditViewController: UIViewController {
             .bind(to: tableView.rx.items) { _, _, task in
                 let cell = UITableViewCell()
                 var content = cell.defaultContentConfiguration()
-                content.image = UIImage(named: task.icon)?.resizedImage(Size: CGSize(width: 30, height: 30))
+                if task.icon == "plus" {
+                    content.image = UIImage(systemName: "plus")
+                    content.textProperties.color = .systemBlue
+                    content.textProperties.font = .preferredFont(forTextStyle: .callout)
+                } else {
+                    content.textProperties.color = .acText
+                    content.image = UIImage(named: task.icon)?.resizedImage(Size: CGSize(width: 30, height: 30))
+                    content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
+                }
                 content.imageToTextPadding = 5
                 content.text = task.name
-                content.textProperties.color = .acText
-                content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
                 cell.backgroundColor = .acSecondaryBackground
                 cell.contentConfiguration = content
                 cell.accessoryType = .disclosureIndicator
