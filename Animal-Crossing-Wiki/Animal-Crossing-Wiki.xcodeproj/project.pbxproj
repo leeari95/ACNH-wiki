@@ -290,8 +290,6 @@
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9AF041A42851ADFF00C51449 /* Extension */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
-				9A99AA5F28603CB800629C4A /* ItemRow.swift */,
-				9A99AA6028603CB800629C4A /* ItemRow.xib */,
 				9AF041CD2851DDE700C51449 /* CoreDataStorage */,
 				9A4B4C3828503A6100CC687C /* Models */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
@@ -382,6 +380,8 @@
 				9A99AA53285C341E00629C4A /* InfoContentView.swift */,
 				9A99AA372859F74900629C4A /* ProgressView.swift */,
 				9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */,
+				9A99AA5F28603CB800629C4A /* ItemRow.swift */,
+				9A99AA6028603CB800629C4A /* ItemRow.xib */,
 			);
 			path = shared;
 			sourceTree = "<group>";
