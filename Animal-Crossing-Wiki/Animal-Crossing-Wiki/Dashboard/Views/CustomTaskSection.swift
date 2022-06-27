@@ -6,13 +6,9 @@
 //
 
 import UIKit
+import RxSwift
 
 class CustomTaskSection: UIView {
-    
-    private var task: DailyTask?
-
-    private var currentAmount: String = "1"
-    private var currentIcon: String = "Inv7"
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -38,13 +34,13 @@ class CustomTaskSection: UIView {
     
     private lazy var maxAmountButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(currentAmount, for: .normal)
+        button.setTitle("1", for: .normal)
         return button
     }()
 
     private lazy var iconButton: UIButton = {
         let button = UIButton(type: .system)
-        let image = UIImage(named: currentIcon)?
+        let image = UIImage(named: "Inv7")?
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
@@ -85,26 +81,26 @@ class CustomTaskSection: UIView {
 }
 extension CustomTaskSection {
     
-    convenience init(_ task: DailyTask?) {
-        self.init(frame: .zero)
-        if let task = task {
-            self.task = task
-            taskNameTextField.text = task.name
-            updateIcon(task.icon)
-            updateAmount(task.amount.description)
-        } else {
-            self.task = nil
-        }
+    var taskNameObservable: Observable<String?> {
+        taskNameTextField.rx.text.asObservable()
     }
     
-    func addTargets(_ viewContrller: UIViewController, icon: Selector, maxAmount: Selector) {
-        iconButton.addTarget(viewContrller, action: icon, for: .touchUpInside)
-        maxAmountButton.addTarget(viewContrller, action: maxAmount, for: .touchUpInside)
+    var iconButtonObservable: Observable<Void> {
+        iconButton.rx.tap.asObservable()
     }
     
+    var maxAmountButtonObservable: Observable<Void> {
+        maxAmountButton.rx.tap.asObservable()
+    }
+    
+    func setUpViews(_ task: DailyTask) {
+        taskNameTextField.text = task.name
+        updateIcon(task.icon)
+        updateAmount(task.amount.description)
+    }
+
     func updateAmount(_ amount: String) {
         maxAmountButton.setTitle(amount, for: .normal)
-        currentAmount = amount
     }
     
     func updateIcon(_ icon: String) {
@@ -112,7 +108,6 @@ extension CustomTaskSection {
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         iconButton.setImage(image, for: .normal)
-        self.currentIcon = icon
     }
 }
 

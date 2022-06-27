@@ -7,48 +7,56 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class CustomTaskViewController: UIViewController {
     
-    enum Mode {
-        case add
-        case edit
+    enum Mode: String {
+        case add = "New task"
+        case edit = "Edit task"
     }
     
-    var task: DailyTask?
     var mode: Mode?
-    weak var coordinator: TasksEditCoordinator?
+    var viewModel: CustomTaskViewModel?
 
+    private let iconText = BehaviorRelay<String>(value: "Inv7")
+    private let amount = BehaviorRelay<String>(value: "1")
     private let disposeBag = DisposeBag()
     
-    private lazy var customTaskSection = CustomTaskSection(task)
+    private lazy var customTaskSection = CustomTaskSection()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
-        SectionView(title: "New task", iconName: "highlighter", contentView: customTaskSection)
+        SectionView(
+            title: mode?.rawValue ?? "",
+            iconName: "highlighter",
+            contentView: customTaskSection
+        )
     )
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
+        bind()
     }
     
     private func setUpView() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Edit Task"
+        self.navigationItem.title = mode?.rawValue
         navigationItem.largeTitleDisplayMode = .never
-        if task == nil {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(
-                image: UIImage(systemName: "xmark.app.fill"),
-                style: .plain,
-                target: self,
-                action: #selector(didTapCancelButton(_:))
-            )
-        }
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "checkmark"),
             style: .plain,
             target: self,
-            action: #selector(didTapCheckButton(_:))
+            action: nil
         )
+        if mode == .add {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "xmark.app.fill"),
+                style: .plain,
+                target: self,
+                action: nil
+            )
+        }
         
         view.addSubviews(sectionsScrollView)
         
@@ -58,29 +66,25 @@ class CustomTaskViewController: UIViewController {
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func bind() {
+        let input = CustomTaskViewModel.Input(
+            didTapCheck: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
+            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
+            didTapIcon: self.customTaskSection.iconButtonObservable,
+            didTapAmount: self.customTaskSection.maxAmountButtonObservable,
+            taskNameText: self.customTaskSection.taskNameObservable,
+            iconNameText: iconText.asObservable(),
+            amountText: amount.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
-        customTaskSection.addTargets(self, icon: #selector(didTapIcon(_:)), maxAmount: #selector(didTapMaxAmount(_:)))
-    }
-    
-    @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
-    @objc private func didTapCheckButton(_ sender: UIBarButtonItem) {
-        coordinator?.dismiss(self)
-    }
-    
-    @objc private func didTapMaxAmount(_ sender: UIButton) {
-        showSeletedItemAlert(
-            Array(1...20).map { $0.description },
-            currentItem: sender.titleLabel?.text ?? ""
-        ).subscribe(onNext: { title in
-            self.customTaskSection.updateAmount(title)
-        }).disposed(by: disposeBag)
-    }
-    
-    @objc private func didTapIcon(_ sender: UIButton) {
-        coordinator?.presentToIcon()
+        output?.task
+            .compactMap { $0 }
+            .subscribe(onNext: { task in
+                self.customTaskSection.setUpViews(task)
+            }).disposed(by: disposeBag)
     }
 
 }
@@ -88,5 +92,11 @@ class CustomTaskViewController: UIViewController {
 extension CustomTaskViewController: CustomTaskViewControllerDelegate {
     func seletedIcon(_ icon: String) {
         customTaskSection.updateIcon(icon)
+        iconText.accept(icon)
+    }
+    
+    func updateAmount(title: String) {
+        customTaskSection.updateAmount(title)
+        amount.accept(title)
     }
 }

@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 protocol CustomTaskViewControllerDelegate: AnyObject {
     func seletedIcon(_ icon: String)
+    func updateAmount(title: String)
 }
 
 final class TasksEditCoordinator: Coordinator {
@@ -36,7 +38,7 @@ final class TasksEditCoordinator: Coordinator {
     func presentToAddTask() {
         let customTaskVC = CustomTaskViewController()
         delegate = customTaskVC
-        customTaskVC.coordinator = self
+        customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: nil)
         customTaskVC.mode = .add
         let navigationVC = UINavigationController(rootViewController: customTaskVC)
         navigationVC.isModalInPresentation = true
@@ -46,9 +48,8 @@ final class TasksEditCoordinator: Coordinator {
     func pushToEditTask(_ task: DailyTask) {
         let customTaskVC = CustomTaskViewController()
         delegate = customTaskVC
-        customTaskVC.coordinator = self
+        customTaskVC.viewModel = CustomTaskViewModel(coordinator: self, task: task)
         customTaskVC.mode = .edit
-        customTaskVC.task = task
         rootViewController.pushViewController(customTaskVC, animated: true)
     }
     
@@ -57,14 +58,27 @@ final class TasksEditCoordinator: Coordinator {
         iconChooserVC.coordinator = self
         present(UINavigationController(rootViewController: iconChooserVC))
     }
+
+    func presentToAmount(currentAmount: String, disposeBag: DisposeBag) {
+        rootViewController.visibleViewController?.showSeletedItemAlert(
+            Array(1...20).map { $0.description },
+            currentItem: currentAmount
+        ).subscribe(onNext: { title in
+            self.delegate?.updateAmount(title: title)
+        }).disposed(by: disposeBag)
+    }
     
     func dismiss(_ viewController: UIViewController) {
         if (viewController as? CustomTaskViewController)?.mode == .add {
-            rootViewController.dismiss(animated: true)
+            dismiss(animated: true)
         } else {
             rootViewController.popViewController(animated: true)
         }
         delegate = nil
+    }
+    
+    func dismiss(animated: Bool) {
+        rootViewController.visibleViewController?.dismiss(animated: animated)
     }
     
     func selectedIcon(_ icon: String) {
