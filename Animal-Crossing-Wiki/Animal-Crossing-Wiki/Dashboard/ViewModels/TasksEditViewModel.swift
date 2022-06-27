@@ -24,6 +24,7 @@ final class TasksEditViewModel {
         let didSeletedTask: Observable<IndexPath>
         let didTapCancel: Observable<Void>?
         let didTapAdd: Observable<Void>?
+        let didDeleted: Observable<IndexPath>
     }
     
     struct Output {
@@ -33,13 +34,10 @@ final class TasksEditViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let currentTasks = BehaviorRelay<[DailyTask]>(value: [])
         
-        storage.fetchTasks()
-            .subscribe(onSuccess: { tasks in
-                let sortedTasks = tasks.sorted(by: { $0.amount > $1.amount })
-                currentTasks.accept(sortedTasks)
-                self.tasks = sortedTasks
-            }, onFailure: { error in
-                print(error.localizedDescription)
+        Items.shared.dailyTasks
+            .subscribe(onNext: {  tasks in
+                currentTasks.accept(tasks)
+                self.tasks = tasks
             }).disposed(by: disposeBag)
         
         input.didSeletedTask
@@ -57,6 +55,18 @@ final class TasksEditViewModel {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 self.coordinator.finish()
+            }).disposed(by: disposeBag)
+        
+        input.didDeleted
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { indexPath in
+                self.storage.deleteTaskDelete(self.tasks.remove(at: indexPath.row))
+                    .subscribe(onSuccess: { task in
+                        Items.shared.deleteTask(task)
+                    }, onFailure: { error in
+                        debugPrint(error)
+                    }).disposed(by: disposeBag)
+                currentTasks.accept(self.tasks)
             }).disposed(by: disposeBag)
         
         return Output(tasks: currentTasks.asObservable())

@@ -56,7 +56,8 @@ class TaskEditViewController: UIViewController {
         let input = TasksEditViewModel.Input(
             didSeletedTask: tableView.rx.itemSelected.asObservable(),
             didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
-            didTapAdd: navigationItem.rightBarButtonItem?.rx.tap.asObservable()
+            didTapAdd: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
+            didDeleted: tableView.rx.itemDeleted.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         

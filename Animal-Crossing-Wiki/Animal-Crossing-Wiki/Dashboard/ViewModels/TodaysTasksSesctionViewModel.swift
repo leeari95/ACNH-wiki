@@ -34,18 +34,16 @@ final class TodaysTasksSesctionViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let currentTasks = BehaviorRelay<[(progressIndex: Int, task: DailyTask)]>(value: [])
         
-        var tasksList = [(progressIndex: Int, task: DailyTask)]()
-        storage.fetchTasks()
-            .subscribe(onSuccess: { tasks in
-                tasks.sorted(by: { $0.amount > $1.amount }).forEach { task in
+        Items.shared.dailyTasks
+            .subscribe(onNext: { tasks in
+                var tasksList = [(progressIndex: Int, task: DailyTask)]()
+                tasks.forEach { task in
                     (0..<task.amount).forEach { index in
                         tasksList.append((index, task))
                     }
                 }
                 self.tasks = tasksList
                 currentTasks.accept(tasksList)
-            }, onFailure: { error in
-                print(error.localizedDescription)
             }).disposed(by: disposeBag)
         
         input.didSelectItem
