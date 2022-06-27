@@ -19,8 +19,8 @@ class CustomTaskViewController: UIViewController {
     var mode: Mode?
     var viewModel: CustomTaskViewModel?
 
-    private let iconText = BehaviorRelay<String>(value: "Inv7")
-    private let amount = BehaviorRelay<String>(value: "1")
+    private let iconText = BehaviorRelay<String?>(value: nil)
+    private let amount = BehaviorRelay<String?>(value: nil)
     private let disposeBag = DisposeBag()
     
     private lazy var customTaskSection = CustomTaskSection()

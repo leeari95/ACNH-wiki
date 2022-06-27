@@ -164,7 +164,11 @@ extension Items {
     
     func updateTasks(_ task: DailyTask) {
         var tasks = currentDailyTasks.value
-        tasks.append(task)
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index] = task
+        } else {
+            tasks.append(task)
+        }
         self.currentDailyTasks.accept(tasks)
     }
     

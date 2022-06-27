@@ -26,8 +26,8 @@ final class CustomTaskViewModel {
         let didTapIcon: Observable<Void>
         let didTapAmount: Observable<Void>
         let taskNameText: Observable<String?>
-        let iconNameText: Observable<String>
-        let amountText: Observable<String>
+        let iconNameText: Observable<String?>
+        let amountText: Observable<String?>
     }
     
     struct Output {
@@ -63,7 +63,7 @@ final class CustomTaskViewModel {
                 } else {
                     newTask = DailyTask(
                         name: title.value ?? "",
-                        icon: icon.value ?? "",
+                        icon: icon.value ?? "Inv7",
                         isCompleted: false,
                         amount: Int(amount.value ?? "1") ?? 1,
                         createdDate: Date()
@@ -71,7 +71,8 @@ final class CustomTaskViewModel {
                 }
                 owner.storage.updateTask(newTask)
                 Items.shared.updateTasks(newTask)
-                owner.coordinator.dismiss(animated: true)
+                owner.coordinator.rootViewController.visibleViewController.flatMap { owner.coordinator.dismiss($0) }
+                
             }).disposed(by: disposeBag)
         
         input.didTapIcon
