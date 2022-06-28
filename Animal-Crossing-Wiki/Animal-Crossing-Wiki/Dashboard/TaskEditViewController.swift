@@ -64,10 +64,10 @@ class TaskEditViewController: UIViewController {
                     content.textProperties.font = .preferredFont(forTextStyle: .callout)
                 } else {
                     content.textProperties.color = .acText
-                    content.image = UIImage(named: task.icon)?.resizedImage(Size: CGSize(width: 30, height: 30))
+                    content.image = UIImage(named: task.icon)
                     content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
                 }
-                content.imageToTextPadding = 5
+                content.imageProperties.maximumSize = CGSize(width: 35, height: 35)
                 content.text = task.name
                 cell.backgroundColor = .acSecondaryBackground
                 cell.contentConfiguration = content
