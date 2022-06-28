@@ -80,6 +80,9 @@
 		9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */; };
 		9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */; };
 		9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */; };
+		9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7D286AC4F900629C4A /* AboutViewController.swift */; };
+		9A99AA81286ACBBC00629C4A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA80286ACBBC00629C4A /* Differentiator */; };
+		9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA82286ACBBC00629C4A /* RxDataSources */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -191,6 +194,7 @@
 		9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesctionViewModel.swift; sourceTree = "<group>"; };
 		9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditViewModel.swift; sourceTree = "<group>"; };
 		9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewModel.swift; sourceTree = "<group>"; };
+		9A99AA7D286AC4F900629C4A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */,
 				9A541B8528225F8E001B57FD /* RxSwift in Frameworks */,
 				9A541B8328225F8E001B57FD /* RxRelay in Frameworks */,
+				9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */,
+				9A99AA81286ACBBC00629C4A /* Differentiator in Frameworks */,
 				9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
+				9A99AA7D286AC4F900629C4A /* AboutViewController.swift */,
 				9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */,
 				9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */,
 				9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */,
@@ -589,6 +596,8 @@
 				9A541B8428225F8E001B57FD /* RxSwift */,
 				9A1DB1CD2840504B00689F11 /* Kingfisher */,
 				9A1DB1D6284081E400689F11 /* Alamofire */,
+				9A99AA80286ACBBC00629C4A /* Differentiator */,
+				9A99AA82286ACBBC00629C4A /* RxDataSources */,
 			);
 			productName = "Animal-Crossing-Wiki";
 			productReference = 9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */;
@@ -645,6 +654,7 @@
 				9A1DB1CC2840504B00689F11 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				9A4B4C2B284EEA2D00CC687C /* XCRemoteSwiftPackageReference "AnyCodable" */,
+				9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 9A541B6628220A72001B57FD /* Products */;
 			projectDirPath = "";
@@ -741,6 +751,7 @@
 				9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
+				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
 				9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
@@ -1098,6 +1109,14 @@
 				kind = branch;
 			};
 		};
+		9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1125,6 +1144,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		9A99AA80286ACBBC00629C4A /* Differentiator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = Differentiator;
+		};
+		9A99AA82286ACBBC00629C4A /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 /* End XCSwiftPackageProductDependency section */
 
