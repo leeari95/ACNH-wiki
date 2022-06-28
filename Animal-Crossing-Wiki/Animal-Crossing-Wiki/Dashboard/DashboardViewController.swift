@@ -37,6 +37,12 @@ class DashboardViewController: UIViewController {
             target: self,
             action: #selector(didTapSettingButton(_:))
         )
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapAboutButton(_:))
+        )
         
         view.addSubviews(sectionsScrollView)
         
@@ -53,4 +59,7 @@ class DashboardViewController: UIViewController {
         coordinator?.presentToSetting()
     }
 
+    @objc private func didTapAboutButton(_ sender: UIBarButtonItem) {
+        coordinator?.presentToAbout()
+    }
 }

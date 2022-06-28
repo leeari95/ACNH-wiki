@@ -34,6 +34,12 @@ final class DashboardCoordinator: Coordinator {
         present(navigationController)
     }
     
+    func presentToAbout() {
+        let aboutVC = AboutViewController()
+        let navigationController = UINavigationController(rootViewController: aboutVC)
+        present(navigationController)
+    }
+    
     func presentToTaskEdit() {
         let tasksEditCoordinator = TasksEditCoordinator()
         tasksEditCoordinator.parentCoordinator = self
