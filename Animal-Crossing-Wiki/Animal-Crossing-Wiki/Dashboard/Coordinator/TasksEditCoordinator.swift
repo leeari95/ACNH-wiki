@@ -10,7 +10,6 @@ import RxSwift
 
 protocol CustomTaskViewControllerDelegate: AnyObject {
     func seletedIcon(_ icon: String)
-    func updateAmount(title: String)
 }
 
 final class TasksEditCoordinator: Coordinator {
@@ -52,15 +51,6 @@ final class TasksEditCoordinator: Coordinator {
         let iconChooserVC = IconChooserViewController()
         iconChooserVC.coordinator = self
         present(UINavigationController(rootViewController: iconChooserVC))
-    }
-
-    func presentToAmount(currentAmount: String, disposeBag: DisposeBag) {
-        rootViewController.visibleViewController?.showSeletedItemAlert(
-            Array(1...20).map { $0.description },
-            currentItem: currentAmount
-        ).subscribe(onNext: { title in
-            self.delegate?.updateAmount(title: title)
-        }).disposed(by: disposeBag)
     }
     
     func popVC(animated: Bool) {

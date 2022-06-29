@@ -35,6 +35,7 @@ final class CustomTaskViewModel {
     
     struct Output {
         let task: Observable<DailyTask?>
+        let didChangeAmout: Observable<String>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -42,6 +43,7 @@ final class CustomTaskViewModel {
         let title = BehaviorRelay<String?>(value: nil)
         let icon = BehaviorRelay<String?>(value: nil)
         let amount = BehaviorRelay<String?>(value: nil)
+        let currentAmount = BehaviorRelay<String>(value: task?.amount.description ?? "1")
         
         input.didTapCheck?
             .withUnretained(self)
@@ -80,10 +82,13 @@ final class CustomTaskViewModel {
         input.didTapAmount
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.coordinator.presentToAmount(
-                    currentAmount: owner.task?.amount.description ?? "1",
-                    disposeBag: disposeBag
-                )
+                owner.coordinator.rootViewController.visibleViewController?
+                    .showSeletedItemAlert(
+                        Array(1...20).map { $0.description },
+                        currentItem: currentAmount.value
+                    ).subscribe(onNext: { title in
+                        currentAmount.accept(title)
+                    }).disposed(by: disposeBag)
             }).disposed(by: disposeBag)
         
         input.taskNameText
@@ -103,6 +108,6 @@ final class CustomTaskViewModel {
                 amount.accept(text)
             }).disposed(by: disposeBag)
         
-        return Output(task: Observable.just(task))
+        return Output(task: Observable.just(task), didChangeAmout: currentAmount.asObservable())
     }
 }

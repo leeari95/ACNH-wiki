@@ -77,6 +77,14 @@ class CustomTaskViewController: UIViewController {
             .subscribe(onNext: { task in
                 self.customTaskSection.setUpViews(task)
             }).disposed(by: disposeBag)
+        
+        output?.didChangeAmout
+            .compactMap { $0 }
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { text in
+                self.customTaskSection.updateAmount(text)
+                self.amount.accept(text)
+            }).disposed(by: disposeBag)
     }
 
 }
@@ -85,10 +93,5 @@ extension CustomTaskViewController: CustomTaskViewControllerDelegate {
     func seletedIcon(_ icon: String) {
         customTaskSection.updateIcon(icon)
         iconText.accept(icon)
-    }
-    
-    func updateAmount(title: String) {
-        customTaskSection.updateAmount(title)
-        amount.accept(title)
     }
 }
