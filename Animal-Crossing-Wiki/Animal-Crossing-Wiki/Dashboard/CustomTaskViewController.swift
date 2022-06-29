@@ -64,9 +64,9 @@ class CustomTaskViewController: UIViewController {
     private func bind() {
         let input = CustomTaskViewModel.Input(
             didTapCheck: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
-            didTapIcon: self.customTaskSection.iconButtonObservable,
-            didTapAmount: self.customTaskSection.maxAmountButtonObservable,
-            taskNameText: self.customTaskSection.taskNameObservable,
+            didTapIcon: customTaskSection.iconButtonObservable,
+            didTapAmount: customTaskSection.maxAmountButtonObservable,
+            taskNameText: customTaskSection.taskNameObservable,
             iconNameText: iconText.asObservable(),
             amountText: amount.asObservable()
         )
@@ -74,16 +74,18 @@ class CustomTaskViewController: UIViewController {
         
         output?.task
             .compactMap { $0 }
-            .subscribe(onNext: { task in
-                self.customTaskSection.setUpViews(task)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, task in
+                owner.customTaskSection.setUpViews(task)
             }).disposed(by: disposeBag)
         
         output?.didChangeAmout
             .compactMap { $0 }
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { text in
-                self.customTaskSection.updateAmount(text)
-                self.amount.accept(text)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, text in
+                owner.customTaskSection.updateAmount(text)
+                owner.amount.accept(text)
             }).disposed(by: disposeBag)
     }
 

@@ -80,17 +80,19 @@ class PreferencesViewController: UIViewController {
         output?.didChangeHemisphere
             .compactMap { $0 }
             .compactMap { Hemisphere(rawValue: $0) }
-            .subscribe(onNext: { hemisphere in
-                self.settingSection.updateHemisphere(hemisphere)
-                self.currentHemisphere.onNext(hemisphere)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, hemisphere in
+                owner.settingSection.updateHemisphere(hemisphere)
+                owner.currentHemisphere.onNext(hemisphere)
             }).disposed(by: disposeBag)
         
         output?.didChangeFruit
             .compactMap { $0 }
             .compactMap { Fruit(rawValue: $0) }
-            .subscribe(onNext: { fruit in
-                self.settingSection.updateFruit(fruit)
-                self.currentFruit.onNext(fruit)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, fruit in
+                owner.settingSection.updateFruit(fruit)
+                owner.currentFruit.onNext(fruit)
             }).disposed(by: disposeBag)
     }
 }
