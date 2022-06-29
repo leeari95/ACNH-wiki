@@ -28,7 +28,7 @@ final class DashboardCoordinator: Coordinator {
     
     func presentToSetting() {
         let preferencesVC = PreferencesViewController()
-        preferencesVC.viewModel = PreferencesViewModel()
+        preferencesVC.viewModel = PreferencesViewModel(coordinator: self)
         let navigationController = UINavigationController(rootViewController: preferencesVC)
         navigationController.isModalInPresentation = true
         present(navigationController)
@@ -46,5 +46,9 @@ final class DashboardCoordinator: Coordinator {
         tasksEditCoordinator.start()
         childCoordinators.append(tasksEditCoordinator)
         present(tasksEditCoordinator.rootViewController)
+    }
+    
+    func dismiss(animated: Bool) {
+        rootViewController.visibleViewController?.dismiss(animated: animated)
     }
 }

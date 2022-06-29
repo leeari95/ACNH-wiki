@@ -24,6 +24,7 @@ class PreferencesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        bind()
     }
     
     private func setUp() {
@@ -34,7 +35,7 @@ class PreferencesViewController: UIViewController {
             image: UIImage(systemName: "xmark.app.fill"),
             style: .plain,
             target: self,
-            action: #selector(didTapCancelButton(_:))
+            action: nil
         )
         
         view.addSubviews(sectionsScrollView)
@@ -45,10 +46,6 @@ class PreferencesViewController: UIViewController {
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-        
-        settingSection.addTargets(self, hemisphere: #selector(didTapHemisphere(_:)), fruit: #selector(didTapFruit(_:)))
-        
-        bind()
     }
     
     private func bind() {
@@ -56,7 +53,10 @@ class PreferencesViewController: UIViewController {
             islandNameText: settingSection.islandNameObservable,
             userNameText: settingSection.userNameObservable,
             hemisphereButtonTitle: currentHemisphere.asObservable(),
-            startingFruitButtonTitle: currentFruit.asObservable()
+            startingFruitButtonTitle: currentFruit.asObservable(),
+            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
+            didTapHemisphere: settingSection.hemisphereButtonObservable,
+            didTapFruit: settingSection.startingFruitButtonObservable
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -76,35 +76,21 @@ class PreferencesViewController: UIViewController {
             .subscribe(onNext: { errorMessage in
                 print(errorMessage)
             }).disposed(by: disposeBag)
-    }
-    
-    @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
-    @objc private func didTapHemisphere(_ sender: UIButton) {
-        showSeletedItemAlert(
-            Hemisphere.allCases.map { $0.rawValue },
-            currentItem: sender.titleLabel?.text
-        ).subscribe(onNext: { title in
-            Hemisphere(rawValue: title)
-                .flatMap {
-                    self.settingSection.updateHemisphere($0)
-                    self.currentHemisphere.onNext($0)
-                }
-        }).disposed(by: disposeBag)
-    }
-    
-    @objc private func didTapFruit(_ sender: UIButton) {
-        showSeletedItemAlert(
-            Fruit.allCases.map { $0.imageName },
-            currentItem: settingSection.currentFruit.imageName
-        ).subscribe(onNext: { title in
-            Fruit(rawValue: title.lowercased())
-                .flatMap {
-                    self.settingSection.updateFruit($0)
-                    self.currentFruit.onNext($0)
-                }
-        }).disposed(by: disposeBag)
+        
+        output?.didChangeHemisphere
+            .compactMap { $0 }
+            .compactMap { Hemisphere(rawValue: $0) }
+            .subscribe(onNext: { hemisphere in
+                self.settingSection.updateHemisphere(hemisphere)
+                self.currentHemisphere.onNext(hemisphere)
+            }).disposed(by: disposeBag)
+        
+        output?.didChangeFruit
+            .compactMap { $0 }
+            .compactMap { Fruit(rawValue: $0) }
+            .subscribe(onNext: { fruit in
+                self.settingSection.updateFruit(fruit)
+                self.currentFruit.onNext(fruit)
+            }).disposed(by: disposeBag)
     }
 }

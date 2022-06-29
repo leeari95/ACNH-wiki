@@ -109,16 +109,19 @@ extension PreferencesSection {
         return userNameTextField.rx.text.asObservable()
     }
     
+    var hemisphereButtonObservable: Observable<Void> {
+        return hemisphereButton.rx.tap.asObservable()
+    }
+    
+    var startingFruitButtonObservable: Observable<Void> {
+        return startingFruitButton.rx.tap.asObservable()
+    }
+    
     func setUpViews(_ userInfo: UserInfo) {
         userNameTextField.text = userInfo.name
         islandNameTextField.text = userInfo.islandName
         updateHemisphere(userInfo.hemisphere)
         updateFruit(userInfo.islandFruit)
-    }
-    
-    func addTargets(_ viewContrller: UIViewController, hemisphere: Selector, fruit: Selector) {
-        hemisphereButton.addTarget(viewContrller, action: hemisphere, for: .touchUpInside)
-        startingFruitButton.addTarget(viewContrller, action: fruit, for: .touchUpInside)
     }
     
     func updateHemisphere(_ hemisphere: Hemisphere) {

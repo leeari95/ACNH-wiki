@@ -9,7 +9,7 @@ import Foundation
 
 protocol Coordinator: AnyObject {
     var type: CoordinatorType { get }
-    var childCoordinators : [Coordinator] { get set }
+    var childCoordinators: [Coordinator] { get set }
     func start()
     func childDidFinish(_ child: Coordinator?)
 }
