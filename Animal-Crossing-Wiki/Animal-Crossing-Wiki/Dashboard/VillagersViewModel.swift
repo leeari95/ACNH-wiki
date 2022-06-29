@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+final class VillagersViewModel {
+    
+    var coordinator: VillagersCoordinator?
+    
+    init(coordinator: VillagersCoordinator) {
+        self.coordinator = coordinator
+    }
+}

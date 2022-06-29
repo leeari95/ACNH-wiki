@@ -9,6 +9,8 @@ import UIKit
 
 class VillagersViewController: UIViewController {
 
+    var viewModel: VillagersViewModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
