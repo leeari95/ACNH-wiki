@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class CoreDataUserInfoStorage {
     
@@ -15,35 +16,33 @@ final class CoreDataUserInfoStorage {
         self.coreDataStorage = coreDataStorage
     }
     
-    func fetchUserInfo(completion: @escaping (Result<UserInfo, Error>) -> Void) {
-        coreDataStorage.performBackgroundTask { [weak self] context in
-            do {
-                let object = try self?.coreDataStorage.getUserCollection(context)
-                let userInfo = UserInfo(
-                    name: object?.name ?? "",
-                    islandName: object?.islandName ?? "",
-                    islandFruit: Fruit(rawValue: object?.islandFruit ?? "") ?? .apple,
-                    hemisphere: Hemisphere(rawValue: object?.hemisphere ?? "") ?? .north
-                )
-                completion(.success(userInfo))
-            } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
+    func fetchUserInfo() -> Single<UserInfo> {
+        return Single.create {  single in
+            self.coreDataStorage.performBackgroundTask { context in
+                do {
+                    let object = try self.coreDataStorage.getUserCollection(context)
+                    let userInfo = object.toDomain()
+                    single(.success(userInfo))
+                } catch {
+                    single(.failure(CoreDataStorageError.readError(error)))
+                }
             }
+            return Disposables.create()
         }
+        
     }
     
-    func updateUserInfo(_ userInfo: UserInfo, completion: @escaping (Result<UserInfo, Error>) -> Void) {
-        coreDataStorage.performBackgroundTask { [weak self] context in
+    func updateUserInfo(_ userInfo: UserInfo) {
+        self.coreDataStorage.performBackgroundTask { context in
             do {
-                let object = try self?.coreDataStorage.getUserCollection(context)
-                object?.name = userInfo.name
-                object?.islandName = userInfo.islandName
-                object?.islandFruit = userInfo.islandFruit.rawValue
-                object?.hemisphere = userInfo.hemisphere.rawValue
+                let object = try self.coreDataStorage.getUserCollection(context)
+                object.name = userInfo.name
+                object.islandName = userInfo.islandName
+                object.islandFruit = userInfo.islandFruit.rawValue
+                object.hemisphere = userInfo.hemisphere.rawValue
                 context.saveContext()
-                completion(.success(userInfo))
             } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
+                debugPrint(error)
             }
         }
     }

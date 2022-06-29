@@ -16,8 +16,7 @@
 		9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C3628503A0400CC687C /* DailyTask.swift */; };
 		9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6828220A72001B57FD /* AppDelegate.swift */; };
 		9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6A28220A72001B57FD /* SceneDelegate.swift */; };
-		9A541B6D28220A72001B57FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* ViewController.swift */; };
-		9A541B7028220A72001B57FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B6E28220A72001B57FD /* Main.storyboard */; };
+		9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A541B6C28220A72001B57FD /* DashboardViewController.swift */; };
 		9A541B7228220A73001B57FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B7128220A73001B57FD /* Assets.xcassets */; };
 		9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A541B7328220A73001B57FD /* LaunchScreen.storyboard */; };
 		9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8028225F8E001B57FD /* RxCocoa */; };
@@ -42,6 +41,49 @@
 		9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */; };
 		9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C0283380CD0061AAF1 /* ArtRequest.swift */; };
 		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
+		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
+		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
+		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
+		9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA0B285824F000629C4A /* UIColor+extension.swift */; };
+		9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA1328584C9B00629C4A /* UIFont+extension.swift */; };
+		9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA1D2858743F00629C4A /* SectionView.swift */; };
+		9A99AA2028587A7500629C4A /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */; };
+		9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA212858802B00629C4A /* UIView+extension.swift */; };
+		9A99AA242858803D00629C4A /* UIStackView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA232858803D00629C4A /* UIStackView+extension.swift */; };
+		9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA252858827900629C4A /* UserInfoSection.swift */; };
+		9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */; };
+		9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA352859C8BD00629C4A /* VillagersSection.swift */; };
+		9A99AA382859F74900629C4A /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA372859F74900629C4A /* ProgressView.swift */; };
+		9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */; };
+		9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */; };
+		9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA3D285AEA1700629C4A /* Date+extension.swift */; };
+		9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */; };
+		9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */; };
+		9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */; };
+		9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */; };
+		9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA51285C32C300629C4A /* PreferencesSection.swift */; };
+		9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA53285C341E00629C4A /* InfoContentView.swift */; };
+		9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA55285C422200629C4A /* UIViewController+extension.swift */; };
+		9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */; };
+		9A99AA5A28602F4A00629C4A /* CustomTaskSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5928602F4A00629C4A /* CustomTaskSection.swift */; };
+		9A99AA5C2860319100629C4A /* CustomTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */; };
+		9A99AA5E2860331B00629C4A /* TasksEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */; };
+		9A99AA6128603CB800629C4A /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5F28603CB800629C4A /* ItemRow.swift */; };
+		9A99AA6228603CB800629C4A /* ItemRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA6028603CB800629C4A /* ItemRow.xib */; };
+		9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA632860401400629C4A /* UICollectionView+extension.swift */; };
+		9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA652860431A00629C4A /* IconChooserViewController.swift */; };
+		9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */; };
+		9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */; };
+		9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6E28643CA700629C4A /* UIImage+extension.swift */; };
+		9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */; };
+		9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */; };
+		9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */; };
+		9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */; };
+		9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */; };
+		9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7D286AC4F900629C4A /* AboutViewController.swift */; };
+		9A99AA81286ACBBC00629C4A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA80286ACBBC00629C4A /* Differentiator */; };
+		9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA82286ACBBC00629C4A /* RxDataSources */; };
+		9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA84286AE22200629C4A /* AboutItem.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -91,8 +133,7 @@
 		9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animal-Crossing-Wiki.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A541B6828220A72001B57FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A541B6A28220A72001B57FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9A541B6C28220A72001B57FD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9A541B6F28220A72001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9A541B6C28220A72001B57FD /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		9A541B7128220A73001B57FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A541B7428220A73001B57FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A541B7628220A73001B57FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,6 +156,47 @@
 		9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreaturesResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891C0283380CD0061AAF1 /* ArtRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtRequest.swift; sourceTree = "<group>"; };
 		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
+		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
+		9A99AA0B285824F000629C4A /* UIColor+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
+		9A99AA1328584C9B00629C4A /* UIFont+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+extension.swift"; sourceTree = "<group>"; };
+		9A99AA1D2858743F00629C4A /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
+		9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
+		9A99AA212858802B00629C4A /* UIView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extension.swift"; sourceTree = "<group>"; };
+		9A99AA232858803D00629C4A /* UIStackView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+extension.swift"; sourceTree = "<group>"; };
+		9A99AA252858827900629C4A /* UserInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSection.swift; sourceTree = "<group>"; };
+		9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesction.swift; sourceTree = "<group>"; };
+		9A99AA352859C8BD00629C4A /* VillagersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSection.swift; sourceTree = "<group>"; };
+		9A99AA372859F74900629C4A /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollecitonProgressSection.swift; sourceTree = "<group>"; };
+		9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		9A99AA3D285AEA1700629C4A /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
+		9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsScrollView.swift; sourceTree = "<group>"; };
+		9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCoordinator.swift; sourceTree = "<group>"; };
+		9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extension.swift"; sourceTree = "<group>"; };
+		9A99AA51285C32C300629C4A /* PreferencesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesSection.swift; sourceTree = "<group>"; };
+		9A99AA53285C341E00629C4A /* InfoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoContentView.swift; sourceTree = "<group>"; };
+		9A99AA55285C422200629C4A /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
+		9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
+		9A99AA5928602F4A00629C4A /* CustomTaskSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskSection.swift; sourceTree = "<group>"; };
+		9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewController.swift; sourceTree = "<group>"; };
+		9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditCoordinator.swift; sourceTree = "<group>"; };
+		9A99AA5F28603CB800629C4A /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
+		9A99AA6028603CB800629C4A /* ItemRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemRow.xib; sourceTree = "<group>"; };
+		9A99AA632860401400629C4A /* UICollectionView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+extension.swift"; sourceTree = "<group>"; };
+		9A99AA652860431A00629C4A /* IconChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconChooserViewController.swift; sourceTree = "<group>"; };
+		9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		9A99AA6E28643CA700629C4A /* UIImage+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extension.swift"; sourceTree = "<group>"; };
+		9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+Mapping.swift"; sourceTree = "<group>"; };
+		9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSectionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSesctionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditViewModel.swift; sourceTree = "<group>"; };
+		9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewModel.swift; sourceTree = "<group>"; };
+		9A99AA7D286AC4F900629C4A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		9A99AA84286AE22200629C4A /* AboutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutItem.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -155,6 +237,8 @@
 				9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */,
 				9A541B8528225F8E001B57FD /* RxSwift in Frameworks */,
 				9A541B8328225F8E001B57FD /* RxRelay in Frameworks */,
+				9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */,
+				9A99AA81286ACBBC00629C4A /* Differentiator in Frameworks */,
 				9A541B8128225F8E001B57FD /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +263,7 @@
 				9AF0419728505B1C00C51449 /* Items */,
 				9AF04226285313ED00C51449 /* UserInfo.swift */,
 				9AF0423F2856F4C000C51449 /* Hemisphere.swift */,
+				9A99AA84286AE22200629C4A /* AboutItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -204,14 +289,16 @@
 		9A541B6728220A72001B57FD /* Animal-Crossing-Wiki */ = {
 			isa = PBXGroup;
 			children = (
+				9A99AA052858247700629C4A /* Coordinator.swift */,
+				9A99AA072858248600629C4A /* AppCoordinator.swift */,
+				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
 				9A541B7628220A73001B57FD /* Info.plist */,
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
-				9A541B6C28220A72001B57FD /* ViewController.swift */,
+				9A99AA29285890D500629C4A /* Dashboard */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9AF041A42851ADFF00C51449 /* Extension */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
-				9A541B6E28220A72001B57FD /* Main.storyboard */,
 				9AF041CD2851DDE700C51449 /* CoreDataStorage */,
 				9A4B4C3828503A6100CC687C /* Models */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
@@ -278,6 +365,81 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		9A99AA29285890D500629C4A /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
+				9A99AA7D286AC4F900629C4A /* AboutViewController.swift */,
+				9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */,
+				9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */,
+				9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */,
+				9A99AA652860431A00629C4A /* IconChooserViewController.swift */,
+				9A99AA4E285B11F300629C4A /* Coordinator */,
+				9A99AA6B28618C8500629C4A /* ViewModels */,
+				9A99AA4D285B11DA00629C4A /* Views */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		9A99AA2A285890F400629C4A /* shared */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA45285AF1D500629C4A /* SectionsScrollView.swift */,
+				9A99AA1D2858743F00629C4A /* SectionView.swift */,
+				9A99AA1F28587A7500629C4A /* SectionHeaderView.swift */,
+				9A99AA53285C341E00629C4A /* InfoContentView.swift */,
+				9A99AA372859F74900629C4A /* ProgressView.swift */,
+				9A99AA3B285AE2FC00629C4A /* ProgressBar.swift */,
+				9A99AA5F28603CB800629C4A /* ItemRow.swift */,
+				9A99AA6028603CB800629C4A /* ItemRow.xib */,
+			);
+			path = shared;
+			sourceTree = "<group>";
+		};
+		9A99AA4D285B11DA00629C4A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA2A285890F400629C4A /* shared */,
+				9A99AA252858827900629C4A /* UserInfoSection.swift */,
+				9A99AA2B28597B7500629C4A /* TodaysTasksSesction.swift */,
+				9A99AA352859C8BD00629C4A /* VillagersSection.swift */,
+				9A99AA392859F9A300629C4A /* CollecitonProgressSection.swift */,
+				9A99AA51285C32C300629C4A /* PreferencesSection.swift */,
+				9A99AA5928602F4A00629C4A /* CustomTaskSection.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9A99AA4E285B11F300629C4A /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */,
+				9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		9A99AA6B28618C8500629C4A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
+				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
+				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
+				9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */,
+				9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */,
+				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9A99AA722864435100629C4A /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */,
+			);
+			path = EntityMapping;
+			sourceTree = "<group>";
+		};
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,7 +458,16 @@
 		9AF041A42851ADFF00C51449 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				9A99AA0B285824F000629C4A /* UIColor+extension.swift */,
+				9A99AA632860401400629C4A /* UICollectionView+extension.swift */,
 				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
+				9A99AA1328584C9B00629C4A /* UIFont+extension.swift */,
+				9A99AA212858802B00629C4A /* UIView+extension.swift */,
+				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
+				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
+				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
+				9A99AA55285C422200629C4A /* UIViewController+extension.swift */,
+				9A99AA6E28643CA700629C4A /* UIImage+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -392,6 +563,7 @@
 			children = (
 				9AF0422B2853161500C51449 /* UserInfoStorage.swift */,
 				9AF04228285315FA00C51449 /* CoreDataUserInfoStorage.swift */,
+				9A99AA722864435100629C4A /* EntityMapping */,
 			);
 			path = UserInfoStorage;
 			sourceTree = "<group>";
@@ -427,6 +599,8 @@
 				9A541B8428225F8E001B57FD /* RxSwift */,
 				9A1DB1CD2840504B00689F11 /* Kingfisher */,
 				9A1DB1D6284081E400689F11 /* Alamofire */,
+				9A99AA80286ACBBC00629C4A /* Differentiator */,
+				9A99AA82286ACBBC00629C4A /* RxDataSources */,
 			);
 			productName = "Animal-Crossing-Wiki";
 			productReference = 9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */;
@@ -483,6 +657,7 @@
 				9A1DB1CC2840504B00689F11 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				9A4B4C2B284EEA2D00CC687C /* XCRemoteSwiftPackageReference "AnyCodable" */,
+				9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 9A541B6628220A72001B57FD /* Products */;
 			projectDirPath = "";
@@ -501,7 +676,7 @@
 			files = (
 				9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */,
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
-				9A541B7028220A72001B57FD /* Main.storyboard in Resources */,
+				9A99AA6228603CB800629C4A /* ItemRow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,58 +717,98 @@
 			files = (
 				9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */,
 				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
+				9A99AA5E2860331B00629C4A /* TasksEditCoordinator.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
+				9A99AA362859C8BD00629C4A /* VillagersSection.swift in Sources */,
+				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
-				9A541B6D28220A72001B57FD /* ViewController.swift in Sources */,
+				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
+				9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */,
+				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
+				9A99AA5A28602F4A00629C4A /* CustomTaskSection.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
+				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
+				9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
+				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
+				9A99AA2C28597B7500629C4A /* TodaysTasksSesction.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
+				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
+				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
+				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
+				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
+				9A99AA52285C32C300629C4A /* PreferencesSection.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
+				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
+				9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
+				9A99AA5C2860319100629C4A /* CustomTaskViewController.swift in Sources */,
+				9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
+				9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */,
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
+				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
+				9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
+				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */,
+				9A99AA242858803D00629C4A /* UIStackView+extension.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
+				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
+				9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */,
+				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
+				9A99AA6128603CB800629C4A /* ItemRow.swift in Sources */,
 				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
+				9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
+				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
+				9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */,
+				9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
+				9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */,
+				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
+				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
 				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
+				9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */,
+				9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
 				9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */,
 				9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,
+				9A99AA2028587A7500629C4A /* SectionHeaderView.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
+				9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */,
+				9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,14 +831,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		9A541B6E28220A72001B57FD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9A541B6F28220A72001B57FD /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9A541B7328220A73001B57FD /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -755,7 +962,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RCVFD6XLU9;
@@ -763,7 +969,6 @@
 				INFOPLIST_FILE = "Animal-Crossing-Wiki/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -783,7 +988,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RCVFD6XLU9;
@@ -791,7 +995,6 @@
 				INFOPLIST_FILE = "Animal-Crossing-Wiki/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -910,6 +1113,14 @@
 				kind = branch;
 			};
 		};
+		9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -937,6 +1148,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		9A99AA80286ACBBC00629C4A /* Differentiator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = Differentiator;
+		};
+		9A99AA82286ACBBC00629C4A /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 /* End XCSwiftPackageProductDependency section */
 

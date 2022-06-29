@@ -11,7 +11,7 @@ struct UserInfo {
     private(set) var name: String
     private(set) var islandName: String
     private(set) var islandFruit: Fruit
-    private(set) var hemisphere: Hemisphere = .north
+    private(set) var hemisphere: Hemisphere
     
     mutating func updateName(_ name: String) {
         self.name = name
@@ -27,5 +27,14 @@ struct UserInfo {
     
     mutating func updateHemisphere(_ hemisphere: Hemisphere) {
         self.hemisphere = hemisphere
+    }
+}
+
+extension UserInfo: Equatable {
+    init() {
+        self.name = ""
+        self.islandName = ""
+        self.islandFruit = .apple
+        self.hemisphere = .north
     }
 }

@@ -18,7 +18,7 @@ enum CoreDataStorageError: LocalizedError {
         case .readError(let error):
             return "⛔️ 데이터 불러오기 실패\n에러내용: \(error.localizedDescription)"
         case .notFound:
-            return "⛔️ 삭제할 데이터를 찾지 못했습니다."
+            return "⛔️ 데이터를 찾지 못했습니다."
         case .categoryNotFound:
             return "⛔️ 카테고리가 존재하지 않는 아이템입니다."
         }
@@ -46,9 +46,10 @@ final class CoreDataStorage {
 }
 
 extension CoreDataStorage {
-    func getUserCollection(_ context: NSManagedObjectContext) throws -> UserCollectionEntity? {
+    
+    func getUserCollection(_ context: NSManagedObjectContext) throws -> UserCollectionEntity {
         let request = UserCollectionEntity.fetchRequest()
-        return try context.fetch(request).first
+        return try context.fetch(request).first ?? UserCollectionEntity(UserInfo(), context: context)
     }
 }
 

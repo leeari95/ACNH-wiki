@@ -16,6 +16,8 @@ identifier_name:
 function_body_length:
   warning: 100
   error: 200
+line_length:
+  warning: 140
 disabled_rules: # 실행에서 제외할 룰 식별자들
   - colon
   - control_statement

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Fruit: String {
+enum Fruit: String, CaseIterable {
     case apple
     case orange
     case pear
@@ -16,5 +16,20 @@ enum Fruit: String {
     
     var imageName: String {
         return self.rawValue.capitalized
+    }
+}
+
+extension Fruit: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.apple, .apple),
+            (.orange, .orange),
+            (.pear, .pear),
+            (.cherry, .cherry),
+            (.peach, .peach):
+            return true
+        default:
+            return false
+        }
     }
 }

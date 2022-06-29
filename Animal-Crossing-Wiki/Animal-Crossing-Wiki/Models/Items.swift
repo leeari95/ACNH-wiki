@@ -22,16 +22,42 @@ final class Items {
     var isLoading: Observable<Bool> {
         return self.isLoad.asObservable()
     }
+    var userInfo: Observable<UserInfo?> {
+        return self.currentUserInfo.asObservable()
+    }
+    
+    var dailyTasks: Observable<[DailyTask]> {
+        return self.currentDailyTasks.asObservable()
+    }
     
     // MARK: - Private
     private let network: APIProvider = DefaultAPIProvider()
+    private let disposeBag = DisposeBag()
+    
     private let villagers = BehaviorRelay<[Villager]>(value: [])
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
-    private var isLoad = BehaviorRelay<Bool>(value: false)
+    private let isLoad = BehaviorRelay<Bool>(value: false)
+    private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
+    private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     
     private init() {
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
+
+        CoreDataUserInfoStorage().fetchUserInfo()
+            .subscribe(onSuccess: { userInfo in
+                self.currentUserInfo.accept(userInfo)
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+        
+        CoreDataDailyTaskStorage().fetchTasks()
+            .subscribe(onSuccess: { tasks in
+                self.currentDailyTasks.accept(tasks)
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+        
         group.enter()
         network.requestList(VillagersRequest()) { result in
             switch result {
@@ -128,4 +154,29 @@ final class Items {
         }
     }
 
+}
+
+extension Items {
+    
+    func updateUserInfo(_ userInfo: UserInfo) {
+        self.currentUserInfo.accept(userInfo)
+    }
+    
+    func updateTasks(_ task: DailyTask) {
+        var tasks = currentDailyTasks.value
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index] = task
+        } else {
+            tasks.append(task)
+        }
+        self.currentDailyTasks.accept(tasks)
+    }
+    
+    func deleteTask(_ task: DailyTask) {
+        var tasks = currentDailyTasks.value
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks.remove(at: index)
+        }
+        self.currentDailyTasks.accept(tasks)
+    }
 }
