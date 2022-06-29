@@ -21,11 +21,11 @@ class AboutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        setUpViews()
         bind()
     }
     
-    private func setUp() {
+    private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "About"
         navigationItem.largeTitleDisplayMode = .never

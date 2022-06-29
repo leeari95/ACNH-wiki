@@ -34,11 +34,11 @@ class CustomTaskViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpView()
+        setUpViews()
         bind()
     }
     
-    private func setUpView() {
+    private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = mode?.rawValue
         navigationItem.largeTitleDisplayMode = .never

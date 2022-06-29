@@ -29,10 +29,10 @@ class IconChooserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        setUpViews()
     }
     
-    private func setUp() {
+    private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Icon"
         navigationItem.largeTitleDisplayMode = .never

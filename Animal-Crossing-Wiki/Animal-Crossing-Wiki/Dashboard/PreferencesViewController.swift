@@ -23,11 +23,11 @@ class PreferencesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        setUpViews()
         bind()
     }
     
-    private func setUp() {
+    private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Preferences"
         navigationItem.largeTitleDisplayMode = .never

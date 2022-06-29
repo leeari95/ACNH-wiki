@@ -21,11 +21,11 @@ class TaskEditViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        setUpViews()
         bind()
     }
     
-    private func setUp() {
+    private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Today's Tasks"
         navigationItem.largeTitleDisplayMode = .never
