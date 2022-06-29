@@ -11,8 +11,8 @@ import RxCocoa
 
 class UserInfoSection: UIView {
     
-    var viewModel: UserInfoSectionViewModel?
-    let disposeBag = DisposeBag()
+    private var viewModel: UserInfoSectionViewModel?
+    private let disposeBag = DisposeBag()
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()

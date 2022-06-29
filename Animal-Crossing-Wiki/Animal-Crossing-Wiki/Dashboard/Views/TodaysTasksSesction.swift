@@ -10,8 +10,7 @@ import RxSwift
 
 class TodaysTasksSesction: UIView {
 
-    var viewModel: TodaysTasksSesctionViewModel?
-    var coordinator: DashboardCoordinator?
+    private var viewModel: TodaysTasksSesctionViewModel?
     private let disposeBag = DisposeBag()
     private var heightConstraint: NSLayoutConstraint!
     

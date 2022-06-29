@@ -44,9 +44,6 @@ class SectionHeaderView: UIView {
         super.init(frame: frame)
         configure()
     }
-}
-
-extension SectionHeaderView {
     
     private func configure() {
         self.addSubviews(backgroundStackView)
@@ -65,7 +62,9 @@ extension SectionHeaderView {
             iconImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
+}
+
+extension SectionHeaderView {
     func setUp(title: String, iconName: String) {
         titleLabel.text = title
         iconImageView.image = UIImage(systemName: iconName)

@@ -123,7 +123,7 @@ class VillagersSection: UIView {
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
                 let cell = self.collectionView.cellForItem(at: indexPath) as? ItemRow
-                cell?.markCheck()
+                cell?.checkMark()
             }).disposed(by: disposeBag)
         
         resetButton.rx.tap

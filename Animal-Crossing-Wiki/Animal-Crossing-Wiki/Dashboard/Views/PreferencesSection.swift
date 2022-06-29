@@ -9,8 +9,6 @@ import UIKit
 import RxSwift
 
 class PreferencesSection: UIView {
-    
-    private(set) var currentFruit: Fruit = .apple
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -133,6 +131,5 @@ extension PreferencesSection {
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
-        currentFruit = fruit
     }
 }

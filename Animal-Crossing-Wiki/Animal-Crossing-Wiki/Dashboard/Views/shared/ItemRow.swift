@@ -37,7 +37,7 @@ class ItemRow: UICollectionViewCell {
         checkImage?.removeFromSuperview()
     }
     
-    func markCheck() {
+    func checkMark() {
         guard imageView.subviews.count <= 1 else {
             removeCheckMark()
             return
