@@ -107,14 +107,15 @@ class VillagersSection: UIView {
                 owner.layoutIfNeeded()
                 if villagers.isEmpty {
                     owner.subviews.compactMap { $0 as? UIButton }.first?.removeFromSuperview()
-                    owner.descriptionLabel.bottomAnchor.constraint(equalTo: owner.bottomAnchor, constant: -15).isActive = true
+                    owner.descriptionLabel.centerXAnchor.constraint(equalTo: owner.centerXAnchor).isActive = true
+                    owner.descriptionLabel.centerYAnchor.constraint(equalTo: owner.centerYAnchor).isActive = true
                     owner.descriptionLabel.text = """
                     Who have you talked to today?
                     Find the villagers you have visited and tap the home icon on the villager's page to keep track.
                     """
                 } else {
-                    owner.descriptionLabel.text = "Long press on a villager to see more info about them."
                     owner.subviews.forEach { $0.removeFromSuperview() }
+                    owner.descriptionLabel.text = "Long press on a villager to see more info about them."
                     owner.configure()
                 }
             }).disposed(by: disposeBag)
