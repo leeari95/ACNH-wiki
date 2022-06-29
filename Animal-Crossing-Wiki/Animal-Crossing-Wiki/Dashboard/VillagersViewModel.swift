@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 final class VillagersViewModel {
     
@@ -13,5 +15,26 @@ final class VillagersViewModel {
     
     init(coordinator: VillagersCoordinator) {
         self.coordinator = coordinator
+    }
+    
+    struct Input {
+        
+    }
+    
+    struct Output {
+        let villagers: Observable<[Villager]>
+    }
+    
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        let villagerList = BehaviorRelay<[Villager]>(value: [])
+        
+        Items.shared.villagerList
+            .subscribe(onNext: { villagers in
+                let sortedVillagers = villagers
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                villagerList.accept(sortedVillagers)
+            }).disposed(by: disposeBag)
+        
+        return Output(villagers: villagerList.asObservable())
     }
 }
