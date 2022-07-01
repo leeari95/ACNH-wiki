@@ -12,7 +12,7 @@ struct Villager {
     let iconImage: String
     let photoImage: String
     let houseImage: String?
-    let species: String
+    let species: Specie
     let gender: Gender
     let personality: Personality
     let subtype: Subtype

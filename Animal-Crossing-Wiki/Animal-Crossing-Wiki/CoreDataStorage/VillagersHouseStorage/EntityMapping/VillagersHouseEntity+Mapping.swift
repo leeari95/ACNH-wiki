@@ -28,7 +28,7 @@ extension VillagersHouseEntity {
         self.name = villager.name
         self.personality = villager.personality.rawValue
         self.photoImage = villager.photoImage
-        self.species = villager.species
+        self.species = villager.species.rawValue
         self.styles = villager.styles.map { $0.rawValue }
         self.subtype = villager.subtype.rawValue
         self.translations = villager.translations.toDictionary()
@@ -41,7 +41,7 @@ extension VillagersHouseEntity {
             iconImage: self.iconImage ?? "",
             photoImage: self.photoImage ?? "",
             houseImage: self.houseImage,
-            species: self.species ?? "",
+            species: Specie(rawValue: self.species ?? "") ?? .cat,
             gender: Gender(rawValue: self.gender ?? "") ?? .male,
             personality: Personality(rawValue: self.personality ?? "") ?? .normal,
             subtype: Subtype(rawValue: self.subtype ?? "") ?? .a,

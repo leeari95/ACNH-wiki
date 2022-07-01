@@ -13,7 +13,7 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let iconImage: String
     let photoImage: String
     let houseImage: String?
-    let species: String
+    let species: Specie
     let gender: Gender
     let personality: Personality
     let subtype: Subtype
@@ -39,6 +39,44 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
+}
+
+enum Specie: String, Codable {
+    case hamster = "Hamster"
+    case dog = "Dog"
+    case cow = "Cow"
+    case squirrel = "Squirrel"
+    case koala = "Koala"
+    case rhinoceros = "Rhinoceros"
+    case rabbit = "Rabbit"
+    case hippo = "Hippo"
+    case eagle = "Eagle"
+    case bull = "Bull"
+    case pig = "Pig"
+    case kangaroo = "Kangaroo"
+    case gorilla = "Gorilla"
+    case pstrich = "Ostrich"
+    case deer = "Deer"
+    case monkey = "Monkey"
+    case horse = "Horse"
+    case bearCub = "Bear cub"
+    case bear = "Bear"
+    case chicken = "Chicken"
+    case cat = "Cat"
+    case tiger = "Tiger"
+    case octopus = "Octopus"
+    case alligator = "Alligator"
+    case anteater = "Anteater"
+    case penguin = "Penguin"
+    case bird = "Bird"
+    case goat = "Goat"
+    case frog = "Frog"
+    case sheep = "Sheep"
+    case duck = "Duck"
+    case mouse = "Mouse"
+    case wolf = "Wolf"
+    case elephant = "Elephant"
+    case lion = "Lion"
 }
 
 enum KitchenEquipment: Codable {
