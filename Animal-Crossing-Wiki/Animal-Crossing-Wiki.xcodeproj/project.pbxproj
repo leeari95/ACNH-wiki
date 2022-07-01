@@ -89,6 +89,7 @@
 		9A99AA90286C187600629C4A /* VillagersRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA8E286C187600629C4A /* VillagersRow.xib */; };
 		9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */; };
 		9A99AA95286C1F6D00629C4A /* VillagersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */; };
+		9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -207,6 +208,7 @@
 		9A99AA8E286C187600629C4A /* VillagersRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VillagersRow.xib; sourceTree = "<group>"; };
 		9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersViewModel.swift; sourceTree = "<group>"; };
+		9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRowViewModel.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */,
+				9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */,
 				9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */,
+				9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */,
 				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,
