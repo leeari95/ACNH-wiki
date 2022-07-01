@@ -16,7 +16,6 @@ class VillagersRow: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         nameLabel.font = .preferredFont(for: .footnote, weight: .semibold)
     }
     
