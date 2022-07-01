@@ -6,15 +6,9 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol VillagersLikeStorage {
-    func fetchVillagerLike(completion: @escaping (Result<[Villager], Error>) -> Void)
-    func insertVillagerLike(
-        _ villager: Villager,
-        completion: @escaping (Result<Villager, Error>) -> Void
-    )
-    func deleteVilagerLikeDelete(
-        _ item: Villager,
-        completion: @escaping (Result<Villager?, Error>) -> Void
-    )
+    func fetch() -> Single<[Villager]>
+    func update(_ villager: Villager) 
 }

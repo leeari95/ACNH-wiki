@@ -13,37 +13,27 @@ import RxRelay
 final class Items {
     static let shared = Items()
     
-    var villagerList: Observable<[Villager]> {
-        return self.villagers.asObservable()
-    }
-    var categoryList: Observable<[Category: [Item]]> {
-        return self.categories.asObservable()
-    }
-    var isLoading: Observable<Bool> {
-        return self.isLoad.asObservable()
-    }
-    var userInfo: Observable<UserInfo?> {
-        return self.currentUserInfo.asObservable()
-    }
-    
-    var dailyTasks: Observable<[DailyTask]> {
-        return self.currentDailyTasks.asObservable()
-    }
-    
     // MARK: - Private
     private let network: APIProvider = DefaultAPIProvider()
+    private let villagersLikeStorage = CoreDataVillagersLikeStorage()
+    private let villagersHouseStorage = CoreDataVillagersHouseStorage()
     private let disposeBag = DisposeBag()
     
     private let villagers = BehaviorRelay<[Villager]>(value: [])
+    private let villagersLike = BehaviorRelay<[Villager]>(value: [])
+    private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
+    
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
     private let isLoad = BehaviorRelay<Bool>(value: false)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     
     private init() {
-        let group = DispatchGroup()
-        var itemList: [Category: [Item]] = [:]
-
+        setUpUserCollection()
+        fetchCatalog()
+    }
+    
+    private func setUpUserCollection() {
         CoreDataUserInfoStorage().fetchUserInfo()
             .subscribe(onSuccess: { userInfo in
                 self.currentUserInfo.accept(userInfo)
@@ -57,6 +47,27 @@ final class Items {
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
+        
+        CoreDataVillagersLikeStorage().fetch()
+            .subscribe(onSuccess: { villagers in
+                self.villagersLike.accept(villagers)
+                print(villagers.map { $0.translations.kRko })
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+        
+        CoreDataVillagersHouseStorage().fetch()
+            .subscribe(onSuccess: { villagers in
+                self.villagersHouse.accept(villagers)
+                print(villagers.map { $0.translations.kRko })
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+    }
+
+    private func fetchCatalog() {
+        let group = DispatchGroup()
+        var itemList: [Category: [Item]] = [:]
         
         group.enter()
         network.requestList(VillagersRequest()) { result in
@@ -153,10 +164,35 @@ final class Items {
             self.isLoad.accept(true)
         }
     }
-
 }
 
 extension Items {
+    
+    var villagerList: Observable<[Villager]> {
+        return self.villagers.asObservable()
+    }
+    
+    var villagerHouseList: Observable<[Villager]> {
+        return self.villagersHouse.asObservable()
+    }
+    
+    var villagerLikeList: Observable<[Villager]> {
+        return self.villagersLike.asObservable()
+    }
+    
+    var categoryList: Observable<[Category: [Item]]> {
+        return self.categories.asObservable()
+    }
+    var isLoading: Observable<Bool> {
+        return self.isLoad.asObservable()
+    }
+    var userInfo: Observable<UserInfo?> {
+        return self.currentUserInfo.asObservable()
+    }
+    
+    var dailyTasks: Observable<[DailyTask]> {
+        return self.currentDailyTasks.asObservable()
+    }
     
     func updateUserInfo(_ userInfo: UserInfo) {
         self.currentUserInfo.accept(userInfo)
@@ -178,5 +214,25 @@ extension Items {
             tasks.remove(at: index)
         }
         self.currentDailyTasks.accept(tasks)
+    }
+    
+    func updateVillagerHouse(_ villager: Villager) {
+        var villagers = villagersHouse.value
+        if let index = villagers.firstIndex(where: {$0.name == villager.name}) {
+            villagers.remove(at: index)
+        } else {
+            villagers.append(villager)
+        }
+        villagersHouse.accept(villagers)
+    }
+    
+    func updateVillagerLike(_ villager: Villager) {
+        var villagers = villagersLike.value
+        if let index = villagers.firstIndex(where: {$0.name == villager.name}) {
+            villagers.remove(at: index)
+        } else {
+            villagers.append(villager)
+        }
+        villagersLike.accept(villagers)
     }
 }

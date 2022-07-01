@@ -142,7 +142,7 @@ struct Translations: Codable {
     
     func localizedName() -> String {
         guard let code = Locale.current.languageCode, let languageCode = LanguageCode(rawValue: code) else {
-            return eUen
+            return uSen
         }
         switch languageCode {
         case .de: return eUde
