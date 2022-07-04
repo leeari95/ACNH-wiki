@@ -53,7 +53,15 @@ final class VillagersViewModel {
                 case .residents: filterVillagers = houseVillagers
                 }
                 filterVillagers = filterVillagers
-                    .filter { $0.translations.localizedName().contains(text) }
+                    .filter {
+                        let villagerName = $0.translations.localizedName()
+                        let isChosungCheck = text.isChosung
+                        if isChosungCheck {
+                            return (villagerName.contains(text) || villagerName.chosung.contains(text))
+                        } else {
+                            return villagerName.contains(text)
+                        }
+                    }
                 indicationVillagers.accept(filterVillagers)
             }).disposed(by: disposeBag)
         
