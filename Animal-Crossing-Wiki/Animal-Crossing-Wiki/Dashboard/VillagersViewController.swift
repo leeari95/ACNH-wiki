@@ -26,8 +26,8 @@ class VillagersViewController: UIViewController {
 
     var viewModel: VillagersViewModel?
     private let disposeBag = DisposeBag()
-    private var currentSelected: [Menu: String] = [.all: "All"]
-    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: "All"])
+    private var currentSelected: [Menu: String] = [.all: Menu.all.rawValue]
+    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.rawValue])
     
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -142,8 +142,8 @@ class VillagersViewController: UIViewController {
             }
         }
         
-        let all = UIAction(title: "All", handler: { _ in
-            self.currentSelected = [Menu.all: "All"]
+        let all = UIAction(title: Menu.all.rawValue, handler: { _ in
+            self.currentSelected = [Menu.all: Menu.all.rawValue]
             self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
         })
         if currentSelected[Menu.all] != nil {
