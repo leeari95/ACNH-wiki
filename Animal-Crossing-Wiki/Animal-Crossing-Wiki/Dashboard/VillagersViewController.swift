@@ -7,11 +7,21 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class VillagersViewController: UIViewController {
 
     var viewModel: VillagersViewModel?
     private let disposeBag = DisposeBag()
+    private var currentSelected = ["All": "전체"]
+    private var selectedKeyword = BehaviorRelay<[String: String]>(value: ["All": "전체"])
+    
+    private var menuItems: [(title: String, subTitle: [String])] = [
+        ("Personality", Personality.allCases.map { $0.rawValue }),
+        ("Gender", Gender.allCases.map { $0.rawValue }),
+        ("Type", Subtype.allCases.map { $0.rawValue }),
+        ("Species", Specie.allCases.map { $0.rawValue })
+    ]
     
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -25,6 +35,19 @@ class VillagersViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.showsScopeBar = true
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Search a villager"
+        searchController.searchBar.scopeButtonTitles = [
+            "All",
+            "Liked",
+            "Residents"
+        ]
+        return searchController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
@@ -32,20 +55,32 @@ class VillagersViewController: UIViewController {
     }
     
     private func bind() {
-        let input = VillagersViewModel.Input()
+        let input = VillagersViewModel.Input(
+            searchBarText: searchController.searchBar.rx.text.asObservable(),
+            seletedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
+                .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
+            didSelectedMenuKeyword: selectedKeyword.asObservable()
+        )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         output?.villagers
             .bind(to: collectionView.rx.items(cellIdentifier: VillagersRow.className, cellType: VillagersRow.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { _ in
+                self.searchController.searchBar.endEditing(true)
+                self.selectedKeyword.accept(self.currentSelected)
+            }).disposed(by: disposeBag)
     }
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
         setUpNavigationItem()
+        setUpSearchController()
         view.addSubviews(collectionView)
-        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -64,21 +99,44 @@ class VillagersViewController: UIViewController {
         )
         moreButton.tintColor = .acHeaderBackground
         self.navigationItem.rightBarButtonItem = moreButton
-        setUpSearchController()
+        self.navigationItem.rightBarButtonItem?.menu = createFilterMenu()
     }
 
     private func setUpSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search a villager"
-        searchController.searchBar.scopeButtonTitles = [
-            "All",
-            "Liked",
-            "Residents"
-        ]
         navigationItem.searchController = searchController
-        searchController.searchBar.showsScopeBar = true
-        searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.hidesSearchBarWhenScrolling = false
     }
-
+    
+    private func createFilterMenu() -> UIMenu {
+        let actionHandler: (UIAction) -> Void = { action in
+            for menuItem in self.menuItems where menuItem.subTitle.contains(action.title) {
+                self.currentSelected[menuItem.title] = action.title
+            }
+            self.currentSelected["All"] = nil
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        }
+        let items: [UIMenu] = menuItems
+            .map { UIMenu(title: $0.title, subTitles: $0.subTitle, actionHandler: actionHandler) }
+        items.forEach { menu in
+            menu.children.forEach { element in
+                let action = element as? UIAction
+                if currentSelected[menu.title]?.contains(action?.title ?? "") == true {
+                    action?.state = .on
+                    action?.attributes = .disabled
+                }
+            }
+        }
+        
+        let all = UIAction(title: "전체", handler: { _ in
+            self.currentSelected = ["All": "전체"]
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        })
+        if currentSelected["All"] == "전체" {
+            all.state = .on
+            all.attributes = .disabled
+        }
+        selectedKeyword.accept(currentSelected)
+        
+        return UIMenu(title: "", options: .displayInline, children: [all] + items)
+    }
 }

@@ -41,7 +41,7 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let defaultClothingInternalId: Int
 }
 
-enum Specie: String, Codable {
+enum Specie: String, Codable, CaseIterable {
     case hamster = "Hamster"
     case dog = "Dog"
     case cow = "Cow"
@@ -129,7 +129,7 @@ enum Color: String, Codable {
     case yellow = "Yellow"
 }
 
-enum Gender: String, Codable {
+enum Gender: String, Codable, CaseIterable {
     case female = "Female"
     case male = "Male"
 }
@@ -143,7 +143,7 @@ enum Hobby: String, Codable {
     case play = "Play"
 }
 
-enum Personality: String, Codable {
+enum Personality: String, Codable, CaseIterable {
     case bigSister = "Big Sister"
     case cranky = "Cranky"
     case jock = "Jock"
@@ -163,7 +163,7 @@ enum Style: String, Codable {
     case simple = "Simple"
 }
 
-enum Subtype: String, Codable {
+enum Subtype: String, Codable, CaseIterable {
     case a = "A"
     case b = "B"
 }
