@@ -101,7 +101,7 @@ class VillagersSection: UIView {
             }.disposed(by: disposeBag)
         
         output?.villagers
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villagers in
                 owner.layoutIfNeeded()
