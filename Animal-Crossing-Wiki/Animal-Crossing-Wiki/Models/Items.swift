@@ -51,7 +51,6 @@ final class Items {
         CoreDataVillagersLikeStorage().fetch()
             .subscribe(onSuccess: { villagers in
                 self.villagersLike.accept(villagers)
-                print(villagers.map { $0.translations.kRko })
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
@@ -59,7 +58,6 @@ final class Items {
         CoreDataVillagersHouseStorage().fetch()
             .subscribe(onSuccess: { villagers in
                 self.villagersHouse.accept(villagers)
-                print(villagers.map { $0.translations.kRko })
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)

@@ -84,7 +84,6 @@ final class VillagersViewModel {
         
         input.didSelectedMenuKeyword
             .subscribe(onNext: { keywords in
-                print(keywords)
                 var filterdVillagers = [Villager]()
                 switch currentTap.value {
                 case .all:
