@@ -63,7 +63,7 @@ class VillagersViewController: UIViewController {
     private func bind() {
         let input = VillagersViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
-            seletedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
+            selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
                 .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
             didSelectedMenuKeyword: selectedKeyword.asObservable()
         )

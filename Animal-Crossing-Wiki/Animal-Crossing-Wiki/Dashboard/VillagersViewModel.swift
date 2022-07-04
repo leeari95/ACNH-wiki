@@ -19,7 +19,7 @@ final class VillagersViewModel {
     
     struct Input {
         let searchBarText: Observable<String?>
-        let seletedScopeButton: Observable<String>
+        let selectedScopeButton: Observable<String>
         let didSelectedMenuKeyword: Observable<[VillagersViewController.Menu: String]>
     }
     
@@ -65,7 +65,7 @@ final class VillagersViewModel {
                 indicationVillagers.accept(filterVillagers)
             }).disposed(by: disposeBag)
         
-        input.seletedScopeButton
+        input.selectedScopeButton
             .compactMap { VillagersViewController.SearchScope(rawValue: $0) }
             .subscribe(onNext: { selectedScope in
                 currentTap.accept(selectedScope)
@@ -78,44 +78,44 @@ final class VillagersViewModel {
         
         input.didSelectedMenuKeyword
             .subscribe(onNext: { keywords in
-                var filterdVillagers = [Villager]()
+                var filteredVillagers = [Villager]()
                 switch currentTap.value {
-                case .all: filterdVillagers = allVillagers
-                case .liked: filterdVillagers = likeVillagers
-                case .residents: filterdVillagers = houseVillagers
+                case .all: filteredVillagers = allVillagers
+                case .liked: filteredVillagers = likeVillagers
+                case .residents: filteredVillagers = houseVillagers
                 }
                 var villagers = [Villager]()
                 keywords.sorted { $0.key.rawValue.count > $1.key.rawValue.count }.forEach { (key, value) in
                     switch key {
                     case .personality:
-                        let filterdData = filterdVillagers.filter { $0.personality == Personality(rawValue: value) }
-                        villagers.append(contentsOf: filterdData)
+                        let filteredData = filteredVillagers.filter { $0.personality == Personality(rawValue: value) }
+                        villagers.append(contentsOf: filteredData)
                     case .gender:
                         if villagers.isEmpty {
-                            let filterdData = filterdVillagers.filter { $0.gender == Gender(rawValue: value) }
-                            villagers.append(contentsOf: filterdData)
+                            let filteredData = filteredVillagers.filter { $0.gender == Gender(rawValue: value) }
+                            villagers.append(contentsOf: filteredData)
                         } else {
-                            let filterdData = villagers.filter { $0.gender == Gender(rawValue: value) }
-                            villagers = filterdData
+                            let filteredData = villagers.filter { $0.gender == Gender(rawValue: value) }
+                            villagers = filteredData
                         }
                     case .type:
                         if villagers.isEmpty {
-                            let filterdData = filterdVillagers.filter { $0.subtype == Subtype(rawValue: value) }
-                            villagers.append(contentsOf: filterdData)
+                            let filteredData = filteredVillagers.filter { $0.subtype == Subtype(rawValue: value) }
+                            villagers.append(contentsOf: filteredData)
                         } else {
-                            let filterdData = villagers.filter { $0.subtype == Subtype(rawValue: value) }
-                            villagers = filterdData
+                            let filteredData = villagers.filter { $0.subtype == Subtype(rawValue: value) }
+                            villagers = filteredData
 
                         }
                     case .species:
                         if villagers.isEmpty {
-                            let filterdData = filterdVillagers.filter { $0.species == Specie(rawValue: value) }
-                            villagers.append(contentsOf: filterdData)
+                            let filteredData = filteredVillagers.filter { $0.species == Specie(rawValue: value) }
+                            villagers.append(contentsOf: filteredData)
                         } else {
-                            let filterdData = villagers.filter { $0.species == Specie(rawValue: value) }
-                            villagers = filterdData
+                            let filteredData = villagers.filter { $0.species == Specie(rawValue: value) }
+                            villagers = filteredData
                         }
-                    case .all: villagers = filterdVillagers
+                    case .all: villagers = filteredVillagers
                     }
                 }
                 indicationVillagers.accept(villagers)
