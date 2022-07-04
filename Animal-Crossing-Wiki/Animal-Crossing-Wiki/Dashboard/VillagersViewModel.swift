@@ -10,11 +10,6 @@ import RxSwift
 import RxRelay
 
 final class VillagersViewModel {
-    enum SearchScope: String {
-        case all = "All"
-        case liked = "Liked"
-        case residents = "Residents"
-    }
     
     var coordinator: VillagersCoordinator?
     
@@ -25,7 +20,7 @@ final class VillagersViewModel {
     struct Input {
         let searchBarText: Observable<String?>
         let seletedScopeButton: Observable<String>
-        let didSelectedMenuKeyword: Observable<[String: String]>
+        let didSelectedMenuKeyword: Observable<[VillagersViewController.Menu: String]>
     }
     
     struct Output {
@@ -34,7 +29,7 @@ final class VillagersViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let indicationVillagers = BehaviorRelay<[Villager]>(value: [])
-        let currentTap = BehaviorRelay<SearchScope>(value: .all)
+        let currentTap = BehaviorRelay<VillagersViewController.SearchScope>(value: .all)
         var allVillagers = [Villager]()
         var likeVillagers = [Villager]()
         var houseVillagers = [Villager]()
@@ -45,23 +40,17 @@ final class VillagersViewModel {
                 guard text != "" else {
                     indicationVillagers.accept(allVillagers)
                     switch currentTap.value {
-                    case .all:
-                        indicationVillagers.accept(allVillagers)
-                    case .liked:
-                        indicationVillagers.accept(likeVillagers)
-                    case .residents:
-                        indicationVillagers.accept(houseVillagers)
+                    case .all: indicationVillagers.accept(allVillagers)
+                    case .liked: indicationVillagers.accept(likeVillagers)
+                    case .residents: indicationVillagers.accept(houseVillagers)
                     }
                     return
                 }
                 var filterVillagers = [Villager]()
                 switch currentTap.value {
-                case .all:
-                    filterVillagers = allVillagers
-                case .liked:
-                    filterVillagers = likeVillagers
-                case .residents:
-                    filterVillagers = houseVillagers
+                case .all: filterVillagers = allVillagers
+                case .liked: filterVillagers = likeVillagers
+                case .residents: filterVillagers = houseVillagers
                 }
                 filterVillagers = filterVillagers
                     .filter { $0.translations.localizedName().contains(text) }
@@ -69,16 +58,13 @@ final class VillagersViewModel {
             }).disposed(by: disposeBag)
         
         input.seletedScopeButton
-            .compactMap { SearchScope(rawValue: $0) }
+            .compactMap { VillagersViewController.SearchScope(rawValue: $0) }
             .subscribe(onNext: { selectedScope in
                 currentTap.accept(selectedScope)
                 switch selectedScope {
-                case .all:
-                    indicationVillagers.accept(allVillagers)
-                case .liked:
-                    indicationVillagers.accept(likeVillagers)
-                case .residents:
-                    indicationVillagers.accept(houseVillagers)
+                case .all: indicationVillagers.accept(allVillagers)
+                case .liked: indicationVillagers.accept(likeVillagers)
+                case .residents: indicationVillagers.accept(houseVillagers)
                 }
             }).disposed(by: disposeBag)
         
@@ -86,20 +72,17 @@ final class VillagersViewModel {
             .subscribe(onNext: { keywords in
                 var filterdVillagers = [Villager]()
                 switch currentTap.value {
-                case .all:
-                    filterdVillagers = allVillagers
-                case .liked:
-                    filterdVillagers = likeVillagers
-                case .residents:
-                    filterdVillagers = houseVillagers
+                case .all: filterdVillagers = allVillagers
+                case .liked: filterdVillagers = likeVillagers
+                case .residents: filterdVillagers = houseVillagers
                 }
                 var villagers = [Villager]()
-                keywords.sorted { $0.key.count > $1.key.count }.forEach { (key, value) in
+                keywords.sorted { $0.key.rawValue.count > $1.key.rawValue.count }.forEach { (key, value) in
                     switch key {
-                    case "Personality":
+                    case .personality:
                         let filterdData = filterdVillagers.filter { $0.personality == Personality(rawValue: value) }
                         villagers.append(contentsOf: filterdData)
-                    case "Gender":
+                    case .gender:
                         if villagers.isEmpty {
                             let filterdData = filterdVillagers.filter { $0.gender == Gender(rawValue: value) }
                             villagers.append(contentsOf: filterdData)
@@ -107,7 +90,7 @@ final class VillagersViewModel {
                             let filterdData = villagers.filter { $0.gender == Gender(rawValue: value) }
                             villagers = filterdData
                         }
-                    case "Type":
+                    case .type:
                         if villagers.isEmpty {
                             let filterdData = filterdVillagers.filter { $0.subtype == Subtype(rawValue: value) }
                             villagers.append(contentsOf: filterdData)
@@ -116,19 +99,15 @@ final class VillagersViewModel {
                             villagers = filterdData
 
                         }
-                    case "Species":
+                    case .species:
                         if villagers.isEmpty {
                             let filterdData = filterdVillagers.filter { $0.species == Specie(rawValue: value) }
                             villagers.append(contentsOf: filterdData)
                         } else {
                             let filterdData = villagers.filter { $0.species == Specie(rawValue: value) }
                             villagers = filterdData
-
                         }
-                    case "All":
-                        villagers = filterdVillagers
-                    default:
-                        return
+                    case .all: villagers = filterdVillagers
                     }
                 }
                 indicationVillagers.accept(villagers)

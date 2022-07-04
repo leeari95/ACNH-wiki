@@ -10,18 +10,24 @@ import RxSwift
 import RxRelay
 
 class VillagersViewController: UIViewController {
+    enum Menu: String {
+        case all = "All"
+        case personality = "Personality"
+        case gender = "Gender"
+        case type = "Type"
+        case species = "Species"
+    }
+    
+    enum SearchScope: String {
+        case all = "All"
+        case liked = "Liked"
+        case residents = "Residents"
+    }
 
     var viewModel: VillagersViewModel?
     private let disposeBag = DisposeBag()
-    private var currentSelected = ["All": "전체"]
-    private var selectedKeyword = BehaviorRelay<[String: String]>(value: ["All": "전체"])
-    
-    private var menuItems: [(title: String, subTitle: [String])] = [
-        ("Personality", Personality.allCases.map { $0.rawValue }),
-        ("Gender", Gender.allCases.map { $0.rawValue }),
-        ("Type", Subtype.allCases.map { $0.rawValue }),
-        ("Species", Specie.allCases.map { $0.rawValue })
-    ]
+    private var currentSelected: [Menu: String] = [.all: "All"]
+    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: "All"])
     
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -41,9 +47,9 @@ class VillagersViewController: UIViewController {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search a villager"
         searchController.searchBar.scopeButtonTitles = [
-            "All",
-            "Liked",
-            "Residents"
+            SearchScope.all.rawValue,
+            SearchScope.liked.rawValue,
+            SearchScope.residents.rawValue
         ]
         return searchController
     }()
@@ -108,11 +114,19 @@ class VillagersViewController: UIViewController {
     }
     
     private func createFilterMenu() -> UIMenu {
+        let menuItems: [(title: String, subTitle: [String])] = [
+            (Menu.personality.rawValue, Personality.allCases.map { $0.rawValue }),
+            (Menu.gender.rawValue, Gender.allCases.map { $0.rawValue }),
+            (Menu.type.rawValue, Subtype.allCases.map { $0.rawValue }),
+            (Menu.species.rawValue, Specie.allCases.map { $0.rawValue })
+        ]
+        
         let actionHandler: (UIAction) -> Void = { action in
-            for menuItem in self.menuItems where menuItem.subTitle.contains(action.title) {
-                self.currentSelected[menuItem.title] = action.title
+            for menuItem in menuItems where menuItem.subTitle.contains(action.title) {
+                let menu = Menu(rawValue: menuItem.title) ?? .all
+                self.currentSelected[menu] = action.title
             }
-            self.currentSelected["All"] = nil
+            self.currentSelected[Menu.all] = nil
             self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
         }
         let items: [UIMenu] = menuItems
@@ -120,18 +134,19 @@ class VillagersViewController: UIViewController {
         items.forEach { menu in
             menu.children.forEach { element in
                 let action = element as? UIAction
-                if currentSelected[menu.title]?.contains(action?.title ?? "") == true {
+                let menu = Menu(rawValue: menu.title) ?? .all
+                if currentSelected[menu]?.contains(action?.title ?? "") == true {
                     action?.state = .on
                     action?.attributes = .disabled
                 }
             }
         }
         
-        let all = UIAction(title: "전체", handler: { _ in
-            self.currentSelected = ["All": "전체"]
+        let all = UIAction(title: "All", handler: { _ in
+            self.currentSelected = [Menu.all: "All"]
             self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
         })
-        if currentSelected["All"] == "전체" {
+        if currentSelected[Menu.all] != nil {
             all.state = .on
             all.attributes = .disabled
         }
