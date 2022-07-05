@@ -29,3 +29,14 @@ struct Villager {
     let styles: [Style]
     let colors: [Color]
 }
+
+extension Villager {
+    var like: String {
+        let color = colors
+            .reduce("") { $0 + $1.rawValue.capitalized + ", " }
+        let style = styles
+            .reduce("") { $0 + $1.rawValue.capitalized + ", " }
+            .trimmingCharacters(in: [",", " "])
+        return color + style
+    }
+}
