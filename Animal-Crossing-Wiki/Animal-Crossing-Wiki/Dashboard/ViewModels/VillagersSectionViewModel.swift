@@ -12,9 +12,15 @@ import RxRelay
 final class VillagersSectionViewModel {
     
     private var villagers: [Villager] = []
+    private var coordinator: DashboardCoordinator?
+    
+    init(coordinator: DashboardCoordinator?) {
+        self.coordinator = coordinator
+    }
     
     struct Input {
         let didSelectItem: Observable<IndexPath>
+        let didTapVillagerLongPress: Observable<IndexPath?>
     }
     
     struct Output {
@@ -24,9 +30,10 @@ final class VillagersSectionViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let villagerList = BehaviorRelay<[Villager]>(value: [])
         
-        input.didSelectItem
+        input.didTapVillagerLongPress
+            .compactMap { $0 }
             .subscribe(onNext: { indexPath in
-                print(self.villagers[indexPath.row].translations.kRko)
+                self.coordinator?.presentToVillagerDetail(self.villagers[indexPath.row])
             }).disposed(by: disposeBag)
         
         Items.shared.villagerHouseList

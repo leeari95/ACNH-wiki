@@ -48,6 +48,13 @@ final class DashboardCoordinator: Coordinator {
         present(tasksEditCoordinator.rootViewController)
     }
     
+    func presentToVillagerDetail(_ villager: Villager) {
+        let detailVC = VillagerDetailViewController()
+        detailVC.viewModel = VillagerDetailViewModel(villager: villager, coordinator: nil)
+        let navigationController = UINavigationController(rootViewController: detailVC)
+        present(navigationController)
+    }
+    
     func dismiss(animated: Bool) {
         rootViewController.visibleViewController?.dismiss(animated: animated)
     }

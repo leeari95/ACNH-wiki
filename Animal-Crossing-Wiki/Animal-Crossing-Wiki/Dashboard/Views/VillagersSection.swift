@@ -14,6 +14,11 @@ class VillagersSection: UIView {
     private let disposeBag = DisposeBag()
     
     private var heightConstraint: NSLayoutConstraint!
+    private let longPressGesture: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer()
+        gesture.minimumPressDuration = 0.5
+        return gesture
+    }()
     
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -69,6 +74,7 @@ class VillagersSection: UIView {
     
     private func configure() {
         addSubviews(collectionView, resetButton, descriptionLabel)
+        collectionView.addGestureRecognizer(longPressGesture)
 
         self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 80)
         heightConstraint.priority = .defaultHigh
@@ -87,7 +93,22 @@ class VillagersSection: UIView {
     }
     
     private func bind() {
-        let input = VillagersSectionViewModel.Input(didSelectItem: collectionView.rx.itemSelected.asObservable())
+        let input = VillagersSectionViewModel.Input(
+            didSelectItem: collectionView.rx.itemSelected.asObservable(),
+            didTapVillagerLongPress: longPressGesture.rx.event
+                .map { (longPressGesture: UIGestureRecognizer) -> IndexPath? in
+                    guard let collectionView = longPressGesture.view as? UICollectionView else {
+                        return nil
+                    }
+                    if longPressGesture.state == .began,
+                       let indexPath = collectionView.indexPathForItem(
+                        at: longPressGesture.location(in: collectionView)
+                       ) {
+                        return indexPath
+                    }
+                    return nil
+                }.asObservable()
+        )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
 
         output?.villagers
