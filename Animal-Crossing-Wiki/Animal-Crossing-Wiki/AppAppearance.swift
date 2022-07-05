@@ -15,7 +15,7 @@ final class AppAppearance {
         UITabBar.appearance().barTintColor = .acTabBarBackground
         UIBarButtonItem.appearance().tintColor = .acText
         UINavigationBar.appearance().prefersLargeTitles = true
-        UINavigationBar.appearance().barTintColor = .acSecondaryBackground
+        UINavigationBar.appearance().barTintColor = .acNavigationBarBackground
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.acText]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.acText]
     }
