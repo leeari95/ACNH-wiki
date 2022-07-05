@@ -123,8 +123,8 @@ final class VillagersViewModel {
             }).disposed(by: disposeBag)
         
         input.villagerSelected
-            .subscribe(onNext: { indexPath in
-                let villager = indicationVillagers.value[indexPath.item]
+            .compactMap { indicationVillagers.value[safe: $0.item] }
+            .subscribe(onNext: { villager in
                 self.coordinator?.pushToDetail(villager: villager)
             }).disposed(by: disposeBag)
         

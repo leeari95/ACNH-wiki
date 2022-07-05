@@ -32,8 +32,9 @@ final class VillagersSectionViewModel {
         
         input.didTapVillagerLongPress
             .compactMap { $0 }
-            .subscribe(onNext: { indexPath in
-                self.coordinator?.presentToVillagerDetail(self.villagers[indexPath.row])
+            .compactMap { self.villagers[safe: $0.row] }
+            .subscribe(onNext: { villager in
+                self.coordinator?.presentToVillagerDetail(villager)
             }).disposed(by: disposeBag)
         
         Items.shared.villagerHouseList
