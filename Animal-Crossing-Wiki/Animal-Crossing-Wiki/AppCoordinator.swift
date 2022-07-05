@@ -26,6 +26,11 @@ final class AppCoordinator: Coordinator {
         villagersCoordinator.start()
         addViewController(villagersCoordinator.rootViewController, title: "Villagers", icon: "Inv97")
         childCoordinators.append(villagersCoordinator)
+        
+        let catalogCoordinator = CatalogCoordinator()
+        catalogCoordinator.start()
+        addViewController(catalogCoordinator.rootViewController, title: "Catalog", icon: "Inv63")
+        childCoordinators.append(catalogCoordinator)
     }
     
     private func addViewController(_ viewController: UIViewController, title: String, icon: String) {

@@ -48,6 +48,9 @@
 		9A6CB4002872C29900B368D4 /* VillagerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3FF2872C29900B368D4 /* VillagerDetailViewModel.swift */; };
 		9A6CB4022872C53F00B368D4 /* VillagerDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4012872C53F00B368D4 /* VillagerDetailSection.swift */; };
 		9A6CB4042872D86100B368D4 /* VillagerHouseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4032872D86100B368D4 /* VillagerHouseSection.swift */; };
+		9A6CB3F62872A11C00B368D4 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */; };
+		9A6CB3F82872A15900B368D4 /* CatalogCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F72872A15900B368D4 /* CatalogCoordinator.swift */; };
+		9A6CB3FB2872A56E00B368D4 /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -176,6 +179,9 @@
 		9A6CB3FF2872C29900B368D4 /* VillagerDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailViewModel.swift; sourceTree = "<group>"; };
 		9A6CB4012872C53F00B368D4 /* VillagerDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailSection.swift; sourceTree = "<group>"; };
 		9A6CB4032872D86100B368D4 /* VillagerHouseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerHouseSection.swift; sourceTree = "<group>"; };
+		9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
+		9A6CB3F72872A15900B368D4 /* CatalogCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCoordinator.swift; sourceTree = "<group>"; };
+		9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -324,6 +330,7 @@
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 				9A99AA29285890D500629C4A /* Dashboard */,
 				9A99AA88286C17B100629C4A /* Villagers */,
+				9A6CB3F42872A09600B368D4 /* Catalog */,
 				9AF041A42851ADFF00C51449 /* Extension */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
 				9AF041CD2851DDE700C51449 /* CoreDataStorage */,
@@ -390,6 +397,32 @@
 				9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		9A6CB3F42872A09600B368D4 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */,
+				9A6CB3FC2872A57100B368D4 /* ViewModel */,
+				9A6CB3F92872A4B500B368D4 /* Coordinator */,
+			);
+			name = Catalog;
+			sourceTree = "<group>";
+		};
+		9A6CB3F92872A4B500B368D4 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				9A6CB3F72872A15900B368D4 /* CatalogCoordinator.swift */,
+			);
+			name = Coordinator;
+			sourceTree = "<group>";
+		};
+		9A6CB3FC2872A57100B368D4 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */,
+			);
+			name = ViewModel;
 			sourceTree = "<group>";
 		};
 		9A99AA29285890D500629C4A /* Dashboard */ = {
@@ -833,6 +866,7 @@
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9A6CB3FE2872C25300B368D4 /* VillagerDetailViewController.swift in Sources */,
 				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
+				9A6CB3F82872A15900B368D4 /* CatalogCoordinator.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
 				9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
@@ -872,11 +906,13 @@
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A99AA262858827900629C4A /* UserInfoSection.swift in Sources */,
+				9A6CB3FB2872A56E00B368D4 /* CatalogViewModel.swift in Sources */,
 				9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */,
 				9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */,
 				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,
+				9A6CB3F62872A11C00B368D4 /* CatalogViewController.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
