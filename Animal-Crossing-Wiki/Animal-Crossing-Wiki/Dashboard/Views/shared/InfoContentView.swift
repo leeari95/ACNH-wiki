@@ -13,7 +13,7 @@ class InfoContentView: UIStackView {
         let label = UILabel()
         label.font = .preferredFont(for: .callout, weight: .medium)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        label.textColor = .black
+        label.textColor = .acText
         return label
     }()
     
@@ -40,5 +40,9 @@ extension InfoContentView {
         self.init(frame: .zero)
         self.titleLabel.text = title
         addArrangedSubviews(contentView)
+    }
+    
+    func changeTitleFont(_ font: UIFont) {
+        titleLabel.font = font
     }
 }
