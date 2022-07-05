@@ -8,17 +8,17 @@
 import Foundation
 
 enum Category: String, CaseIterable {
-    case bugs
-    case fish
-    case seaCreatures
-    case fossils
-    case art
+    case fishes = "Fishes"
+    case seaCreatures = "Sea Creatures"
+    case bugs = "Bugs"
+    case fossils = "Fossils"
+    case art = "Art"
     
     var iconName: String {
         switch self {
         case .bugs:
             return "Ins13"
-        case .fish:
+        case .fishes:
             return "Fish6"
         case .seaCreatures:
             return "div25"
@@ -27,5 +27,9 @@ enum Category: String, CaseIterable {
         case .art:
             return "icon-board"
         }
+    }
+    
+    static func items() -> [Category] {
+        [.fishes, .seaCreatures, .bugs, .fossils, .art]
     }
 }

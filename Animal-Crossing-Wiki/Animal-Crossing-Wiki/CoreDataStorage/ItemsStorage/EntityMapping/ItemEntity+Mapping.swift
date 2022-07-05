@@ -73,7 +73,7 @@ extension ItemEntity {
                 colors: self.colors?.compactMap { Color(rawValue: $0) } ?? [],
                 keyword: toKeyword()
             )
-        case .fish:
+        case .fishes:
             return Fish(
                 name: self.name ?? "",
                 iconImage: self.iconImage ?? "",

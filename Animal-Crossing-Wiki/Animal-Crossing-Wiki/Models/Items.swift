@@ -102,7 +102,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                itemList[.fish] = items
+                itemList[.fishes] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -232,5 +232,9 @@ extension Items {
             villagers.append(villager)
         }
         villagersLike.accept(villagers)
+    }
+    
+    func itemsCount(category: Category) -> Int {
+        return categories.value[category]?.count ?? 0
     }
 }
