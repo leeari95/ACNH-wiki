@@ -100,7 +100,10 @@
 		9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */; };
 		9A99AA95286C1F6D00629C4A /* VillagersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */; };
 		9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */; };
+		9AD343E028742826008A3D6D /* CatalogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343DE28742826008A3D6D /* CatalogRow.swift */; };
+		9AD343E128742826008A3D6D /* CatalogRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD343DF28742826008A3D6D /* CatalogRow.xib */; };
 		9AD343E428742DF2008A3D6D /* ItemBellsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E328742DF2008A3D6D /* ItemBellsView.swift */; };
+		9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */; };
 		9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343EB28746593008A3D6D /* Int+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
@@ -231,7 +234,10 @@
 		9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersViewModel.swift; sourceTree = "<group>"; };
 		9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRowViewModel.swift; sourceTree = "<group>"; };
+		9AD343DE28742826008A3D6D /* CatalogRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRow.swift; sourceTree = "<group>"; };
+		9AD343DF28742826008A3D6D /* CatalogRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CatalogRow.xib; sourceTree = "<group>"; };
 		9AD343E328742DF2008A3D6D /* ItemBellsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBellsView.swift; sourceTree = "<group>"; };
+		9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowViewModel.swift; sourceTree = "<group>"; };
 		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -426,6 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */,
+				9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -550,6 +557,8 @@
 		9AD343E22874282A008A3D6D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9AD343DE28742826008A3D6D /* CatalogRow.swift */,
+				9AD343DF28742826008A3D6D /* CatalogRow.xib */,
 				9AD343E328742DF2008A3D6D /* ItemBellsView.swift */,
 			);
 			name = Views;
@@ -794,6 +803,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A541B7528220A73001B57FD /* LaunchScreen.storyboard in Resources */,
+				9AD343E128742826008A3D6D /* CatalogRow.xib in Resources */,
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A99AA6228603CB800629C4A /* ItemRow.xib in Resources */,
 				9A99AA90286C187600629C4A /* VillagersRow.xib in Resources */,
@@ -851,6 +861,7 @@
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
+				9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */,
 				9A6CB4002872C29900B368D4 /* VillagerDetailViewModel.swift in Sources */,
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
 				9A99AA5A28602F4A00629C4A /* CustomTaskSection.swift in Sources */,
@@ -860,6 +871,7 @@
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A6CB4042872D86100B368D4 /* VillagerHouseSection.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
+				9AD343E028742826008A3D6D /* CatalogRow.swift in Sources */,
 				9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */,
 				9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
