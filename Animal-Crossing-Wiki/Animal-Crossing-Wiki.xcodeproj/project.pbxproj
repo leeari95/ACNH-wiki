@@ -100,6 +100,8 @@
 		9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */; };
 		9A99AA95286C1F6D00629C4A /* VillagersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */; };
 		9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */; };
+		9AD343E428742DF2008A3D6D /* ItemBellsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E328742DF2008A3D6D /* ItemBellsView.swift */; };
+		9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343EB28746593008A3D6D /* Int+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -229,6 +231,8 @@
 		9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersViewModel.swift; sourceTree = "<group>"; };
 		9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRowViewModel.swift; sourceTree = "<group>"; };
+		9AD343E328742DF2008A3D6D /* ItemBellsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBellsView.swift; sourceTree = "<group>"; };
+		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -405,6 +409,7 @@
 				9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */,
 				9A6CB3FC2872A57100B368D4 /* ViewModel */,
 				9A6CB3F92872A4B500B368D4 /* Coordinator */,
+				9AD343E22874282A008A3D6D /* Views */,
 			);
 			name = Catalog;
 			sourceTree = "<group>";
@@ -542,6 +547,14 @@
 			name = ViewModels;
 			sourceTree = "<group>";
 		};
+		9AD343E22874282A008A3D6D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9AD343E328742DF2008A3D6D /* ItemBellsView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,6 +586,7 @@
 				9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */,
 				9A6CB3F228728B3100B368D4 /* String+extension.swift */,
 				9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */,
+				9AD343EB28746593008A3D6D /* Int+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -841,6 +855,7 @@
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
 				9A99AA5A28602F4A00629C4A /* CustomTaskSection.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
+				9AD343E428742DF2008A3D6D /* ItemBellsView.swift in Sources */,
 				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A6CB4042872D86100B368D4 /* VillagerHouseSection.swift in Sources */,
@@ -878,6 +893,7 @@
 				9A99AA8F286C187600629C4A /* VillagersRow.swift in Sources */,
 				9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */,
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
+				9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */,
 				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */,
