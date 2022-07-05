@@ -22,4 +22,10 @@ final class VillagersCoordinator: Coordinator {
         villagersVC.viewModel = VillagersViewModel(coordinator: self)
         rootViewController.addChild(villagersVC)
     }
+    
+    func pushToDetail(villager: Villager) {
+        let detailVC = VillagerDetailViewController()
+        detailVC.viewModel = VillagerDetailViewModel(villager: villager, coordinator: self)
+        rootViewController.pushViewController(detailVC, animated: true)
+    }
 }

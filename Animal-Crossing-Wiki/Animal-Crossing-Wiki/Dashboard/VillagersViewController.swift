@@ -65,7 +65,8 @@ class VillagersViewController: UIViewController {
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
                 .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
-            didSelectedMenuKeyword: selectedKeyword.asObservable()
+            didSelectedMenuKeyword: selectedKeyword.asObservable(),
+            villagerSelected: collectionView.rx.itemSelected.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         

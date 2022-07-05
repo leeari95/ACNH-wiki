@@ -21,6 +21,7 @@ final class VillagersViewModel {
         let searchBarText: Observable<String?>
         let selectedScopeButton: Observable<String>
         let didSelectedMenuKeyword: Observable<[VillagersViewController.Menu: String]>
+        let villagerSelected: Observable<IndexPath>
     }
     
     struct Output {
@@ -119,6 +120,12 @@ final class VillagersViewModel {
                     }
                 }
                 indicationVillagers.accept(villagers)
+            }).disposed(by: disposeBag)
+        
+        input.villagerSelected
+            .subscribe(onNext: { indexPath in
+                let villager = indicationVillagers.value[indexPath.item]
+                self.coordinator?.pushToDetail(villager: villager)
             }).disposed(by: disposeBag)
         
         Items.shared.villagerList
