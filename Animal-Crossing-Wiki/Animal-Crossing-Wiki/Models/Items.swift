@@ -27,6 +27,7 @@ final class Items {
     private let isLoad = BehaviorRelay<Bool>(value: false)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
+    private let userItems = BehaviorRelay<[Item]>(value: [])
     
     private init() {
         setUpUserCollection()
@@ -58,6 +59,13 @@ final class Items {
         CoreDataVillagersHouseStorage().fetch()
             .subscribe(onSuccess: { villagers in
                 self.villagersHouse.accept(villagers)
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+        
+        CoreDataItemsStorage().fetch()
+            .subscribe(onSuccess: { items in
+                self.userItems.accept(items)
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
@@ -192,6 +200,10 @@ extension Items {
         return self.currentDailyTasks.asObservable()
     }
     
+    var itemList: Observable<[Item]> {
+        return self.userItems.asObservable()
+    }
+    
     func updateUserInfo(_ userInfo: UserInfo) {
         self.currentUserInfo.accept(userInfo)
     }
@@ -236,5 +248,15 @@ extension Items {
     
     func itemsCount(category: Category) -> Int {
         return categories.value[category]?.count ?? 0
+    }
+    
+    func updateItem(_ item: Item) {
+        var items = userItems.value
+        if let index = items.firstIndex(where: { $0.name == item.name && $0.isFake == item.isFake }) {
+            items.remove(at: index)
+        } else {
+            items.append(item)
+        }
+        userItems.accept(items)
     }
 }
