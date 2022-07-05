@@ -43,6 +43,8 @@
 		9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */; };
 		9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */; };
 		9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F228728B3100B368D4 /* String+extension.swift */; };
+		9A6CB4022872C53F00B368D4 /* VillagerDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4012872C53F00B368D4 /* VillagerDetailSection.swift */; };
+		9A6CB4042872D86100B368D4 /* VillagerHouseSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4032872D86100B368D4 /* VillagerHouseSection.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -166,6 +168,8 @@
 		9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtResponseDTO.swift; sourceTree = "<group>"; };
 		9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenu+extension.swift"; sourceTree = "<group>"; };
 		9A6CB3F228728B3100B368D4 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
+		9A6CB4012872C53F00B368D4 /* VillagerDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailSection.swift; sourceTree = "<group>"; };
+		9A6CB4032872D86100B368D4 /* VillagerHouseSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerHouseSection.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -474,6 +478,8 @@
 			children = (
 				9A99AA8D286C187600629C4A /* VillagersRow.swift */,
 				9A99AA8E286C187600629C4A /* VillagersRow.xib */,
+				9A6CB4012872C53F00B368D4 /* VillagerDetailSection.swift */,
+				9A6CB4032872D86100B368D4 /* VillagerHouseSection.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -794,6 +800,7 @@
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
 				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
+				9A6CB4042872D86100B368D4 /* VillagerHouseSection.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
 				9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */,
 				9A99AA3A2859F9A300629C4A /* CollecitonProgressSection.swift in Sources */,
@@ -847,6 +854,7 @@
 				9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */,
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
 				9A99AA95286C1F6D00629C4A /* VillagersViewModel.swift in Sources */,
+				9A6CB4022872C53F00B368D4 /* VillagerDetailSection.swift in Sources */,
 				9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */,
 				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
