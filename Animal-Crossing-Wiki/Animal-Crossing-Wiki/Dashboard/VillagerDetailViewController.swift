@@ -27,7 +27,7 @@ class VillagerDetailViewController: UIViewController {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
         button.setImage(UIImage(systemName: "house", withConfiguration: config), for: .normal)
-        button.tintColor = .acHeaderBackground
+        button.tintColor = .acNavigationBarTint
         return button
     }()
     

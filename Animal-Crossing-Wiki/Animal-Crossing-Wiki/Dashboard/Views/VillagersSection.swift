@@ -81,7 +81,7 @@ class VillagersSection: UIView {
         NSLayoutConstraint.activate([
             resetButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             resetButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: resetButton.topAnchor, constant: -15),
+            descriptionLabel.bottomAnchor.constraint(equalTo: resetButton.topAnchor, constant: -8),
             descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),

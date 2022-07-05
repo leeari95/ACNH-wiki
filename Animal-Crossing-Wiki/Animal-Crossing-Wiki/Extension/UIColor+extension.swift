@@ -43,4 +43,12 @@ extension UIColor {
     class var acSecondaryText: UIColor {
         return UIColor(named: "ACSecondaryText") ?? .systemGray
     }
+    
+    class var acNavigationBarBackground: UIColor {
+        return UIColor(named: "ACNavigationBarBackground") ?? .clear
+    }
+    
+    class var acNavigationBarTint: UIColor {
+        return UIColor(named: "ACNavigationBarTint") ?? .clear
+    }
 }

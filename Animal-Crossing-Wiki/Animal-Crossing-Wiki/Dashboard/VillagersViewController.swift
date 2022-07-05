@@ -104,7 +104,7 @@ class VillagersViewController: UIViewController {
             target: self,
             action: nil
         )
-        moreButton.tintColor = .acHeaderBackground
+        moreButton.tintColor = .acNavigationBarTint
         self.navigationItem.rightBarButtonItem = moreButton
         self.navigationItem.rightBarButtonItem?.menu = createFilterMenu()
     }
