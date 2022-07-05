@@ -21,4 +21,10 @@ final class CatalogCoordinator: Coordinator {
         catalogVC.viewModel = CatalogViewModel(coordinator: self)
         rootViewController.addChild(catalogVC)
     }
+    
+    func pushToItems(category: Category) {
+        let itemsVC = ItemsViewController()
+        itemsVC.viewModel = ItemsViewModel(category: category)
+        rootViewController.pushViewController(itemsVC, animated: true)
+    }
 }
