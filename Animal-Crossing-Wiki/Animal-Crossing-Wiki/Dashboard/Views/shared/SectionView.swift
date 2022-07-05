@@ -26,15 +26,6 @@ class SectionView: UIView {
         view.backgroundColor = .acSecondaryBackground
         return view
     }()
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
 }
 
 extension SectionView {
@@ -42,11 +33,17 @@ extension SectionView {
         self.init(frame: .zero)
         headerView.setUp(title: title, iconName: iconName)
         setUpContent(contentView)
+        configure()
     }
     
-    private func configure() {
-        addSubviews(headerView, containerView)
-        
+    convenience init(contentView: UIView) {
+        self.init(frame: .zero)
+        setUpContent(contentView)
+        configureContainer()
+    }
+    
+    private func configureHeader() {
+        addSubviews(headerView)
         let height = heightAnchor.constraint(equalToConstant: 80)
         height.priority = .defaultLow
         NSLayoutConstraint.activate([
@@ -55,13 +52,25 @@ extension SectionView {
             headerView.heightAnchor.constraint(equalToConstant: 30),
             height
         ])
-        
+    }
+    
+    private func configureContainer() {
+        addSubviews(containerView)
+        var topAnchor = containerView.topAnchor.constraint(equalTo: topAnchor)
+        if subviews.contains(headerView) {
+            topAnchor = containerView.topAnchor.constraint(equalTo: headerView.bottomAnchor)
+        }
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            topAnchor,
             bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
+    }
+    
+    private func configure() {
+        configureHeader()
+        configureContainer()
     }
     
     private func setUpContent(_ view: UIView) {

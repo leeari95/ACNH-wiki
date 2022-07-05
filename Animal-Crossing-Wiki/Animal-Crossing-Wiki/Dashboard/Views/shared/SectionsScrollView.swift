@@ -66,4 +66,8 @@ extension SectionsScrollView {
         self.init(frame: .zero)
         contentStackView.addArrangedSubviews(sections)
     }
+    
+    func addSection(_ sections: SectionView...) {
+        contentStackView.addArrangedSubviews(sections)
+    }
 }

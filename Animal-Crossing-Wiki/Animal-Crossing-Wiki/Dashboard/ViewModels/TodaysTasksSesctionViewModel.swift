@@ -47,26 +47,30 @@ final class TodaysTasksSesctionViewModel {
             }).disposed(by: disposeBag)
         
         input.didSelectItem
-            .subscribe(onNext: { indexPath in
-                let progressIndex = self.tasks[indexPath.row].progressIndex
-                let task = self.tasks[indexPath.row].task
-                self.storage.toggleCompleted(task, progressIndex: progressIndex)
+            .compactMap { self.tasks[safe: $0.row] }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                let progressIndex = item.progressIndex
+                let task = item.task
+                owner.storage.toggleCompleted(task, progressIndex: progressIndex)
             }).disposed(by: disposeBag)
         
         input.didTapReset
-            .subscribe(onNext: { _ in
-                self.tasks.enumerated().forEach { (index, tuple) in
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.tasks.enumerated().forEach { (index, tuple) in
                     var tuple = tuple
                     tuple.task.reset()
-                    self.tasks[index] = tuple
-                    self.storage.updateTask(tuple.task)
+                    owner.tasks[index] = tuple
+                    owner.storage.updateTask(tuple.task)
                 }
-                currentTasks.accept(self.tasks)
+                currentTasks.accept(owner.tasks)
             }).disposed(by: disposeBag)
         
         input.didTapEdit
-            .subscribe(onNext: { _ in
-                self.coordinator?.presentToTaskEdit()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.coordinator?.presentToTaskEdit()
             }).disposed(by: disposeBag)
         
         return Output(tasks: currentTasks.asObservable())

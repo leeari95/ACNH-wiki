@@ -18,7 +18,7 @@ class DashboardViewController: UIViewController {
         SectionView(
             title: "My Villagers",
             iconName: "person.circle.fill",
-            contentView: VillagersSection(VillagersSectionViewModel())
+            contentView: VillagersSection(VillagersSectionViewModel(coordinator: coordinator))
         ),
         SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressSection())
     )

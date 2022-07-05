@@ -13,7 +13,7 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let iconImage: String
     let photoImage: String
     let houseImage: String?
-    let species: String
+    let species: Specie
     let gender: Gender
     let personality: Personality
     let subtype: Subtype
@@ -39,6 +39,44 @@ struct VillagersResponseDTO: Codable, APIResponse {
     let styles: [Style]
     let colors: [Color]
     let defaultClothingInternalId: Int
+}
+
+enum Specie: String, Codable, CaseIterable {
+    case hamster = "Hamster"
+    case dog = "Dog"
+    case cow = "Cow"
+    case squirrel = "Squirrel"
+    case koala = "Koala"
+    case rhinoceros = "Rhinoceros"
+    case rabbit = "Rabbit"
+    case hippo = "Hippo"
+    case eagle = "Eagle"
+    case bull = "Bull"
+    case pig = "Pig"
+    case kangaroo = "Kangaroo"
+    case gorilla = "Gorilla"
+    case pstrich = "Ostrich"
+    case deer = "Deer"
+    case monkey = "Monkey"
+    case horse = "Horse"
+    case bearCub = "Bear cub"
+    case bear = "Bear"
+    case chicken = "Chicken"
+    case cat = "Cat"
+    case tiger = "Tiger"
+    case octopus = "Octopus"
+    case alligator = "Alligator"
+    case anteater = "Anteater"
+    case penguin = "Penguin"
+    case bird = "Bird"
+    case goat = "Goat"
+    case frog = "Frog"
+    case sheep = "Sheep"
+    case duck = "Duck"
+    case mouse = "Mouse"
+    case wolf = "Wolf"
+    case elephant = "Elephant"
+    case lion = "Lion"
 }
 
 enum KitchenEquipment: Codable {
@@ -91,7 +129,7 @@ enum Color: String, Codable {
     case yellow = "Yellow"
 }
 
-enum Gender: String, Codable {
+enum Gender: String, Codable, CaseIterable {
     case female = "Female"
     case male = "Male"
 }
@@ -105,7 +143,7 @@ enum Hobby: String, Codable {
     case play = "Play"
 }
 
-enum Personality: String, Codable {
+enum Personality: String, Codable, CaseIterable {
     case bigSister = "Big Sister"
     case cranky = "Cranky"
     case jock = "Jock"
@@ -125,7 +163,7 @@ enum Style: String, Codable {
     case simple = "Simple"
 }
 
-enum Subtype: String, Codable {
+enum Subtype: String, Codable, CaseIterable {
     case a = "A"
     case b = "B"
 }
@@ -142,7 +180,7 @@ struct Translations: Codable {
     
     func localizedName() -> String {
         guard let code = Locale.current.languageCode, let languageCode = LanguageCode(rawValue: code) else {
-            return eUen
+            return uSen
         }
         switch languageCode {
         case .de: return eUde

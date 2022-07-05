@@ -12,9 +12,15 @@ import RxRelay
 final class VillagersSectionViewModel {
     
     private var villagers: [Villager] = []
+    private var coordinator: DashboardCoordinator?
+    
+    init(coordinator: DashboardCoordinator?) {
+        self.coordinator = coordinator
+    }
     
     struct Input {
         let didSelectItem: Observable<IndexPath>
+        let didTapVillagerLongPress: Observable<IndexPath?>
     }
     
     struct Output {
@@ -24,21 +30,19 @@ final class VillagersSectionViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let villagerList = BehaviorRelay<[Villager]>(value: [])
         
-        input.didSelectItem
-            .subscribe(onNext: { indexPath in
-                print(self.villagers[indexPath.row].translations.kRko)
+        input.didTapVillagerLongPress
+            .compactMap { $0 }
+            .compactMap { self.villagers[safe: $0.row] }
+            .subscribe(onNext: { villager in
+                self.coordinator?.presentToVillagerDetail(villager)
             }).disposed(by: disposeBag)
         
-        Items.shared.villagerList.subscribe(onNext: { villagers in
-            let newVillagers = villagers.filter {
-                $0.translations.kRko == "젤리" || $0.translations.kRko == "애플"
-                || $0.translations.kRko == "존" || $0.translations.kRko == "리처드"
-                || $0.translations.kRko == "병태" || $0.translations.kRko == "잭슨"
-                || $0.translations.kRko == "미애" || $0.translations.kRko == "스피카"
-                || $0.translations.kRko == "타마" || $0.translations.kRko == "미첼"
-            }
-            self.villagers = newVillagers
-            villagerList.accept(newVillagers)
+        Items.shared.villagerHouseList
+            .subscribe(onNext: { villagers in
+                let sortedVillagers = villagers
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                self.villagers = sortedVillagers
+                villagerList.accept(sortedVillagers)
         }).disposed(by: disposeBag)
         
         return Output(villagers: villagerList.asObservable())

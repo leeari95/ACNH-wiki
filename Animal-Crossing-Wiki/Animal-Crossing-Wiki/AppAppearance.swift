@@ -10,7 +10,7 @@ import UIKit
 final class AppAppearance {
     static func setUpAppearance() {
         UITabBar.appearance().tintColor = .acTabBarTint
-        UITabBar.appearance().unselectedItemTintColor = .acText
+        UITabBar.appearance().unselectedItemTintColor = .acTabBarTint.withAlphaComponent(0.7)
         UITabBar.appearance().backgroundColor = .acTabBarBackground
         UITabBar.appearance().barTintColor = .acTabBarBackground
         UIBarButtonItem.appearance().tintColor = .acText
