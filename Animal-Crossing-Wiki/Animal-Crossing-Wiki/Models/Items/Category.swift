@@ -32,4 +32,8 @@ enum Category: String, CaseIterable {
     static func items() -> [Category] {
         [.fishes, .seaCreatures, .bugs, .fossils, .art]
     }
+    
+    static var critters: [Category] {
+        [.fishes, .seaCreatures, .bugs]
+    }
 }
