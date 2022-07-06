@@ -18,10 +18,10 @@ final class CoreDataItemsStorage: ItemsStorage {
     
     func fetch() -> Single<[Item]> {
         return Single.create { single in
-            self.coreDataStorage.performBackgroundTask { [weak self] context in
+            self.coreDataStorage.performBackgroundTask { context in
                 do {
-                    let object = try self?.coreDataStorage.getUserCollection(context)
-                    let itemEntities = object?.critters?.allObjects as? [ItemEntity] ?? []
+                    let object = try self.coreDataStorage.getUserCollection(context)
+                    let itemEntities = object.critters?.allObjects as? [ItemEntity] ?? []
                     let critters = try itemEntities.map { try $0.toDomain() }
                     single(.success(critters))
                 } catch {
