@@ -7,15 +7,52 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class ItemsViewController: UIViewController {
+    enum Menu: Int {
+        case all
+        case month
+        case name
+        case sell
+        
+        var title: String {
+            switch self {
+            case .all: return "All"
+            case .month: return "Month"
+            case .name: return "Name"
+            case .sell: return "Sell"
+            }
+        }
+        
+        static var descending: String {
+            return "descending"
+        }
+        
+        static var ascending: String {
+            return "ascending"
+        }
+        
+        static func menu(title: String) -> Self {
+            switch title {
+            case "All": return .all
+            case "Month": return .month
+            case "Name": return .name
+            case "Sell": return .sell
+            default: return .all
+            }
+        }
+    }
     enum SearchScope: String {
         case all = "All"
         case collection = "Collection"
     }
     
+    var category: Category?
     var viewModel: ItemsViewModel?
     private let disposeBag = DisposeBag()
+    private var currentSelected: [Menu: String] = [.all: Menu.all.title]
+    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.title])
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -43,8 +80,28 @@ class ItemsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpViews()
         bind()
+        setUpViews()
+    }
+    
+    private func bind() {
+        let input = ItemsViewModel.Input(
+            selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
+                .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
+            searchBarText: searchController.searchBar.rx.text.asObservable(),
+            didSelectedMenuKeyword: selectedKeyword.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        
+        output?.items
+            .bind(to: collectionView.rx.items(cellIdentifier: CatalogRow.className, cellType: CatalogRow.self)) { _, item, cell in
+                cell.setUp(item)
+            }.disposed(by: disposeBag)
+        
+        output?.category
+            .map { $0.rawValue }
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
     }
     
     private func setUpViews() {
@@ -69,6 +126,7 @@ class ItemsViewController: UIViewController {
         )
         filterButton.tintColor = .acNavigationBarTint
         self.navigationItem.rightBarButtonItem = filterButton
+        filterButton.menu = createFilterMenu()
     }
 
     private func setUpSearchController() {
@@ -76,18 +134,80 @@ class ItemsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    private func bind() {
-        let input = ItemsViewModel.Input()
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+    private func createFilterMenu() -> UIMenu {
+        var menuItems = [UIMenuElement]()
+        let allAction = UIAction(title: Menu.all.title, handler: { _ in
+            self.currentSelected = [Menu.all: Menu.all.title]
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        })
+        menuItems.append(contentsOf: [allAction] + createSortActions())
+        if let category = category, Category.critters.contains(category) {
+            menuItems.append(createMonthMenu())
+        }
+        selectedKeyword.accept(currentSelected)
         
-        output?.items
-            .bind(to: collectionView.rx.items(cellIdentifier: CatalogRow.className, cellType: CatalogRow.self)) { _, item, cell in
-                cell.setUp(item)
-            }.disposed(by: disposeBag)
+        let menu = UIMenu(title: "", options: .displayInline, children: menuItems)
+        menu.children.forEach { action in
+            let menuTitle = Menu.menu(title: action.title)
+            if self.currentSelected.keys.contains(menuTitle) {
+                let action = action as? UIAction
+                action?.state = .on
+            } else if self.currentSelected[.all] != nil {
+                let all = menu.children.first as? UIAction
+                all?.state = .on
+                all?.attributes = .disabled
+            }
+        }
         
-        output?.category
-            .map { $0.rawValue }
-            .bind(to: navigationItem.rx.title)
-            .disposed(by: disposeBag)
+        return menu
+    }
+    
+    private func createSortActions() -> [UIAction] {
+        let handler: (UIAction) -> Void = { action in
+            let rawValue = action.title == Menu.name.title ? 2 : 3
+            let menu = Menu(rawValue: rawValue) ?? .name
+            if self.currentSelected[menu] == nil {
+                self.currentSelected[menu] = Menu.ascending
+            } else if self.currentSelected[menu] == Menu.ascending {
+                self.currentSelected[menu] = Menu.descending
+            } else {
+                self.currentSelected[menu] = Menu.ascending
+            }
+            self.currentSelected[.all] = nil
+            if menu == .name {
+                self.currentSelected[.sell] = nil
+            } else {
+                self.currentSelected[.name] = nil
+            }
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        }
+        let name = UIAction(title: Menu.name.title, handler: handler)
+        let sell = UIAction(title: Menu.sell.title, handler: handler)
+        
+        return [name, sell]
+    }
+    
+    private func createMonthMenu() -> UIMenu {
+        let actionHandler: (UIAction) -> Void = { action in
+            let menu = Menu.month
+            self.currentSelected[menu] = action.title
+            self.currentSelected[Menu.all] = nil
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        }
+        let monthMenu = UIMenu(
+            title: Menu.month.title,
+            subTitles: Array(1...12).map { $0.description },
+            actionHandler: actionHandler
+        )
+        monthMenu.children.forEach { action in
+            let menu = Menu.month
+            if currentSelected[menu] == action.title {
+                let action = action as? UIAction
+                action?.state = .on
+                action?.attributes = .disabled
+            }
+        }
+        
+        return monthMenu
     }
 }
