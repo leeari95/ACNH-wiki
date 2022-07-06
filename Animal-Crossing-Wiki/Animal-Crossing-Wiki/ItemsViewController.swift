@@ -61,14 +61,14 @@ class ItemsViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        let moreButton = UIBarButtonItem(
+        let filterButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
             target: self,
             action: nil
         )
-        moreButton.tintColor = .acNavigationBarTint
-        self.navigationItem.rightBarButtonItem = moreButton
+        filterButton.tintColor = .acNavigationBarTint
+        self.navigationItem.rightBarButtonItem = filterButton
     }
 
     private func setUpSearchController() {
