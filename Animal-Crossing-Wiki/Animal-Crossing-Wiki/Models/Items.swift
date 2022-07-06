@@ -24,6 +24,7 @@ final class Items {
     private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
     
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
+    private let currentItemsCount = BehaviorRelay<[Category: Int]>(value: [:])
     private let isLoad = BehaviorRelay<Bool>(value: false)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
@@ -167,6 +168,11 @@ final class Items {
         }
         group.notify(queue: .main) {
             self.categories.accept(itemList)
+            var itemsCount = [Category: Int]()
+            itemList.forEach { (key: Category, value: [Item]) in
+                itemsCount[key] = value.count
+            }
+            self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
         }
     }
@@ -208,6 +214,10 @@ extension Items {
         self.currentUserInfo.accept(userInfo)
     }
     
+    var itemsCount: Observable<[Category: Int]> {
+        return currentItemsCount.asObservable()
+    }
+    
     func updateTasks(_ task: DailyTask) {
         var tasks = currentDailyTasks.value
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
@@ -244,10 +254,6 @@ extension Items {
             villagers.append(villager)
         }
         villagersLike.accept(villagers)
-    }
-    
-    func itemsCount(category: Category) -> Int {
-        return categories.value[category]?.count ?? 0
     }
     
     func updateItem(_ item: Item) {

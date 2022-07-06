@@ -25,7 +25,12 @@ final class CatalogViewModel {
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
-        let catagories: [(Category, Int)] = Category.items().map { ($0, Items.shared.itemsCount(category: $0)) }
+        let catagories = BehaviorRelay<[(title: Category, count: Int)]>(value: [])
+        
+        Items.shared.itemsCount.subscribe(onNext: { itemsCount in
+            let newCategories = Category.items().map { ($0, itemsCount[$0] ?? 0)}
+            catagories.accept(newCategories)
+        }).disposed(by: disposeBag)
         
         input.selectedCategory
             .map { $0.title }
@@ -34,6 +39,6 @@ final class CatalogViewModel {
                 self.coordinator?.pushToItems(category: category)
             }).disposed(by: disposeBag)
         
-        return Output(catagories: Observable.just(catagories))
+        return Output(catagories: catagories.asObservable())
     }
 }
