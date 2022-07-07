@@ -10,6 +10,13 @@ import UIKit
 import OSLog
     
 extension UIImageView {
+    
+    convenience init(path: String) {
+        self.init(frame: .zero)
+        setImage(with: path)
+        contentMode = .scaleAspectFit
+    }
+    
     func setImage(with urlString: String, options: KingfisherOptionsInfo? = nil) {
         self.kf.indicatorType = .activity
         ImageCache.default.retrieveImage(forKey: urlString, options: options) { result in

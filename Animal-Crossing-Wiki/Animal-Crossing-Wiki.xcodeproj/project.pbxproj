@@ -107,6 +107,7 @@
 		9AD343E828743CBF008A3D6D /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */; };
 		9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */; };
 		9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343EB28746593008A3D6D /* Int+extension.swift */; };
+		9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F028766429008A3D6D /* UILabel+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -243,6 +244,7 @@
 		9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
 		9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowViewModel.swift; sourceTree = "<group>"; };
 		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
+		9AD343F028766429008A3D6D /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -437,8 +439,9 @@
 			isa = PBXGroup;
 			children = (
 				9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */,
-				9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */,
 				9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */,
+				9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */,
+				9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -570,6 +573,24 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		9AD343EF28766417008A3D6D /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA0B285824F000629C4A /* UIColor+extension.swift */,
+				9A99AA632860401400629C4A /* UICollectionView+extension.swift */,
+				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
+				9A99AA1328584C9B00629C4A /* UIFont+extension.swift */,
+				9A99AA212858802B00629C4A /* UIView+extension.swift */,
+				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
+				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
+				9A99AA55285C422200629C4A /* UIViewController+extension.swift */,
+				9A99AA6E28643CA700629C4A /* UIImage+extension.swift */,
+				9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */,
+				9AD343F028766429008A3D6D /* UILabel+extension.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,17 +609,8 @@
 		9AF041A42851ADFF00C51449 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				9A99AA0B285824F000629C4A /* UIColor+extension.swift */,
-				9A99AA632860401400629C4A /* UICollectionView+extension.swift */,
-				9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */,
-				9A99AA1328584C9B00629C4A /* UIFont+extension.swift */,
-				9A99AA212858802B00629C4A /* UIView+extension.swift */,
-				9A99AA232858803D00629C4A /* UIStackView+extension.swift */,
+				9AD343EF28766417008A3D6D /* UI */,
 				9A99AA3D285AEA1700629C4A /* Date+extension.swift */,
-				9A99AA4F285C1C3500629C4A /* UIButton+extension.swift */,
-				9A99AA55285C422200629C4A /* UIViewController+extension.swift */,
-				9A99AA6E28643CA700629C4A /* UIImage+extension.swift */,
-				9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */,
 				9A6CB3F228728B3100B368D4 /* String+extension.swift */,
 				9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */,
 				9AD343EB28746593008A3D6D /* Int+extension.swift */,
@@ -953,6 +965,7 @@
 				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
 				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
+				9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
 				9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */,
 				9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */,
