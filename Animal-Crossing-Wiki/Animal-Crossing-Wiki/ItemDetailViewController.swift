@@ -58,8 +58,7 @@ class ItemDetailViewController: UIViewController {
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 owner.navigationItem.title = item.translations.localizedName()
-                let sectionView = SectionView(contentView: ItemDetailInfoView(item: item))
-                owner.sectionsScrollView.addSection(sectionView)
+                owner.setUpSection(in: item)
             }).disposed(by: disposeBag)
         
         output?.isAcquired
@@ -73,5 +72,18 @@ class ItemDetailViewController: UIViewController {
                     owner.checkButton.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
                 }
             }).disposed(by: disposeBag)
+    }
+    
+    private func setUpSection(in item: Item) {
+        let itemDetailInfo = SectionView(contentView: ItemDetailInfoView(item: item))
+        sectionsScrollView.addSection(itemDetailInfo)
+        if Category.critters.contains(item.category) {
+            let seasonView = SectionView(
+                title: "Seasonality",
+                iconName: "calendar",
+                contentView: ItemSeasonView(item: item)
+            )
+            sectionsScrollView.addSection(seasonView)
+        }
     }
 }

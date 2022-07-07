@@ -112,6 +112,8 @@
 		9AD343F3287664C1008A3D6D /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */; };
 		9AD343F528766503008A3D6D /* ItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */; };
 		9AD343F728767649008A3D6D /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F628767649008A3D6D /* ProgressViewModel.swift */; };
+		9AD343FC2876D395008A3D6D /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343FB2876D395008A3D6D /* CalendarView.swift */; };
+		9AD343FE2876ED9A008A3D6D /* ItemSeasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343FD2876ED9A008A3D6D /* ItemSeasonView.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -253,6 +255,8 @@
 		9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewModel.swift; sourceTree = "<group>"; };
 		9AD343F628767649008A3D6D /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
+		9AD343FB2876D395008A3D6D /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		9AD343FD2876ED9A008A3D6D /* ItemSeasonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSeasonView.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -572,6 +576,8 @@
 				9AD343DF28742826008A3D6D /* CatalogCell.xib */,
 				9AD343E328742DF2008A3D6D /* ItemBellsView.swift */,
 				9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */,
+				9AD343FB2876D395008A3D6D /* CalendarView.swift */,
+				9AD343FD2876ED9A008A3D6D /* ItemSeasonView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -956,9 +962,11 @@
 				9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
 				9AD343E828743CBF008A3D6D /* ItemsViewModel.swift in Sources */,
+				9AD343FE2876ED9A008A3D6D /* ItemSeasonView.swift in Sources */,
 				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
 				9A99AA8F286C187600629C4A /* VillagersCell.swift in Sources */,
+				9AD343FC2876D395008A3D6D /* CalendarView.swift in Sources */,
 				9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */,
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
 				9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */,
