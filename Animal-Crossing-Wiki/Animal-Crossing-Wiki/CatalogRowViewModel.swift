@@ -46,7 +46,7 @@ final class CatalogRowViewModel {
         
         Items.shared.itemList
             .subscribe(onNext: { items in
-                isAcquired.accept(items.contains(where: { $0.name == self.item.name && $0.isFake == self.item.isFake }))
+                isAcquired.accept(items.contains(where: { $0.name == self.item.name && $0.genuine == self.item.genuine }))
             }).disposed(by: disposeBag)
         
         return Output(
