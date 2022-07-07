@@ -107,6 +107,7 @@
 		9AD343E828743CBF008A3D6D /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */; };
 		9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */; };
 		9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343EB28746593008A3D6D /* Int+extension.swift */; };
+		9AD343EE28756773008A3D6D /* ItemDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */; };
 		9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F028766429008A3D6D /* UILabel+extension.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
@@ -244,6 +245,7 @@
 		9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
 		9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowViewModel.swift; sourceTree = "<group>"; };
 		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
+		9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailInfoView.swift; sourceTree = "<group>"; };
 		9AD343F028766429008A3D6D /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -569,6 +571,7 @@
 				9AD343DE28742826008A3D6D /* CatalogRow.swift */,
 				9AD343DF28742826008A3D6D /* CatalogRow.xib */,
 				9AD343E328742DF2008A3D6D /* ItemBellsView.swift */,
+				9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -931,6 +934,7 @@
 				9A99AA7628657A9900629C4A /* TodaysTasksSesctionViewModel.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
 				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
+				9AD343EE28756773008A3D6D /* ItemDetailInfoView.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
