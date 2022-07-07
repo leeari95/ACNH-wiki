@@ -48,7 +48,7 @@ class SectionsScrollView: UIView {
             scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        let heightAnchor = contentStackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
+        let heightAnchor = scrollView.heightAnchor.constraint(greaterThanOrEqualTo: contentStackView.heightAnchor)
         heightAnchor.priority = .defaultLow
         
         NSLayoutConstraint.activate([
