@@ -12,7 +12,7 @@ class ProgressView: UIStackView {
     
     private var viewModel: ProgressViewModel?
     private let disposeBag = DisposeBag()
-    private var height: CGFloat = 30
+    private var barHeight: CGFloat = 30
     
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
@@ -21,7 +21,7 @@ class ProgressView: UIStackView {
     
     private lazy var progressBar: ProgressBar = {
         let progressBar = ProgressBar()
-        progressBar.setHeight(height/2.8)
+        progressBar.setHeight(barHeight/2.8)
         return progressBar
     }()
     
@@ -42,7 +42,7 @@ class ProgressView: UIStackView {
         
         addArrangedSubviews(iconImageView, progressBar, progressLabel)
         NSLayoutConstraint.activate([
-            iconImageView.heightAnchor.constraint(equalToConstant: height),
+            iconImageView.heightAnchor.constraint(equalToConstant: barHeight),
             iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
         ])
     }
@@ -61,8 +61,9 @@ class ProgressView: UIStackView {
 }
 
 extension ProgressView {
-    convenience init(category: Category) {
+    convenience init(category: Category, barHeight: CGFloat = 30) {
         self.init(frame: .zero)
+        self.barHeight = barHeight
         self.iconImageView.image = UIImage(named: category.progressIconName)
         viewModel = ProgressViewModel(category: category)
         configure()
