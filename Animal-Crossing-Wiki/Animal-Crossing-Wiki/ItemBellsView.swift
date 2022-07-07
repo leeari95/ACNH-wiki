@@ -36,6 +36,7 @@ class ItemBellsView: UIView {
         layer.cornerRadius = 16
         
         let iconImage = UIImageView()
+        iconImage.contentMode = .scaleAspectFit
         iconImage.image = UIImage(named: mode.iconName)
         
         let priceLabel = UILabel()
