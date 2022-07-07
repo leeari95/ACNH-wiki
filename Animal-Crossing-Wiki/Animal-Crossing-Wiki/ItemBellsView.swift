@@ -32,7 +32,7 @@ class ItemBellsView: UIView {
     }
     
     private func configure() {
-        backgroundColor = .catalogSelected
+        backgroundColor = .catalogBar
         layer.cornerRadius = 16
         
         let iconImage = UIImageView()

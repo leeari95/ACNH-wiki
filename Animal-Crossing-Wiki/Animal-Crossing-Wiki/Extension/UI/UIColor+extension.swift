@@ -52,7 +52,15 @@ extension UIColor {
         return UIColor(named: "ACNavigationBarTint") ?? .clear
     }
     
-    class var catalogSelected: UIColor {
-        return UIColor(named: "catalog-background") ?? .white
+    class var catalogBar: UIColor {
+        return UIColor(named: "catalog-bar") ?? .clear
+    }
+    
+    class var catalogBackground: UIColor {
+        return UIColor(named: "catalog-background") ?? .clear
+    }
+    
+    class var catalogSeleted: UIColor {
+        return UIColor(named: "catalog-selected") ?? .clear
     }
 }
