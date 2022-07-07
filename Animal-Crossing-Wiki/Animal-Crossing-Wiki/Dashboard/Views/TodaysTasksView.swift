@@ -1,5 +1,5 @@
 //
-//  TodaysTasksSesction.swift
+//  TodaysTasksView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/15.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class TodaysTasksSesction: UIView {
+class TodaysTasksView: UIView {
 
     private var viewModel: TodaysTasksSesctionViewModel?
     private let disposeBag = DisposeBag()
@@ -21,7 +21,7 @@ class TodaysTasksSesction: UIView {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.registerNib(ItemRow.self)
+        collectionView.registerNib(IconCell.self)
         return collectionView
     }()
     
@@ -103,8 +103,8 @@ class TodaysTasksSesction: UIView {
         output?.tasks
             .bind(
                 to: collectionView.rx.items(
-                    cellIdentifier: ItemRow.className,
-                    cellType: ItemRow.self
+                    cellIdentifier: IconCell.className,
+                    cellType: IconCell.self
                 )
             ) { _, item, cell in
                 cell.setImage(icon: item.task.icon)
@@ -121,13 +121,13 @@ class TodaysTasksSesction: UIView {
         
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
-                let cell = self.collectionView.cellForItem(at: indexPath) as? ItemRow
+                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.toggle()
             }).disposed(by: disposeBag)
     }
 }
 
-extension TodaysTasksSesction {
+extension TodaysTasksView {
     
     convenience init(_ viewModel: TodaysTasksSesctionViewModel) {
         self.init(frame: .zero)

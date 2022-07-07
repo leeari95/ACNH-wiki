@@ -1,5 +1,5 @@
 //
-//  VillagerDetailSection.swift
+//  VillagerDetailView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/07/04.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class VillagerDetailSection: UIView {
+class VillagerDetailView: UIView {
     
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
@@ -46,7 +46,7 @@ class VillagerDetailSection: UIView {
     }
 }
 
-extension VillagerDetailSection {
+extension VillagerDetailView {
     
     convenience init(_ villager: Villager) {
         self.init(frame: .zero)

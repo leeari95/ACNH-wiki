@@ -1,5 +1,5 @@
 //
-//  EditTaskSection.swift
+//  CustomTaskView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/20.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CustomTaskSection: UIView {
+class CustomTaskView: UIView {
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -79,7 +79,7 @@ class CustomTaskSection: UIView {
         )
     }
 }
-extension CustomTaskSection {
+extension CustomTaskView {
     
     var taskNameObservable: Observable<String?> {
         taskNameTextField.rx.text.asObservable()
@@ -111,7 +111,7 @@ extension CustomTaskSection {
     }
 }
 
-extension CustomTaskSection: UITextFieldDelegate {
+extension CustomTaskView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
     }

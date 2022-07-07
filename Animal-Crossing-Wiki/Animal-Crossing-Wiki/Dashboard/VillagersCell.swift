@@ -1,5 +1,5 @@
 //
-//  VillagersRow.swift
+//  VillagersCell.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/29.
@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class VillagersRow: UICollectionViewCell {
+class VillagersCell: UICollectionViewCell {
     
     private var viewModel: VillagersRowViewModel!
     private var disposeBag = DisposeBag()

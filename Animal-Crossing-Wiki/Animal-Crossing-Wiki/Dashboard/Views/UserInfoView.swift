@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class UserInfoSection: UIView {
+class UserInfoView: UIView {
     
     private var viewModel: UserInfoSectionViewModel?
     private let disposeBag = DisposeBag()
@@ -105,7 +105,7 @@ class UserInfoSection: UIView {
     }
 }
 
-extension UserInfoSection {
+extension UserInfoView {
     convenience init(_ viewModel: UserInfoSectionViewModel) {
         self.init(frame: .zero)
         self.viewModel = viewModel

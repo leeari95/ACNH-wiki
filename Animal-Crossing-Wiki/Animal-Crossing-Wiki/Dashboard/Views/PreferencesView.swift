@@ -1,5 +1,5 @@
 //
-//  PreferencesSection.swift
+//  PreferencesView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/17.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class PreferencesSection: UIView {
+class PreferencesView: UIView {
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -91,13 +91,13 @@ class PreferencesSection: UIView {
     }
 }
 
-extension PreferencesSection: UITextFieldDelegate {
+extension PreferencesView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
     }
 }
 
-extension PreferencesSection {
+extension PreferencesView {
     
     var islandNameObservable: Observable<String?> {
         return islandNameTextField.rx.text.asObservable()

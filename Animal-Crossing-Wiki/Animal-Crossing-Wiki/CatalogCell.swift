@@ -1,5 +1,5 @@
 //
-//  CatalogRow.swift
+//  CatalogCell.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/07/05.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CatalogRow: UICollectionViewCell {
+class CatalogCell: UICollectionViewCell {
     
     private var viewModel: CatalogRowViewModel!
     private var disposeBag = DisposeBag()
@@ -74,7 +74,7 @@ class CatalogRow: UICollectionViewCell {
     }
 }
 
-extension CatalogRow {
+extension CatalogCell {
     
     func setUp(_ item: Item) {
         viewModel = CatalogRowViewModel(item: item, category: item.category)

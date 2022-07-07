@@ -1,5 +1,5 @@
 //
-//  VillagerHouseSection.swift
+//  VillagerHouseView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/07/04.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class VillagerHouseSection: UIView {
+class VillagerHouseView: UIView {
     
     private lazy var houseImageView: UIImageView = {
         let imageView = UIImageView()
@@ -29,7 +29,7 @@ class VillagerHouseSection: UIView {
     }
 }
 
-extension VillagerHouseSection {
+extension VillagerHouseView {
     convenience init(_ houseImage: String) {
         self.init(frame: .zero)
         houseImageView.setImage(with: houseImage)

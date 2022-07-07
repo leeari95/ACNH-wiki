@@ -1,5 +1,5 @@
 //
-//  VillagersSection.swift
+//  VillagersView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/15.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class VillagersSection: UIView {
+class VillagersView: UIView {
     
     private var viewModel: VillagersSectionViewModel?
     private let disposeBag = DisposeBag()
@@ -27,7 +27,7 @@ class VillagersSection: UIView {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.registerNib(ItemRow.self)
+        collectionView.registerNib(IconCell.self)
         return collectionView
     }()
     
@@ -114,8 +114,8 @@ class VillagersSection: UIView {
         output?.villagers
             .bind(
                 to: collectionView.rx.items(
-                    cellIdentifier: ItemRow.className,
-                    cellType: ItemRow.self
+                    cellIdentifier: IconCell.className,
+                    cellType: IconCell.self
                 )
             ) { _, villager, cell in
                 cell.setImage(url: villager.iconImage)
@@ -143,19 +143,19 @@ class VillagersSection: UIView {
         
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
-                let cell = self.collectionView.cellForItem(at: indexPath) as? ItemRow
+                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
             }).disposed(by: disposeBag)
         
         resetButton.rx.tap
             .subscribe(onNext: { _ in
-                let cells = self.collectionView.visibleCells as? [ItemRow]
+                let cells = self.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
             }).disposed(by: disposeBag)
     }
 }
 
-extension VillagersSection {
+extension VillagersView {
     convenience init(_ viewModel: VillagersSectionViewModel) {
         self.init(frame: .zero)
         self.viewModel = viewModel

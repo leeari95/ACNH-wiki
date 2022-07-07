@@ -1,5 +1,5 @@
 //
-//  CollecitonProgressSection.swift
+//  CollecitonProgressView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/15.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CollecitonProgressSection: UIView {
+class CollecitonProgressView: UIView {
     
     private let disposeBag = DisposeBag()
 

@@ -23,7 +23,7 @@ class CustomTaskViewController: UIViewController {
     private let amount = BehaviorRelay<String?>(value: nil)
     private let disposeBag = DisposeBag()
     
-    private lazy var customTaskSection = CustomTaskSection()
+    private lazy var customTaskSection = CustomTaskView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
         SectionView(
             title: mode?.rawValue ?? "",

@@ -79,7 +79,7 @@ class VillagerDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villager in
-                let detailSection = VillagerDetailSection(villager)
+                let detailSection = VillagerDetailView(villager)
                 owner.sectionsScrollView.addSection(SectionView(contentView: detailSection))
                 owner.navigationItem.title = villager.translations.localizedName()
             }).disposed(by: disposeBag)
@@ -116,7 +116,7 @@ class VillagerDetailViewController: UIViewController {
     }
     
     private func addHouseSection(_ houseImage: String) {
-        let houseSection = VillagerHouseSection(houseImage)
+        let houseSection = VillagerHouseView(houseImage)
         let sectionView = SectionView(
             title: "Villager house",
             iconName: "house.circle.fill",

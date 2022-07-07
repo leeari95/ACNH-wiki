@@ -11,16 +11,16 @@ class DashboardViewController: UIViewController {
     
     var coordinator: DashboardCoordinator?
     
-    private lazy var tasksSection = TodaysTasksSesction(TodaysTasksSesctionViewModel(coordinator: coordinator))
+    private lazy var tasksSection = TodaysTasksView(TodaysTasksSesctionViewModel(coordinator: coordinator))
     private lazy var sectionsScrollView = SectionsScrollView(
-        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoSection(UserInfoSectionViewModel())),
+        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoView(UserInfoSectionViewModel())),
         SectionView(title: "Today's Tasks", iconName: "checkmark.seal.fill", contentView: tasksSection),
         SectionView(
             title: "My Villagers",
             iconName: "person.circle.fill",
-            contentView: VillagersSection(VillagersSectionViewModel(coordinator: coordinator))
+            contentView: VillagersView(VillagersSectionViewModel(coordinator: coordinator))
         ),
-        SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressSection())
+        SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressView())
     )
 
     override func viewDidLoad() {

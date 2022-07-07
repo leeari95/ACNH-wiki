@@ -62,7 +62,7 @@ class ItemsViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.registerNib(CatalogRow.self)
+        collectionView.registerNib(CatalogCell.self)
         return collectionView
     }()
     
@@ -95,7 +95,7 @@ class ItemsViewController: UIViewController {
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         output?.items
-            .bind(to: collectionView.rx.items(cellIdentifier: CatalogRow.className, cellType: CatalogRow.self)) { _, item, cell in
+            .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
                 cell.setUp(item)
             }.disposed(by: disposeBag)
         

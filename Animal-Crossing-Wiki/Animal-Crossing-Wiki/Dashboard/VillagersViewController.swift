@@ -37,7 +37,7 @@ class VillagersViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.registerNib(VillagersRow.self)
+        collectionView.registerNib(VillagersCell.self)
         return collectionView
     }()
     
@@ -71,7 +71,7 @@ class VillagersViewController: UIViewController {
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         output?.villagers
-            .bind(to: collectionView.rx.items(cellIdentifier: VillagersRow.className, cellType: VillagersRow.self)) { _, villager, cell in
+            .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
         

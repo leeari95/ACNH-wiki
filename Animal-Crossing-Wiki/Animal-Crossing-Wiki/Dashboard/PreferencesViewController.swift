@@ -16,7 +16,7 @@ class PreferencesViewController: UIViewController {
     private let currentFruit = BehaviorSubject<Fruit?>(value: nil)
     private let disposeBag = DisposeBag()
     
-    private lazy var settingSection = PreferencesSection()
+    private lazy var settingSection = PreferencesView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
         SectionView(title: "Island", iconName: "sun.haze", contentView: settingSection)
     )

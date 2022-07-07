@@ -23,7 +23,7 @@ class IconChooserViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.registerNib(ItemRow.self)
+        collectionView.registerNib(IconCell.self)
         return collectionView
     }()
     
@@ -68,7 +68,7 @@ extension IconChooserViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(ItemRow.self, for: indexPath) else {
+        guard let cell = collectionView.dequeueReusableCell(IconCell.self, for: indexPath) else {
             return UICollectionViewCell()
         }
         cell.setImage(icon: "Inv\(indexPath.row)")
