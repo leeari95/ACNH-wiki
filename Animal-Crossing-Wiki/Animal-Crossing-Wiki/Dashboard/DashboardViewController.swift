@@ -29,9 +29,7 @@ class DashboardViewController: UIViewController {
     }
     
     private func setUpViews() {
-        view.backgroundColor = .acNavigationBarBackground
-        navigationController?.navigationBar.barTintColor = .acNavigationBarBackground
-        navigationController?.navigationBar.backgroundColor = .acNavigationBarBackground
+        view.backgroundColor = .acBackground
         navigationItem.title = Date().formatted("M월 d일, EEEE")
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "slider.horizontal.3"),
