@@ -89,7 +89,8 @@ class ItemsViewController: UIViewController {
             selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
                 .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
             searchBarText: searchController.searchBar.rx.text.asObservable(),
-            didSelectedMenuKeyword: selectedKeyword.asObservable()
+            didSelectedMenuKeyword: selectedKeyword.asObservable(),
+            itemSelected: collectionView.rx.itemSelected.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         

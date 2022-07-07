@@ -12,15 +12,18 @@ import RxRelay
 final class ItemsViewModel {
     
     private let category: Category
+    private let coordinator: CatalogCoordinator?
     
-    init(category: Category) {
+    init(category: Category, coordinator: CatalogCoordinator) {
         self.category = category
+        self.coordinator = coordinator
     }
     
     struct Input {
         let selectedScopeButton: Observable<String>
         let searchBarText: Observable<String?>
         let didSelectedMenuKeyword: Observable<[ItemsViewController.Menu: String]>
+        let itemSelected: Observable<IndexPath>
     }
     struct Output {
         let category: Observable<Category>
@@ -131,6 +134,13 @@ final class ItemsViewModel {
                     }
                 }
                 items.accept(itemList)
+            }).disposed(by: disposeBag)
+        
+        input.itemSelected
+            .compactMap { items.value[safe: $0.item] }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.coordinator?.pushToItemsDetail(item)
             }).disposed(by: disposeBag)
         
         return Output(
