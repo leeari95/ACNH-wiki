@@ -25,6 +25,7 @@ class DashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        CoreDataStorage.shared.delete()
         setUpViews()
     }
     

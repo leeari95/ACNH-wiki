@@ -426,9 +426,7 @@
 		9A6CB3F42872A09600B368D4 /* Catalog */ = {
 			isa = PBXGroup;
 			children = (
-				9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */,
-				9AD343E528743B59008A3D6D /* ItemsViewController.swift */,
-				9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */,
+				9AD343FA2876BF6F008A3D6D /* ViewControllers */,
 				9A6CB3FC2872A57100B368D4 /* ViewModel */,
 				9A6CB3F92872A4B500B368D4 /* Coordinator */,
 				9AD343E22874282A008A3D6D /* Views */,
@@ -458,12 +456,7 @@
 		9A99AA29285890D500629C4A /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
-				9A99AA7D286AC4F900629C4A /* AboutViewController.swift */,
-				9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */,
-				9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */,
-				9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */,
-				9A99AA652860431A00629C4A /* IconChooserViewController.swift */,
+				9AD343F82876BF50008A3D6D /* ViewControllers */,
 				9A99AA4E285B11F300629C4A /* Coordinator */,
 				9A99AA6B28618C8500629C4A /* ViewModels */,
 				9A99AA4D285B11DA00629C4A /* Views */,
@@ -534,8 +527,7 @@
 		9A99AA88286C17B100629C4A /* Villagers */ = {
 			isa = PBXGroup;
 			children = (
-				9A99AA89286C17DE00629C4A /* VillagersViewController.swift */,
-				9A6CB3FD2872C25300B368D4 /* VillagerDetailViewController.swift */,
+				9AD343F92876BF5E008A3D6D /* ViewControllers */,
 				9A99AA93286C1E2600629C4A /* Coordinator */,
 				9A99AA96286C1F7000629C4A /* ViewModels */,
 				9A99AA8B286C182D00629C4A /* Views */,
@@ -600,6 +592,38 @@
 				9AD343F028766429008A3D6D /* UILabel+extension.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		9AD343F82876BF50008A3D6D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9A541B6C28220A72001B57FD /* DashboardViewController.swift */,
+				9A99AA7D286AC4F900629C4A /* AboutViewController.swift */,
+				9A99AA43285AF03D00629C4A /* PreferencesViewController.swift */,
+				9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */,
+				9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */,
+				9A99AA652860431A00629C4A /* IconChooserViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9AD343F92876BF5E008A3D6D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9A99AA89286C17DE00629C4A /* VillagersViewController.swift */,
+				9A6CB3FD2872C25300B368D4 /* VillagerDetailViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9AD343FA2876BF6F008A3D6D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */,
+				9AD343E528743B59008A3D6D /* ItemsViewController.swift */,
+				9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		9AF0419728505B1C00C51449 /* Items */ = {
