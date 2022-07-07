@@ -20,7 +20,7 @@ protocol Item {
     var critterpediaImage: String { get }
     var furnitureImage: String { get }
     var hemispheres: Hemispheres { get }
-    var whereHow: WhereHow { get }
+    var whereHow: String { get }
     var weather: Weather { get }
     var spawnRates: String { get }
     var catchDifficulty: CatchDifficulty { get }
@@ -35,6 +35,7 @@ protocol Item {
     var unlocked: Bool { get }
     var isFake: Bool { get }
     var size: Size { get }
+    var source: String { get }
 }
 
 extension Item {
@@ -64,8 +65,8 @@ extension Item {
             )
         )
     }
-    var whereHow: WhereHow {
-        return .pier
+    var whereHow: String {
+        return ""
     }
     var weather: Weather {
         return .anyExceptRain
@@ -109,6 +110,9 @@ extension Item {
     var size: Size {
         return .the1X1
     }
+    var source: String {
+        return ""
+    }
 }
 
 extension Item {
@@ -134,7 +138,7 @@ extension Item {
             "critterpediaImage": self.critterpediaImage,
             "furnitureImage": self.furnitureImage,
             "hemispheres": self.hemispheres.toDictionary(),
-            "whereHow": self.whereHow.rawValue,
+            "whereHow": self.whereHow,
             "weather": self.weather.rawValue,
             "spawnRates": self.spawnRates,
             "catchDifficulty": self.catchDifficulty.rawValue,

@@ -37,7 +37,7 @@ final class CoreDataItemsStorage: ItemsStorage {
             do {
                 let object = try self.coreDataStorage.getUserCollection(context)
                 let items = object.critters?.allObjects as? [ItemEntity] ?? []
-                if let index = items.firstIndex(where: { $0.name == item.name && $0.isFake == item.isFake }) {
+                if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
                     object.removeFromCritters(items[index])
                 } else {
                     let newItem = ItemEntity(item, context: context)

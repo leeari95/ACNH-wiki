@@ -19,6 +19,7 @@ struct ArtResponseDTO: Codable, APIResponse {
     let size: Size
     let realArtworkTitle, artist: String
     let description: [String]
+    let source: [String]
     let hhaBasePoints: Int
     let interact: Bool
     let tag: Tag
@@ -54,7 +55,6 @@ enum Tag: String, Codable {
 
 extension ArtResponseDTO {
     func toDomain() -> Art {
-        let isFake = self.filename.contains("Fake")
         return Art(
             name: self.name,
             image: self.image,
@@ -64,9 +64,9 @@ extension ArtResponseDTO {
             buy: self.buy,
             sell: self.sell ?? 0,
             size: self.size,
+            source: self.source.first ?? "",
             tag: self.tag,
             unlocked: self.unlocked,
-            isFake: isFake,
             translations: self.translations,
             colors: self.colors,
             concepts: self.concepts,

@@ -258,7 +258,7 @@ extension Items {
     
     func updateItem(_ item: Item) {
         var items = userItems.value
-        if let index = items.firstIndex(where: { $0.name == item.name && $0.isFake == item.isFake }) {
+        if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
             items.remove(at: index)
         } else {
             items.append(item)

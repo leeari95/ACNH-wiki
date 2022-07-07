@@ -14,6 +14,7 @@ struct Fossils: Item {
     let buy: Int
     let sell: Int
     let size: Size
+    let source: String
     let museum: Museum
     let translations: Translations
     let colors: [Color]

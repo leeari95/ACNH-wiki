@@ -25,7 +25,6 @@ extension ItemEntity {
         self.highResTexture = item.highResTexture
         self.iconImage = item.iconImage
         self.image = item.image
-        self.isFake = item.isFake
         self.keyword = item.toKeyword()
         self.movementSpeed = item.movementSpeed.rawValue
         self.museum = item.museum.rawValue
@@ -39,7 +38,8 @@ extension ItemEntity {
         self.unlocked = item.unlocked
         self.vision = item.vision.rawValue
         self.weather = item.weather.rawValue
-        self.whereHow = item.whereHow.rawValue
+        self.whereHow = item.whereHow
+        self.source = item.source
     }
     
     func toKeyword() -> [Keyword: [String]] {
@@ -80,7 +80,7 @@ extension ItemEntity {
                 critterpediaImage: self.critterpediaImage ?? "",
                 furnitureImage: self.furnitureImage ?? "",
                 sell: Int(self.sell),
-                whereHow: WhereHow(rawValue: self.whereHow ?? "") ?? .pier,
+                whereHow: self.whereHow ?? "",
                 shadow: Shadow(rawValue: self.shadow ?? "") ?? .medium,
                 catchDifficulty: CatchDifficulty(rawValue: self.catchDifficulty ?? "") ?? .medium,
                 vision: Vision(rawValue: self.vision ?? "") ?? .medium,
@@ -112,6 +112,7 @@ extension ItemEntity {
                 buy: Int(self.buy),
                 sell: Int(self.sell),
                 size: Size(rawValue: self.size ?? "") ?? .the1X1,
+                source: self.source ?? "",
                 museum: Museum(rawValue: self.museum ?? "") ?? .room1,
                 translations: Translations(self.translations ?? [:]),
                 colors: self.colors?.compactMap { Color(rawValue: $0) } ?? [],
@@ -128,9 +129,9 @@ extension ItemEntity {
                 buy: Int(self.buy),
                 sell: Int(self.sell),
                 size: Size(rawValue: self.size ?? "") ?? .the1X1,
+                source: self.source ?? "",
                 tag: Tag(rawValue: keyword[.tag]?.first ?? "") ?? .picture,
                 unlocked: self.unlocked,
-                isFake: self.isFake,
                 translations: Translations(self.translations ?? [:]),
                 colors: self.colors?.compactMap { Color(rawValue: $0) } ?? [],
                 concepts: self.concepts?.compactMap { Concept(rawValue: $0) } ?? [],
