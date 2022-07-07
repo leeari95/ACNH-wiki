@@ -52,7 +52,7 @@ class SectionsScrollView: UIView {
         heightAnchor.priority = .defaultLow
         
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 30),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 15),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -30),
