@@ -78,8 +78,9 @@ class TaskEditViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                self.tableView.deselectRow(at: indexPath, animated: true)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
     }
 

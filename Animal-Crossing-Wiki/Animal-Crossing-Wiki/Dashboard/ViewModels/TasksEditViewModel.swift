@@ -11,11 +11,12 @@ import RxRelay
 
 final class TasksEditViewModel {
     
-    private let storage: CoreDataDailyTaskStorage = CoreDataDailyTaskStorage()
+    private let storage: DailyTaskStorage
     private let coordinator: TasksEditCoordinator
     
-    init(coordinator: TasksEditCoordinator) {
+    init(coordinator: TasksEditCoordinator, storage: DailyTaskStorage = CoreDataDailyTaskStorage()) {
         self.coordinator = coordinator
+        self.storage = storage
     }
     
     private var tasks = [DailyTask]()
@@ -34,7 +35,8 @@ final class TasksEditViewModel {
         let currentTasks = BehaviorRelay<[DailyTask]>(value: [])
         
         Items.shared.dailyTasks
-            .subscribe(onNext: { tasks in
+            .withUnretained(self)
+            .subscribe(onNext: { owner, tasks in
                 var tasks = tasks
                 tasks.append(
                     DailyTask(
@@ -46,31 +48,34 @@ final class TasksEditViewModel {
                     )
                 )
                 currentTasks.accept(tasks)
-                self.tasks = tasks
+                owner.tasks = tasks
             }).disposed(by: disposeBag)
         
         input.didSeletedTask
+            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { task in
-                self.coordinator.pushToCustomTaskVC(task)
+            .subscribe(onNext: { owner, task in
+                owner.coordinator.pushToCustomTaskVC(task)
             }).disposed(by: disposeBag)
         
         input.didTapCancel?
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                self.coordinator.finish()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.coordinator.finish()
             }).disposed(by: disposeBag)
         
         input.didDeleted
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { indexPath in
-                self.storage.deleteTaskDelete(self.tasks.remove(at: indexPath.row))
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.storage.deleteTaskDelete(owner.tasks.remove(at: indexPath.row))
                     .subscribe(onSuccess: { task in
                         Items.shared.deleteTask(task)
                     }, onFailure: { error in
                         debugPrint(error)
                     }).disposed(by: disposeBag)
-                currentTasks.accept(self.tasks)
+                currentTasks.accept(owner.tasks)
             }).disposed(by: disposeBag)
         
         return Output(tasks: currentTasks.asObservable())
