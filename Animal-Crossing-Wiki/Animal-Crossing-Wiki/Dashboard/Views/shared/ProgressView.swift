@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class ProgressView: UIStackView {
     
-    private var maxCount: Float = 0
+    private var viewModel: ProgressViewModel?
+    private let disposeBag = DisposeBag()
     private var height: CGFloat = 30
     
     private lazy var iconImageView: UIImageView = {
@@ -31,15 +33,6 @@ class ProgressView: UIStackView {
         label.textAlignment = .right
         return label
     }()
-
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
     
     private func configure() {
         axis = .horizontal
@@ -53,14 +46,26 @@ class ProgressView: UIStackView {
             iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
         ])
     }
+    
+    private func bind() {
+        let output = viewModel?.transform(disposeBag: disposeBag)
+        
+        output?.items
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, items in
+                owner.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
+                owner.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: true)
+            }).disposed(by: disposeBag)
+    }
 }
 
 extension ProgressView {
-    convenience init(icon: String, progress: Int, maxCount: Int) {
+    convenience init(category: Category) {
         self.init(frame: .zero)
-        self.maxCount = Float(maxCount)
-        self.progressLabel.text = "\(progress) / \(maxCount)"
-        self.iconImageView.image = UIImage(named: icon)
-        self.progressBar.setProgress(Float(progress) / self.maxCount, animated: true)
+        self.iconImageView.image = UIImage(named: category.progressIconName)
+        viewModel = ProgressViewModel(category: category)
+        configure()
+        bind()
     }
 }

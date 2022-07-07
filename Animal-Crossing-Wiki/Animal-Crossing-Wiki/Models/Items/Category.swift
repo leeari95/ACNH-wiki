@@ -28,9 +28,28 @@ enum Category: String, CaseIterable {
             return "icon-board"
         }
     }
+
+    var progressIconName: String {
+        switch self {
+        case .bugs:
+            return "Ins1"
+        case .fishes:
+            return "Fish6"
+        case .seaCreatures:
+            return "div11"
+        case .fossils:
+            return "icon-fossil"
+        case .art:
+            return "icon-board"
+        }
+    }
     
     static func items() -> [Category] {
         [.fishes, .seaCreatures, .bugs, .fossils, .art]
+    }
+    
+    static func progress() -> [Category] {
+        [.fishes, .bugs, .seaCreatures, .fossils, .art]
     }
     
     static var critters: [Category] {

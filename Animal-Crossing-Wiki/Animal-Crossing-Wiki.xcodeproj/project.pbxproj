@@ -111,6 +111,7 @@
 		9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F028766429008A3D6D /* UILabel+extension.swift */; };
 		9AD343F3287664C1008A3D6D /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */; };
 		9AD343F528766503008A3D6D /* ItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */; };
+		9AD343F728767649008A3D6D /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F628767649008A3D6D /* ProgressViewModel.swift */; };
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
@@ -251,6 +252,7 @@
 		9AD343F028766429008A3D6D /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
 		9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewModel.swift; sourceTree = "<group>"; };
+		9AD343F628767649008A3D6D /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 			children = (
 				9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */,
 				9AD343E528743B59008A3D6D /* ItemsViewController.swift */,
+				9AD343F2287664C1008A3D6D /* ItemDetailViewController.swift */,
 				9A6CB3FC2872A57100B368D4 /* ViewModel */,
 				9A6CB3F92872A4B500B368D4 /* Coordinator */,
 				9AD343E22874282A008A3D6D /* Views */,
@@ -512,6 +515,7 @@
 				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
 				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
 				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
+				9AD343F628767649008A3D6D /* ProgressViewModel.swift */,
 				9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */,
 				9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */,
 				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
@@ -970,6 +974,7 @@
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */,
 				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,
+				9AD343F728767649008A3D6D /* ProgressViewModel.swift in Sources */,
 				9A6CB3F62872A11C00B368D4 /* CatalogViewController.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,

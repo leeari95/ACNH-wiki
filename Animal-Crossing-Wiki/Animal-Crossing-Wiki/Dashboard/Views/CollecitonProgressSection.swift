@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class CollecitonProgressSection: UIView {
+    
+    private let disposeBag = DisposeBag()
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -29,6 +32,7 @@ class CollecitonProgressSection: UIView {
     
     private func configure() {
         addSubviews(backgroundStackView)
+        backgroundStackView.addArrangedSubviews(Category.progress().map { ProgressView(category: $0) })
         
         let heightAnchor = backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         heightAnchor.priority = .defaultHigh
@@ -38,23 +42,6 @@ class CollecitonProgressSection: UIView {
             backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
             heightAnchor
         ])
-        
-        let defaultCollection = [
-            ("Fish6", 80),
-            ("Ins1", 80),
-            ("div11", 40),
-            ("Inv60", 73),
-            ("icon-board", 43)
-        ]
-        
-        backgroundStackView.addArrangedSubviews(
-            defaultCollection.map {
-                ProgressView(
-                    icon: $0.0,
-                    progress: Int.random(in: 1...Int($0.1)),
-                    maxCount: $0.1)
-            }
-        )
     }
 
 }
