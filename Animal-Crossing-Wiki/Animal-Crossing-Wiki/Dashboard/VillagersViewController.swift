@@ -81,6 +81,16 @@ class VillagersViewController: UIViewController {
                 self.searchController.searchBar.endEditing(true)
                 self.selectedKeyword.accept(self.currentSelected)
             }).disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { !$0.keys.contains(.all) }
+            .withUnretained(self)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { owner, isFiltering in
+                owner.navigationItem.rightBarButtonItem?.image = UIImage(
+                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
+                )
+        }).disposed(by: disposeBag)
     }
     
     private func setUpViews() {

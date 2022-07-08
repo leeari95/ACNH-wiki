@@ -17,8 +17,6 @@ class ItemDetailViewController: UIViewController {
     
     private lazy var checkButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
-        button.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
         button.tintColor = .acNavigationBarTint
         return button
     }()
@@ -66,11 +64,10 @@ class ItemDetailViewController: UIViewController {
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in
                 let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
-                if isAcquired {
-                    owner.checkButton.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config), for: .normal)
-                } else {
-                    owner.checkButton.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
-                }
+                owner.checkButton.setImage(
+                    UIImage(systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal", withConfiguration: config),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
     }
     

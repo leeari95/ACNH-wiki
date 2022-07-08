@@ -93,22 +93,20 @@ class VillagerDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isLiked in
-                if isLiked {
-                    owner.likeButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: config), for: .normal)
-                } else {
-                    owner.likeButton.setImage(UIImage(systemName: "heart", withConfiguration: config), for: .normal)
-                }
+                owner.likeButton.setImage(
+                    UIImage(systemName: isLiked ? "heart.fill" : "heart", withConfiguration: config),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
         
         output?.isResident
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isResident in
-                if isResident {
-                    owner.houseButton.setImage(UIImage(systemName: "house.fill", withConfiguration: config), for: .normal)
-                } else {
-                    owner.houseButton.setImage(UIImage(systemName: "house", withConfiguration: config), for: .normal)
-                }
+                    owner.houseButton.setImage(
+                        UIImage(systemName: isResident ? "house.fill" : "house", withConfiguration: config),
+                        for: .normal
+                    )
             }).disposed(by: disposeBag)
     }
     
