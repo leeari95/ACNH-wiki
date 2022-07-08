@@ -15,6 +15,7 @@ class ItemsViewController: UIViewController {
         case month
         case name
         case sell
+        case uncollected
         
         var title: String {
             switch self {
@@ -22,6 +23,7 @@ class ItemsViewController: UIViewController {
             case .month: return "Month"
             case .name: return "Name"
             case .sell: return "Sell"
+            case .uncollected: return "Uncollected"
             }
         }
         
@@ -39,15 +41,12 @@ class ItemsViewController: UIViewController {
             case "Month": return .month
             case "Name": return .name
             case "Sell": return .sell
+            case "Uncollected": return .uncollected
             default: return .all
             }
         }
     }
-    enum SearchScope: String {
-        case all = "All"
-        case collection = "Collection"
-    }
-    
+
     var category: Category?
     var viewModel: ItemsViewModel?
     private let disposeBag = DisposeBag()
@@ -70,11 +69,6 @@ class ItemsViewController: UIViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search..."
-        searchController.searchBar.showsScopeBar = true
-        searchController.searchBar.scopeButtonTitles = [
-            SearchScope.all.rawValue,
-            SearchScope.collection.rawValue
-        ]
         return searchController
     }()
     
@@ -86,8 +80,6 @@ class ItemsViewController: UIViewController {
     
     private func bind() {
         let input = ItemsViewModel.Input(
-            selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
-                .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
             itemSelected: collectionView.rx.itemSelected.asObservable()
@@ -141,7 +133,7 @@ class ItemsViewController: UIViewController {
             self.currentSelected = [Menu.all: Menu.all.title]
             self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
         })
-        menuItems.append(contentsOf: [allAction] + createSortActions())
+        menuItems.append(contentsOf: [allAction] + createSortActions() + [createUncollectionMenu()])
         if let category = category, Category.critters.contains(category) {
             menuItems.append(createMonthMenu())
         }
@@ -210,5 +202,13 @@ class ItemsViewController: UIViewController {
         }
         
         return monthMenu
+    }
+    
+    private func createUncollectionMenu() -> UIAction {
+        return UIAction(title: Menu.uncollected.title, handler: { action in
+            self.currentSelected[.uncollected] = self.currentSelected[.uncollected] == nil ? action.title : nil
+            self.currentSelected[.all] = self.currentSelected.isEmpty ? Menu.all.title : nil
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        })
     }
 }

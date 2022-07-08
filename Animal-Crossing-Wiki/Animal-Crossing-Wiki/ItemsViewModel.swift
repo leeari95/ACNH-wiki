@@ -20,7 +20,6 @@ final class ItemsViewModel {
     }
     
     struct Input {
-        let selectedScopeButton: Observable<String>
         let searchBarText: Observable<String?>
         let didSelectedMenuKeyword: Observable<[ItemsViewController.Menu: String]>
         let itemSelected: Observable<IndexPath>
@@ -32,10 +31,11 @@ final class ItemsViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let items = BehaviorRelay<[Item]>(value: [])
-        let currentTap = BehaviorRelay<ItemsViewController.SearchScope>(value: .all)
         var allItems = [Item]()
         var userItems = [Item]()
+        var filteredItems = [Item]()
         var currentHemisphere = Hemisphere.north
+        var currentFilter = [ItemsViewController.Menu]()
         
         Items.shared.userInfo
             .compactMap { $0 }
@@ -53,37 +53,21 @@ final class ItemsViewModel {
         Items.shared.itemList
             .subscribe(onNext: { list in
                 userItems = list.filter { $0.category == self.category }
-                if currentTap.value == .collection {
-                    items.accept(userItems)
+                if currentFilter.contains(.uncollected) {
+                    let filterdData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
+                    items.accept(filterdData)
+                    filteredItems = filterdData
                 }
-            }).disposed(by: disposeBag)
-        
-        input.selectedScopeButton
-            .compactMap { ItemsViewController.SearchScope(rawValue: $0) }
-            .subscribe(onNext: { scope in
-                switch scope {
-                case .all: items.accept(allItems)
-                case .collection: items.accept(userItems)
-                }
-                currentTap.accept(scope)
             }).disposed(by: disposeBag)
         
         input.searchBarText
             .compactMap { $0 }
             .subscribe(onNext: { text in
                 guard text != "" else {
-                    items.accept(allItems)
-                    switch currentTap.value {
-                    case .all: items.accept(allItems)
-                    case .collection: items.accept(userItems)
-                    }
+                    items.accept(filteredItems.isEmpty ? allItems : filteredItems)
                     return
                 }
-                var filterItems = [Item]()
-                switch currentTap.value {
-                case .all: filterItems = allItems
-                case .collection: filterItems = userItems
-                }
+                var filterItems = filteredItems.isEmpty ? allItems : filteredItems
                 filterItems = filterItems
                     .filter {
                         let itemName = $0.translations.localizedName()
@@ -99,41 +83,47 @@ final class ItemsViewModel {
         
         input.didSelectedMenuKeyword
             .subscribe(onNext: { keywords in
-                var filteredItems = [Item]()
-                switch currentTap.value {
-                case .all: filteredItems = allItems
-                case .collection: filteredItems = userItems
-                }
                 var itemList = [Item]()
+                if keywords.keys.contains(.uncollected) == false {
+                    filteredItems.append(contentsOf: userItems)
+                }
                 keywords.sorted { $0.key.rawValue < $1.key.rawValue }.forEach { (key, value) in
+                    currentFilter.append(key)
                     switch key {
-                    case .all: itemList = filteredItems
+                    case .all:
+                        itemList = allItems
+                        currentFilter = [key]
                     case .month:
                         let month = Int(value) ?? 1
-                        let filteredData = filteredItems.filter {
-                            if currentHemisphere == .north {
-                                return $0.hemispheres.north.monthsArray.contains(month)
-                            } else {
-                                return $0.hemispheres.south.monthsArray.contains(month)
-                            }
+                        let filteredData = allItems.filter {
+                            currentHemisphere == .north ?
+                            $0.hemispheres.north.monthsArray.contains(month) :
+                            $0.hemispheres.south.monthsArray.contains(month)
                         }
                         itemList = filteredData
                     case .name:
-                        let filteredData = (itemList.isEmpty ? filteredItems : itemList).sorted {
+                        let filteredData = (itemList.isEmpty ? filteredItems : itemList)
+                            .sorted {
                             value == ItemsViewController.Menu.ascending ?
                             $0.translations.localizedName() < $1.translations.localizedName() :
                             $0.translations.localizedName() > $1.translations.localizedName()
                         }
                         itemList = filteredData
                     case .sell:
-                        let filteredData = (itemList.isEmpty ? filteredItems : itemList).sorted {
+                        let filteredData = (itemList.isEmpty ? filteredItems : itemList)
+                            .sorted {
                             value == ItemsViewController.Menu.ascending ?
                             $0.sell < $1.sell : $0.sell > $1.sell
                         }
                         itemList = filteredData
+                    case .uncollected:
+                        let filteredData = (itemList.isEmpty ? filteredItems : itemList)
+                            .filter { !userItems.map { $0.name }.contains($0.name) }
+                        itemList = filteredData
                     }
                 }
                 items.accept(itemList)
+                filteredItems = itemList
             }).disposed(by: disposeBag)
         
         input.itemSelected
