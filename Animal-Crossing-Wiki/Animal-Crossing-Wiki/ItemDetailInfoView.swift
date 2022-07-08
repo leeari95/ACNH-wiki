@@ -96,14 +96,10 @@ class ItemDetailInfoView: UIView {
             subImageStackView.addArrangedSubviews(furnitureImageView, iconImageView)
             backgroundStackView.addArrangedSubviews(critterpediaImageView, subImageStackView)
         } else if let art = item as? Art, let highResTexture = art.highResTexture {
-            let mainImageView = UIImageView(path: art.image)
             let highResTextureImageView = UIImageView(path: highResTexture)
-            subImageStackView.addArrangedSubviews(mainImageView, highResTextureImageView)
-            backgroundStackView.addArrangedSubviews(subImageStackView)
+            backgroundStackView.addArrangedSubviews(highResTextureImageView)
             NSLayoutConstraint.activate([
-                mainImageView.widthAnchor.constraint(equalToConstant: 150),
-                mainImageView.heightAnchor.constraint(equalTo: mainImageView.widthAnchor),
-                highResTextureImageView.widthAnchor.constraint(equalToConstant: 150),
+                highResTextureImageView.widthAnchor.constraint(equalTo: backgroundStackView.widthAnchor),
                 highResTextureImageView.heightAnchor.constraint(equalTo: highResTextureImageView.widthAnchor)
             ])
         } else {
