@@ -15,7 +15,7 @@ struct FishResponseDTO: Codable, APIResponse {
     let critterpediaImage: String
     let furnitureImage: String
     let sell: Int
-    let whereHow: WhereHow
+    let whereHow: String
     let shadow: Shadow
     let catchDifficulty: CatchDifficulty
     let vision: Vision
@@ -89,16 +89,6 @@ enum Vision: String, Codable {
     case veryNarrow = "Very Narrow"
     case veryWide = "Very Wide"
     case wide = "Wide"
-}
-
-enum WhereHow: String, Codable {
-    case pier = "Pier"
-    case pond = "Pond"
-    case river = "River"
-    case riverClifftop = "River (clifftop)"
-    case riverMouth = "River (mouth)"
-    case sea = "Sea"
-    case seaRainyDays = "Sea (rainy days)"
 }
 
 extension FishResponseDTO {

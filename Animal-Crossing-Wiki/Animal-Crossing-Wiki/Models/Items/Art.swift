@@ -17,9 +17,9 @@ struct Art: Item {
     let buy: Int
     let sell: Int
     let size: Size
+    let source: String
     let tag: Tag
     let unlocked: Bool
-    let isFake: Bool
     let translations: Translations
     let colors: [Color]
     let concepts: [Concept]

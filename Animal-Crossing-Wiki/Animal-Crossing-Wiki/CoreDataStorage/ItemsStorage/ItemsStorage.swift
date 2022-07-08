@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol ItemsStorage {
-    func fetchItem(completion: @escaping (Result<[Item], Error>) -> Void)
-    func insertItem(_ item: Item, completion: @escaping (Result<Item, Error>) -> Void)
-    func deleteItemDelete(_ item: Item, completion: @escaping (Result<Item, Error>) -> Void)
+    func fetch() -> Single<[Item]>
+    func update(_ item: Item)
 }

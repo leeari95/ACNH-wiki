@@ -37,21 +37,22 @@ class SectionsScrollView: UIView {
     }
     
     private func configure() {
+        backgroundColor = .acBackground
         addSubviews(scrollView)
         scrollView.addSubviews(contentStackView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        let heightAnchor = contentStackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
+        let heightAnchor = scrollView.heightAnchor.constraint(greaterThanOrEqualTo: contentStackView.heightAnchor)
         heightAnchor.priority = .defaultLow
         
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 30),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 15),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -30),

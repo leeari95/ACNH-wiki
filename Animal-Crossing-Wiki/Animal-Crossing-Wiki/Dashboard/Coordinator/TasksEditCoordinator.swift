@@ -66,8 +66,8 @@ final class TasksEditCoordinator: Coordinator {
     }
     
     func finish() {
-        rootViewController.dismiss(animated: true) {
-            self.parentCoordinator?.childDidFinish(self)
-        }
+        rootViewController.dismiss(animated: true)
+        rootViewController = nil
+        parentCoordinator?.childDidFinish(self)
     }
 }

@@ -37,7 +37,7 @@ class VillagersViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.registerNib(VillagersRow.self)
+        collectionView.registerNib(VillagersCell.self)
         return collectionView
     }()
     
@@ -71,7 +71,7 @@ class VillagersViewController: UIViewController {
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         output?.villagers
-            .bind(to: collectionView.rx.items(cellIdentifier: VillagersRow.className, cellType: VillagersRow.self)) { _, villager, cell in
+            .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
         
@@ -81,6 +81,16 @@ class VillagersViewController: UIViewController {
                 self.searchController.searchBar.endEditing(true)
                 self.selectedKeyword.accept(self.currentSelected)
             }).disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { !$0.keys.contains(.all) }
+            .withUnretained(self)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { owner, isFiltering in
+                owner.navigationItem.rightBarButtonItem?.image = UIImage(
+                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
+                )
+        }).disposed(by: disposeBag)
     }
     
     private func setUpViews() {
@@ -104,7 +114,7 @@ class VillagersViewController: UIViewController {
             target: self,
             action: nil
         )
-        moreButton.tintColor = .acHeaderBackground
+        moreButton.tintColor = .acNavigationBarTint
         self.navigationItem.rightBarButtonItem = moreButton
         self.navigationItem.rightBarButtonItem?.menu = createFilterMenu()
     }

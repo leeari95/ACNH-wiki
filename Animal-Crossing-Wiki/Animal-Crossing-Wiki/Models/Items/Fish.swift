@@ -9,12 +9,12 @@ import Foundation
 
 struct Fish: Item {
     let name: String
-    let category: Category = .fish
+    let category: Category = .fishes
     let iconImage: String
     let critterpediaImage: String
     let furnitureImage: String
     let sell: Int
-    let whereHow: WhereHow
+    let whereHow: String
     let shadow: Shadow
     let catchDifficulty: CatchDifficulty
     let vision: Vision

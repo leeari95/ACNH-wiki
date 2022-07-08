@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class CoreDataItemsStorage: ItemsStorage {
     
@@ -15,47 +16,36 @@ final class CoreDataItemsStorage: ItemsStorage {
         self.coreDataStorage = coreDataStorage
     }
     
-    func fetchItem(completion: @escaping (Result<[Item], Error>) -> Void) {
-        coreDataStorage.performBackgroundTask { [weak self] context in
-            do {
-                let object = try self?.coreDataStorage.getUserCollection(context)
-                let itemEntities = object?.critters?.allObjects as? [ItemEntity] ?? []
-                let critters = try itemEntities.map { try $0.toDomain() }
-                completion(.success(critters))
-            } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
-            }
-        }
-    }
-    
-    func insertItem(_ item: Item, completion: @escaping (Result<Item, Error>) -> Void) {
-        coreDataStorage.performBackgroundTask { [weak self] context in
-            do {
-                let object = try self?.coreDataStorage.getUserCollection(context)
-                let newItem = ItemEntity(item, context: context)
-                object?.addToCritters(newItem)
-                context.saveContext()
-                completion(.success(try newItem.toDomain()))
-            } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
-            }
-        }
-    }
-    
-    func deleteItemDelete(_ item: Item, completion: @escaping (Result<Item, Error>) -> Void) {
-        coreDataStorage.performBackgroundTask { [weak self] context in
-            do {
-                let object = try self?.coreDataStorage.getUserCollection(context)
-                let items = object?.critters?.allObjects as? [ItemEntity]
-                guard let item = items?.filter({ $0.name == item.name }).first else {
-                    completion(.failure(CoreDataStorageError.notFound))
-                    return
+    func fetch() -> Single<[Item]> {
+        return Single.create { single in
+            self.coreDataStorage.performBackgroundTask { context in
+                do {
+                    let object = try self.coreDataStorage.getUserCollection(context)
+                    let itemEntities = object.critters?.allObjects as? [ItemEntity] ?? []
+                    let critters = try itemEntities.map { try $0.toDomain() }
+                    single(.success(critters))
+                } catch {
+                    single(.failure(CoreDataStorageError.readError(error)))
                 }
-                object?.removeFromCritters(item)
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func update(_ item: Item) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    object.removeFromCritters(items[index])
+                } else {
+                    let newItem = ItemEntity(item, context: context)
+                    object.addToCritters(newItem)
+                }
                 context.saveContext()
-                completion(.success(try item.toDomain()))
             } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
+                debugPrint(error)
             }
         }
     }

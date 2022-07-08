@@ -17,6 +17,7 @@ struct FossilsResponseDTO: Codable, APIResponse {
     let description: [String]
     let hhaBasePoints: Int
     let size: Size
+    let source: [String]
     let museum: Museum
     let interact: Bool
     let filename: String
@@ -40,6 +41,7 @@ extension FossilsResponseDTO {
             buy: self.buy,
             sell: self.sell,
             size: self.size,
+            source: self.source.first ?? "",
             museum: self.museum,
             translations: self.translations,
             colors: self.colors,

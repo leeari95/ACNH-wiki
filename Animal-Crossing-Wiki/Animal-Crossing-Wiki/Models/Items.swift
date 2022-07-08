@@ -24,9 +24,11 @@ final class Items {
     private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
     
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
+    private let currentItemsCount = BehaviorRelay<[Category: Int]>(value: [:])
     private let isLoad = BehaviorRelay<Bool>(value: false)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
+    private let userItems = BehaviorRelay<[Item]>(value: [])
     
     private init() {
         setUpUserCollection()
@@ -58,6 +60,13 @@ final class Items {
         CoreDataVillagersHouseStorage().fetch()
             .subscribe(onSuccess: { villagers in
                 self.villagersHouse.accept(villagers)
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+        
+        CoreDataItemsStorage().fetch()
+            .subscribe(onSuccess: { items in
+                self.userItems.accept(items)
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
@@ -102,7 +111,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                itemList[.fish] = items
+                itemList[.fishes] = items
             case .failure(let error):
                 os_log(
                     .error,
@@ -159,6 +168,11 @@ final class Items {
         }
         group.notify(queue: .main) {
             self.categories.accept(itemList)
+            var itemsCount = [Category: Int]()
+            itemList.forEach { (key: Category, value: [Item]) in
+                itemsCount[key] = value.count
+            }
+            self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
         }
     }
@@ -192,8 +206,16 @@ extension Items {
         return self.currentDailyTasks.asObservable()
     }
     
+    var itemList: Observable<[Item]> {
+        return self.userItems.asObservable()
+    }
+    
     func updateUserInfo(_ userInfo: UserInfo) {
         self.currentUserInfo.accept(userInfo)
+    }
+    
+    var itemsCount: Observable<[Category: Int]> {
+        return currentItemsCount.asObservable()
     }
     
     func updateTasks(_ task: DailyTask) {
@@ -232,5 +254,15 @@ extension Items {
             villagers.append(villager)
         }
         villagersLike.accept(villagers)
+    }
+    
+    func updateItem(_ item: Item) {
+        var items = userItems.value
+        if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+            items.remove(at: index)
+        } else {
+            items.append(item)
+        }
+        userItems.accept(items)
     }
 }

@@ -17,17 +17,13 @@ class VillagerDetailViewController: UIViewController {
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
-        button.setImage(UIImage(systemName: "heart", withConfiguration: config), for: .normal)
         button.tintColor = .red
         return button
     }()
     
     private lazy var houseButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
-        button.setImage(UIImage(systemName: "house", withConfiguration: config), for: .normal)
-        button.tintColor = .acHeaderBackground
+        button.tintColor = .acNavigationBarTint
         return button
     }()
     
@@ -74,12 +70,13 @@ class VillagerDetailViewController: UIViewController {
             didTapHouse: houseButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
         
         output?.villager
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villager in
-                let detailSection = VillagerDetailSection(villager)
+                let detailSection = VillagerDetailView(villager)
                 owner.sectionsScrollView.addSection(SectionView(contentView: detailSection))
                 owner.navigationItem.title = villager.translations.localizedName()
             }).disposed(by: disposeBag)
@@ -96,27 +93,25 @@ class VillagerDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isLiked in
-                if isLiked {
-                    owner.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                } else {
-                    owner.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                }
+                owner.likeButton.setImage(
+                    UIImage(systemName: isLiked ? "heart.fill" : "heart", withConfiguration: config),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
         
         output?.isResident
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isResident in
-                if isResident {
-                    owner.houseButton.setImage(UIImage(systemName: "house.fill"), for: .normal)
-                } else {
-                    owner.houseButton.setImage(UIImage(systemName: "house"), for: .normal)
-                }
+                    owner.houseButton.setImage(
+                        UIImage(systemName: isResident ? "house.fill" : "house", withConfiguration: config),
+                        for: .normal
+                    )
             }).disposed(by: disposeBag)
     }
     
     private func addHouseSection(_ houseImage: String) {
-        let houseSection = VillagerHouseSection(houseImage)
+        let houseSection = VillagerHouseView(houseImage)
         let sectionView = SectionView(
             title: "Villager house",
             iconName: "house.circle.fill",
