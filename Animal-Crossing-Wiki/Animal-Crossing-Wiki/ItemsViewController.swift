@@ -27,13 +27,8 @@ class ItemsViewController: UIViewController {
             }
         }
         
-        static var descending: String {
-            return "descending"
-        }
-        
-        static var ascending: String {
-            return "ascending"
-        }
+        static let descending = "descending"
+        static let ascending = "ascending"
         
         static func menu(title: String) -> Self {
             switch title {
@@ -128,24 +123,14 @@ class ItemsViewController: UIViewController {
     }
     
     private func createFilterMenu() -> UIMenu {
-        var menuItems = [UIMenuElement]()
-        let allAction = UIAction(title: Menu.all.title, handler: { _ in
-            self.currentSelected = [Menu.all: Menu.all.title]
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
-        })
-        menuItems.append(contentsOf: [allAction] + createSortActions() + [createUncollectionMenu()])
-        if let category = category, Category.critters.contains(category) {
-            menuItems.append(createMonthMenu())
-        }
-        selectedKeyword.accept(currentSelected)
-        
-        let menu = UIMenu(title: "", options: .displayInline, children: menuItems)
+        let menu = UIMenu(title: "", options: .displayInline, children: createFilteringMenuChildren())
         menu.children.forEach { action in
-            let menuTitle = Menu.menu(title: action.title)
-            if self.currentSelected.keys.contains(menuTitle) {
+            let currentMenu = Menu.menu(title: action.title)
+            if self.currentSelected.keys.contains(currentMenu) {
                 let action = action as? UIAction
                 action?.state = .on
-            } else if self.currentSelected[.all] != nil {
+            }
+            if self.currentSelected[.all] != nil {
                 let all = menu.children.first as? UIAction
                 all?.state = .on
                 all?.attributes = .disabled
@@ -153,6 +138,27 @@ class ItemsViewController: UIViewController {
         }
         
         return menu
+    }
+    
+    private func createFilteringMenuChildren() -> [UIMenuElement] {
+        let allAction = UIAction(title: Menu.all.title, handler: { _ in
+            self.currentSelected = [Menu.all: Menu.all.title]
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        })
+        let uncollectionAction = UIAction(title: Menu.uncollected.title, handler: { action in
+            self.currentSelected[.uncollected] = self.currentSelected[.uncollected] == nil ? action.title : nil
+            self.currentSelected[.all] = self.currentSelected.isEmpty ? Menu.all.title : nil
+            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        })
+        
+        var menuItems = [UIMenuElement]()
+        if let category = category, Category.critters.contains(category) {
+            menuItems.append(contentsOf: [allAction] + [createMonthMenu()] + createSortActions() + [uncollectionAction])
+        } else {
+            menuItems.append(contentsOf: [allAction] + createSortActions() + [uncollectionAction])
+        }
+        selectedKeyword.accept(currentSelected)
+        return menuItems
     }
     
     private func createSortActions() -> [UIAction] {
@@ -202,13 +208,5 @@ class ItemsViewController: UIViewController {
         }
         
         return monthMenu
-    }
-    
-    private func createUncollectionMenu() -> UIAction {
-        return UIAction(title: Menu.uncollected.title, handler: { action in
-            self.currentSelected[.uncollected] = self.currentSelected[.uncollected] == nil ? action.title : nil
-            self.currentSelected[.all] = self.currentSelected.isEmpty ? Menu.all.title : nil
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
-        })
     }
 }
