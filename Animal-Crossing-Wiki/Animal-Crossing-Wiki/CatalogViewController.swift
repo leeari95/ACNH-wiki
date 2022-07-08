@@ -16,6 +16,7 @@ class CatalogViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.backgroundColor = .clear
+        tableView.registerNib(CategoryRow.self)
         return tableView
     }()
     
@@ -49,21 +50,12 @@ class CatalogViewController: UIViewController {
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         output?.catagories
-            .bind(to: tableView.rx.items) { _, _, item in
-                let cell = UITableViewCell()
-                var content = cell.defaultContentConfiguration()
-                content.text = item.title.rawValue
-                content.textProperties.color = .acText
-                content.textProperties.font = .preferredFont(for: .callout, weight: .bold)
-                content.secondaryText = item.count.description
-                content.image = UIImage(named: item.title.iconName)
-                content.imageProperties.maximumSize = CGSize(width: 35, height: 35)
-                cell.contentConfiguration = content
-                cell.accessoryType = .disclosureIndicator
-                cell.selectedBackgroundView = UIView()
-                cell.selectedBackgroundView?.backgroundColor = .acText.withAlphaComponent(0.3)
-                cell.backgroundColor = .acSecondaryBackground
-                return cell
+            .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
+                cell.setUp(
+                    iconName: item.title.iconName,
+                    title: item.title.rawValue,
+                    itemCount: item.count
+                )
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
