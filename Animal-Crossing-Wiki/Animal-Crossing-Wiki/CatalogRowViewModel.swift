@@ -45,6 +45,7 @@ final class CatalogRowViewModel {
             }).disposed(by: disposeBag)
         
         Items.shared.itemList
+            .compactMap { $0[self.category] }
             .subscribe(onNext: { items in
                 isAcquired.accept(items.contains(where: { $0.name == self.item.name && $0.genuine == self.item.genuine }))
             }).disposed(by: disposeBag)

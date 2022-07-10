@@ -29,12 +29,12 @@ final class CollectionViewModel {
         
         Items.shared.itemList
             .subscribe(onNext: { items in
-                let currentCategories = Set(items.map { $0.category })
+                let currentCategories = items.keys
                 categories.accept(
                     currentCategories
                         .sorted { $0.rawValue < $1.rawValue }
                         .map { category in
-                        return (category, items.filter { $0.category == category }.count)
+                            return (category, items[category]?.count ?? 0)
                     }
                 )
             }).disposed(by: disposeBag)

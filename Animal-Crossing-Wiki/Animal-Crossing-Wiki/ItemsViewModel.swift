@@ -124,8 +124,9 @@ final class ItemsViewModel {
                 }).disposed(by: disposeBag)
             
             Items.shared.itemList
+                .compactMap { $0[self.category] }
                 .subscribe(onNext: { list in
-                    userItems = list.filter { $0.category == self.category }
+                    userItems = list
                     if currentFilter.contains(.uncollected) {
                         let filterdData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
                         items.accept(filterdData)
@@ -143,7 +144,7 @@ final class ItemsViewModel {
             
         } else {
             Items.shared.itemList
-                .map { $0.filter { $0.category == self.category } }
+                .compactMap { $0[self.category] }
                 .subscribe(onNext: { newItems in
                     items.accept(newItems)
                     allItems = newItems
