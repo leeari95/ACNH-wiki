@@ -18,6 +18,7 @@ final class CollectionViewModel {
     
     struct Input {
         let selectedCategory: Observable<(title: Category, count: Int)>
+        let didTapRightBarButton: Observable<Void>
     }
     
     struct Output {
@@ -43,8 +44,15 @@ final class CollectionViewModel {
             .map { $0.title }
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { category in
-                self.coordinator?.pushToItems(category: category)
+                self.coordinator?.transition(for: .items(category: category, mode: .user))
             }).disposed(by: disposeBag)
+        
+        input.didTapRightBarButton
+            .withUnretained(self)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { owner, _ in
+                owner.coordinator?.transition(for: .progress)
+        }).disposed(by: disposeBag)
         
         return Output(catagories: categories.asObservable())
     }

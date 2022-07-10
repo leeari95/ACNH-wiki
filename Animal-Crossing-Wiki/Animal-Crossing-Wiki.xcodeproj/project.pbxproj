@@ -48,8 +48,10 @@
 		9A6A2EC6287A7AC4007D2EEA /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2EC5287A7AC4007D2EEA /* CollectionViewController.swift */; };
 		9A6A2EC8287A7BB1007D2EEA /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2EC7287A7BB1007D2EEA /* CollectionViewModel.swift */; };
 		9A6A2ECA287A7BB8007D2EEA /* CollectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2EC9287A7BB8007D2EEA /* CollectionCoordinator.swift */; };
+		9A6A2ECE287AA1B7007D2EEA /* CollectionProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ECD287AA1B7007D2EEA /* CollectionProgressViewController.swift */; };
 		9A6A2ED1287AA1F9007D2EEA /* ItemProgressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ECF287AA1F9007D2EEA /* ItemProgressRow.swift */; };
 		9A6A2ED2287AA1F9007D2EEA /* ItemProgressRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED0287AA1F9007D2EEA /* ItemProgressRow.xib */; };
+		9A6A2ED5287AA2CE007D2EEA /* CollectionProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED4287AA2CE007D2EEA /* CollectionProgressViewModel.swift */; };
 		9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */; };
 		9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F228728B3100B368D4 /* String+extension.swift */; };
 		9A6CB3F62872A11C00B368D4 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */; };
@@ -202,8 +204,10 @@
 		9A6A2EC5287A7AC4007D2EEA /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		9A6A2EC7287A7BB1007D2EEA /* CollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModel.swift; sourceTree = "<group>"; };
 		9A6A2EC9287A7BB8007D2EEA /* CollectionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCoordinator.swift; sourceTree = "<group>"; };
+		9A6A2ECD287AA1B7007D2EEA /* CollectionProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionProgressViewController.swift; sourceTree = "<group>"; };
 		9A6A2ECF287AA1F9007D2EEA /* ItemProgressRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProgressRow.swift; sourceTree = "<group>"; };
 		9A6A2ED0287AA1F9007D2EEA /* ItemProgressRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemProgressRow.xib; sourceTree = "<group>"; };
+		9A6A2ED4287AA2CE007D2EEA /* CollectionProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionProgressViewModel.swift; sourceTree = "<group>"; };
 		9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenu+extension.swift"; sourceTree = "<group>"; };
 		9A6CB3F228728B3100B368D4 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
@@ -449,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				9A6A2EC5287A7AC4007D2EEA /* CollectionViewController.swift */,
+				9A6A2ECD287AA1B7007D2EEA /* CollectionProgressViewController.swift */,
 				9A6A2ECC287A7EFF007D2EEA /* Coordinator */,
 				9A6A2ECB287A7EF8007D2EEA /* ViewModel */,
 				9A6A2ED3287AA21A007D2EEA /* Views */,
@@ -460,6 +465,7 @@
 			isa = PBXGroup;
 			children = (
 				9A6A2EC7287A7BB1007D2EEA /* CollectionViewModel.swift */,
+				9A6A2ED4287AA2CE007D2EEA /* CollectionProgressViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -1009,6 +1015,7 @@
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
+				9A6A2ED5287AA2CE007D2EEA /* CollectionProgressViewModel.swift in Sources */,
 				9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */,
 				9A99AA52285C32C300629C4A /* PreferencesView.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
@@ -1061,6 +1068,7 @@
 				9A6A2EC6287A7AC4007D2EEA /* CollectionViewController.swift in Sources */,
 				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
 				9AF041A128507B8100C51449 /* Items.swift in Sources */,
+				9A6A2ECE287AA1B7007D2EEA /* CollectionProgressViewController.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A99AA262858827900629C4A /* UserInfoView.swift in Sources */,
 				9A6CB3FB2872A56E00B368D4 /* CatalogViewModel.swift in Sources */,

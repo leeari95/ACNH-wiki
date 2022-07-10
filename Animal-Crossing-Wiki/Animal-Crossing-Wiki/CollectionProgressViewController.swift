@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.swift
+//  CollectionProgressViewController.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/07/10.
@@ -8,20 +8,20 @@
 import UIKit
 import RxSwift
 
-class CollectionViewController: UIViewController {
+class CollectionProgressViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .clear
-        tableView.registerNib(CategoryRow.self)
+        tableView.registerNib(ItemProgressRow.self)
         return tableView
     }()
     
-    private lazy var progressButton: UIBarButtonItem = {
+    private lazy var cancelButton: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "list.bullet"),
+            image: UIImage(systemName: "xmark.app.fill"),
             style: .plain,
             target: self,
             action: nil
@@ -46,26 +46,22 @@ class CollectionViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection"
-        self.navigationItem.rightBarButtonItem = progressButton
+        navigationItem.title = "Collection Progress"
+        navigationItem.leftBarButtonItem = cancelButton
     }
     
-    func bind(to viewModel: CollectionViewModel) {
+    func bind(to viewModel: CollectionProgressViewModel) {
         setUpNavigationItem()
-        let input = CollectionViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable(),
-            didTapRightBarButton: progressButton.rx.tap.asObservable()
+        let input = CollectionProgressViewModel.Input(
+            selectedCategory: tableView.rx.modelSelected(Category.self).asObservable(),
+            didTapCancel: cancelButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output.catagories
-            .filter { !$0.isEmpty }
-            .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
-                cell.setUp(
-                    iconName: item.title.iconName,
-                    title: item.title.rawValue,
-                    itemCount: item.count
-                )
+        output.items
+            .bind(to: tableView.rx.items(cellIdentifier: ItemProgressRow.className, cellType: ItemProgressRow.self)) { _, category, cell in
+                
+                cell.setUp(for: category)
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected

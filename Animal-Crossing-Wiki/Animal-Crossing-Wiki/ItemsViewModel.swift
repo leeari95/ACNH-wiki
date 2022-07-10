@@ -115,6 +115,17 @@ final class ItemsViewModel {
                 filteredItems = itemList
             }).disposed(by: disposeBag)
         
+        input.itemSelected
+            .compactMap { items.value[safe: $0.item] }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                if let coordinator = owner.coordinator as? CatalogCoordinator {
+                    coordinator.pushToItemsDetail(item)
+                } else if let coordinator = owner.coordinator as? CollectionCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
+                }
+            }).disposed(by: disposeBag)
+        
         if mode == .all {
             Items.shared.categoryList
                 .compactMap { $0[self.category] }
@@ -134,28 +145,12 @@ final class ItemsViewModel {
                     }
                 }).disposed(by: disposeBag)
             
-            input.itemSelected
-                .compactMap { items.value[safe: $0.item] }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, item in
-                    let coordinator = owner.coordinator as? CatalogCoordinator
-                    coordinator?.pushToItemsDetail(item)
-                }).disposed(by: disposeBag)
-            
         } else {
             Items.shared.itemList
                 .compactMap { $0[self.category] }
                 .subscribe(onNext: { newItems in
                     items.accept(newItems)
                     allItems = newItems
-                }).disposed(by: disposeBag)
-            
-            input.itemSelected
-                .compactMap { items.value[safe: $0.item] }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, item in
-                    let coordinator = owner.coordinator as? CollectionCoordinator
-                    coordinator?.pushToItemsDetail(item)
                 }).disposed(by: disposeBag)
         }
         
