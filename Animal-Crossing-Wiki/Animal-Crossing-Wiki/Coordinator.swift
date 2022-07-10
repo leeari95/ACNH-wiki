@@ -27,4 +27,5 @@ enum CoordinatorType {
     case taskEdit
     case villagers
     case catalog
+    case collection
 }
