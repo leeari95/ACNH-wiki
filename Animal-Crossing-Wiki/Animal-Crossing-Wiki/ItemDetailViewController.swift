@@ -18,6 +18,11 @@ class ItemDetailViewController: UIViewController {
     private lazy var checkButton: UIButton = {
         let button = UIButton()
         button.tintColor = .acNavigationBarTint
+        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+        button.setImage(
+            UIImage(systemName: "checkmark.seal", withConfiguration: config),
+            for: .normal
+        )
         return button
     }()
 
