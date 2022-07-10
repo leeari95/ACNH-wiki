@@ -21,4 +21,17 @@ final class CollectionCoordinator: Coordinator {
         collectionVC.bind(to: CollectionViewModel(coordinator: self))
         rootViewController.addChild(collectionVC)
     }
+    
+    func pushToItems(category: Category) {
+        let itemsVC = ItemsViewController()
+        itemsVC.category = category
+        itemsVC.viewModel = ItemsViewModel(category: category, coordinator: self, mode: .user)
+        rootViewController.pushViewController(itemsVC, animated: true)
+    }
+    
+    func pushToItemsDetail(_ item: Item) {
+        let itemDetailVC = ItemDetailViewController()
+        itemDetailVC.viewModel = ItemDetailViewModel(item: item)
+        rootViewController.pushViewController(itemDetailVC, animated: true)
+    }
 }

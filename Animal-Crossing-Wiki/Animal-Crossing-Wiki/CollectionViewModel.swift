@@ -17,16 +17,36 @@ final class CollectionViewModel {
     }
     
     struct Input {
-        
+        let selectedCategory: Observable<(title: Category, count: Int)>
     }
     
     struct Output {
-        
+        let catagories: Observable<[(title: Category, count: Int)]>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        let categories = BehaviorRelay<[(title: Category, count: Int)]>(value: [])
         
-        return Output()
+        Items.shared.itemList
+            .subscribe(onNext: { items in
+                let currentCategories = Set(items.map { $0.category })
+                categories.accept(
+                    currentCategories
+                        .sorted { $0.rawValue < $1.rawValue }
+                        .map { category in
+                        return (category, items.filter { $0.category == category }.count)
+                    }
+                )
+            }).disposed(by: disposeBag)
+        
+        input.selectedCategory
+            .map { $0.title }
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { category in
+                self.coordinator?.pushToItems(category: category)
+            }).disposed(by: disposeBag)
+        
+        return Output(catagories: categories.asObservable())
     }
     
 }
