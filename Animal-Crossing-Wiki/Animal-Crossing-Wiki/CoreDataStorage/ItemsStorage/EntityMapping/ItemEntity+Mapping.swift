@@ -22,7 +22,7 @@ extension ItemEntity {
         self.furnitureImage = item.furnitureImage
         self.genuine = item.genuine
         self.hemispheres = item.hemispheres.toDictionary()
-        self.highResTexture = item.highResTexture
+        self.highResTexture = (item as? Art)?.highResTexture
         self.iconImage = item.iconImage
         self.image = item.image
         self.keyword = item.toKeyword()
