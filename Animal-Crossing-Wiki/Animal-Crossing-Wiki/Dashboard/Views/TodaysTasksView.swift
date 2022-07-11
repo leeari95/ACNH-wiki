@@ -122,6 +122,7 @@ class TodaysTasksView: UIView {
             .subscribe(onNext: { indexPath in
                 let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.toggle()
+                HapticManager.shared.selection()
             }).disposed(by: disposeBag)
     }
 }

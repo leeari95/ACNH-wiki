@@ -142,6 +142,7 @@ class VillagersView: UIView {
         
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
+                HapticManager.shared.selection()
                 let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
             }).disposed(by: disposeBag)

@@ -86,6 +86,7 @@ final class DashboardCoordinator: Coordinator {
             viewController.bind(to: VillagerDetailViewModel(villager: villager))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
+            HapticManager.shared.notification(type: .success)
         case .progress:
             let viewController = CollectionProgressViewController()
             viewController.bind(to: CollectionProgressViewModel(coordinator: self))
