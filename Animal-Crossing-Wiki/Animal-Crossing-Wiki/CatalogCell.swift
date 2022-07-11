@@ -10,7 +10,7 @@ import RxSwift
 
 class CatalogCell: UICollectionViewCell {
     
-    private var viewModel: CatalogRowViewModel!
+    private var viewModel: CatalogCellViewModel!
     private var disposeBag = DisposeBag()
     
     @IBOutlet private weak var backgroundStackView: UIStackView!
@@ -57,7 +57,7 @@ class CatalogCell: UICollectionViewCell {
     }
     
     private func bind() {
-        let input = CatalogRowViewModel.Input(didTapCheck: checkButton.rx.tap.asObservable())
+        let input = CatalogCellViewModel.Input(didTapCheck: checkButton.rx.tap.asObservable())
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.isAcquired
@@ -77,7 +77,7 @@ class CatalogCell: UICollectionViewCell {
 extension CatalogCell {
     
     func setUp(_ item: Item) {
-        viewModel = CatalogRowViewModel(item: item, category: item.category)
+        viewModel = CatalogCellViewModel(item: item, category: item.category)
         bind()
         let sellView = ItemBellsView(mode: .buy, price: item.sell)
         backgroundStackView.addArrangedSubviews(sellView)

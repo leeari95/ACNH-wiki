@@ -1,5 +1,5 @@
 //
-//  VillagersRowViewModel.swift
+//  VillagersCellViewModel.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/29.
@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-final class VillagersRowViewModel {
+final class VillagersCellViewModel {
     
     private let villager: Villager
     private let likeStorage: VillagersLikeStorage
@@ -52,6 +52,7 @@ final class VillagersRowViewModel {
         input.didTapHeart
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
+                HapticManager.shared.impact(style: .medium)
                 Items.shared.updateVillagerLike(owner.villager)
                 owner.likeStorage.update(owner.villager)
             }).disposed(by: disposeBag)
@@ -59,6 +60,7 @@ final class VillagersRowViewModel {
         input.didTapHouse
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
+                HapticManager.shared.impact(style: .medium)
                 Items.shared.updateVillagerHouse(owner.villager)
                 owner.houseStorage.update(owner.villager)
             }).disposed(by: disposeBag)

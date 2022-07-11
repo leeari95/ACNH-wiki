@@ -64,6 +64,7 @@
 		9A6CB4022872C53F00B368D4 /* VillagerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4012872C53F00B368D4 /* VillagerDetailView.swift */; };
 		9A6CB4042872D86100B368D4 /* VillagerHouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */; };
 		9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutViewModel.swift */; };
+		9A6DC207287C6BBE004EEC41 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC206287C6BBE004EEC41 /* HapticManager.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -111,13 +112,13 @@
 		9A99AA90286C187600629C4A /* VillagersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA8E286C187600629C4A /* VillagersCell.xib */; };
 		9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */; };
 		9A99AA95286C1F6D00629C4A /* VillagersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */; };
-		9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */; };
+		9A99AA98286C3D7400629C4A /* VillagersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA97286C3D7400629C4A /* VillagersCellViewModel.swift */; };
 		9AD343E028742826008A3D6D /* CatalogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343DE28742826008A3D6D /* CatalogCell.swift */; };
 		9AD343E128742826008A3D6D /* CatalogCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD343DF28742826008A3D6D /* CatalogCell.xib */; };
 		9AD343E428742DF2008A3D6D /* ItemBellsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E328742DF2008A3D6D /* ItemBellsView.swift */; };
 		9AD343E628743B59008A3D6D /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E528743B59008A3D6D /* ItemsViewController.swift */; };
 		9AD343E828743CBF008A3D6D /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */; };
-		9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */; };
+		9AD343EA28745BB1008A3D6D /* CatalogCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343E928745BB1008A3D6D /* CatalogCellViewModel.swift */; };
 		9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343EB28746593008A3D6D /* Int+extension.swift */; };
 		9AD343EE28756773008A3D6D /* ItemDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */; };
 		9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD343F028766429008A3D6D /* UILabel+extension.swift */; };
@@ -222,6 +223,7 @@
 		9A6CB4012872C53F00B368D4 /* VillagerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailView.swift; sourceTree = "<group>"; };
 		9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerHouseView.swift; sourceTree = "<group>"; };
 		9A6DC204287C6199004EEC41 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
+		9A6DC206287C6BBE004EEC41 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -267,13 +269,13 @@
 		9A99AA8E286C187600629C4A /* VillagersCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VillagersCell.xib; sourceTree = "<group>"; };
 		9A99AA91286C1E2000629C4A /* VillagersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersViewModel.swift; sourceTree = "<group>"; };
-		9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRowViewModel.swift; sourceTree = "<group>"; };
+		9A99AA97286C3D7400629C4A /* VillagersCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersCellViewModel.swift; sourceTree = "<group>"; };
 		9AD343DE28742826008A3D6D /* CatalogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCell.swift; sourceTree = "<group>"; };
 		9AD343DF28742826008A3D6D /* CatalogCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CatalogCell.xib; sourceTree = "<group>"; };
 		9AD343E328742DF2008A3D6D /* ItemBellsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBellsView.swift; sourceTree = "<group>"; };
 		9AD343E528743B59008A3D6D /* ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewModel.swift; sourceTree = "<group>"; };
-		9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRowViewModel.swift; sourceTree = "<group>"; };
+		9AD343E928745BB1008A3D6D /* CatalogCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCellViewModel.swift; sourceTree = "<group>"; };
 		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
 		9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailInfoView.swift; sourceTree = "<group>"; };
 		9AD343F028766429008A3D6D /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				9A541B6828220A72001B57FD /* AppDelegate.swift */,
 				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
+				9A6DC206287C6BBE004EEC41 /* HapticManager.swift */,
 				9A99AA29285890D500629C4A /* Dashboard */,
 				9A99AA88286C17B100629C4A /* Villagers */,
 				9A6CB3F42872A09600B368D4 /* Catalog */,
@@ -514,7 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				9A6CB3FA2872A56E00B368D4 /* CatalogViewModel.swift */,
-				9AD343E928745BB1008A3D6D /* CatalogRowViewModel.swift */,
+				9AD343E928745BB1008A3D6D /* CatalogCellViewModel.swift */,
 				9AD343E728743CBF008A3D6D /* ItemsViewModel.swift */,
 				9AD343F428766503008A3D6D /* ItemDetailViewModel.swift */,
 			);
@@ -629,7 +632,7 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA94286C1F6D00629C4A /* VillagersViewModel.swift */,
-				9A99AA97286C3D7400629C4A /* VillagersRowViewModel.swift */,
+				9A99AA97286C3D7400629C4A /* VillagersCellViewModel.swift */,
 				9A6CB3FF2872C29900B368D4 /* VillagerDetailViewModel.swift */,
 			);
 			name = ViewModels;
@@ -994,7 +997,7 @@
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
-				9AD343EA28745BB1008A3D6D /* CatalogRowViewModel.swift in Sources */,
+				9AD343EA28745BB1008A3D6D /* CatalogCellViewModel.swift in Sources */,
 				9A6CB4002872C29900B368D4 /* VillagerDetailViewModel.swift in Sources */,
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
 				9A99AA5A28602F4A00629C4A /* CustomTaskView.swift in Sources */,
@@ -1020,6 +1023,7 @@
 				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
+				9A6DC207287C6BBE004EEC41 /* HapticManager.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
 				9A6A2ED5287AA2CE007D2EEA /* CollectionProgressViewModel.swift in Sources */,
 				9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */,
@@ -1080,7 +1084,7 @@
 				9A99AA262858827900629C4A /* UserInfoView.swift in Sources */,
 				9A6CB3FB2872A56E00B368D4 /* CatalogViewModel.swift in Sources */,
 				9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */,
-				9A99AA98286C3D7400629C4A /* VillagersRowViewModel.swift in Sources */,
+				9A99AA98286C3D7400629C4A /* VillagersCellViewModel.swift in Sources */,
 				9A6891BD283379830061AAF1 /* SeaCreaturesRequest.swift in Sources */,
 				9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */,
 				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,

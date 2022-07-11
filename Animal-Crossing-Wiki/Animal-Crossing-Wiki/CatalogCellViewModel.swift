@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-final class CatalogRowViewModel {
+final class CatalogCellViewModel {
     
     private let item: Item
     private let category: Category
@@ -40,6 +40,7 @@ final class CatalogRowViewModel {
         input.didTapCheck
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
+                HapticManager.shared.impact(style: .medium)
                 Items.shared.updateItem(owner.item)
                 owner.storage.update(owner.item)
             }).disposed(by: disposeBag)

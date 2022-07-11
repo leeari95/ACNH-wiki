@@ -11,7 +11,7 @@ import RxCocoa
 
 class VillagersCell: UICollectionViewCell {
     
-    private var viewModel: VillagersRowViewModel!
+    private var viewModel: VillagersCellViewModel!
     private var disposeBag = DisposeBag()
     
     @IBOutlet weak var iconImage: UIImageView!
@@ -35,12 +35,12 @@ class VillagersCell: UICollectionViewCell {
     func setUp(_ villager: Villager) {
         iconImage.setImage(with: villager.iconImage)
         nameLabel.text = villager.translations.localizedName()
-        viewModel = VillagersRowViewModel(villager: villager)
+        viewModel = VillagersCellViewModel(villager: villager)
         bind()
     }
     
     private func bind() {
-        let input = VillagersRowViewModel.Input(
+        let input = VillagersCellViewModel.Input(
             didTapHeart: likeButton.rx.tap.asObservable(),
             didTapHouse: houseButton.rx.tap.asObservable()
         )
