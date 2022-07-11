@@ -89,7 +89,6 @@
 		9A99AA58285C6FF900629C4A /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */; };
 		9A99AA5A28602F4A00629C4A /* CustomTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5928602F4A00629C4A /* CustomTaskView.swift */; };
 		9A99AA5C2860319100629C4A /* CustomTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */; };
-		9A99AA5E2860331B00629C4A /* TasksEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */; };
 		9A99AA6128603CB800629C4A /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA5F28603CB800629C4A /* IconCell.swift */; };
 		9A99AA6228603CB800629C4A /* IconCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A99AA6028603CB800629C4A /* IconCell.xib */; };
 		9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA632860401400629C4A /* UICollectionView+extension.swift */; };
@@ -247,7 +246,6 @@
 		9A99AA57285C6FF900629C4A /* TaskEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
 		9A99AA5928602F4A00629C4A /* CustomTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskView.swift; sourceTree = "<group>"; };
 		9A99AA5B2860319100629C4A /* CustomTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewController.swift; sourceTree = "<group>"; };
-		9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA5F28603CB800629C4A /* IconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCell.swift; sourceTree = "<group>"; };
 		9A99AA6028603CB800629C4A /* IconCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IconCell.xib; sourceTree = "<group>"; };
 		9A99AA632860401400629C4A /* UICollectionView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+extension.swift"; sourceTree = "<group>"; };
@@ -565,7 +563,6 @@
 			isa = PBXGroup;
 			children = (
 				9A99AA49285B04D900629C4A /* DashboardCoordinator.swift */,
-				9A99AA5D2860331B00629C4A /* TasksEditCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -979,7 +976,6 @@
 				9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */,
 				9AD343E628743B59008A3D6D /* ItemsViewController.swift in Sources */,
 				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
-				9A99AA5E2860331B00629C4A /* TasksEditCoordinator.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,

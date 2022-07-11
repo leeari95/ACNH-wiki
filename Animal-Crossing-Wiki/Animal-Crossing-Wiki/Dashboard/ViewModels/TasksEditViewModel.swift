@@ -12,9 +12,9 @@ import RxRelay
 final class TasksEditViewModel {
     
     private let storage: DailyTaskStorage
-    private let coordinator: TasksEditCoordinator
+    private let coordinator: DashboardCoordinator
     
-    init(coordinator: TasksEditCoordinator, storage: DailyTaskStorage = CoreDataDailyTaskStorage()) {
+    init(coordinator: DashboardCoordinator, storage: DailyTaskStorage = CoreDataDailyTaskStorage()) {
         self.coordinator = coordinator
         self.storage = storage
     }
@@ -55,14 +55,14 @@ final class TasksEditViewModel {
             .withUnretained(self)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, task in
-                owner.coordinator.pushToCustomTaskVC(task)
+                owner.coordinator.transition(for: .customTask(task: task))
             }).disposed(by: disposeBag)
         
         input.didTapCancel?
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.coordinator.finish()
+                owner.coordinator.transition(for: .dismiss)
             }).disposed(by: disposeBag)
         
         input.didDeleted

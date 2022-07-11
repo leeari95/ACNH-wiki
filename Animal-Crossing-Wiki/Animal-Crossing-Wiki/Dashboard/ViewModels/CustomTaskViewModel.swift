@@ -13,9 +13,9 @@ final class CustomTaskViewModel {
     
     private let task: DailyTask?
     private let storage: CoreDataDailyTaskStorage = CoreDataDailyTaskStorage()
-    private let coordinator: TasksEditCoordinator
+    private let coordinator: DashboardCoordinator
     
-    init(coordinator: TasksEditCoordinator, task: DailyTask?) {
+    init(coordinator: DashboardCoordinator, task: DailyTask?) {
         self.coordinator = coordinator
         self.task = task
     }
@@ -70,13 +70,13 @@ final class CustomTaskViewModel {
                 }
                 owner.storage.updateTask(newTask)
                 Items.shared.updateTasks(newTask)
-                owner.coordinator.popVC(animated: true)
+                owner.coordinator.transition(for: .pop)
             }).disposed(by: disposeBag)
         
         input.didTapIcon
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.coordinator.presentToIcon()
+                owner.coordinator.transition(for: .iconChooser)
             }).disposed(by: disposeBag)
         
         input.didTapAmount

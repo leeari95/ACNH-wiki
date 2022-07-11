@@ -91,7 +91,7 @@ final class PreferencesViewModel {
         
         input.didTapCancel?
             .subscribe(onNext: { _ in
-                self.coordinator?.dismiss(animated: true)
+                self.coordinator?.transition(for: .dismiss)
             }).disposed(by: disposeBag)
         
         input.didTapHemisphere
