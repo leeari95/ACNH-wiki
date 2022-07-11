@@ -125,7 +125,7 @@ final class VillagersViewModel {
         input.villagerSelected
             .compactMap { indicationVillagers.value[safe: $0.item] }
             .subscribe(onNext: { villager in
-                self.coordinator?.pushToDetail(villager: villager)
+                self.coordinator?.transition(for: .detail(villager: villager))
             }).disposed(by: disposeBag)
         
         Items.shared.villagerList

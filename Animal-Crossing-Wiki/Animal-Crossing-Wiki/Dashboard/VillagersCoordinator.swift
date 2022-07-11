@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 final class VillagersCoordinator: Coordinator {
+    
+    enum Route {
+        case detail(villager: Villager)
+    }
+    
     var type: CoordinatorType = .villagers
     var rootViewController: UINavigationController
     var childCoordinators: [Coordinator] = []
@@ -23,9 +28,12 @@ final class VillagersCoordinator: Coordinator {
         rootViewController.addChild(villagersVC)
     }
     
-    func pushToDetail(villager: Villager) {
-        let detailVC = VillagerDetailViewController()
-        detailVC.viewModel = VillagerDetailViewModel(villager: villager, coordinator: self)
-        rootViewController.pushViewController(detailVC, animated: true)
+    func transition(for route: Route) {
+        switch route {
+        case .detail(let villager):
+            let viewController = VillagerDetailViewController()
+            viewController.bind(to: VillagerDetailViewModel(villager: villager))
+            rootViewController.pushViewController(viewController, animated: true)
+        }
     }
 }

@@ -11,8 +11,6 @@ import RxRelay
 
 final class VillagerDetailViewModel {
     
-    var coordinator: VillagersCoordinator?
-    
     private let likeStorage: VillagersLikeStorage
     private let houseStorage: VillagersHouseStorage
     private let villager: Villager
@@ -20,13 +18,11 @@ final class VillagerDetailViewModel {
     init(
         likeStorage: VillagersLikeStorage = CoreDataVillagersLikeStorage(),
         houseStorage: VillagersHouseStorage = CoreDataVillagersHouseStorage(),
-        villager: Villager,
-        coordinator: VillagersCoordinator?
+        villager: Villager
     ) {
         self.likeStorage = likeStorage
         self.houseStorage = houseStorage
         self.villager = villager
-        self.coordinator = coordinator
     }
     
     struct Input {

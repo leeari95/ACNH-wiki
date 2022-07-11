@@ -82,7 +82,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.visibleViewController?.present(navigationController, animated: true)
         case .villagerDetail(let villager):
             let viewController = VillagerDetailViewController()
-            viewController.viewModel = VillagerDetailViewModel(villager: villager, coordinator: nil)
+            viewController.bind(to: VillagerDetailViewModel(villager: villager))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .progress:

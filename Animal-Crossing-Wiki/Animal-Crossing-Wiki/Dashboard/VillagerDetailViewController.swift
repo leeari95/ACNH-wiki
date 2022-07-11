@@ -10,7 +10,6 @@ import RxSwift
 
 class VillagerDetailViewController: UIViewController {
     
-    var viewModel: VillagerDetailViewModel?
     private let disposeBag = DisposeBag()
     
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView()
@@ -30,7 +29,6 @@ class VillagerDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpViews() {
@@ -42,8 +40,9 @@ class VillagerDetailViewController: UIViewController {
                 action: nil
             )
             navigationItem.leftBarButtonItem?.rx.tap
-                .subscribe(onNext: { _ in
-                    self.dismiss(animated: true)
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.dismiss(animated: true)
                 }).disposed(by: disposeBag)
         }
         setUpNavigationItem()
@@ -64,15 +63,15 @@ class VillagerDetailViewController: UIViewController {
         navigationItem.rightBarButtonItems = [houseBarButton, likeBarButton]
     }
     
-    private func bind() {
+    func bind(to viewModel: VillagerDetailViewModel) {
         let input = VillagerDetailViewModel.Input(
             didTapHeart: likeButton.rx.tap.asObservable(),
             didTapHouse: houseButton.rx.tap.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         let config = UIImage.SymbolConfiguration(scale: .large)
         
-        output?.villager
+        output.villager
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villager in
@@ -81,7 +80,7 @@ class VillagerDetailViewController: UIViewController {
                 owner.navigationItem.title = villager.translations.localizedName()
             }).disposed(by: disposeBag)
         
-        output?.villager
+        output.villager
             .compactMap { $0.houseImage }
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
@@ -89,7 +88,7 @@ class VillagerDetailViewController: UIViewController {
                 owner.addHouseSection(houseImage)
             }).disposed(by: disposeBag)
         
-        output?.isLiked
+        output.isLiked
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isLiked in
@@ -99,7 +98,7 @@ class VillagerDetailViewController: UIViewController {
                 )
             }).disposed(by: disposeBag)
         
-        output?.isResident
+        output.isResident
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isResident in
