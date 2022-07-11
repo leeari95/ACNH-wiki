@@ -63,6 +63,7 @@
 		9A6CB4002872C29900B368D4 /* VillagerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3FF2872C29900B368D4 /* VillagerDetailViewModel.swift */; };
 		9A6CB4022872C53F00B368D4 /* VillagerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4012872C53F00B368D4 /* VillagerDetailView.swift */; };
 		9A6CB4042872D86100B368D4 /* VillagerHouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */; };
+		9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutViewModel.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -220,6 +221,7 @@
 		9A6CB3FF2872C29900B368D4 /* VillagerDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailViewModel.swift; sourceTree = "<group>"; };
 		9A6CB4012872C53F00B368D4 /* VillagerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerDetailView.swift; sourceTree = "<group>"; };
 		9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerHouseView.swift; sourceTree = "<group>"; };
+		9A6DC204287C6199004EEC41 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -571,8 +573,9 @@
 			isa = PBXGroup;
 			children = (
 				9A6A2ED8287BEB76007D2EEA /* DashboardViewModel.swift */,
-				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
+				9A6DC204287C6199004EEC41 /* AboutViewModel.swift */,
 				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
+				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
 				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
 				9AD343F628767649008A3D6D /* ProgressViewModel.swift */,
 				9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */,
@@ -1095,6 +1098,7 @@
 				9A6A2EC8287A7BB1007D2EEA /* CollectionViewModel.swift in Sources */,
 				9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
+				9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
 				9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */,
 				9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */,

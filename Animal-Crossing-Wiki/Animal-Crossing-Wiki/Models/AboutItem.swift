@@ -10,14 +10,15 @@ import Foundation
 struct AboutItem {
     let icon: String
     let title: String
-    let url: URL?
+    var url: URL?
+    var description: String?
     
     static var theApp: [AboutItem] {
         [
             AboutItem(
                 icon: "chevron.left.slash.chevron.right",
-                title: "Source code",
-                url: nil
+                title: "Source code / report an issue",
+                url: URL(string: "https://github.com/leeari95/ACNH-wiki")
             ),
             AboutItem(
                 icon: "envelope.fill",
@@ -27,7 +28,7 @@ struct AboutItem {
             AboutItem(
                 icon: "photo.fill",
                 title: "Contact / follow us on Instagram",
-                url: nil
+                url: URL(string: "https://www.instagram.com/acnhwiki_app/")
             ),
             AboutItem(
                 icon: "star.fill",
@@ -37,17 +38,7 @@ struct AboutItem {
             AboutItem(
                 icon: "lock",
                 title: "Privacy Policy",
-                url: nil
-            ),
-            AboutItem(
-                icon: "tag",
-                title: "App version",
-                url: nil
-            ),
-            AboutItem(
-                icon: "gamecontroller",
-                title: "Game patch data",
-                url: nil
+                url: URL(string: "https://github.com/leeari95/ACNH-wiki/blob/develop/privacy-policy.md")
             )
         ]
     }
@@ -56,13 +47,8 @@ struct AboutItem {
         return [
             AboutItem(
                 icon: "heart.fill",
-                title: "Nookipedia API",
-                url: URL(string: "https://api.nookipedia.com/")
-            ),
-            AboutItem(
-                icon: "heart.fill",
-                title: "Turnip prophet",
-                url: URL(string: "https://github.com/elxris/Turnip-Calculator")
+                title: "ACNH API",
+                url: URL(string: "https://acnhapi.com/")
             ),
             AboutItem(
                 icon: "heart.fill",
@@ -70,6 +56,21 @@ struct AboutItem {
                 url: URL(
                     string: "https://docs.google.com/spreadsheets/d/1mo7myqHry5r_TKvakvIhHbcEAEQpSiNoNQoIS8sMpvM/edit#gid=1397507627"
                 )
+            )
+        ]
+    }
+    
+    static var versions: [AboutItem] {
+        return [
+            AboutItem(
+                icon: "tag",
+                title: "App version",
+                description: "1.0.0"
+            ),
+            AboutItem(
+                icon: "gamecontroller",
+                title: "Game patch data",
+                description: "2.0.0"
             )
         ]
     }

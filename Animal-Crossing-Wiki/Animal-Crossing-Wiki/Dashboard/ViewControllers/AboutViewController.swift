@@ -19,22 +19,25 @@ class AboutViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var cancelButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "xmark.app.fill"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "About"
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark.app.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapCancelButton(_:))
-        )
+        navigationItem.leftBarButtonItem = cancelButton
         
         view.addSubviews(tableView)
         
@@ -46,36 +49,39 @@ class AboutViewController: UIViewController {
         ])
     }
     
-    private func bind() {
-        let items = Observable.just([
-            SectionModel(model: "The app", items: AboutItem.theApp),
-            SectionModel(model: "Credit / Thanks", items: AboutItem.acknowledgement)
-        ])
+    func bind(to viewModel: AboutViewModel) {
+        let input = AboutViewModel.Input(
+            didTapCancel: cancelButton.rx.tap.asObservable()
+        )
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
 
-        let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, (AboutItem)>> { _, _, _, item in
+        let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, AboutItem>> { _, _, _, item in
             let cell = UITableViewCell()
             var content = cell.defaultContentConfiguration()
             content.image = UIImage(systemName: item.icon)
             content.imageProperties.maximumSize = CGSize(width: 25, height: 25)
-            content.imageProperties.tintColor = .acHeaderBackground
+            content.imageProperties.tintColor = item.icon.contains("heart") ? .systemRed : .acHeaderBackground
             content.text = item.title
             content.textProperties.color = .acText
             content.textProperties.font = .preferredFont(forTextStyle: .callout)
+            if let description = item.description {
+                content.secondaryText = description
+                content.secondaryTextProperties.color = .acText
+            }
             cell.contentConfiguration = content
-            
             cell.backgroundColor = .acSecondaryBackground
-            cell.accessoryType = .disclosureIndicator
             cell.selectedBackgroundView = UIView()
-            cell.selectedBackgroundView?.backgroundColor = .acText.withAlphaComponent(0.3)
-            
+            cell.selectedBackgroundView?.backgroundColor = item.url == nil ? .clear : .acText.withAlphaComponent(0.3)
+            cell.accessoryType = item.url == nil ? .none : .disclosureIndicator
             return cell
         } titleForHeaderInSection: { dataSource, sectionIndex in
             return dataSource[sectionIndex].model
         }
         
-        items.bind(
-            to: tableView.rx.items(dataSource: dataSource)
-        ).disposed(by: disposeBag)
+        output.items
+            .map { $0.map { SectionModel(model: $0.title, items: $0.items) } }
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
         
         tableView.rx.itemSelected
             .observe(on: MainScheduler.instance)
@@ -90,9 +96,4 @@ class AboutViewController: UIViewController {
                 UIApplication.shared.open(url)
             }).disposed(by: disposeBag)
     }
-    
-    @objc private func didTapCancelButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-
 }

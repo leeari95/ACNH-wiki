@@ -55,6 +55,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.present(navigationController, animated: true)
         case .about:
             let viewController = AboutViewController()
+            viewController.bind(to: AboutViewModel(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .taskEdit:
