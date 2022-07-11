@@ -29,6 +29,22 @@ class CollectionViewController: UIViewController {
         return barButtonItem
     }()
     
+    private lazy var emptyView: UIStackView = {
+        let stackView = UIStackView(axis: .vertical, alignmnet: .center, distribution: .fill, spacing: 8)
+        let titleLabel = UILabel(
+            text: "There are no collectibles.",
+            font: .preferredFont(for: .body, weight: .semibold),
+            color: .acText.withAlphaComponent(0.7)
+        )
+        let subTitleLabel = UILabel(
+            text: "when you check some items, they'll be displayed here.",
+            font: .preferredFont(forTextStyle: .footnote),
+            color: .acText.withAlphaComponent(0.7)
+        )
+        stackView.addArrangedSubviews(titleLabel, subTitleLabel)
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -36,12 +52,14 @@ class CollectionViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        view.addSubviews(tableView)
+        view.addSubviews(tableView, emptyView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
@@ -59,7 +77,6 @@ class CollectionViewController: UIViewController {
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
         output.catagories
-            .filter { !$0.isEmpty }
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
@@ -68,6 +85,11 @@ class CollectionViewController: UIViewController {
                 )
             }.disposed(by: disposeBag)
         
+        output.catagories
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
+            .disposed(by: disposeBag)
+
         tableView.rx.itemSelected
             .subscribe(onNext: { indexPath in
                 self.tableView.deselectRow(at: indexPath, animated: true)

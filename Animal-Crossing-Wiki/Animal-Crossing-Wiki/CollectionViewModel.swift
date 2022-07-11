@@ -30,14 +30,12 @@ final class CollectionViewModel {
         
         Items.shared.itemList
             .subscribe(onNext: { items in
-                let currentCategories = items.keys
-                categories.accept(
-                    currentCategories
-                        .sorted { $0.rawValue < $1.rawValue }
-                        .map { category in
-                            return (category, items[category]?.count ?? 0)
-                    }
-                )
+                let categoryList = items.keys.sorted { $0.rawValue < $1.rawValue }
+                var newCategories = [(title: Category, count: Int)]()
+                for category in categoryList where items[category]?.count != .zero {
+                    newCategories.append((category, items[category]?.count ?? 0))
+                }
+                categories.accept(newCategories)
             }).disposed(by: disposeBag)
         
         input.selectedCategory

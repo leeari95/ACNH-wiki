@@ -38,12 +38,13 @@ class ProgressView: UIStackView {
         axis = .horizontal
         alignment = .center
         distribution = .fill
-        spacing = 10
+        spacing = 5
         
         addArrangedSubviews(iconImageView, progressBar, progressLabel)
         NSLayoutConstraint.activate([
             iconImageView.heightAnchor.constraint(equalToConstant: 30),
-            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
+            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor),
+            progressLabel.widthAnchor.constraint(equalToConstant: 46)
         ])
     }
     
