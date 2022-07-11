@@ -151,14 +151,14 @@ class ItemsViewController: UIViewController {
     }
     
     private func createFilteringMenuChildren() -> [UIMenuElement] {
-        let allAction = UIAction(title: Menu.all.title, handler: { _ in
-            self.currentSelected = [Menu.all: Menu.all.title]
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        let allAction = UIAction(title: Menu.all.title, handler: { [weak self] _ in
+            self?.currentSelected = [Menu.all: Menu.all.title]
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         })
-        let uncollectionAction = UIAction(title: Menu.uncollected.title, handler: { action in
-            self.currentSelected[.uncollected] = self.currentSelected[.uncollected] == nil ? action.title : nil
-            self.currentSelected[.all] = self.currentSelected.isEmpty ? Menu.all.title : nil
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        let uncollectionAction = UIAction(title: Menu.uncollected.title, handler: { [weak self] action in
+            self?.currentSelected[.uncollected] = self?.currentSelected[.uncollected] == nil ? action.title : nil
+            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         })
         
         var menuItems = [UIMenuElement]()
@@ -172,23 +172,23 @@ class ItemsViewController: UIViewController {
     }
     
     private func createSortActions() -> [UIAction] {
-        let handler: (UIAction) -> Void = { action in
+        let handler: (UIAction) -> Void = { [weak self] action in
             let rawValue = action.title == Menu.name.title ? 2 : 3
             let menu = Menu(rawValue: rawValue) ?? .name
-            if self.currentSelected[menu] == nil {
-                self.currentSelected[menu] = Menu.ascending
-            } else if self.currentSelected[menu] == Menu.ascending {
-                self.currentSelected[menu] = Menu.descending
+            if self?.currentSelected[menu] == nil {
+                self?.currentSelected[menu] = Menu.ascending
+            } else if self?.currentSelected[menu] == Menu.ascending {
+                self?.currentSelected[menu] = Menu.descending
             } else {
-                self.currentSelected[menu] = Menu.ascending
+                self?.currentSelected[menu] = Menu.ascending
             }
-            self.currentSelected[.all] = nil
+            self?.currentSelected[.all] = nil
             if menu == .name {
-                self.currentSelected[.sell] = nil
+                self?.currentSelected[.sell] = nil
             } else {
-                self.currentSelected[.name] = nil
+                self?.currentSelected[.name] = nil
             }
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         }
         let name = UIAction(title: Menu.name.title, handler: handler)
         let sell = UIAction(title: Menu.sell.title, handler: handler)
@@ -197,11 +197,11 @@ class ItemsViewController: UIViewController {
     }
     
     private func createMonthMenu() -> UIMenu {
-        let actionHandler: (UIAction) -> Void = { action in
+        let actionHandler: (UIAction) -> Void = { [weak self] action in
             let menu = Menu.month
-            self.currentSelected[menu] = action.title
-            self.currentSelected[Menu.all] = nil
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+            self?.currentSelected[menu] = action.title
+            self?.currentSelected[Menu.all] = nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         }
         let monthMenu = UIMenu(
             title: Menu.month.title,

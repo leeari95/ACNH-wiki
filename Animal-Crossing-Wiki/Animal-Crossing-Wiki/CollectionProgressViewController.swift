@@ -62,13 +62,13 @@ class CollectionProgressViewController: UIViewController {
         
         output.items
             .bind(to: tableView.rx.items(cellIdentifier: ItemProgressRow.className, cellType: ItemProgressRow.self)) { _, category, cell in
-                
                 cell.setUp(for: category)
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                self.tableView.deselectRow(at: indexPath, animated: true)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
     }
 }
