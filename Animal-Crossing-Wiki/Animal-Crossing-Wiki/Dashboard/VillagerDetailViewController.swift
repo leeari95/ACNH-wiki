@@ -70,7 +70,7 @@ class VillagerDetailViewController: UIViewController {
             didTapHouse: houseButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+        let config = UIImage.SymbolConfiguration(scale: .large)
         
         output?.villager
             .observe(on: MainScheduler.instance)

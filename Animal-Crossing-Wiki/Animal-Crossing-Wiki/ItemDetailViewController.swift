@@ -18,7 +18,7 @@ class ItemDetailViewController: UIViewController {
     private lazy var checkButton: UIButton = {
         let button = UIButton()
         button.tintColor = .acNavigationBarTint
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+        let config = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(
             UIImage(systemName: "checkmark.seal", withConfiguration: config),
             for: .normal
@@ -68,7 +68,7 @@ class ItemDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in
-                let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+                let config = UIImage.SymbolConfiguration(scale: .large)
                 owner.checkButton.setImage(
                     UIImage(systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal", withConfiguration: config),
                     for: .normal
