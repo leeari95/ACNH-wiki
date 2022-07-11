@@ -33,7 +33,6 @@ protocol Item {
     var genuine: Bool { get }
     var artCategory: ArtCategory { get }
     var unlocked: Bool { get }
-    var isFake: Bool { get }
     var size: Size { get }
     var source: String { get }
 }
@@ -104,9 +103,6 @@ extension Item {
     var unlocked: Bool {
         return false
     }
-    var isFake: Bool {
-        return false
-    }
     var size: Size {
         return .the1X1
     }
@@ -151,7 +147,6 @@ extension Item {
             "genuine": self.genuine,
             "artCategory": self.artCategory.rawValue,
             "unlocked": self.unlocked,
-            "isFake": self.isFake,
             "size": self.size.rawValue
         ]
     }

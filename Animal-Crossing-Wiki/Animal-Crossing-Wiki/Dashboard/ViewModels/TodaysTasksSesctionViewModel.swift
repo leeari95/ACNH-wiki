@@ -70,7 +70,7 @@ final class TodaysTasksSesctionViewModel {
         input.didTapEdit
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.coordinator?.presentToTaskEdit()
+                owner.coordinator?.transition(for: .taskEdit)
             }).disposed(by: disposeBag)
         
         return Output(tasks: currentTasks.asObservable())

@@ -11,7 +11,7 @@ import RxSwift
 class ProgressView: UIStackView {
     
     private var viewModel: ProgressViewModel?
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     private var barHeight: CGFloat = 30
     
     private lazy var iconImageView: UIImageView = {
@@ -38,12 +38,13 @@ class ProgressView: UIStackView {
         axis = .horizontal
         alignment = .center
         distribution = .fill
-        spacing = 10
+        spacing = 5
         
         addArrangedSubviews(iconImageView, progressBar, progressLabel)
         NSLayoutConstraint.activate([
-            iconImageView.heightAnchor.constraint(equalToConstant: barHeight),
-            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor)
+            iconImageView.heightAnchor.constraint(equalToConstant: 30),
+            iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor),
+            progressLabel.widthAnchor.constraint(equalToConstant: 46)
         ])
     }
     
@@ -67,6 +68,13 @@ extension ProgressView {
         self.iconImageView.image = UIImage(named: category.progressIconName)
         viewModel = ProgressViewModel(category: category)
         configure()
+        bind()
+    }
+    
+    func updateView(category: Category) {
+        self.iconImageView.image = UIImage(named: category.progressIconName)
+        disposeBag = DisposeBag()
+        viewModel = ProgressViewModel(category: category)
         bind()
     }
 }

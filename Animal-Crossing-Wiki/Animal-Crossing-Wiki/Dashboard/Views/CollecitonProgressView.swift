@@ -21,27 +21,33 @@ class CollecitonProgressView: UIView {
         return stackView
     }()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    
     private func configure() {
-        addSubviews(backgroundStackView)
+        let config = UIImage.SymbolConfiguration(scale: .small)
+        let image = UIImageView(image: UIImage(systemName: "chevron.forward", withConfiguration: config))
+        image.tintColor = .systemGray
+        addSubviews(backgroundStackView, image)
         backgroundStackView.addArrangedSubviews(Category.progress().map { ProgressView(category: $0) })
         
         let heightAnchor = backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         heightAnchor.priority = .defaultHigh
         NSLayoutConstraint.activate([
+            image.trailingAnchor.constraint(equalTo: trailingAnchor),
+            image.centerYAnchor.constraint(equalTo: centerYAnchor),
             backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
             backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
+            backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor, constant: -25),
             heightAnchor
         ])
     }
+}
 
+extension CollecitonProgressView {
+    convenience init(viewModel: CollectionProgressSectionViewModel) {
+        self.init(frame: .zero)
+        let tap = UITapGestureRecognizer()
+        addGestureRecognizer(tap)
+        let input = CollectionProgressSectionViewModel.Input(didTapSection: tap.rx.event.asObservable())
+        viewModel.bind(input: input, disposeBag: disposeBag)
+        configure()
+    }
 }

@@ -19,26 +19,29 @@ final class AppCoordinator: Coordinator {
     func start() {
         let dashboardCoordinator = DashboardCoordinator()
         dashboardCoordinator.start()
-        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard", icon: "Inv1")
+        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard", icon: "icon-bells-tabbar")
         childCoordinators.append(dashboardCoordinator)
         
         let catalogCoordinator = CatalogCoordinator()
         catalogCoordinator.start()
-        addViewController(catalogCoordinator.rootViewController, title: "Catalog", icon: "Inv63")
+        addViewController(catalogCoordinator.rootViewController, title: "Catalog", icon: "icon-leaf-tabbar")
         childCoordinators.append(catalogCoordinator)
         
         let villagersCoordinator = VillagersCoordinator()
         villagersCoordinator.start()
-        addViewController(villagersCoordinator.rootViewController, title: "Villagers", icon: "Inv97")
+        addViewController(villagersCoordinator.rootViewController, title: "Villagers", icon: "icon-book-tabbar")
         childCoordinators.append(villagersCoordinator)
+        
+        let collectionCoordinator = CollectionCoordinator()
+        collectionCoordinator.start()
+        addViewController(collectionCoordinator.rootViewController, title: "Collection", icon: "icon-cardboard-tabbar")
+        childCoordinators.append(collectionCoordinator)
     }
     
     private func addViewController(_ viewController: UIViewController, title: String, icon: String) {
         let iconImage = UIImage(named: icon)?.withRenderingMode(.alwaysOriginal)
-        let imageInsets = UIEdgeInsets(top: 15, left: 18, bottom: 15, right: 18)
         
         let tabBarItem = UITabBarItem(title: title, image: iconImage, tag: childCoordinators.count)
-        tabBarItem.imageInsets = imageInsets
         viewController.tabBarItem = tabBarItem
         
         rootViewController.addChild(viewController)

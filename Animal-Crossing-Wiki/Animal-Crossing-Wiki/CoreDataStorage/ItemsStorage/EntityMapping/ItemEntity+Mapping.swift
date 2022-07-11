@@ -22,7 +22,7 @@ extension ItemEntity {
         self.furnitureImage = item.furnitureImage
         self.genuine = item.genuine
         self.hemispheres = item.hemispheres.toDictionary()
-        self.highResTexture = item.highResTexture
+        self.highResTexture = (item as? Art)?.highResTexture
         self.iconImage = item.iconImage
         self.image = item.image
         self.keyword = item.toKeyword()
@@ -143,22 +143,22 @@ extension ItemEntity {
 
 extension Hemispheres {
     
-    func toDictionary() -> [String: [String: Any]] {
+    func toDictionary() -> [String: [String: [Any]]] {
         [
             "north": [
-                "time": [north.time],
-                "months": [north.months],
-                "monthsArray": [north.monthsArray]
+                "time": north.time,
+                "months": north.months,
+                "monthsArray": north.monthsArray
             ],
             "south": [
-                "time": [north.time],
-                "months": [north.months],
-                "monthsArray": [north.monthsArray]
+                "time": north.time,
+                "months": north.months,
+                "monthsArray": north.monthsArray
             ]
         ]
     }
 
-    init(_ dictionary: [String: [String: Any]]) {
+    init(_ dictionary: [String: [String: [Any]]]) {
         self.init(
             north: EmergenceInfo(
                 time: dictionary["north"]?["time"] as? [String] ?? [],

@@ -92,7 +92,7 @@ class CustomTaskViewController: UIViewController {
 }
 
 extension CustomTaskViewController: CustomTaskViewControllerDelegate {
-    func seletedIcon(_ icon: String) {
+    func selectedIcon(_ icon: String) {
         customTaskSection.updateIcon(icon)
         iconText.accept(icon)
     }

@@ -10,13 +10,19 @@ import RxSwift
 import RxRelay
 
 final class ItemsViewModel {
+    enum Mode {
+        case user
+        case all
+    }
     
     private let category: Category
-    private let coordinator: CatalogCoordinator?
+    private let coordinator: Coordinator?
+    private let mode: Mode
     
-    init(category: Category, coordinator: CatalogCoordinator) {
+    init(category: Category, coordinator: Coordinator?, mode: Mode = .all) {
         self.category = category
         self.coordinator = coordinator
+        self.mode = mode
     }
     
     struct Input {
@@ -41,23 +47,6 @@ final class ItemsViewModel {
             .compactMap { $0 }
             .subscribe(onNext: { userInfo in
                 currentHemisphere = userInfo.hemisphere
-            }).disposed(by: disposeBag)
-        
-        Items.shared.categoryList
-            .compactMap { $0[self.category] }
-            .subscribe(onNext: { newItems in
-                items.accept(newItems)
-                allItems = newItems
-            }).disposed(by: disposeBag)
-        
-        Items.shared.itemList
-            .subscribe(onNext: { list in
-                userItems = list.filter { $0.category == self.category }
-                if currentFilter.contains(.uncollected) {
-                    let filterdData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
-                    items.accept(filterdData)
-                    filteredItems = filterdData
-                }
             }).disposed(by: disposeBag)
         
         input.searchBarText
@@ -104,17 +93,17 @@ final class ItemsViewModel {
                     case .name:
                         let filteredData = (itemList.isEmpty ? filteredItems : itemList)
                             .sorted {
-                            value == ItemsViewController.Menu.ascending ?
-                            $0.translations.localizedName() < $1.translations.localizedName() :
-                            $0.translations.localizedName() > $1.translations.localizedName()
-                        }
+                                value == ItemsViewController.Menu.ascending ?
+                                $0.translations.localizedName() < $1.translations.localizedName() :
+                                $0.translations.localizedName() > $1.translations.localizedName()
+                            }
                         itemList = filteredData
                     case .sell:
                         let filteredData = (itemList.isEmpty ? filteredItems : itemList)
                             .sorted {
-                            value == ItemsViewController.Menu.ascending ?
-                            $0.sell < $1.sell : $0.sell > $1.sell
-                        }
+                                value == ItemsViewController.Menu.ascending ?
+                                $0.sell < $1.sell : $0.sell > $1.sell
+                            }
                         itemList = filteredData
                     case .uncollected:
                         let filteredData = (itemList.isEmpty ? filteredItems : itemList)
@@ -130,13 +119,47 @@ final class ItemsViewModel {
             .compactMap { items.value[safe: $0.item] }
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
-                owner.coordinator?.pushToItemsDetail(item)
+                if let coordinator = owner.coordinator as? CatalogCoordinator {
+                    coordinator.pushToItemsDetail(item)
+                } else if let coordinator = owner.coordinator as? CollectionCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
+                } else if let coordinator = owner.coordinator as? DashboardCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
+                }
             }).disposed(by: disposeBag)
         
-        return Output(
+        if mode == .all {
+            Items.shared.categoryList
+                .compactMap { $0[self.category] }
+                .subscribe(onNext: { newItems in
+                    items.accept(newItems)
+                    allItems = newItems
+                }).disposed(by: disposeBag)
+            
+            Items.shared.itemList
+                .compactMap { $0[self.category] }
+                .subscribe(onNext: { list in
+                    userItems = list
+                    if currentFilter.contains(.uncollected) {
+                        let filterdData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
+                        items.accept(filterdData)
+                        filteredItems = filterdData
+                    }
+                }).disposed(by: disposeBag)
+            
+        } else {
+            Items.shared.itemList
+                .compactMap { $0[self.category] }
+                .subscribe(onNext: { newItems in
+                    items.accept(newItems)
+                    allItems = newItems
+                }).disposed(by: disposeBag)
+        }
+        
+        return  Output(
             category: Observable.just(category),
             items: items.asObservable()
         )
     }
-
+    
 }
