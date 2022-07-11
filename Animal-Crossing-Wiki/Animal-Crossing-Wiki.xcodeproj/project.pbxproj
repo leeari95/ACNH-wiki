@@ -52,6 +52,8 @@
 		9A6A2ED1287AA1F9007D2EEA /* ItemProgressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ECF287AA1F9007D2EEA /* ItemProgressRow.swift */; };
 		9A6A2ED2287AA1F9007D2EEA /* ItemProgressRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED0287AA1F9007D2EEA /* ItemProgressRow.xib */; };
 		9A6A2ED5287AA2CE007D2EEA /* CollectionProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED4287AA2CE007D2EEA /* CollectionProgressViewModel.swift */; };
+		9A6A2ED7287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */; };
+		9A6A2ED9287BEB76007D2EEA /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A2ED8287BEB76007D2EEA /* DashboardViewModel.swift */; };
 		9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */; };
 		9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F228728B3100B368D4 /* String+extension.swift */; };
 		9A6CB3F62872A11C00B368D4 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */; };
@@ -208,6 +210,8 @@
 		9A6A2ECF287AA1F9007D2EEA /* ItemProgressRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProgressRow.swift; sourceTree = "<group>"; };
 		9A6A2ED0287AA1F9007D2EEA /* ItemProgressRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemProgressRow.xib; sourceTree = "<group>"; };
 		9A6A2ED4287AA2CE007D2EEA /* CollectionProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionProgressViewModel.swift; sourceTree = "<group>"; };
+		9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionProgressSectionViewModel.swift; sourceTree = "<group>"; };
+		9A6A2ED8287BEB76007D2EEA /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		9A6CB3F0286EB57A00B368D4 /* UIMenu+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIMenu+extension.swift"; sourceTree = "<group>"; };
 		9A6CB3F228728B3100B368D4 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		9A6CB3F52872A11C00B368D4 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
@@ -569,6 +573,7 @@
 		9A99AA6B28618C8500629C4A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				9A6A2ED8287BEB76007D2EEA /* DashboardViewModel.swift */,
 				9A99AA6928618C8200629C4A /* UserInfoSectionViewModel.swift */,
 				9A99AA6C2861945B00629C4A /* PreferencesViewModel.swift */,
 				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
@@ -576,6 +581,7 @@
 				9A99AA7528657A9900629C4A /* TodaysTasksSesctionViewModel.swift */,
 				9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */,
 				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
+				9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -985,6 +991,7 @@
 				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
 				9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
+				9A6A2ED9287BEB76007D2EEA /* DashboardViewModel.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
@@ -1055,6 +1062,7 @@
 				9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */,
 				9A99AA3E285AEA1700629C4A /* Date+extension.swift in Sources */,
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
+				9A6A2ED7287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift in Sources */,
 				9A99AA8A286C17DE00629C4A /* VillagersViewController.swift in Sources */,
 				9A99AA6128603CB800629C4A /* IconCell.swift in Sources */,
 				9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */,

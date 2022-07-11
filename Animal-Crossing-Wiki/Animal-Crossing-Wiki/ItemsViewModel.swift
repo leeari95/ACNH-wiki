@@ -123,6 +123,8 @@ final class ItemsViewModel {
                     coordinator.pushToItemsDetail(item)
                 } else if let coordinator = owner.coordinator as? CollectionCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
+                } else if let coordinator = owner.coordinator as? DashboardCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
                 }
             }).disposed(by: disposeBag)
         

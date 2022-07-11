@@ -32,16 +32,16 @@ final class CollectionCoordinator: Coordinator {
     func transition(for route: Route) {
         switch route {
         case .items(let category, let mode):
-            let itemsVC = ItemsViewController()
-            itemsVC.category = category
-            itemsVC.viewModel = ItemsViewModel(category: category, coordinator: self, mode: mode)
-            let viewController = rootViewController.visibleViewController?.navigationController as? UINavigationController
-            viewController?.pushViewController(itemsVC, animated: true)
+            let viewController = ItemsViewController()
+            viewController.category = category
+            viewController.viewModel = ItemsViewModel(category: category, coordinator: self, mode: mode)
+            let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
+            navigationController?.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
-            let itemDetailVC = ItemDetailViewController()
-            itemDetailVC.viewModel = ItemDetailViewModel(item: item)
-            let viewController = rootViewController.visibleViewController?.navigationController as? UINavigationController
-            viewController?.pushViewController(itemDetailVC, animated: true)
+            let viewController = ItemDetailViewController()
+            viewController.viewModel = ItemDetailViewModel(item: item)
+            let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
+            navigationController?.pushViewController(viewController, animated: true)
         case .progress:
             let viewController = CollectionProgressViewController()
             let viewModel = CollectionProgressViewModel(coordinator: self)

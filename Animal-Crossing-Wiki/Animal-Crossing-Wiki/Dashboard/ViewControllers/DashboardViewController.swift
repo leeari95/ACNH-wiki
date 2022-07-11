@@ -6,22 +6,30 @@
 //
 
 import UIKit
+import RxSwift
 
 class DashboardViewController: UIViewController {
+
+    private let disposeBag = DisposeBag()
+    private lazy var sectionsScrollView = SectionsScrollView()
     
-    var coordinator: DashboardCoordinator?
+    private lazy var settingButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "slider.horizontal.3"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
     
-    private lazy var tasksSection = TodaysTasksView(TodaysTasksSesctionViewModel(coordinator: coordinator))
-    private lazy var sectionsScrollView = SectionsScrollView(
-        SectionView(title: "My Island", iconName: "sun.haze", contentView: UserInfoView(UserInfoSectionViewModel())),
-        SectionView(title: "Today's Tasks", iconName: "checkmark.seal.fill", contentView: tasksSection),
-        SectionView(
-            title: "My Villagers",
-            iconName: "person.circle.fill",
-            contentView: VillagersView(VillagersSectionViewModel(coordinator: coordinator))
-        ),
-        SectionView(title: "Collection Progress", iconName: "chart.pie.fill", contentView: CollecitonProgressView())
-    )
+    private lazy var aboutButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,18 +40,8 @@ class DashboardViewController: UIViewController {
     private func setUpViews() {
         view.backgroundColor = .acBackground
         navigationItem.title = Date().formatted("M월 d일, EEEE")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "slider.horizontal.3"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapSettingButton(_:))
-        )
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "info.circle"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapAboutButton(_:))
-        )
+        navigationItem.rightBarButtonItem = settingButton
+        navigationItem.leftBarButtonItem = aboutButton
         
         view.addSubviews(sectionsScrollView)
         
@@ -53,14 +51,42 @@ class DashboardViewController: UIViewController {
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-
     }
     
-    @objc private func didTapSettingButton(_ sender: UIBarButtonItem) {
-        coordinator?.presentToSetting()
+    func setUpViewModels(
+        userInfoVM: UserInfoSectionViewModel,
+        tasksVM: TodaysTasksSesctionViewModel,
+        villagersVM: VillagersSectionViewModel,
+        progressVM: CollectionProgressSectionViewModel
+    ) {
+        let userInfoSection = SectionView(
+            title: "My Island",
+            iconName: "sun.haze",
+            contentView: UserInfoView(userInfoVM)
+        )
+        let tasksSection = SectionView(
+            title: "Today's Tasks",
+            iconName: "checkmark.seal.fill",
+            contentView: TodaysTasksView(tasksVM)
+        )
+        let villagersSection = SectionView(
+            title: "My Villagers",
+            iconName: "person.circle.fill",
+            contentView: VillagersView(villagersVM)
+        )
+        let progressSection = SectionView(
+            title: "Collection Progress",
+            iconName: "chart.pie.fill",
+            contentView: CollecitonProgressView(viewModel: progressVM)
+        )
+        sectionsScrollView.addSection(userInfoSection, tasksSection, villagersSection, progressSection)
     }
 
-    @objc private func didTapAboutButton(_ sender: UIBarButtonItem) {
-        coordinator?.presentToAbout()
+    func bind(to viewModel: DashboardViewModel) {
+        let input = DashboardViewModel.Input(
+            didTapAbout: aboutButton.rx.tap.asObservable(),
+            didTapSetting: settingButton.rx.tap.asObservable()
+        )
+        viewModel.bind(input: input, disposeBag: disposeBag)
     }
 }

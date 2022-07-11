@@ -34,7 +34,7 @@ final class VillagersSectionViewModel {
             .compactMap { $0 }
             .compactMap { self.villagers[safe: $0.row] }
             .subscribe(onNext: { villager in
-                self.coordinator?.presentToVillagerDetail(villager)
+                self.coordinator?.transition(for: .villagerDetail(villager: villager))
             }).disposed(by: disposeBag)
         
         Items.shared.villagerHouseList

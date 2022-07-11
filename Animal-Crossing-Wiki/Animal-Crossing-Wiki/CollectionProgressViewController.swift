@@ -36,6 +36,7 @@ class CollectionProgressViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
+        setUpNavigationItem()
         view.addSubviews(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -47,11 +48,12 @@ class CollectionProgressViewController: UIViewController {
     
     private func setUpNavigationItem() {
         navigationItem.title = "Collection Progress"
-        navigationItem.leftBarButtonItem = cancelButton
+        if navigationController?.viewControllers.count == 1 {
+            navigationItem.leftBarButtonItem = cancelButton
+        }
     }
     
     func bind(to viewModel: CollectionProgressViewModel) {
-        setUpNavigationItem()
         let input = CollectionProgressViewModel.Input(
             selectedCategory: tableView.rx.modelSelected(Category.self).asObservable(),
             didTapCancel: cancelButton.rx.tap.asObservable()
