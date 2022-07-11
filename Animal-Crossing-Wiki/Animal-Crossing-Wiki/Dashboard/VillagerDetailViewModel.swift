@@ -53,17 +53,17 @@ final class VillagerDetailViewModel {
             }).disposed(by: disposeBag)
         
         input.didTapHeart
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                Items.shared.updateVillagerLike(owner.villager)
-                owner.likeStorage.update(owner.villager)
+            .subscribe(onNext: { _ in
+                HapticManager.shared.impact(style: .medium)
+                Items.shared.updateVillagerLike(self.villager)
+                self.likeStorage.update(self.villager)
             }).disposed(by: disposeBag)
         
         input.didTapHouse
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                Items.shared.updateVillagerHouse(owner.villager)
-                owner.houseStorage.update(owner.villager)
+            .subscribe(onNext: { _ in
+                HapticManager.shared.impact(style: .medium)
+                Items.shared.updateVillagerHouse(self.villager)
+                self.houseStorage.update(self.villager)
             }).disposed(by: disposeBag)
         
         return Output(

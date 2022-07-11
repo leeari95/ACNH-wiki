@@ -34,6 +34,7 @@ final class ItemDetailViewModel {
         input.didTapCheck
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
+                HapticManager.shared.impact(style: .medium)
                 Items.shared.updateItem(owner.item)
                 owner.storage.update(owner.item)
             }).disposed(by: disposeBag)
