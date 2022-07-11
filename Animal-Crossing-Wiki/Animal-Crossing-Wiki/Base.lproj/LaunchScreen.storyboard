@@ -39,7 +39,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="App-Icon" width="448" height="453"/>
+        <image name="App-Icon" width="641" height="622"/>
         <namedColor name="ACSecondaryBackground">
             <color red="0.98039215686274506" green="0.95686274509803926" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
