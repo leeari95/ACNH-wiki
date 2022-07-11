@@ -11,7 +11,6 @@ import RxCocoa
 
 class UserInfoView: UIView {
     
-    private var viewModel: UserInfoSectionViewModel?
     private let disposeBag = DisposeBag()
     
     private lazy var backgroundStackView: UIStackView = {
@@ -83,9 +82,9 @@ class UserInfoView: UIView {
         ])
     }
     
-    private func bind() {
-        let output = viewModel?.transform(disposeBag: disposeBag)
-        output?.userInfo
+    private func bind(to viewModel: UserInfoSectionViewModel) {
+        let output = viewModel.transform(disposeBag: disposeBag)
+        output.userInfo
             .compactMap { $0 }
             .withUnretained(self)
             .observe(on: MainScheduler.instance)
@@ -108,7 +107,6 @@ class UserInfoView: UIView {
 extension UserInfoView {
     convenience init(_ viewModel: UserInfoSectionViewModel) {
         self.init(frame: .zero)
-        self.viewModel = viewModel
-        bind()
+        bind(to: viewModel)
     }
 }

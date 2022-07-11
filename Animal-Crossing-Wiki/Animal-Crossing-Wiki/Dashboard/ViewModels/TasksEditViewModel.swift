@@ -23,7 +23,7 @@ final class TasksEditViewModel {
     
     struct Input {
         let didSeletedTask: Observable<DailyTask>
-        let didTapCancel: Observable<Void>?
+        let didTapCancel: Observable<Void>
         let didDeleted: Observable<IndexPath>
     }
     
@@ -52,17 +52,15 @@ final class TasksEditViewModel {
             }).disposed(by: disposeBag)
         
         input.didSeletedTask
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, task in
-                owner.coordinator.transition(for: .customTask(task: task))
+            .subscribe(onNext: { task in
+                self.coordinator.transition(for: .customTask(task: task))
             }).disposed(by: disposeBag)
         
-        input.didTapCancel?
+        input.didTapCancel
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                owner.coordinator.transition(for: .dismiss)
+            .subscribe(onNext: { _ in
+                self.coordinator.transition(for: .dismiss)
             }).disposed(by: disposeBag)
         
         input.didDeleted

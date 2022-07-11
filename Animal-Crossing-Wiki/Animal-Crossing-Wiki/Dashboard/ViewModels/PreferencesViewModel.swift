@@ -24,7 +24,7 @@ final class PreferencesViewModel {
         let userNameText: Observable<String?>
         let hemisphereButtonTitle: Observable<Hemisphere?>
         let startingFruitButtonTitle: Observable<Fruit?>
-        let didTapCancel: Observable<Void>?
+        let didTapCancel: Observable<Void>
         let didTapHemisphere: Observable<Void>
         let didTapFruit: Observable<Void>
     }
@@ -89,7 +89,7 @@ final class PreferencesViewModel {
                 currentUserInfo.accept(userInfo)
             }).disposed(by: disposeBag)
         
-        input.didTapCancel?
+        input.didTapCancel
             .subscribe(onNext: { _ in
                 self.coordinator?.transition(for: .dismiss)
             }).disposed(by: disposeBag)

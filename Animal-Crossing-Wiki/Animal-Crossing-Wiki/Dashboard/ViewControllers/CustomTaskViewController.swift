@@ -31,11 +31,18 @@ class CustomTaskViewController: UIViewController {
             contentView: customTaskSection
         )
     )
+    private lazy var checkButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "checkmark.circle"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpViews() {
@@ -43,12 +50,7 @@ class CustomTaskViewController: UIViewController {
         self.navigationItem.title = mode?.rawValue
         navigationItem.largeTitleDisplayMode = .never
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "checkmark.circle"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
+        navigationItem.rightBarButtonItem = checkButton
         navigationItem.rightBarButtonItem?.tintColor = .acHeaderBackground
 
         view.addSubviews(sectionsScrollView)
@@ -61,25 +63,25 @@ class CustomTaskViewController: UIViewController {
         ])
     }
     
-    private func bind() {
+    func bind(to viewModel: CustomTaskViewModel) {
         let input = CustomTaskViewModel.Input(
-            didTapCheck: navigationItem.rightBarButtonItem?.rx.tap.asObservable(),
+            didTapCheck: checkButton.rx.tap.asObservable(),
             didTapIcon: customTaskSection.iconButtonObservable,
             didTapAmount: customTaskSection.maxAmountButtonObservable,
             taskNameText: customTaskSection.taskNameObservable,
             iconNameText: iconText.asObservable(),
             amountText: amount.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.task
+        output.task
             .compactMap { $0 }
             .withUnretained(self)
             .subscribe(onNext: { owner, task in
                 owner.customTaskSection.setUpViews(task)
             }).disposed(by: disposeBag)
         
-        output?.didChangeAmout
+        output.didChangeAmout
             .compactMap { $0 }
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)

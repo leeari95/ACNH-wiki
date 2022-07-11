@@ -120,7 +120,7 @@ final class ItemsViewModel {
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 if let coordinator = owner.coordinator as? CatalogCoordinator {
-                    coordinator.pushToItemsDetail(item)
+                    coordinator.transition(for: .itemDetail(item))
                 } else if let coordinator = owner.coordinator as? CollectionCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
                 } else if let coordinator = owner.coordinator as? DashboardCoordinator {

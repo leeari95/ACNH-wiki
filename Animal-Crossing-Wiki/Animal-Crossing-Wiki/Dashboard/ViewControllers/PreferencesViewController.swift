@@ -10,8 +10,6 @@ import RxSwift
 
 class PreferencesViewController: UIViewController {
     
-    var viewModel: PreferencesViewModel?
-    
     private let currentHemisphere = BehaviorSubject<Hemisphere?>(value: nil)
     private let currentFruit = BehaviorSubject<Fruit?>(value: nil)
     private let disposeBag = DisposeBag()
@@ -20,23 +18,26 @@ class PreferencesViewController: UIViewController {
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
         SectionView(title: "Island", iconName: "sun.haze", contentView: settingSection)
     )
+    
+    private lazy var cancelButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "xmark.app.fill"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Preferences"
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark.app.fill"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
+        navigationItem.leftBarButtonItem = cancelButton
         
         view.addSubviews(sectionsScrollView)
         
@@ -48,20 +49,20 @@ class PreferencesViewController: UIViewController {
         ])
     }
     
-    private func bind() {
+    func bind(to viewModel: PreferencesViewModel) {
         let input = PreferencesViewModel.Input(
             islandNameText: settingSection.islandNameObservable,
             userNameText: settingSection.userNameObservable,
             hemisphereButtonTitle: currentHemisphere.asObservable(),
             startingFruitButtonTitle: currentFruit.asObservable(),
-            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
+            didTapCancel: cancelButton.rx.tap.asObservable(),
             didTapHemisphere: settingSection.hemisphereButtonObservable,
             didTapFruit: settingSection.startingFruitButtonObservable
         )
         
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
 
-        output?.userInfo
+        output.userInfo
             .compactMap { $0 }
             .withUnretained(self)
             .observe(on: MainScheduler.instance)
@@ -71,13 +72,13 @@ class PreferencesViewController: UIViewController {
             print(error.localizedDescription)
         }).disposed(by: disposeBag)
         
-        output?.errorMessage
+        output.errorMessage
             .filter { $0 != "" }
             .subscribe(onNext: { errorMessage in
                 print(errorMessage)
             }).disposed(by: disposeBag)
         
-        output?.didChangeHemisphere
+        output.didChangeHemisphere
             .compactMap { $0 }
             .compactMap { Hemisphere(rawValue: $0) }
             .withUnretained(self)
@@ -86,7 +87,7 @@ class PreferencesViewController: UIViewController {
                 owner.currentHemisphere.onNext(hemisphere)
             }).disposed(by: disposeBag)
         
-        output?.didChangeFruit
+        output.didChangeFruit
             .compactMap { $0 }
             .compactMap { Fruit(rawValue: $0) }
             .withUnretained(self)

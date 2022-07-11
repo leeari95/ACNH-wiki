@@ -10,7 +10,6 @@ import RxSwift
 
 class TodaysTasksView: UIView {
 
-    private var viewModel: TodaysTasksSesctionViewModel?
     private let disposeBag = DisposeBag()
     private var heightConstraint: NSLayoutConstraint!
     
@@ -92,15 +91,15 @@ class TodaysTasksView: UIView {
         buttonStackView.addArrangedSubviews(editButton, resetButton)
     }
     
-    func bind() {
+    func bind(to viewModel: TodaysTasksSesctionViewModel) {
         let input = TodaysTasksSesctionViewModel.Input(
             didSelectItem: collectionView.rx.itemSelected.asObservable(),
             didTapReset: resetButton.rx.tap.asObservable(),
             didTapEdit: editButton.rx.tap.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.tasks
+        output.tasks
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
@@ -111,7 +110,7 @@ class TodaysTasksView: UIView {
                 item.task.progressList[item.progressIndex] ? cell.setAlpha(1) : cell.setAlpha(0.5)
             }.disposed(by: disposeBag)
         
-        output?.tasks
+        output.tasks
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
@@ -131,7 +130,6 @@ extension TodaysTasksView {
     
     convenience init(_ viewModel: TodaysTasksSesctionViewModel) {
         self.init(frame: .zero)
-        self.viewModel = viewModel
-        bind()
+        bind(to: viewModel)
     }
 }

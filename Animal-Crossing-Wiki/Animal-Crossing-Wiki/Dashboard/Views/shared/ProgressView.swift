@@ -9,8 +9,7 @@ import UIKit
 import RxSwift
 
 class ProgressView: UIStackView {
-    
-    private var viewModel: ProgressViewModel?
+
     private var disposeBag = DisposeBag()
     private var barHeight: CGFloat = 30
     
@@ -48,10 +47,10 @@ class ProgressView: UIStackView {
         ])
     }
     
-    private func bind() {
-        let output = viewModel?.transform(disposeBag: disposeBag)
+    private func bind(to viewModel: ProgressViewModel) {
+        let output = viewModel.transform(disposeBag: disposeBag)
         
-        output?.items
+        output.items
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, items in
@@ -66,15 +65,13 @@ extension ProgressView {
         self.init(frame: .zero)
         self.barHeight = barHeight
         self.iconImageView.image = UIImage(named: category.progressIconName)
-        viewModel = ProgressViewModel(category: category)
         configure()
-        bind()
+        bind(to: ProgressViewModel(category: category))
     }
     
     func updateView(category: Category) {
         self.iconImageView.image = UIImage(named: category.progressIconName)
         disposeBag = DisposeBag()
-        viewModel = ProgressViewModel(category: category)
-        bind()
+        bind(to: ProgressViewModel(category: category))
     }
 }

@@ -10,7 +10,6 @@ import RxSwift
 
 class ItemDetailViewController: UIViewController {
     
-    var viewModel: ItemDetailViewModel?
     private let disposeBag = DisposeBag()
     
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView()
@@ -28,7 +27,6 @@ class ItemDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setUpViews()
     }
     
@@ -50,13 +48,13 @@ class ItemDetailViewController: UIViewController {
         navigationItem.rightBarButtonItems = [checkBarButton]
     }
 
-    private func bind() {
+    func bind(to viewModel: ItemDetailViewModel) {
         let input = ItemDetailViewModel.Input(
             didTapCheck: checkButton.rx.tap.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.item
+        output.item
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
@@ -64,7 +62,7 @@ class ItemDetailViewController: UIViewController {
                 owner.setUpSection(in: item)
             }).disposed(by: disposeBag)
         
-        output?.isAcquired
+        output.isAcquired
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in

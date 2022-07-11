@@ -43,7 +43,6 @@ class ItemsViewController: UIViewController {
     }
 
     var category: Category?
-    var viewModel: ItemsViewModel?
     private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.title]
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.title])
@@ -69,24 +68,23 @@ class ItemsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setUpViews()
     }
     
-    private func bind() {
+    func bind(to viewModel: ItemsViewModel) {
         let input = ItemsViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
             itemSelected: collectionView.rx.itemSelected.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.items
+        output.items
             .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
                 cell.setUp(item)
             }.disposed(by: disposeBag)
         
-        output?.category
+        output.category
             .map { $0.rawValue }
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)

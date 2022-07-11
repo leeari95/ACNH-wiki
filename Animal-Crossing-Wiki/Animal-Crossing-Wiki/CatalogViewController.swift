@@ -10,7 +10,6 @@ import RxSwift
 
 class CatalogViewController: UIViewController {
     
-    var viewModel: CatalogViewModel?
     private let disposeBag = DisposeBag()
 
     private lazy var tableView: UITableView = {
@@ -23,7 +22,6 @@ class CatalogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpNavigationItem() {
@@ -42,14 +40,13 @@ class CatalogViewController: UIViewController {
         ])
     }
     
-    private func bind() {
+    func bind(to viewModel: CatalogViewModel) {
         let input = CatalogViewModel.Input(
             selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable()
         )
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
-        
-        output?.catagories
+        output.catagories
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
@@ -59,8 +56,9 @@ class CatalogViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                self.tableView.deselectRow(at: indexPath, animated: true)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
     }
 }

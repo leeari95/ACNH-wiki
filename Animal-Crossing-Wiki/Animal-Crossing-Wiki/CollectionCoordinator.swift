@@ -34,18 +34,17 @@ final class CollectionCoordinator: Coordinator {
         case .items(let category, let mode):
             let viewController = ItemsViewController()
             viewController.category = category
-            viewController.viewModel = ItemsViewModel(category: category, coordinator: self, mode: mode)
+            viewController.bind(to: ItemsViewModel(category: category, coordinator: self, mode: mode))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.viewModel = ItemDetailViewModel(item: item)
+            viewController.bind(to: ItemDetailViewModel(item: item))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
         case .progress:
             let viewController = CollectionProgressViewController()
-            let viewModel = CollectionProgressViewModel(coordinator: self)
-            viewController.bind(to: viewModel)
+            viewController.bind(to: CollectionProgressViewModel(coordinator: self))
             rootViewController.present(UINavigationController(rootViewController: viewController), animated: true)
         case .dismiss:
             rootViewController.visibleViewController?.dismiss(animated: true)

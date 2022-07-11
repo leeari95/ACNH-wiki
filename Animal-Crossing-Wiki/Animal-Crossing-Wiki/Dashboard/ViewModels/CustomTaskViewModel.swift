@@ -25,7 +25,7 @@ final class CustomTaskViewModel {
     }
     
     struct Input {
-        let didTapCheck: Observable<Void>?
+        let didTapCheck: Observable<Void>
         let didTapIcon: Observable<Void>
         let didTapAmount: Observable<Void>
         let taskNameText: Observable<String?>
@@ -45,11 +45,10 @@ final class CustomTaskViewModel {
         let amount = BehaviorRelay<String?>(value: nil)
         let currentAmount = BehaviorRelay<String>(value: task?.amount.description ?? "1")
         
-        input.didTapCheck?
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+        input.didTapCheck
+            .subscribe(onNext: { _ in
                 var newTask: DailyTask
-                if let task = owner.task {
+                if let task = self.task {
                     let amount = amount.value != nil ? Int(amount.value ?? "1") ?? 1 : task.amount
                     newTask = DailyTask(
                         id: task.id,
@@ -68,21 +67,19 @@ final class CustomTaskViewModel {
                         createdDate: Date()
                     )
                 }
-                owner.storage.updateTask(newTask)
+                self.storage.updateTask(newTask)
                 Items.shared.updateTasks(newTask)
-                owner.coordinator.transition(for: .pop)
+                self.coordinator.transition(for: .pop)
             }).disposed(by: disposeBag)
         
         input.didTapIcon
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                owner.coordinator.transition(for: .iconChooser)
+            .subscribe(onNext: { _ in
+                self.coordinator.transition(for: .iconChooser)
             }).disposed(by: disposeBag)
         
         input.didTapAmount
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                owner.coordinator.rootViewController.visibleViewController?
+            .subscribe(onNext: { _ in
+                self.coordinator.rootViewController.visibleViewController?
                     .showSeletedItemAlert(
                         Array(1...20).map { $0.description },
                         currentItem: currentAmount.value

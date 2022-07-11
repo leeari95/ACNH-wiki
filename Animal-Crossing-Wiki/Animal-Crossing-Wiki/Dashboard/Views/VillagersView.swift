@@ -10,7 +10,6 @@ import RxSwift
 
 class VillagersView: UIView {
     
-    private var viewModel: VillagersSectionViewModel?
     private let disposeBag = DisposeBag()
     
     private var heightConstraint: NSLayoutConstraint!
@@ -92,7 +91,7 @@ class VillagersView: UIView {
         ])
     }
     
-    private func bind() {
+    private func bind(to viewModel: VillagersSectionViewModel) {
         let input = VillagersSectionViewModel.Input(
             didSelectItem: collectionView.rx.itemSelected.asObservable(),
             didTapVillagerLongPress: longPressGesture.rx.event
@@ -109,9 +108,9 @@ class VillagersView: UIView {
                     return nil
                 }.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
 
-        output?.villagers
+        output.villagers
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
@@ -121,7 +120,7 @@ class VillagersView: UIView {
                 cell.setImage(url: villager.iconImage)
             }.disposed(by: disposeBag)
         
-        output?.villagers
+        output.villagers
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villagers in
@@ -158,7 +157,6 @@ class VillagersView: UIView {
 extension VillagersView {
     convenience init(_ viewModel: VillagersSectionViewModel) {
         self.init(frame: .zero)
-        self.viewModel = viewModel
-        bind()
+        bind(to: viewModel)
     }
 }

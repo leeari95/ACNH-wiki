@@ -24,7 +24,6 @@ class VillagersViewController: UIViewController {
         case residents = "Residents"
     }
 
-    var viewModel: VillagersViewModel?
     private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.rawValue]
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.rawValue])
@@ -56,11 +55,10 @@ class VillagersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setUpViews()
     }
     
-    private func bind() {
+    func bind(to viewModel: VillagersViewModel) {
         let input = VillagersViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
@@ -68,9 +66,9 @@ class VillagersViewController: UIViewController {
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
             villagerSelected: collectionView.rx.itemSelected.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.villagers
+        output.villagers
             .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)

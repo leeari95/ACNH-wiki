@@ -49,7 +49,7 @@ final class DashboardCoordinator: Coordinator {
         switch route {
         case .setting:
             let viewController = PreferencesViewController()
-            viewController.viewModel = PreferencesViewModel(coordinator: self)
+            viewController.bind(to: PreferencesViewModel(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.isModalInPresentation = true
             rootViewController.present(navigationController, animated: true)
@@ -59,7 +59,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.present(navigationController, animated: true)
         case .taskEdit:
             let viewController = TaskEditViewController()
-            viewController.viewModel = TasksEditViewModel(coordinator: self)
+            viewController.bind(to: TasksEditViewModel(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.isModalInPresentation = true
             rootViewController.present(navigationController, animated: true)
@@ -67,10 +67,10 @@ final class DashboardCoordinator: Coordinator {
             let viewController = CustomTaskViewController()
             delegate = viewController
             if task.icon == "plus" {
-                viewController.viewModel = CustomTaskViewModel(coordinator: self, task: nil)
+                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: nil))
                 viewController.mode = .add
             } else {
-                viewController.viewModel = CustomTaskViewModel(coordinator: self, task: task)
+                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: task))
                 viewController.mode = .edit
             }
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
@@ -87,17 +87,16 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.present(navigationController, animated: true)
         case .progress:
             let viewController = CollectionProgressViewController()
-            let viewModel = CollectionProgressViewModel(coordinator: self)
-            viewController.bind(to: viewModel)
+            viewController.bind(to: CollectionProgressViewModel(coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .item(let category):
             let viewController = ItemsViewController()
             viewController.category = category
-            viewController.viewModel = ItemsViewModel(category: category, coordinator: self)
+            viewController.bind(to: ItemsViewModel(category: category, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.viewModel = ItemDetailViewModel(item: item)
+            viewController.bind(to: ItemDetailViewModel(item: item))
             rootViewController.pushViewController(viewController, animated: true)
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)

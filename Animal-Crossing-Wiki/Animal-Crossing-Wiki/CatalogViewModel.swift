@@ -36,7 +36,7 @@ final class CatalogViewModel {
             .map { $0.title }
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { category in
-                self.coordinator?.pushToItems(category: category)
+                self.coordinator?.transition(for: .items(for: category))
             }).disposed(by: disposeBag)
         
         return Output(catagories: catagories.asObservable())

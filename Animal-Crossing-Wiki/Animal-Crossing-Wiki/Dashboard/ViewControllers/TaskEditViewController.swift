@@ -10,7 +10,6 @@ import RxSwift
 
 class TaskEditViewController: UIViewController {
     
-    var viewModel: TasksEditViewModel?
     private let disposeBag = DisposeBag()
     
     private lazy var tableView: UITableView = {
@@ -18,23 +17,26 @@ class TaskEditViewController: UIViewController {
         tableView.backgroundColor = .clear
         return tableView
     }()
+    
+    private lazy var cancelButton: UIBarButtonItem = {
+        return .init(
+            image: UIImage(systemName: "xmark.app.fill"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        bind()
     }
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
         self.navigationItem.title = "Today's Tasks"
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark.app.fill"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
+        navigationItem.leftBarButtonItem = cancelButton
         
         view.addSubviews(tableView)
         
@@ -46,15 +48,15 @@ class TaskEditViewController: UIViewController {
         ])
     }
     
-    private func bind() {
+    func bind(to viewModel: TasksEditViewModel) {
         let input = TasksEditViewModel.Input(
             didSeletedTask: tableView.rx.modelSelected(DailyTask.self).asObservable(),
-            didTapCancel: navigationItem.leftBarButtonItem?.rx.tap.asObservable(),
+            didTapCancel: cancelButton.rx.tap.asObservable(),
             didDeleted: tableView.rx.itemDeleted.asObservable()
         )
-        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output?.tasks
+        output.tasks
             .bind(to: tableView.rx.items) { _, _, task in
                 let cell = UITableViewCell()
                 var content = cell.defaultContentConfiguration()
