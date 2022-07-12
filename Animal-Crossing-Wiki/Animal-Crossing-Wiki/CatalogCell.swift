@@ -28,6 +28,8 @@ class CatalogCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configure()
+        contentView.backgroundColor = .acSecondaryBackground
+        contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .bold)
     }
 

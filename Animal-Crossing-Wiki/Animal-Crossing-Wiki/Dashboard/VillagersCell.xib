@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -21,19 +21,19 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="a75-Su-WSI">
-                        <rect key="frame" x="0.0" y="0.0" width="118" height="161"/>
+                        <rect key="frame" x="4" y="4" width="110" height="153"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="daisy" translatesAutoresizingMaskIntoConstraints="NO" id="Dv4-1s-gXE">
-                                <rect key="frame" x="0.0" y="0.0" width="118" height="106.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="110" height="98.5"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="무파니" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="te4-dp-W91">
-                                <rect key="frame" x="37" y="108.5" width="44.5" height="20.5"/>
+                                <rect key="frame" x="33" y="100.5" width="44.5" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <color key="textColor" name="ACText"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ths-c7-5tj">
-                                <rect key="frame" x="24" y="131" width="70" height="30"/>
+                                <rect key="frame" x="20" y="123" width="70" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gS-5r-6Dw">
                                         <rect key="frame" x="0.0" y="0.0" width="32.5" height="30"/>
@@ -60,10 +60,10 @@
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="a75-Su-WSI" secondAttribute="trailing" id="HCA-DN-K9r"/>
-                <constraint firstItem="a75-Su-WSI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="NG0-9B-NWr"/>
-                <constraint firstItem="a75-Su-WSI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Ntl-vY-tGQ"/>
-                <constraint firstAttribute="bottom" secondItem="a75-Su-WSI" secondAttribute="bottom" id="uOz-Ff-tEd"/>
+                <constraint firstAttribute="trailing" secondItem="a75-Su-WSI" secondAttribute="trailing" constant="4" id="HCA-DN-K9r"/>
+                <constraint firstItem="a75-Su-WSI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="NG0-9B-NWr"/>
+                <constraint firstItem="a75-Su-WSI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="Ntl-vY-tGQ"/>
+                <constraint firstAttribute="bottom" secondItem="a75-Su-WSI" secondAttribute="bottom" constant="4" id="uOz-Ff-tEd"/>
             </constraints>
             <size key="customSize" width="118" height="161"/>
             <connections>

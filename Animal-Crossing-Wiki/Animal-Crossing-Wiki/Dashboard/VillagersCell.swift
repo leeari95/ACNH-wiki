@@ -21,6 +21,8 @@ class VillagersCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .acSecondaryBackground
+        contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .semibold)
     }
     

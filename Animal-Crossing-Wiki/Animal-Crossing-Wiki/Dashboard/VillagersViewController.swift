@@ -30,9 +30,9 @@ class VillagersViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 100, height: 140)
+        flowLayout.itemSize = CGSize(width: 105, height: 140)
         flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        flowLayout.minimumLineSpacing = 25
+        flowLayout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
