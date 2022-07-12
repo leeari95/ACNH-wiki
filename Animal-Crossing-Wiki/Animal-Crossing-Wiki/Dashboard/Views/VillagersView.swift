@@ -19,6 +19,15 @@ class VillagersView: UIView {
         return gesture
     }()
     
+    private lazy var backgroundStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalCentering
+        stackView.spacing = 12
+        return stackView
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 50, height: 50)
@@ -51,42 +60,40 @@ class VillagersView: UIView {
         return label
     }()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+    private lazy var emptyLabel: UILabel = {
+        let text = """
+                   Who have you talked to today?
+                   Find the villagers you have visited and tap the home icon on the villager's page to keep track.
+                   """
+        let label = UILabel(text: text, font: .preferredFont(forTextStyle: .footnote), color: .acText)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        addSubviews(label)
+        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        return label
+    }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height + 80
-        self.heightConstraint.constant = contentHeight == .zero ? 80 : contentHeight
-    }
-    
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-        self.heightConstraint.constant = self.collectionView.collectionViewLayout.collectionViewContentSize.height + 80
+    private func updateCollectionViewHeight() {
+        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+        self.heightConstraint.constant = contentHeight == .zero ? 60 : contentHeight
     }
     
     private func configure() {
-        addSubviews(collectionView, resetButton, descriptionLabel)
-        collectionView.addGestureRecognizer(longPressGesture)
+        addSubviews(backgroundStackView)
+        backgroundStackView.addArrangedSubviews(collectionView, descriptionLabel, resetButton)
 
-        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 80)
+        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 60)
         heightConstraint.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
-            resetButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            resetButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: resetButton.topAnchor, constant: -8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            backgroundStackView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            backgroundStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            collectionView.widthAnchor.constraint(equalTo: backgroundStackView.widthAnchor),
             heightConstraint
         ])
     }
@@ -111,6 +118,22 @@ class VillagersView: UIView {
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
 
         output.villagers
+            .observe(on: MainScheduler.asyncInstance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, villagers in
+                if villagers.isEmpty {
+                    owner.emptyLabel.isHidden = false
+                    owner.backgroundStackView.isHidden = true
+                } else {
+                    owner.emptyLabel.isHidden = true
+                    owner.backgroundStackView.isHidden = false
+                    owner.descriptionLabel.text = "Long press on a villager to see more info about them."
+                }
+                owner.updateCollectionViewHeight()
+                owner.layoutIfNeeded()
+            }).disposed(by: disposeBag)
+        
+        output.villagers
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
@@ -119,26 +142,6 @@ class VillagersView: UIView {
             ) { _, villager, cell in
                 cell.setImage(url: villager.iconImage)
             }.disposed(by: disposeBag)
-        
-        output.villagers
-            .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, villagers in
-                owner.layoutIfNeeded()
-                if villagers.isEmpty {
-                    owner.subviews.compactMap { $0 as? UIButton }.first?.removeFromSuperview()
-                    owner.descriptionLabel.centerXAnchor.constraint(equalTo: owner.centerXAnchor).isActive = true
-                    owner.descriptionLabel.centerYAnchor.constraint(equalTo: owner.centerYAnchor).isActive = true
-                    owner.descriptionLabel.text = """
-                    Who have you talked to today?
-                    Find the villagers you have visited and tap the home icon on the villager's page to keep track.
-                    """
-                } else {
-                    owner.subviews.forEach { $0.removeFromSuperview() }
-                    owner.descriptionLabel.text = "Long press on a villager to see more info about them."
-                    owner.configure()
-                }
-            }).disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
@@ -158,6 +161,7 @@ class VillagersView: UIView {
 extension VillagersView {
     convenience init(_ viewModel: VillagersSectionViewModel) {
         self.init(frame: .zero)
+        configure()
         bind(to: viewModel)
     }
 }
