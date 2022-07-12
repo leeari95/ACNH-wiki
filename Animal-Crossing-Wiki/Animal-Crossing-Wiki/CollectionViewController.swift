@@ -32,12 +32,12 @@ class CollectionViewController: UIViewController {
     private lazy var emptyView: UIStackView = {
         let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 8)
         let titleLabel = UILabel(
-            text: "There are no collectibles.",
+            text: "There are no collectibles.".localized,
             font: .preferredFont(for: .body, weight: .semibold),
             color: .acText.withAlphaComponent(0.7)
         )
         let subTitleLabel = UILabel(
-            text: "when you check some items, they'll be displayed here.",
+            text: "when you check some items, they'll be displayed here.".localized,
             font: .preferredFont(forTextStyle: .footnote),
             color: .acText.withAlphaComponent(0.7)
         )
@@ -64,7 +64,7 @@ class CollectionViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection"
+        navigationItem.title = "Collection".localized
         self.navigationItem.rightBarButtonItem = progressButton
     }
     
@@ -80,7 +80,7 @@ class CollectionViewController: UIViewController {
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
-                    title: item.title.rawValue,
+                    title: item.title.rawValue.localized,
                     itemCount: item.count
                 )
             }.disposed(by: disposeBag)

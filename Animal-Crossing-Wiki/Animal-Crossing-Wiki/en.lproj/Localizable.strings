@@ -322,3 +322,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Red" = "Red";
 "White" = "White";
 "Yellow" = "Yellow";
+
+// CollectionViewController
+"There are no collectibles." = "There are no collectibles.";
+"when you check some items, they'll be displayed here." = "when you check some items, they'll be displayed here.";
+"Collection" = "Collection";

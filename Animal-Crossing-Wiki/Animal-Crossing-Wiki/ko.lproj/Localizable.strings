@@ -323,3 +323,7 @@
 "Red" = "레드";
 "White" = "화이트";
 "Yellow" = "옐로우";
+
+// CollectionViewController
+"There are no collectibles." = "수집함이 비어있습니다.";
+"when you check some items, they'll be displayed here." = "아이템에 체크하면 여기에 표시됩니다.";
