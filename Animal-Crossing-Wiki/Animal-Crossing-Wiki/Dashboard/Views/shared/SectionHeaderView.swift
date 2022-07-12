@@ -24,15 +24,15 @@ class SectionHeaderView: UIView {
             scale: .small
         )
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .acTertiaryBackground
+        imageView.tintColor = .acHeaderBackground
         return imageView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
-        label.textColor = .acTertiaryBackground
-        label.font = .preferredFont(for: .subheadline, weight: .bold)
+        label.textColor = .secondaryLabel
+        label.font = .preferredFont(for: .footnote, weight: .semibold)
         return label
     }()
     
@@ -46,10 +46,10 @@ class SectionHeaderView: UIView {
     }
     
     private func configure() {
-        self.addSubviews(backgroundStackView)
+        addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(iconImageView, titleLabel)
-        self.backgroundColor = .acHeaderBackground
-        self.layer.cornerRadius = 14
+        backgroundColor = .clear
+        layer.cornerRadius = 14
         
         NSLayoutConstraint.activate([
             backgroundStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
