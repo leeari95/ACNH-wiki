@@ -125,3 +125,93 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Not collected" = "Not collected";
 "descending" = "descending";
 "ascending" = "ascending";
+
+// CatalogViewController
+"Catalog" = "Catalog";
+
+// ItemDetailViewController
+"Seasonality" = "Seasonality";
+
+// ItemDetailInfoView
+"Underwater" = "Underwater";
+"Shadow size:" = "Shadow size:";
+"Movement speed:" = "Movement speed:";
+
+"Disguised on shoreline" = "Disguised on shoreline";
+"Disguised under trees" = "Disguised under trees";
+"Flying" = "Flying";
+"Flying near blue/purple/black flowers" = "Flying near blue/purple/black flowers";
+"Flying near flowers" = "Flying near flowers";
+"Flying near light sources" = "Flying near light sources";
+"Flying near trash (boots, tires, cans, used fountain fireworks) or rotten turnips" = "Flying near trash (boots, tires, cans, used fountain fireworks) or rotten turnips";
+"Flying near water" = "Flying near water";
+"From hitting rocks" = "From hitting rocks";
+"On beach rocks" = "On beach rocks";
+"On flowers" = "On flowers";
+"On hardwood/cedar trees" = "On hardwood/cedar trees";
+"On palm trees" = "On palm trees";
+"On rivers/ponds" = "On rivers/ponds";
+"On rocks/bushes" = "On rocks/bushes";
+"On rotten turnips or candy" = "On rotten turnips or candy";
+"On the ground" = "On the ground";
+"On tree stumps" = "On tree stumps";
+"On trees (any kind)" = "On trees (any kind)";
+"On villagers" = "On villagers";
+"On white flowers" = "On white flowers";
+"Pier" = "Pier";
+"Pond" = "Pond";
+"Pushing snowballs" = "Pushing snowballs";
+"River" = "River";
+"River (clifftop)" = "River (clifftop)";
+"River (mouth)" = "River (mouth)";
+"Sea" = "Sea";
+"Sea (rainy days)" = "Sea (rainy days)";
+"Shaking trees" = "Shaking trees";
+"Shaking trees (hardwood or cedar only)" = "Shaking trees (hardwood or cedar only)";
+"Underground (dig where noise is loudest)" = "Underground (dig where noise is loudest)";
+
+// Source
+"Assessing fossils" = "Assessing fossils";
+"Jolly Redd\'s Treasure Trawler" = "Jolly Redd\'s Treasure Trawler";
+
+// Shadow
+"Large" = "Large";
+"Long" = "Long";
+"Medium" = "Medium";
+"Small" = "Small";
+"X-Large" = "X-Large";
+"X-Large w/Fin" = "X-Large w/Fin";
+"X-Small" = "X-Small";
+"XX-Large" = "XX-Large";
+
+// MovementSpeed
+"Fast" = "Fast";
+"Medium" = "Medium";
+"Slow" = "Slow";
+"Stationary" = "Stationary";
+"Very fast" = "Very fast";
+"Very slow" = "Very slow";
+
+// time
+"11 PM – 4 PM" = "11 PM – 4 PM";
+"11 PM – 8 AM" = "11 PM – 8 AM";
+"4 AM – 5 PM" = "4 AM – 5 PM";
+"4 AM – 8 AM" = "4 AM – 8 AM";
+"4 AM – 9 PM" = "4 AM – 9 PM";
+"4 AM – 7 PM" = "4 AM – 7 PM";
+"4 AM – 8 AM" = "4 AM – 8 AM";
+"4 PM – 11 PM" = "4 PM – 11 PM";
+"4 PM – 7 PM" = "4 PM – 7 PM";
+"4 PM – 9 AM" = "4 PM – 9 AM";
+"5 PM – 4 AM" = "5 PM – 4 AM";
+"5 PM – 7 PM" = "5 PM – 7 PM";
+"5 PM – 8 AM" = "5 PM – 8 AM";
+"7 PM – 4 AM" = "7 PM – 4 AM";
+"7 PM – 8 AM" = "7 PM – 8 AM";
+"8 AM – 4 PM" = "8 AM – 4 PM";
+"8 AM – 5 PM" = "8 AM – 5 PM";
+"8 AM – 7 PM" = "8 AM – 7 PM";
+"9 AM – 4 PM" = "9 AM – 4 PM";
+"9 PM – 4 AM" = "9 PM – 4 AM";
+"9 PM – 4 AM" = "9 PM – 4 AM";
+"All day" = "All day";

@@ -65,9 +65,9 @@ class ItemSeasonView: UIView {
     
     private func setUpTime(times: [String]) {
         if times.count == 1 {
-            timeLabel.text = times.first
+            timeLabel.text = times.first?.localized
         } else {
-            timeLabel.text = times.reduce("") { $0 + $1 + " / " }.trimmingCharacters(in: ["/", " "])
+            timeLabel.text = times.reduce("") { $0 + $1.localized + " / " }.trimmingCharacters(in: ["/", " "])
         }
     }
     

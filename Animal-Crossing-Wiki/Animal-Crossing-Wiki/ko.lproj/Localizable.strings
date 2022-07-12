@@ -128,3 +128,93 @@
 "descending" = "descending";
 "ascending" = "ascending";
 
+// CatalogViewController
+"Catalog" = "카탈로그";
+
+// ItemDetailViewController
+"Seasonality" = "출현 기간";
+
+// ItemDetailInfoView
+"Underwater" = "바닷속 수중";
+"Shadow size:" = "그림자 크기:";
+"Movement speed:" = "이동 속도:";
+
+// WhereHow
+"Disguised on shoreline" = "해안선 근처";
+"Disguised under trees" = "나무 아래 근처";
+"Flying" = "날아다님";
+"Flying near blue/purple/black flowers" = "파란색,자주색,검은색 꽃 근처";
+"Flying near flowers" = "꽃 근처";
+"Flying near light sources" = "밝은 곳 근처";
+"Flying near trash (boots, tires, cans, used fountain fireworks) or rotten turnips" = "쓰레기 근처 (부츠, 타이어, 캔, 이미 사용한 분수 불꽃 놀이) 또는 썩은 순무";
+"Flying near water" = "물 근처";
+"From hitting rocks" = "바위를 때릴 때";
+"On beach rocks" = "해변 바위";
+"On flowers" = "꽃";
+"On hardwood/cedar trees" = "활엽수 / 삼나무";
+"On palm trees" = "야자수";
+"On rivers/ponds" = "강 / 연못";
+"On rocks/bushes" = "바위 / 수풀";
+"On rotten turnips or candy" = "썩은 순무 또는 사탕";
+"On the ground" = "땅";
+"On tree stumps" = "나무 그루터기";
+"On trees (any kind)" = "나무 (모든 종류)";
+"On villagers" = "마을 사람들";
+"On white flowers" = "하얀색 꽃";
+"Pier" = "부두";
+"Pond" = "연못";
+"Pushing snowballs" = "눈덩이 밀기";
+"River" = "강";
+"River (clifftop)" = "강 (절벽)";
+"River (mouth)" = "강 (입구)";
+"Sea" = "바다";
+"Sea (rainy days)" = "바다 (비오는 날)";
+"Shaking trees" = "나무를 흔들었을 때";
+"Shaking trees (hardwood or cedar only)" = "나무를 흔들었을 때 (활엽수 또는 삼나무)";
+"Underground (dig where noise is loudest)" = "땅속 (소리가 가장 큰 곳)";
+
+// Source
+"Assessing fossils" = "화석 감정";
+"Jolly Redd\'s Treasure Trawler" = "여욱이";
+
+// Shadow
+"Large" = "대형";
+"Long" = "가늘고 김";
+"Medium" = "중";
+"Small" = "소";
+"X-Large" = "특대형";
+"X-Large w/Fin" = "특대형 (지느러미가 있음)";
+"X-Small" = "소";
+"XX-Large" = "특대형";
+
+// MovementSpeed
+"Fast" = "빠름";
+"Medium" = "중간";
+"Slow" = "느림";
+"Stationary" = "없음";
+"Very fast" = "매우 빠름";
+"Very slow" = "아주 느림";
+
+// time
+"11 PM – 4 PM" = "오후 11시 – 오후 4시";
+"11 PM – 8 AM" = "오후 11시 – 오후 8시";
+"4 AM – 5 PM" = "오전 4시 – 오후 5시";
+"4 AM – 8 AM" = "오전 4시 – 오전 8시";
+"4 AM – 9 PM" = "오전 4시 – 오후 9시";
+"4 AM – 7 PM" = "오전 4시 – 오후 7시";
+"4 AM – 8 AM" = "오전 4시 – 오전 8시";
+"4 PM – 11 PM" = "오후 4시 – 오후 11시";
+"4 PM – 7 PM" = "오후 4시 – 오후 7시";
+"4 PM – 9 AM" = "오후 4시 – 오전 9시";
+"5 PM – 4 AM" = "오후 5시 – 오전 4시";
+"5 PM – 7 PM" = "오후 5시 – 오후 7시";
+"5 PM – 8 AM" = "오후 5시 – 오전 8시";
+"7 PM – 4 AM" = "오후 7시 – 오전 4시";
+"7 PM – 8 AM" = "오후 7시 – 오전 8시";
+"8 AM – 4 PM" = "오전 8시 – 오후 4시";
+"8 AM – 5 PM" = "오전 8시 – 오후 5시";
+"8 AM – 7 PM" = "오전 8시 – 오후 7시";
+"9 AM – 4 PM" = "오전 9시 – 오후 4시";
+"9 PM – 4 AM" = "오후 9시 – 오후 4시";
+"9 PM – 4 AM" = "오후 9시 – 오후 4시";
+"All day" = "하루종일";

@@ -74,10 +74,12 @@ final class ItemsViewModel {
             .subscribe(onNext: { keywords in
                 var itemList = [Item]()
                 if keywords.keys.contains(.uncollected) == false {
-                    filteredItems.append(contentsOf: userItems)
+                    for item in userItems where !filteredItems.contains(where: { $0.name == item.name }) {
+                        filteredItems.append(item)
+                    }
                 }
+                currentFilter = keywords.keys.sorted(by: { $0.rawValue < $1.rawValue })
                 keywords.sorted { $0.key.rawValue < $1.key.rawValue }.forEach { (key, value) in
-                    currentFilter.append(key)
                     switch key {
                     case .all:
                         itemList = allItems

@@ -26,7 +26,7 @@ class CatalogViewController: UIViewController {
     
     private func setUpNavigationItem() {
         view.backgroundColor = .acBackground
-        navigationItem.title = "Catalog"
+        navigationItem.title = "Catalog".localized
     }
     
     private func setUpViews() {
@@ -50,7 +50,7 @@ class CatalogViewController: UIViewController {
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
-                    title: item.title.rawValue,
+                    title: item.title.rawValue.localized,
                     itemCount: item.count
                 )
             }.disposed(by: disposeBag)

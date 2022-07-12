@@ -102,22 +102,23 @@ class ItemDetailInfoView: UIView {
             font: .preferredFont(for: .callout, weight: .semibold),
             color: .acSecondaryText
         )
+        titleLabel.numberOfLines = 0
         if item.whereHow != "" {
-            titleLabel.text = item.whereHow
+            titleLabel.text = item.whereHow.localized
         } else if item.source != "" {
-            titleLabel.text = item.source
+            titleLabel.text = item.source.localized
         } else if item.category == .seaCreatures {
-            titleLabel.text = "Underwater"
+            titleLabel.text = "Underwater".localized
         }
         backgroundStackView.addArrangedSubviews(titleLabel)
         
         if [Category.fishes, Category.seaCreatures].contains(item.category) {
             let titleLabel = UILabel(
-                text: "Shadow size:",
+                text: "Shadow size:".localized,
                 font: .preferredFont(forTextStyle: .footnote)
             )
             let shadowLabel = UILabel(
-                text: item.shadow.rawValue,
+                text: item.shadow.rawValue.localized,
                 font: .preferredFont(forTextStyle: .footnote),
                 color: .acSecondaryText
             )
@@ -128,11 +129,11 @@ class ItemDetailInfoView: UIView {
         
         if item.category == .seaCreatures {
             let titleLabel = UILabel(
-                text: "Movement speed:",
+                text: "Movement speed:".localized,
                 font: .preferredFont(forTextStyle: .footnote)
             )
             let speedLabel = UILabel(
-                text: item.movementSpeed.rawValue,
+                text: item.movementSpeed.rawValue.localized,
                 font: .preferredFont(forTextStyle: .footnote),
                 color: .acSecondaryText
             )

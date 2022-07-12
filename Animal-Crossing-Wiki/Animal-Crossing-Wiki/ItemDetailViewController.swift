@@ -76,14 +76,14 @@ class ItemDetailViewController: UIViewController {
     
     private func setUpSection(in item: Item) {
         let itemDetailInfo = SectionView(
-            title: item.category.rawValue.uppercased(),
+            title: item.category.rawValue.localized.uppercased(),
             category: item.category,
             contentView: ItemDetailInfoView(item: item)
         )
         sectionsScrollView.addSection(itemDetailInfo)
         if Category.critters.contains(item.category) {
             let seasonView = SectionView(
-                title: "Seasonality",
+                title: "Seasonality".localized,
                 iconName: "calendar",
                 contentView: ItemSeasonView(item: item)
             )
