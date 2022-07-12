@@ -53,10 +53,10 @@ class SectionsScrollView: UIView {
         
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 15),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -50),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -30),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
             heightAnchor
         ])
     }

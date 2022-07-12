@@ -43,7 +43,6 @@ class ItemDetailInfoView: UIView {
     
     private func configure(in category: Category, item: Item) {
         addSubviews(backgroundStackView)
-        setUpCategory(category)
         setUpImageView(item)
         setUpInfo(item)
         setUpItemBells(item)
@@ -63,19 +62,6 @@ class ItemDetailInfoView: UIView {
         stackView.distribution = .fill
         stackView.spacing = 4
         return stackView
-    }
-    
-    private func setUpCategory(_ category: Category) {
-        let iconImage = UIImageView(image: UIImage(named: category.iconName))
-        iconImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        iconImage.heightAnchor.constraint(equalTo: iconImage.widthAnchor).isActive = true
-        let titleLabel = UILabel(
-            text: category.rawValue,
-            font: .preferredFont(forTextStyle: .footnote),
-            color: .acText
-        )
-        categoryStackView.addArrangedSubviews(iconImage, titleLabel)
-        backgroundStackView.addArrangedSubviews(categoryStackView)
     }
     
     private func setUpImageView(_ item: Item) {
@@ -142,7 +128,7 @@ class ItemDetailInfoView: UIView {
         
         if item.category == .seaCreatures {
             let titleLabel = UILabel(
-                text: "Movement Speed:",
+                text: "Movement speed:",
                 font: .preferredFont(forTextStyle: .footnote)
             )
             let speedLabel = UILabel(

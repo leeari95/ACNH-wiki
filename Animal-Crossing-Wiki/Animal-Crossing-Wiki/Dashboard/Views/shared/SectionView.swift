@@ -36,6 +36,13 @@ extension SectionView {
         configure()
     }
     
+    convenience init(title: String, category: Category, contentView: UIView) {
+        self.init(frame: .zero)
+        headerView.setUp(title: title, category: category)
+        setUpContent(contentView)
+        configure()
+    }
+    
     convenience init(contentView: UIView) {
         self.init(frame: .zero)
         setUpContent(contentView)
@@ -47,8 +54,8 @@ extension SectionView {
         let height = heightAnchor.constraint(equalToConstant: 80)
         height.priority = .defaultLow
         NSLayoutConstraint.activate([
-            headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            headerView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            headerView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             headerView.heightAnchor.constraint(equalToConstant: 30),
             height
         ])
@@ -56,9 +63,9 @@ extension SectionView {
     
     private func configureContainer() {
         addSubviews(containerView)
-        var topAnchor = containerView.topAnchor.constraint(equalTo: topAnchor)
+        var topAnchor = containerView.topAnchor.constraint(equalTo: self.topAnchor)
         if subviews.contains(headerView) {
-            topAnchor = containerView.topAnchor.constraint(equalTo: headerView.bottomAnchor)
+            topAnchor = containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 40)
         }
         NSLayoutConstraint.activate([
             topAnchor,

@@ -66,7 +66,12 @@ class SectionHeaderView: UIView {
 
 extension SectionHeaderView {
     func setUp(title: String, iconName: String) {
-        titleLabel.text = title
+        titleLabel.text = title.uppercased()
         iconImageView.image = UIImage(systemName: iconName)
+    }
+    
+    func setUp(title: String, category: Category) {
+        titleLabel.text = title.uppercased()
+        iconImageView.image = UIImage(named: category.iconName)
     }
 }

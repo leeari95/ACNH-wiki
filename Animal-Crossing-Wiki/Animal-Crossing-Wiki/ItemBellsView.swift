@@ -33,7 +33,7 @@ class ItemBellsView: UIView {
     
     private func configure() {
         backgroundColor = .catalogBar
-        layer.cornerRadius = 16
+        layer.cornerRadius = 14
         
         let iconImage = UIImageView()
         iconImage.contentMode = .scaleAspectFit

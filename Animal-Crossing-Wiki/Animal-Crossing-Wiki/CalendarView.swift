@@ -90,10 +90,10 @@ class CalendarView: UIView {
         let monthLabel = UILabel(
             text: month,
             font: .preferredFont(for: .callout, weight: seleted ? .bold : .medium),
-            color: seleted ? .black : .gray
+            color: seleted ? .black : .black
         )
         let backgroundView = UIView()
-        backgroundView.backgroundColor = seleted ? .catalogBar : .catalogBar.withAlphaComponent(0.5)
+        backgroundView.backgroundColor = seleted ? .catalogSeleted : .catalogBar
         backgroundView.layer.cornerRadius = 10
         backgroundView.layer.borderWidth = 3
         backgroundView.layer.borderColor = isCurrentMonth ? UIColor.acTabBarTint.cgColor : UIColor.clear.cgColor
