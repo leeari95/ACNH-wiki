@@ -33,9 +33,9 @@ struct Villager {
 extension Villager {
     var like: String {
         let color = colors
-            .reduce("") { $0 + $1.rawValue.capitalized + ", " }
-        let style = styles
-            .reduce("") { $0 + $1.rawValue.capitalized + ", " }
+            .reduce("") { $0 + $1.rawValue.localized.capitalized + ", " }
+        let style = Set(styles.map { $0.rawValue })
+            .reduce("") { $0 + $1.localized.capitalized + ", " }
             .trimmingCharacters(in: [",", " "])
         return color + style
     }

@@ -13,6 +13,7 @@ class InfoContentView: UIStackView {
         let label = UILabel()
         label.font = .preferredFont(for: .callout, weight: .medium)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.textColor = .acText
         return label
     }()

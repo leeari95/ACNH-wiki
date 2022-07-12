@@ -77,6 +77,47 @@ enum Specie: String, Codable, CaseIterable {
     case wolf = "Wolf"
     case elephant = "Elephant"
     case lion = "Lion"
+    
+    static func transform(localizedString: String) -> String? {
+        switch localizedString {
+        case Specie.hamster.rawValue.localized: return Specie.hamster.rawValue
+        case Specie.dog.rawValue.localized: return Specie.dog.rawValue
+        case Specie.cow.rawValue.localized: return Specie.cow.rawValue
+        case Specie.squirrel.rawValue.localized: return Specie.squirrel.rawValue
+        case Specie.koala.rawValue.localized: return Specie.koala.rawValue
+        case Specie.rhinoceros.rawValue.localized: return Specie.rhinoceros.rawValue
+        case Specie.rabbit.rawValue.localized: return Specie.rabbit.rawValue
+        case Specie.hippo.rawValue.localized: return Specie.hippo.rawValue
+        case Specie.eagle.rawValue.localized: return Specie.eagle.rawValue
+        case Specie.bull.rawValue.localized: return Specie.bull.rawValue
+        case Specie.pig.rawValue.localized: return Specie.pig.rawValue
+        case Specie.kangaroo.rawValue.localized: return Specie.kangaroo.rawValue
+        case Specie.gorilla.rawValue.localized: return Specie.gorilla.rawValue
+        case Specie.pstrich.rawValue.localized: return Specie.pstrich.rawValue
+        case Specie.deer.rawValue.localized: return Specie.deer.rawValue
+        case Specie.monkey.rawValue.localized: return Specie.monkey.rawValue
+        case Specie.horse.rawValue.localized: return Specie.horse.rawValue
+        case Specie.bearCub.rawValue.localized: return Specie.bearCub.rawValue
+        case Specie.bear.rawValue.localized: return Specie.bear.rawValue
+        case Specie.chicken.rawValue.localized: return Specie.chicken.rawValue
+        case Specie.cat.rawValue.localized: return Specie.cat.rawValue
+        case Specie.tiger.rawValue.localized: return Specie.tiger.rawValue
+        case Specie.octopus.rawValue.localized: return Specie.octopus.rawValue
+        case Specie.alligator.rawValue.localized: return Specie.alligator.rawValue
+        case Specie.anteater.rawValue.localized: return Specie.anteater.rawValue
+        case Specie.penguin.rawValue.localized: return Specie.penguin.rawValue
+        case Specie.bird.rawValue.localized: return Specie.bird.rawValue
+        case Specie.goat.rawValue.localized: return Specie.goat.rawValue
+        case Specie.frog.rawValue.localized: return Specie.frog.rawValue
+        case Specie.sheep.rawValue.localized: return Specie.sheep.rawValue
+        case Specie.duck.rawValue.localized: return Specie.duck.rawValue
+        case Specie.mouse.rawValue.localized: return Specie.mouse.rawValue
+        case Specie.wolf.rawValue.localized: return Specie.wolf.rawValue
+        case Specie.elephant.rawValue.localized: return Specie.elephant.rawValue
+        case Specie.lion.rawValue.localized: return Specie.lion.rawValue
+        default: return nil
+        }
+    }
 }
 
 enum KitchenEquipment: Codable {
@@ -132,6 +173,14 @@ enum Color: String, Codable {
 enum Gender: String, Codable, CaseIterable {
     case female = "Female"
     case male = "Male"
+    
+    static func transform(localizedString: String) -> String? {
+        switch localizedString {
+        case Gender.female.rawValue.localized: return Gender.female.rawValue
+        case Gender.male.rawValue.localized: return Gender.male.rawValue
+        default: return nil
+        }
+    }
 }
 
 enum Hobby: String, Codable {
@@ -152,6 +201,20 @@ enum Personality: String, Codable, CaseIterable {
     case personalityLazy = "Lazy"
     case smug = "Smug"
     case snooty = "Snooty"
+    
+    static func transform(localizedString: String) -> String? {
+        switch localizedString {
+        case Personality.bigSister.rawValue.localized: return Personality.bigSister.rawValue
+        case Personality.cranky.rawValue.localized: return Personality.cranky.rawValue
+        case Personality.jock.rawValue.localized: return Personality.jock.rawValue
+        case Personality.normal.rawValue.localized: return Personality.normal.rawValue
+        case Personality.peppy.rawValue.localized: return Personality.peppy.rawValue
+        case Personality.personalityLazy.rawValue.localized: return Personality.personalityLazy.rawValue
+        case Personality.smug.rawValue.localized: return Personality.smug.rawValue
+        case Personality.snooty.rawValue.localized: return Personality.snooty.rawValue
+        default: return nil
+        }
+    }
 }
 
 enum Style: String, Codable {

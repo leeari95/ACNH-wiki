@@ -218,3 +218,108 @@
 "9 PM – 4 AM" = "오후 9시 – 오후 4시";
 "9 PM – 4 AM" = "오후 9시 – 오후 4시";
 "All day" = "하루종일";
+
+// VillagersViewController
+"All" = "전체";
+"Personality" = "성격";
+"Gender" = "성별";
+"Type" = "타입";
+"Species" = "종족";
+"Liked" = "좋아하는 주민";
+"Residents" = "내 섬 주민";
+"Search a villager" = "주민을 검색해주세요. (초성도 가능)";
+"Villagers" = "마을 주민";
+
+// Personality
+"Big Sister" = "단순활발";
+"Cranky" = "무뚝뚝";
+"Jock" = "운동광";
+"Normal" = "친절함";
+"Peppy" = "아이돌";
+"Lazy" = "먹보";
+"Smug" = "느끼함";
+"Snooty" = "성숙함";
+
+// Gender
+"Female" = "여자";
+"Male" = "남자";
+
+// Specie
+"Hamster" = "햄스터";
+"Dog" = "개";
+"Cow" = "소";
+"Squirrel" = "다람쥐";
+"Koala" = "코알라";
+"Rhinoceros" = "코뿔소";
+"Rabbit" = "토끼";
+"Hippo" = "하마";
+"Eagle" = "독수리";
+"Bull" = "황소";
+"Pig" = "돼지";
+"Kangaroo" = "캥거루";
+"Gorilla" = "고릴라";
+"Ostrich" = "타조";
+"Deer" = "사슴";
+"Monkey" = "원숭이";
+"Horse" = "말";
+"Bear cub" = "아기곰";
+"Bear" = "곰";
+"Chicken" = "닭";
+"Cat" = "고양이";
+"Tiger" = "호랑이";
+"Octopus" = "문어";
+"Alligator" = "악어";
+"Anteater" = "개미핥기";
+"Penguin" = "펭귄";
+"Bird" = "새";
+"Goat" = "염소";
+"Frog" = "개구리";
+"Sheep" = "양";
+"Duck" = "오리";
+"Mouse" = "생쥐";
+"Wolf" = "늑대";
+"Elephant" = "코끼리";
+"Lion" = "사자";
+
+// VillagerDetailViewController
+"Villager house" = "주민 집";
+
+// VillagerDetailView
+"Hobby" = "취미";
+"Birthday" = "생일";
+"Type" = "타입";
+"Like" = "선호";
+"Specie" = "종족";
+"Catch phrase" = "말투";
+
+// Hobby
+"Education" = "공부하기";
+"Fashion" = "쇼핑하기";
+"Fitness" = "운동하기";
+"Music" = "음악듣기";
+"Nature" = "자연을 만끽하기";
+"Play" = "놀기";
+
+// Style
+"Active" = "스포츠";
+"Cool" = "멋쟁이";
+"Cute" = "깜찍함";
+"Elegant" = "우아함";
+"Gorgeous" = "화려함";
+"Simple" = "심플함";
+
+// Color
+"Aqua" = "아쿠아";
+"Beige" = "베이지";
+"Black" = "블랙";
+"Blue" = "블루";
+"Brown" = "브라운";
+"Colorful" = "컬러풀";
+"Gray" = "그레이";
+"Green" = "그린";
+"Orange" = "오렌지";
+"Pink" = "핑크";
+"Purple" = "퍼플";
+"Red" = "레드";
+"White" = "화이트";
+"Yellow" = "옐로우";

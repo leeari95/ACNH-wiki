@@ -67,6 +67,7 @@ final class VillagersViewModel {
             }).disposed(by: disposeBag)
         
         input.selectedScopeButton
+            .compactMap { VillagersViewController.SearchScope.transform($0) }
             .compactMap { VillagersViewController.SearchScope(rawValue: $0) }
             .subscribe(onNext: { selectedScope in
                 currentTap.accept(selectedScope)
@@ -89,9 +90,11 @@ final class VillagersViewModel {
                 keywords.sorted { $0.key.rawValue.count > $1.key.rawValue.count }.forEach { (key, value) in
                     switch key {
                     case .personality:
+                        let value = Personality.transform(localizedString: value) ?? ""
                         let filteredData = filteredVillagers.filter { $0.personality == Personality(rawValue: value) }
                         villagers.append(contentsOf: filteredData)
                     case .gender:
+                        let value = Gender.transform(localizedString: value) ?? ""
                         if villagers.isEmpty {
                             let filteredData = filteredVillagers.filter { $0.gender == Gender(rawValue: value) }
                             villagers.append(contentsOf: filteredData)
@@ -109,6 +112,7 @@ final class VillagersViewModel {
 
                         }
                     case .species:
+                        let value = Specie.transform(localizedString: value) ?? ""
                         if villagers.isEmpty {
                             let filteredData = filteredVillagers.filter { $0.species == Specie(rawValue: value) }
                             villagers.append(contentsOf: filteredData)

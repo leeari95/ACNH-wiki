@@ -16,12 +16,32 @@ class VillagersViewController: UIViewController {
         case gender = "Gender"
         case type = "Type"
         case species = "Species"
+        
+        static func transform(_ localizedString: String) -> String? {
+            switch localizedString {
+            case Menu.all.rawValue.localized: return Menu.all.rawValue
+            case Menu.personality.rawValue.localized: return Menu.personality.rawValue
+            case Menu.gender.rawValue.localized: return Menu.gender.rawValue
+            case Menu.type.rawValue.localized: return Menu.type.rawValue
+            case Menu.species.rawValue.localized: return Menu.species.rawValue
+            default: return nil
+            }
+        }
     }
     
     enum SearchScope: String {
         case all = "All"
         case liked = "Liked"
         case residents = "Residents"
+        
+        static func transform(_ localizedString: String) -> String? {
+            switch localizedString {
+            case SearchScope.all.rawValue.localized: return SearchScope.all.rawValue
+            case SearchScope.liked.rawValue.localized: return SearchScope.liked.rawValue
+            case SearchScope.residents.rawValue.localized: return SearchScope.residents.rawValue
+            default: return nil
+            }
+        }
     }
 
     private let disposeBag = DisposeBag()
@@ -44,11 +64,11 @@ class VillagersViewController: UIViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.showsScopeBar = true
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Search a villager"
+        searchController.searchBar.placeholder = "Search a villager".localized
         searchController.searchBar.scopeButtonTitles = [
-            SearchScope.all.rawValue,
-            SearchScope.liked.rawValue,
-            SearchScope.residents.rawValue
+            SearchScope.all.rawValue.localized,
+            SearchScope.liked.rawValue.localized,
+            SearchScope.residents.rawValue.localized
         ]
         return searchController
     }()
@@ -105,7 +125,7 @@ class VillagersViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        self.navigationItem.title = "Villagers"
+        self.navigationItem.title = "Villagers".localized
         let moreButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -124,15 +144,15 @@ class VillagersViewController: UIViewController {
     
     private func createFilterMenu() -> UIMenu {
         let menuItems: [(title: String, subTitle: [String])] = [
-            (Menu.personality.rawValue, Personality.allCases.map { $0.rawValue }),
-            (Menu.gender.rawValue, Gender.allCases.map { $0.rawValue }),
-            (Menu.type.rawValue, Subtype.allCases.map { $0.rawValue }),
-            (Menu.species.rawValue, Specie.allCases.map { $0.rawValue })
+            (Menu.personality.rawValue.localized, Personality.allCases.map { $0.rawValue.localized }),
+            (Menu.gender.rawValue.localized, Gender.allCases.map { $0.rawValue.localized }),
+            (Menu.type.rawValue.localized, Subtype.allCases.map { $0.rawValue.localized }),
+            (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.localized })
         ]
         
         let actionHandler: (UIAction) -> Void = { action in
             for menuItem in menuItems where menuItem.subTitle.contains(action.title) {
-                let menu = Menu(rawValue: menuItem.title) ?? .all
+                let menu = Menu(rawValue: Menu.transform(menuItem.title) ?? "") ?? .all
                 self.currentSelected[menu] = action.title
             }
             self.currentSelected[Menu.all] = nil
@@ -143,7 +163,7 @@ class VillagersViewController: UIViewController {
         items.forEach { menu in
             menu.children.forEach { element in
                 let action = element as? UIAction
-                let menu = Menu(rawValue: menu.title) ?? .all
+                let menu = Menu(rawValue: Menu.transform(menu.title) ?? "") ?? .all
                 if currentSelected[menu]?.contains(action?.title ?? "") == true {
                     action?.state = .on
                     action?.attributes = .disabled
@@ -151,7 +171,7 @@ class VillagersViewController: UIViewController {
             }
         }
         
-        let all = UIAction(title: Menu.all.rawValue, handler: { _ in
+        let all = UIAction(title: Menu.all.rawValue.localized, handler: { _ in
             self.currentSelected = [Menu.all: Menu.all.rawValue]
             self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
         })

@@ -215,3 +215,110 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "9 PM – 4 AM" = "9 PM – 4 AM";
 "9 PM – 4 AM" = "9 PM – 4 AM";
 "All day" = "All day";
+
+// VillagersViewController
+"All" = "All";
+"Personality" = "Personality";
+"Gender" = "Gender";
+"Type" = "Type";
+"Species" = "Species";
+"Liked" = "Liked";
+"Residents" = "Residents";
+"Search a villager" = "Search a villager";
+"Villagers" = "Villagers";
+
+// Personality
+"Big Sister" = "Big Sister";
+"Cranky" = "Cranky";
+"Jock" = "Jock";
+"Normal" = "Normal";
+"Peppy" = "Peppy";
+"Lazy" = "Lazy";
+"Smug" = "Smug";
+"Snooty" = "Snooty";
+
+// Gender
+"Female" = "Female";
+"Male" = "Male";
+
+// Specie
+"Hamster" = "Hamster";
+"Dog" = "Dog";
+"Cow" = "Cow";
+"Squirrel" = "Squirrel";
+"Koala" = "Koala";
+"Rhinoceros" = "Rhinoceros";
+"Rabbit" = "Rabbit";
+"Hippo" = "Hippo";
+"Eagle" = "Eagle";
+"Bull" = "Bull";
+"Pig" = "Pig";
+"Kangaroo" = "Kangaroo";
+"Gorilla" = "Gorilla";
+"Ostrich" = "Ostrich";
+"Deer" = "Deer";
+"Monkey" = "Monkey";
+"Horse" = "Horse";
+"Bear cub" = "Bear cub";
+"Bear" = "Bear";
+"Chicken" = "Chicken";
+"Cat" = "Cat";
+"Tiger" = "Tiger";
+"Octopus" = "Octopus";
+"Alligator" = "Alligator";
+"Anteater" = "Anteater";
+"Penguin" = "Penguin";
+"Bird" = "Bird";
+"Goat" = "Goat";
+"Frog" = "Frog";
+"Sheep" = "Sheep";
+"Duck" = "Duck";
+"Mouse" = "Mouse";
+"Wolf" = "Wolf";
+"Elephant" = "Elephant";
+"Lion" = "Lion";
+
+// VillagerDetailViewController
+"Villager house" = "Villager house";
+
+// VillagerDetailView
+"Personality" = "Personality";
+"Gender" = "Gender";
+"Hobby" = "Hobby";
+"Birthday" = "Birthday";
+"Type" = "Type";
+"Like" = "Like";
+"Specie" = "Specie";
+"Catch phrase" = "Catch phrase";
+
+// Hobby
+"Education" = "Education";
+"Fashion" = "Fashion";
+"Fitness" = "Fitness";
+"Music" = "Music";
+"Nature" = "Nature";
+"Play" = "Play";
+
+// Style
+"Active" = "Active";
+"Cool" = "Cool";
+"Cute" = "Cute";
+"Elegant" = "Elegant";
+"Gorgeous" = "Gorgeous";
+"Simple" = "Simple";
+
+// Color
+"Aqua" = "Aqua";
+"Beige" = "Beige";
+"Black" = "Black";
+"Blue" = "Blue";
+"Brown" = "Brown";
+"Colorful" = "Colorful";
+"Gray" = "Gray";
+"Green" = "Green";
+"Orange" = "Orange";
+"Pink" = "Pink";
+"Purple" = "Purple";
+"Red" = "Red";
+"White" = "White";
+"Yellow" = "Yellow";

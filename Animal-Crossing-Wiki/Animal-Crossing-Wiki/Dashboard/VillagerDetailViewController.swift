@@ -112,7 +112,7 @@ class VillagerDetailViewController: UIViewController {
     private func addHouseSection(_ houseImage: String) {
         let houseSection = VillagerHouseView(houseImage)
         let sectionView = SectionView(
-            title: "Villager house",
+            title: "Villager house".localized,
             iconName: "house.circle.fill",
             contentView: houseSection
         )
