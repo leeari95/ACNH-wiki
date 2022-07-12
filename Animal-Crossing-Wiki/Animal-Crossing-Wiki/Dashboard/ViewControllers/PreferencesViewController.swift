@@ -16,7 +16,7 @@ class PreferencesViewController: UIViewController {
     
     private lazy var settingSection = PreferencesView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
-        SectionView(title: "Island", iconName: "sun.haze", contentView: settingSection)
+        SectionView(title: "Island", iconName: "leaf.fill", contentView: settingSection)
     )
     
     private lazy var cancelButton: UIBarButtonItem = {

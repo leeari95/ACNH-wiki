@@ -60,7 +60,7 @@ class DashboardViewController: UIViewController {
     ) {
         let userInfoSection = SectionView(
             title: "My Island",
-            iconName: "sun.haze",
+            iconName: "leaf.fill",
             contentView: UserInfoView(userInfoVM)
         )
         let tasksSection = SectionView(
