@@ -95,5 +95,13 @@ class PreferencesViewController: UIViewController {
                 owner.settingSection.updateFruit(fruit)
                 owner.currentFruit.onNext(fruit)
             }).disposed(by: disposeBag)
+        
+        setUpAppSettings(to: AppSettingViewModel())
+    }
+    
+    private func setUpAppSettings(to viewModel: AppSettingViewModel) {
+        sectionsScrollView.addSection(
+            SectionView(title: "App Settings", iconName: "square.and.pencil", contentView: AppSettingView(viewModel: viewModel))
+        )
     }
 }

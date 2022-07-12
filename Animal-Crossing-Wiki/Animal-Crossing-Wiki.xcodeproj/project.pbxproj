@@ -65,6 +65,8 @@
 		9A6CB4042872D86100B368D4 /* VillagerHouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */; };
 		9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutViewModel.swift */; };
 		9A6DC207287C6BBE004EEC41 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC206287C6BBE004EEC41 /* HapticManager.swift */; };
+		9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC208287C7B42004EEC41 /* AppSettingView.swift */; };
+		9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -224,6 +226,8 @@
 		9A6CB4032872D86100B368D4 /* VillagerHouseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagerHouseView.swift; sourceTree = "<group>"; };
 		9A6DC204287C6199004EEC41 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		9A6DC206287C6BBE004EEC41 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		9A6DC208287C7B42004EEC41 /* AppSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingView.swift; sourceTree = "<group>"; };
+		9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewModel.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -559,6 +563,7 @@
 				9A99AA352859C8BD00629C4A /* VillagersView.swift */,
 				9A99AA392859F9A300629C4A /* CollecitonProgressView.swift */,
 				9A99AA51285C32C300629C4A /* PreferencesView.swift */,
+				9A6DC208287C7B42004EEC41 /* AppSettingView.swift */,
 				9A99AA5928602F4A00629C4A /* CustomTaskView.swift */,
 			);
 			path = Views;
@@ -585,6 +590,7 @@
 				9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */,
 				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
 				9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */,
+				9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1013,6 +1019,7 @@
 				9A99AA3A2859F9A300629C4A /* CollecitonProgressView.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
+				9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */,
 				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
 				9A99AA2C28597B7500629C4A /* TodaysTasksView.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
@@ -1112,6 +1119,7 @@
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
 				9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */,
 				9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */,
+				9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
