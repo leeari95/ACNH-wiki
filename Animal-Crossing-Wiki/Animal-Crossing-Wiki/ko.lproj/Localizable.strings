@@ -1,0 +1,130 @@
+/* 
+  Localizable.strings
+  Animal-Crossing-Wiki
+
+  Created by Ari on 2022/07/12.
+  
+*/
+
+// Tab Bar Titles
+"Dashboard" = "대시보드";
+"Catalog" = "카탈로그";
+"Villagers" = "마을주민";
+"Collection" = "수집품";
+
+// etc
+"Cancel" = "취소";
+
+// DashboardViewContrller - section title
+"My Island" = "나의 섬 정보";
+"Today's Tasks" = "오늘의 할일";
+"My Villagers" = "마을 주민";
+"Collection Progress" = "수집 현황";
+
+// UserInfoView
+"ISLAND" = "섬 이름";
+"USER" = "주민 대표";
+"HEMISPHERE" = "반구";
+"FRUIT" = "과일";
+
+// TodaysTasksView
+"Edit" = "편집";
+"Reset" = "초기화";
+
+// VillagersView
+"Reset" = "초기화";
+"vilagerEmpty" = "오늘은 어떤 주민과 대화를 나누셨나요?
+대화했거나, 선물을 주었던 마을 주민들을 찾아
+마을 주민 페이지에서 집모양 아이콘을 눌러서
+주민을 추가해주세요.";
+"tip" = "주민에 대한 상세 정보를 보려면 해당 주민을 꾹 눌러주세요.";
+
+// PreferencesViewController
+"Island" = "섬 정보";
+"Preferences" = "기본 설정";
+"App Settings" = "앱 설정";
+
+// PreferencesView
+"Island name" = "섬 이름";
+"User name" = "주민 대표 이름";
+"Hemisphere" = "반구";
+"Starting fruit" = "과일";
+
+// AppSettingView
+"System haptic" = "시스템 햅틱";
+
+// TaskEditViewController
+"Today's Tasks" = "오늘의 할일";
+
+// DailyTask - tasks
+"Hit rocks" = "바위 캐기";
+"Find fossils" = "화석 찾기";
+"Find furniture" = "가구나무 흔들기";
+"Obtain DIY from vilager" = "주민집에 방문하여 DIY 레시피 받기";
+"Find bottle message" = "바닷가에서 유리병 줍기";
+"Find buried bell" = "빛나는 땅에 돈나무 심기";
+"Cut down trees" = "나무 캐기";
+"Buy music" = "너굴상점에서 음악 구입하기";
+"Find peral" = "바닷 속 진주 찾기";
+
+// TasksEditViewModel
+"Add a custom task" = "새로운 할일 추가하기";
+
+// CustomTaskView
+"Name of the task" = "할일의 제목을 간단히 입력해주세요.";
+"Task Name" = "할일 제목";
+"Icon" = "아이콘";
+"Max amount" = "횟수";
+
+// CustomTaskViewController - Mode
+"New task" = "새로운 할일";
+"Edit task" = "할일 편집";
+
+// Fruit
+"Apple" = "사과";
+"Orange" = "오렌지";
+"Pear" = "배";
+"Cherry" = "체리";
+"Peach" = "복숭아";
+
+// Hemisphere
+"North" = "북반구";
+"South" = "남반구";
+
+// AboutViewController
+"About" = "앱 정보";
+"Version" = "Version";
+"The app" = "The app";
+"Credit / Thanks" = "Credit / Thanks";
+
+// AboutItem
+"Source code / report an issue" = "소스 코드 / 이슈 환영";
+"Contact / Mail" = "개발자에게 메일로 피드백 보내기";
+"Contact / follow us on Instagram" = "인스타그램으로 피드백 보내기";
+"Rate the app on the App Store" = "앱 스토어에서 앱 평가해주기";
+"Privacy Policy" = "개인 정보 정책";
+"ACNH API" = "ACNH API";
+"Animal Crossing / Spreadsheet" = "Animal Crossing / Spreadsheet";
+"App version" = "앱 버전";
+"Game patch data" = "게임 데이터 버전";
+
+// CollectionProgressViewController
+"Collection Progress" = "수집 현황";
+
+// Category
+"Fishes" = "물고기";
+"Sea Creatures" = "해산물";
+"Bugs" = "곤충";
+"Fossils" = "화석";
+"Art" = "미술품";
+
+// ItemsViewController
+"Search..." = "검색어를 입력해주세요. (초성도 가능)";
+"All" = "전체";
+"Month" = "월별";
+"Name" = "이름";
+"Sell" = "판매가격";
+"Not collected" = "획득하지 못한 아이템";
+"descending" = "descending";
+"ascending" = "ascending";
+

@@ -16,7 +16,7 @@ class PreferencesViewController: UIViewController {
     
     private lazy var settingSection = PreferencesView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
-        SectionView(title: "Island", iconName: "leaf.fill", contentView: settingSection)
+        SectionView(title: "Island".localized, iconName: "leaf.fill", contentView: settingSection)
     )
     
     private lazy var cancelButton: UIBarButtonItem = {
@@ -35,7 +35,7 @@ class PreferencesViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Preferences"
+        self.navigationItem.title = "Preferences".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -101,7 +101,7 @@ class PreferencesViewController: UIViewController {
     
     private func setUpAppSettings(to viewModel: AppSettingViewModel) {
         sectionsScrollView.addSection(
-            SectionView(title: "App Settings", iconName: "square.and.pencil", contentView: AppSettingView(viewModel: viewModel))
+            SectionView(title: "App Settings".localized, iconName: "square.and.pencil", contentView: AppSettingView(viewModel: viewModel))
         )
     }
 }

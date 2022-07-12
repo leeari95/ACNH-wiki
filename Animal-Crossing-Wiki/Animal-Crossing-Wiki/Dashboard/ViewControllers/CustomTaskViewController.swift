@@ -26,7 +26,7 @@ class CustomTaskViewController: UIViewController {
     private lazy var customTaskSection = CustomTaskView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
         SectionView(
-            title: mode?.rawValue ?? "",
+            title: mode?.rawValue.localized ?? "",
             iconName: "highlighter",
             contentView: customTaskSection
         )
@@ -47,7 +47,7 @@ class CustomTaskViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = mode?.rawValue
+        self.navigationItem.title = mode?.rawValue.localized
         navigationItem.largeTitleDisplayMode = .never
         
         navigationItem.rightBarButtonItem = checkButton

@@ -58,10 +58,10 @@ class UserInfoView: UIView {
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "ISLAND", contentView: islandNameLabel),
-            InfoContentView(title: "USER", contentView: userNameLabel),
-            InfoContentView(title: "HEMISPHERE", contentView: hemisphereLabel),
-            InfoContentView(title: "FRUIT", contentView: fruitImageView)
+            InfoContentView(title: "ISLAND".localized, contentView: islandNameLabel),
+            InfoContentView(title: "USER".localized, contentView: userNameLabel),
+            InfoContentView(title: "HEMISPHERE".localized, contentView: hemisphereLabel),
+            InfoContentView(title: "FRUIT".localized, contentView: fruitImageView)
             
         )
         
@@ -100,7 +100,7 @@ class UserInfoView: UIView {
         userNameLabel.text = userInfo.name
         islandNameLabel.text = userInfo.islandName
         fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
-        hemisphereLabel.text = userInfo.hemisphere.rawValue.capitalized
+        hemisphereLabel.text = userInfo.hemisphere.rawValue.localized.capitalized
     }
 }
 

@@ -19,11 +19,11 @@ class ItemsViewController: UIViewController {
         
         var title: String {
             switch self {
-            case .all: return "All"
-            case .month: return "Month"
-            case .name: return "Name"
-            case .sell: return "Sell"
-            case .uncollected: return "Not collected"
+            case .all: return "All".localized
+            case .month: return "Month".localized
+            case .name: return "Name".localized
+            case .sell: return "Sell".localized
+            case .uncollected: return "Not collected".localized
             }
         }
         
@@ -32,11 +32,11 @@ class ItemsViewController: UIViewController {
         
         static func menu(title: String) -> Self {
             switch title {
-            case "All": return .all
-            case "Month": return .month
-            case "Name": return .name
-            case "Sell": return .sell
-            case "Not collected": return .uncollected
+            case "All".localized: return .all
+            case "Month".localized: return .month
+            case "Name".localized: return .name
+            case "Sell".localized: return .sell
+            case "Not collected".localized: return .uncollected
             default: return .all
             }
         }
@@ -62,7 +62,7 @@ class ItemsViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Search..."
+        searchController.searchBar.placeholder = "Search...".localized
         return searchController
     }()
     
@@ -85,7 +85,7 @@ class ItemsViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         output.category
-            .map { $0.rawValue }
+            .map { $0.rawValue.localized }
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         

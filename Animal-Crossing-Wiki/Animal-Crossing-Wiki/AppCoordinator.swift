@@ -19,22 +19,22 @@ final class AppCoordinator: Coordinator {
     func start() {
         let dashboardCoordinator = DashboardCoordinator()
         dashboardCoordinator.start()
-        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard", icon: "icon-bells-tabbar")
+        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard".localized, icon: "icon-bells-tabbar")
         childCoordinators.append(dashboardCoordinator)
         
         let catalogCoordinator = CatalogCoordinator()
         catalogCoordinator.start()
-        addViewController(catalogCoordinator.rootViewController, title: "Catalog", icon: "icon-leaf-tabbar")
+        addViewController(catalogCoordinator.rootViewController, title: "Catalog".localized, icon: "icon-leaf-tabbar")
         childCoordinators.append(catalogCoordinator)
         
         let villagersCoordinator = VillagersCoordinator()
         villagersCoordinator.start()
-        addViewController(villagersCoordinator.rootViewController, title: "Villagers", icon: "icon-book-tabbar")
+        addViewController(villagersCoordinator.rootViewController, title: "Villagers".localized, icon: "icon-book-tabbar")
         childCoordinators.append(villagersCoordinator)
         
         let collectionCoordinator = CollectionCoordinator()
         collectionCoordinator.start()
-        addViewController(collectionCoordinator.rootViewController, title: "Collection", icon: "icon-cardboard-tabbar")
+        addViewController(collectionCoordinator.rootViewController, title: "Collection".localized, icon: "icon-cardboard-tabbar")
         childCoordinators.append(collectionCoordinator)
     }
     

@@ -35,7 +35,7 @@ class AboutViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "About"
+        self.navigationItem.title = "About".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -61,7 +61,7 @@ class AboutViewController: UIViewController {
             content.image = UIImage(systemName: item.icon)
             content.imageProperties.maximumSize = CGSize(width: 25, height: 25)
             content.imageProperties.tintColor = item.icon.contains("heart") ? .systemRed : .acHeaderBackground
-            content.text = item.title
+            content.text = item.title.localized
             content.textProperties.color = .acText
             content.textProperties.font = .preferredFont(forTextStyle: .callout)
             if let description = item.description {

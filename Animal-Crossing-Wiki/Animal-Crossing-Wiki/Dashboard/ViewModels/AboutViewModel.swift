@@ -25,9 +25,9 @@ final class AboutViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let items: Observable<[(title: String, items: [AboutItem])]> = Observable.just([
-            ("Version", AboutItem.versions),
-            ("The app", AboutItem.theApp),
-            ("Credit / Thanks", AboutItem.acknowledgement)
+            ("Version".localized, AboutItem.versions),
+            ("The app".localized, AboutItem.theApp),
+            ("Credit / Thanks".localized, AboutItem.acknowledgement)
         ])
         
         input.didTapCancel

@@ -98,9 +98,10 @@ final class PreferencesViewModel {
             .subscribe(onNext: { _ in
                 self.coordinator?.rootViewController.visibleViewController?
                     .showSelectedItemAlert(
-                        Hemisphere.allCases.map { $0.rawValue },
-                        currentItem: currentUserInfo.value?.hemisphere.rawValue ?? ""
-                    ).subscribe(onNext: { title in
+                        Hemisphere.allCases.map { $0.rawValue.localized },
+                        currentItem: currentUserInfo.value?.hemisphere.rawValue.localized ?? ""
+                    ).compactMap { Hemisphere.title($0) }
+                    .subscribe(onNext: { title in
                         currentHemisphere.accept(title)
                     }).disposed(by: disposeBag)
             }).disposed(by: disposeBag)
@@ -109,10 +110,11 @@ final class PreferencesViewModel {
             .subscribe(onNext: { _ in
                 self.coordinator?.rootViewController.visibleViewController?
                     .showSelectedItemAlert(
-                        Fruit.allCases.map { $0.imageName },
-                        currentItem: currentUserInfo.value?.islandFruit.imageName ?? ""
-                    ).subscribe(onNext: { title in
-                        currentFruit.accept(title.lowercased())
+                        Fruit.allCases.map { $0.imageName.localized },
+                        currentItem: currentUserInfo.value?.islandFruit.imageName.localized ?? ""
+                    ).compactMap { Fruit.title($0) }
+                    .subscribe(onNext: { title in
+                        currentFruit.accept(title)
                     }).disposed(by: disposeBag)
             }).disposed(by: disposeBag)
         

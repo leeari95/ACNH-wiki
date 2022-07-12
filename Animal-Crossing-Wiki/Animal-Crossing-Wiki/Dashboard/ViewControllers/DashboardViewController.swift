@@ -10,6 +10,12 @@ import RxSwift
 
 class DashboardViewController: UIViewController {
 
+    private var dateString: String {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
+        return formatter.string(from: Date())
+    }
+    
     private let disposeBag = DisposeBag()
     private lazy var sectionsScrollView = SectionsScrollView()
     
@@ -38,7 +44,7 @@ class DashboardViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        navigationItem.title = Date().formatted("M월 d일, EEEE")
+        navigationItem.title = dateString
         navigationItem.rightBarButtonItem = settingButton
         navigationItem.leftBarButtonItem = aboutButton
         
@@ -59,22 +65,22 @@ class DashboardViewController: UIViewController {
         progressVM: CollectionProgressSectionViewModel
     ) {
         let userInfoSection = SectionView(
-            title: "My Island",
+            title: "My Island".localized,
             iconName: "leaf.fill",
             contentView: UserInfoView(userInfoVM)
         )
         let tasksSection = SectionView(
-            title: "Today's Tasks",
+            title: "Today's Tasks".localized,
             iconName: "checkmark.seal.fill",
             contentView: TodaysTasksView(tasksVM)
         )
         let villagersSection = SectionView(
-            title: "My Villagers",
+            title: "My Villagers".localized,
             iconName: "person.circle.fill",
             contentView: VillagersView(villagersVM)
         )
         let progressSection = SectionView(
-            title: "Collection Progress",
+            title: "Collection Progress".localized,
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )

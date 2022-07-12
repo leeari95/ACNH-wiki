@@ -41,7 +41,7 @@ class VillagersView: UIView {
     
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Reset", for: .normal)
+        button.setTitle("Reset".localized, for: .normal)
         button.setTitleColor(.acText, for: .normal)
         button.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
         button.backgroundColor = .acText.withAlphaComponent(0.2)
@@ -61,10 +61,7 @@ class VillagersView: UIView {
     }()
     
     private lazy var emptyLabel: UILabel = {
-        let text = """
-                   Who have you talked to today?
-                   Find the villagers you have visited and tap the home icon on the villager's page to keep track.
-                   """
+        let text = "vilagerEmpty".localized
         let label = UILabel(text: text, font: .preferredFont(forTextStyle: .footnote), color: .acText)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -127,7 +124,7 @@ class VillagersView: UIView {
                 } else {
                     owner.emptyLabel.isHidden = true
                     owner.backgroundStackView.isHidden = false
-                    owner.descriptionLabel.text = "Long press on a villager to see more info about them."
+                    owner.descriptionLabel.text = "tip".localized
                 }
                 owner.updateCollectionViewHeight()
                 owner.layoutIfNeeded()

@@ -40,7 +40,7 @@ class AppSettingView: UIView {
         ])
         
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "System haptic", contentView: hapticSwitch)
+            InfoContentView(title: "System haptic".localized, contentView: hapticSwitch)
         )
     }
     

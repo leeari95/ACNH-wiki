@@ -23,7 +23,7 @@ extension UIViewController {
                 )
             }
             alert.addAction(
-                UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                UIAlertAction(title: "Cancel".localized, style: .cancel) { _ in
                     alert.dismiss(animated: true)
                 }
             )

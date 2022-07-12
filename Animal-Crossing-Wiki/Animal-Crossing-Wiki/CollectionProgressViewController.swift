@@ -47,7 +47,7 @@ class CollectionProgressViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection Progress"
+        navigationItem.title = "Collection Progress".localized
         if navigationController?.viewControllers.count == 1 {
             navigationItem.leftBarButtonItem = cancelButton
         }

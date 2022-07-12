@@ -83,10 +83,10 @@ class PreferencesView: UIView {
         }
         
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "Island name", contentView: islandNameTextField),
-            InfoContentView(title: "User name", contentView: userNameTextField),
-            InfoContentView(title: "Hemisphere", contentView: hemisphereButton),
-            InfoContentView(title: "Starting fruit", contentView: startingFruitButton)
+            InfoContentView(title: "Island name".localized, contentView: islandNameTextField),
+            InfoContentView(title: "User name".localized, contentView: userNameTextField),
+            InfoContentView(title: "Hemisphere".localized, contentView: hemisphereButton),
+            InfoContentView(title: "Starting fruit".localized, contentView: startingFruitButton)
         )
     }
 }
@@ -123,7 +123,7 @@ extension PreferencesView {
     }
     
     func updateHemisphere(_ hemisphere: Hemisphere) {
-        hemisphereButton.setTitle(hemisphere.rawValue.capitalized, for: .normal)
+        hemisphereButton.setTitle(hemisphere.rawValue.localized.capitalized, for: .normal)
     }
     
     func updateFruit(_ fruit: Fruit) {

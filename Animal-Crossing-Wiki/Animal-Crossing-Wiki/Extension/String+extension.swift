@@ -36,4 +36,8 @@ extension String {
         }
         return isChosung
     }
+    
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
 }

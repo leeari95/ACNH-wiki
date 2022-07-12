@@ -1,0 +1,127 @@
+/* 
+  Localizable.strings
+  Animal-Crossing-Wiki
+
+  Created by Ari on 2022/07/12.
+  
+*/
+
+// Tab Bar Titles
+"Dashboard" = "Dashboard";
+"Catalog" = "Catalog";
+"Villagers" = "Villagers";
+"Collection" = "Collection";
+
+// etc
+"Cancel" = "Cancel";
+
+// DashboardViewContrller - section title
+"My Island" = "My Island";
+"Today's Tasks" = "Today's Tasks";
+"My Villagers" = "My Villagers";
+"Collection Progress" = "Collection Progress";
+
+// UserInfoView
+"ISLAND" = "ISLAND";
+"USER" = "USER";
+"HEMISPHERE" = "HEMISPHERE";
+"FRUIT" = "FRUIT";
+
+// TodaysTasksView
+"Edit" = "Edit";
+"Reset" = "Reset";
+
+// VillagersView
+"Reset" = "Reset";
+"vilagerEmpty" = "Who have you talked to today?
+Find the villagers you have visited and tap the home icon on the villager's page to keep track.";
+"tip" = "Long press on a villager to see more info about them.";
+
+// PreferencesViewController
+"Island" = "Island";
+"Preferences" = "Preferences";
+"App Settings" = "App Settings";
+
+// PreferencesView
+"Island name" = "Island name";
+"User name" = "User name";
+"Hemisphere" = "Hemisphere";
+"Starting fruit" = "Starting fruit";
+
+// AppSettingView
+"System haptic" = "System haptic";
+
+// TaskEditViewController
+"Today's Tasks" = "Today's Tasks";
+
+// DailyTask - tasks
+"Hit rocks" = "Hit rocks";
+"Find fossils" = "Find fossils";
+"Find furniture" = "Find furniture";
+"Obtain DIY from vilager" = "Obtain DIY from vilager";
+"Find bottle message" = "Find bottle message";
+"Find buried bell" = "Find buried bell";
+"Cut down trees" = "Cut down trees";
+"Buy music" = "Buy music";
+"Find peral" = "Find peral";
+
+// TasksEditViewModel
+"Add a custom task" = "Add a custom task";
+
+// CustomTaskView
+"Name of the task" = "Name of the task";
+"Task Name" = "Task Name";
+"Icon" = "Icon";
+"Max amount" = "Max amount";
+
+// CustomTaskViewController - Mode
+"New task" = "New task";
+"Edit task" = "Edit task";
+
+// Fruit
+"Apple" = "Apple";
+"Orange" = "Orange";
+"Pear" = "Pear";
+"Cherry" = "Cherry";
+"Peach" = "Peach";
+
+// Hemisphere
+"North" = "North";
+"South" = "South";
+
+// AboutViewController
+"About" = "About";
+"Version" = "Version";
+"The app" = "The app";
+"Credit / Thanks" = "Credit / Thanks";
+
+// AboutItem
+"Source code / report an issue" = "Source code / report an issue";
+"Contact / Mail" = "Contact / Mail";
+"Contact / follow us on Instagram" = "Contact / follow us on Instagram";
+"Rate the app on the App Store" = "Rate the app on the App Store";
+"Privacy Policy" = "Privacy Policy";
+"ACNH API" = "ACNH API";
+"Animal Crossing / Spreadsheet" = "Animal Crossing / Spreadsheet";
+"App version" = "App version";
+"Game patch data" = "Game patch data";
+
+// CollectionProgressViewController
+"Collection Progress" = "Collection Progress";
+
+// Category
+"Fishes" = "Fishes";
+"Sea Creatures" = "Sea Creatures";
+"Bugs" = "Bugs";
+"Fossils" = "Fossils";
+"Art" = "Art";
+
+// ItemsViewController
+"Search..." = "Search...";
+"All" = "All";
+"Month" = "Month";
+"Name" = "Name";
+"Sell" = "Sell";
+"Not collected" = "Not collected";
+"descending" = "descending";
+"ascending" = "ascending";

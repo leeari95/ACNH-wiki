@@ -21,7 +21,7 @@ class CustomTaskView: UIView {
     
     private lazy var taskNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Name of the task"
+        textField.placeholder = "Name of the task".localized
         textField.tintColor = .acText
         textField.textColor = .acText.withAlphaComponent(0.8)
         textField.borderStyle = .none
@@ -73,9 +73,9 @@ class CustomTaskView: UIView {
         }
         
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "Task Name", contentView: taskNameTextField),
-            InfoContentView(title: "Icon", contentView: iconButton),
-            InfoContentView(title: "Max amount", contentView: maxAmountButton)
+            InfoContentView(title: "Task Name".localized, contentView: taskNameTextField),
+            InfoContentView(title: "Icon".localized, contentView: iconButton),
+            InfoContentView(title: "Max amount".localized, contentView: maxAmountButton)
         )
     }
 }
@@ -94,7 +94,7 @@ extension CustomTaskView {
     }
     
     func setUpViews(_ task: DailyTask) {
-        taskNameTextField.text = task.name
+        taskNameTextField.text = task.name.localized
         updateIcon(task.icon)
         updateAmount(task.amount.description)
     }

@@ -34,7 +34,7 @@ class TaskEditViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Today's Tasks"
+        self.navigationItem.title = "Today's Tasks".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -70,7 +70,7 @@ class TaskEditViewController: UIViewController {
                     content.textProperties.font = .preferredFont(for: .callout, weight: .semibold)
                 }
                 content.imageProperties.maximumSize = CGSize(width: 35, height: 35)
-                content.text = task.name
+                content.text = task.name.localized
                 cell.backgroundColor = .acSecondaryBackground
                 cell.contentConfiguration = content
                 cell.accessoryType = .disclosureIndicator
