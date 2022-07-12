@@ -13,7 +13,7 @@ class CollectionViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .clear
         tableView.registerNib(CategoryRow.self)
         return tableView

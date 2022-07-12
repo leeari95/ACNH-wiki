@@ -26,7 +26,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="ACSecondaryBackground"/>
+                        <color key="backgroundColor" name="launchBackground"/>
                         <constraints>
                             <constraint firstItem="hh1-Fu-LqF" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TAO-Hk-Gyg"/>
                             <constraint firstItem="hh1-Fu-LqF" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="kn3-Vj-RrD"/>
@@ -40,7 +40,7 @@
     </scenes>
     <resources>
         <image name="App-Icon" width="641" height="622"/>
-        <namedColor name="ACSecondaryBackground">
+        <namedColor name="launchBackground">
             <color red="0.98039215686274506" green="0.95686274509803926" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
