@@ -15,7 +15,7 @@ class AppSettingView: UIView {
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
             axis: .vertical,
-            alignmnet: .fill,
+            alignment: .fill,
             distribution: .fill,
             spacing: 4
         )

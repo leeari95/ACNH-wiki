@@ -91,8 +91,8 @@ class TodaysTasksView: UIView {
         buttonStackView.addArrangedSubviews(editButton, resetButton)
     }
     
-    func bind(to viewModel: TodaysTasksSesctionViewModel) {
-        let input = TodaysTasksSesctionViewModel.Input(
+    func bind(to viewModel: TodaysTasksSectionViewModel) {
+        let input = TodaysTasksSectionViewModel.Input(
             didSelectItem: collectionView.rx.itemSelected.asObservable(),
             didTapReset: resetButton.rx.tap.asObservable(),
             didTapEdit: editButton.rx.tap.asObservable()
@@ -129,7 +129,7 @@ class TodaysTasksView: UIView {
 
 extension TodaysTasksView {
     
-    convenience init(_ viewModel: TodaysTasksSesctionViewModel) {
+    convenience init(_ viewModel: TodaysTasksSectionViewModel) {
         self.init(frame: .zero)
         bind(to: viewModel)
     }

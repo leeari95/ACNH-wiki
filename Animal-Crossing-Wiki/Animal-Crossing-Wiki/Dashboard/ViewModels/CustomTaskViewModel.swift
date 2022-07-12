@@ -35,7 +35,7 @@ final class CustomTaskViewModel {
     
     struct Output {
         let task: Observable<DailyTask?>
-        let didChangeAmout: Observable<String>
+        let didChangeAmount: Observable<String>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -80,7 +80,7 @@ final class CustomTaskViewModel {
         input.didTapAmount
             .subscribe(onNext: { _ in
                 self.coordinator.rootViewController.visibleViewController?
-                    .showSeletedItemAlert(
+                    .showSelectedItemAlert(
                         Array(1...20).map { $0.description },
                         currentItem: currentAmount.value
                     ).subscribe(onNext: { title in
@@ -105,6 +105,6 @@ final class CustomTaskViewModel {
                 amount.accept(text)
             }).disposed(by: disposeBag)
         
-        return Output(task: Observable.just(task), didChangeAmout: currentAmount.asObservable())
+        return Output(task: Observable.just(task), didChangeAmount: currentAmount.asObservable())
     }
 }

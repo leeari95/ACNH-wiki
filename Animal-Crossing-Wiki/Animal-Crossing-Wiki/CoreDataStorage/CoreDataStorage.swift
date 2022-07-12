@@ -59,8 +59,8 @@ extension NSManagedObjectContext {
             do {
                 try save()
             } catch {
-                let nserror = error as NSError
-                debugPrint("Unresolved error \(nserror), \(nserror.userInfo)")
+                let nsError = error as NSError
+                debugPrint("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }

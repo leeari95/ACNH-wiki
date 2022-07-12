@@ -97,7 +97,7 @@ final class PreferencesViewModel {
         input.didTapHemisphere
             .subscribe(onNext: { _ in
                 self.coordinator?.rootViewController.visibleViewController?
-                    .showSeletedItemAlert(
+                    .showSelectedItemAlert(
                         Hemisphere.allCases.map { $0.rawValue },
                         currentItem: currentUserInfo.value?.hemisphere.rawValue ?? ""
                     ).subscribe(onNext: { title in
@@ -108,7 +108,7 @@ final class PreferencesViewModel {
         input.didTapFruit
             .subscribe(onNext: { _ in
                 self.coordinator?.rootViewController.visibleViewController?
-                    .showSeletedItemAlert(
+                    .showSelectedItemAlert(
                         Fruit.allCases.map { $0.imageName },
                         currentItem: currentUserInfo.value?.islandFruit.imageName ?? ""
                     ).subscribe(onNext: { title in

@@ -1,5 +1,5 @@
 //
-//  CollecitonProgressView.swift
+//  CollectionProgressView.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/15.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CollecitonProgressView: UIView {
+class CollectionProgressView: UIView {
     
     private let disposeBag = DisposeBag()
 
@@ -41,7 +41,7 @@ class CollecitonProgressView: UIView {
     }
 }
 
-extension CollecitonProgressView {
+extension CollectionProgressView {
     convenience init(viewModel: CollectionProgressSectionViewModel) {
         self.init(frame: .zero)
         let tap = UITapGestureRecognizer()

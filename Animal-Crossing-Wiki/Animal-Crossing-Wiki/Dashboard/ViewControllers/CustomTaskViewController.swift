@@ -81,7 +81,7 @@ class CustomTaskViewController: UIViewController {
                 owner.customTaskSection.setUpViews(task)
             }).disposed(by: disposeBag)
         
-        output.didChangeAmout
+        output.didChangeAmount
             .compactMap { $0 }
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)

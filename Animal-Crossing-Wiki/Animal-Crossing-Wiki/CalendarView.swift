@@ -69,10 +69,10 @@ class CalendarView: UIView {
         ])
         
         let stackViews = self.months.map { row -> UIStackView in
-            let stackView = UIStackView(axis: .horizontal, alignmnet: .center, distribution: .fill, spacing: 8)
+            let stackView = UIStackView(axis: .horizontal, alignment: .center, distribution: .fill, spacing: 8)
             let monthViews = row.map { month -> UIView in
                 let isActive = months.contains((flatMonths.firstIndex(of: month) ?? 1) + 1)
-                let monthView = crateMonthView(month: month, seleted: isActive)
+                let monthView = crateMonthView(month: month, selected: isActive)
                 return monthView
             }
             stackView.addArrangedSubviews(monthViews)
@@ -85,15 +85,15 @@ class CalendarView: UIView {
         backgroundStackView.addArrangedSubviews(stackViews)
     }
     
-    private func crateMonthView(month: String, seleted: Bool) -> UIView {
+    private func crateMonthView(month: String, selected: Bool) -> UIView {
         let isCurrentMonth = flatMonths.firstIndex(of: month) == currentMonth - 1
         let monthLabel = UILabel(
             text: month,
-            font: .preferredFont(for: .callout, weight: seleted ? .bold : .medium),
-            color: seleted ? .black : .black
+            font: .preferredFont(for: .callout, weight: selected ? .bold : .medium),
+            color: selected ? .black : .black
         )
         let backgroundView = UIView()
-        backgroundView.backgroundColor = seleted ? .catalogSeleted : .catalogBar
+        backgroundView.backgroundColor = selected ? .catalogSelected : .catalogBar
         backgroundView.layer.cornerRadius = 10
         backgroundView.layer.borderWidth = 3
         backgroundView.layer.borderColor = isCurrentMonth ? UIColor.acTabBarTint.cgColor : UIColor.clear.cgColor

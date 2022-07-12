@@ -141,9 +141,9 @@ final class ItemsViewModel {
                 .subscribe(onNext: { list in
                     userItems = list
                     if currentFilter.contains(.uncollected) {
-                        let filterdData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
-                        items.accept(filterdData)
-                        filteredItems = filterdData
+                        let filteredData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
+                        items.accept(filteredData)
+                        filteredItems = filteredData
                     }
                 }).disposed(by: disposeBag)
             

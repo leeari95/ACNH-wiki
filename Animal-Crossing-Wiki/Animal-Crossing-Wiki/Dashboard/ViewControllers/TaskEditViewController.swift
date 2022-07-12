@@ -50,7 +50,7 @@ class TaskEditViewController: UIViewController {
     
     func bind(to viewModel: TasksEditViewModel) {
         let input = TasksEditViewModel.Input(
-            didSeletedTask: tableView.rx.modelSelected(DailyTask.self).asObservable(),
+            didSelectedTask: tableView.rx.modelSelected(DailyTask.self).asObservable(),
             didTapCancel: cancelButton.rx.tap.asObservable(),
             didDeleted: tableView.rx.itemDeleted.asObservable()
         )

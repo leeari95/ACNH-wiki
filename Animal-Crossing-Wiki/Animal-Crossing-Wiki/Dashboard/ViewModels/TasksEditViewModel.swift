@@ -22,7 +22,7 @@ final class TasksEditViewModel {
     private var tasks = [DailyTask]()
     
     struct Input {
-        let didSeletedTask: Observable<DailyTask>
+        let didSelectedTask: Observable<DailyTask>
         let didTapCancel: Observable<Void>
         let didDeleted: Observable<IndexPath>
     }
@@ -51,7 +51,7 @@ final class TasksEditViewModel {
                 owner.tasks = tasks
             }).disposed(by: disposeBag)
         
-        input.didSeletedTask
+        input.didSelectedTask
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { task in
                 self.coordinator.transition(for: .customTask(task: task))

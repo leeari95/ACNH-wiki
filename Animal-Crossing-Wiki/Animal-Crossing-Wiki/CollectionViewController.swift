@@ -30,7 +30,7 @@ class CollectionViewController: UIViewController {
     }()
     
     private lazy var emptyView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignmnet: .center, distribution: .fill, spacing: 8)
+        let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 8)
         let titleLabel = UILabel(
             text: "There are no collectibles.",
             font: .preferredFont(for: .body, weight: .semibold),

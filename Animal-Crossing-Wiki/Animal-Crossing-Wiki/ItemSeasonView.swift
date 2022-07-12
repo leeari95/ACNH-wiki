@@ -24,7 +24,7 @@ class ItemSeasonView: UIView {
     private lazy var timeLabel = UILabel(text: "", font: .preferredFont(forTextStyle: .body), color: .acSecondaryText)
     
     private lazy var timeInfoView: UIStackView = {
-        let stackView = UIStackView(axis: .horizontal, alignmnet: .fill, distribution: .fill, spacing: 4)
+        let stackView = UIStackView(axis: .horizontal, alignment: .fill, distribution: .fill, spacing: 4)
         let iconImageView = UIImageView(image: UIImage(systemName: "clock.fill"))
         iconImageView.tintColor = .acSecondaryText
         stackView.addArrangedSubviews(iconImageView, timeLabel)
@@ -75,7 +75,7 @@ class ItemSeasonView: UIView {
         if backgroundStackView.arrangedSubviews.last as? CalendarView != nil {
             backgroundStackView.arrangedSubviews.last?.removeFromSuperview()
         }
-        let calenderView = CalendarView(months: months)
-        backgroundStackView.addArrangedSubviews(calenderView)
+        let calendarView = CalendarView(months: months)
+        backgroundStackView.addArrangedSubviews(calendarView)
     }
 }

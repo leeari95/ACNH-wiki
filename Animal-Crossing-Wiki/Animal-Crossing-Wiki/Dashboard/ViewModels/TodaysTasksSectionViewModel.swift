@@ -1,5 +1,5 @@
 //
-//  TodaysTasksSesctionViewModel.swift
+//  TodaysTasksSectionViewModel.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/24.
@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-final class TodaysTasksSesctionViewModel {
+final class TodaysTasksSectionViewModel {
     
     var coordinator: DashboardCoordinator?
     

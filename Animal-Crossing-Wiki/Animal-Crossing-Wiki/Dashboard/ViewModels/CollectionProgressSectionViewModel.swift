@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 
-
 final class CollectionProgressSectionViewModel {
     var coordinator: DashboardCoordinator?
     

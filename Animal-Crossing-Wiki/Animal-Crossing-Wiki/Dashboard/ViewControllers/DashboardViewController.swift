@@ -54,7 +54,7 @@ class DashboardViewController: UIViewController {
     
     func setUpViewModels(
         userInfoVM: UserInfoSectionViewModel,
-        tasksVM: TodaysTasksSesctionViewModel,
+        tasksVM: TodaysTasksSectionViewModel,
         villagersVM: VillagersSectionViewModel,
         progressVM: CollectionProgressSectionViewModel
     ) {
@@ -76,7 +76,7 @@ class DashboardViewController: UIViewController {
         let progressSection = SectionView(
             title: "Collection Progress",
             iconName: "chart.pie.fill",
-            contentView: CollecitonProgressView(viewModel: progressVM)
+            contentView: CollectionProgressView(viewModel: progressVM)
         )
         sectionsScrollView.addSection(userInfoSection, tasksSection, villagersSection, progressSection)
     }

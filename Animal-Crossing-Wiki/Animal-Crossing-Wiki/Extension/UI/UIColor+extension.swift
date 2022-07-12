@@ -40,7 +40,7 @@ extension UIColor {
         return UIColor(named: "catalog-background") ?? .clear
     }
     
-    class var catalogSeleted: UIColor {
+    class var catalogSelected: UIColor {
         return UIColor(named: "catalog-selected") ?? .clear
     }
     

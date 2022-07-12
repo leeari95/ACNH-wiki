@@ -23,7 +23,7 @@ class ItemsViewController: UIViewController {
             case .month: return "Month"
             case .name: return "Name"
             case .sell: return "Sell"
-            case .uncollected: return "Uncollected"
+            case .uncollected: return "Not collected"
             }
         }
         
@@ -36,7 +36,7 @@ class ItemsViewController: UIViewController {
             case "Month": return .month
             case "Name": return .name
             case "Sell": return .sell
-            case "Uncollected": return .uncollected
+            case "Not collected": return .uncollected
             default: return .all
             }
         }
@@ -153,7 +153,7 @@ class ItemsViewController: UIViewController {
             self?.currentSelected = [Menu.all: Menu.all.title]
             self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         })
-        let uncollectionAction = UIAction(title: Menu.uncollected.title, handler: { [weak self] action in
+        let notCollectedAction = UIAction(title: Menu.uncollected.title, handler: { [weak self] action in
             self?.currentSelected[.uncollected] = self?.currentSelected[.uncollected] == nil ? action.title : nil
             self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
             self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
@@ -161,9 +161,9 @@ class ItemsViewController: UIViewController {
         
         var menuItems = [UIMenuElement]()
         if let category = category, Category.critters.contains(category) {
-            menuItems.append(contentsOf: [allAction] + [createMonthMenu()] + createSortActions() + [uncollectionAction])
+            menuItems.append(contentsOf: [allAction] + [createMonthMenu()] + createSortActions() + [notCollectedAction])
         } else {
-            menuItems.append(contentsOf: [allAction] + createSortActions() + [uncollectionAction])
+            menuItems.append(contentsOf: [allAction] + createSortActions() + [notCollectedAction])
         }
         selectedKeyword.accept(currentSelected)
         return menuItems

@@ -58,10 +58,10 @@ class UserInfoView: UIView {
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "Island name", contentView: islandNameLabel),
-            InfoContentView(title: "User name", contentView: userNameLabel),
-            InfoContentView(title: "Hemisphere", contentView: hemisphereLabel),
-            InfoContentView(title: "Starting fruit", contentView: fruitImageView)
+            InfoContentView(title: "ISLAND", contentView: islandNameLabel),
+            InfoContentView(title: "USER", contentView: userNameLabel),
+            InfoContentView(title: "HEMISPHERE", contentView: hemisphereLabel),
+            InfoContentView(title: "FRUIT", contentView: fruitImageView)
             
         )
         
