@@ -71,11 +71,6 @@ final class VillagersViewModel {
             .compactMap { VillagersViewController.SearchScope(rawValue: $0) }
             .subscribe(onNext: { selectedScope in
                 currentTap.accept(selectedScope)
-                switch selectedScope {
-                case .all: indicationVillagers.accept(allVillagers)
-                case .liked: indicationVillagers.accept(likeVillagers)
-                case .residents: indicationVillagers.accept(houseVillagers)
-                }
             }).disposed(by: disposeBag)
         
         input.didSelectedMenuKeyword
