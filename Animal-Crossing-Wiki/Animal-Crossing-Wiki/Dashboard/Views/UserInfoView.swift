@@ -24,7 +24,7 @@ class UserInfoView: UIView {
     
     private lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please set a name."
+        label.text = "Please set a name.".localized
         return label
     }()
     
@@ -36,13 +36,13 @@ class UserInfoView: UIView {
     
     private lazy var islandNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please set a Island Name."
+        label.text = "Please set a Island Name.".localized
         return label
     }()
     
     private lazy var hemisphereLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please set a Hemisphere."
+        label.text = Hemisphere.north.rawValue.localized
         return label
     }()
     
@@ -95,10 +95,12 @@ class UserInfoView: UIView {
     
     private func updateInfo(_ userInfo: UserInfo) {
         guard userInfo != UserInfo() else {
+            userNameLabel.text = "Please set a name.".localized
+            islandNameLabel.text = "Please set a Island Name.".localized
             return
         }
-        userNameLabel.text = userInfo.name
-        islandNameLabel.text = userInfo.islandName
+        userNameLabel.text = userInfo.name == "" ? "Please set a name.".localized : userInfo.name
+        islandNameLabel.text = userInfo.islandName  == "" ? "Please set a Island Name.".localized : userInfo.islandName
         fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
         hemisphereLabel.text = userInfo.hemisphere.rawValue.localized.capitalized
     }

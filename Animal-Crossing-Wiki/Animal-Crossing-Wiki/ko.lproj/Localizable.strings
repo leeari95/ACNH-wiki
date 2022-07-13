@@ -22,6 +22,9 @@
 "Collection Progress" = "수집 현황";
 
 // UserInfoView
+"Please set a name." = "이름을 설정해주세요.";
+"Please set a Island Name." = "섬 이름을 설정해주세요.";
+"Please set a Hemisphere." = "반구를 설정해주세요.";
 "ISLAND" = "섬 이름";
 "USER" = "주민 대표";
 "HEMISPHERE" = "반구";
@@ -45,6 +48,8 @@
 "App Settings" = "앱 설정";
 
 // PreferencesView
+"Your island name" = "섬 이름을 입력해주세요";
+"Your user name" = "사용자의 이름을 입력해주세요";
 "Island name" = "섬 이름";
 "User name" = "주민 대표 이름";
 "Hemisphere" = "반구";

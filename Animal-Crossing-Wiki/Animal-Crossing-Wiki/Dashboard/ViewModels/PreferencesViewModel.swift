@@ -57,7 +57,6 @@ final class PreferencesViewModel {
         
         input.islandNameText
             .compactMap { $0 }
-            .filter { $0 != "" }
             .subscribe(onNext: { islandName in
                 var userInfo = currentUserInfo.value
                 userInfo?.updateIslandName(islandName)
@@ -66,7 +65,6 @@ final class PreferencesViewModel {
         
         input.userNameText
             .compactMap { $0 }
-            .filter { $0 != "" }
             .subscribe(onNext: { userName in
                 var userInfo = currentUserInfo.value
                 userInfo?.updateName(userName)

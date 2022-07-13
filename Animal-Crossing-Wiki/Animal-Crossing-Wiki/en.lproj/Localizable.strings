@@ -22,6 +22,9 @@
 "Collection Progress" = "Collection Progress";
 
 // UserInfoView
+"Please set a name." = "Please set a name.";
+"Please set a Island Name." = "Please set a Island Name.";
+"Please set a Hemisphere." = "Please set a Hemisphere.";
 "ISLAND" = "ISLAND";
 "USER" = "USER";
 "HEMISPHERE" = "HEMISPHERE";
@@ -43,6 +46,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "App Settings" = "App Settings";
 
 // PreferencesView
+"Your island name" = "Your island name";
+"Your user name" = "Your user name";
 "Island name" = "Island name";
 "User name" = "User name";
 "Hemisphere" = "Hemisphere";

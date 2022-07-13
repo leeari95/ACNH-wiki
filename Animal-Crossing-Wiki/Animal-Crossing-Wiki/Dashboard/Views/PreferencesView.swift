@@ -21,13 +21,13 @@ class PreferencesView: UIView {
     
     private lazy var islandNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Your island name"
+        textField.placeholder = "Your island name".localized
         return textField
     }()
     
     private lazy var userNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Your user name"
+        textField.placeholder = "Your user name".localized
         return textField
     }()
     
