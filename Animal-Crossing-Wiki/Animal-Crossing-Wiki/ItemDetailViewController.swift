@@ -80,7 +80,10 @@ class ItemDetailViewController: UIViewController {
             category: item.category,
             contentView: ItemDetailInfoView(item: item)
         )
-        sectionsScrollView.addSection(itemDetailInfo)
+        let otherInfoView = SectionView(
+            contentView: ItemOtherInfoView(item: item)
+        )
+        sectionsScrollView.addSection(itemDetailInfo, otherInfoView)
         if Category.critters.contains(item.category) {
             let seasonView = SectionView(
                 title: "Seasonality".localized,

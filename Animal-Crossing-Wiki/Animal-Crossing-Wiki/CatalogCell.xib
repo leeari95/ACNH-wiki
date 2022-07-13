@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-1O-c9d">
-                        <rect key="frame" x="4" y="4" width="97" height="157"/>
+                        <rect key="frame" x="4" y="4" width="97" height="151"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fish0" translatesAutoresizingMaskIntoConstraints="NO" id="1Ae-WZ-Z5e">
                                 <rect key="frame" x="1" y="0.0" width="95" height="95"/>
@@ -29,7 +29,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="납줄개" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dms-Hy-A3O">
-                                <rect key="frame" x="33" y="97" width="31.5" height="60"/>
+                                <rect key="frame" x="33" y="97" width="31.5" height="54"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" name="ACText"/>
                                 <nil key="highlightedColor"/>
@@ -43,7 +43,7 @@
                 <constraint firstAttribute="trailing" secondItem="Oxa-1O-c9d" secondAttribute="trailing" constant="4" id="Sd6-qe-9Mv"/>
                 <constraint firstItem="Oxa-1O-c9d" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="fZG-cc-bOL"/>
                 <constraint firstItem="Oxa-1O-c9d" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="hTJ-5M-EYE"/>
-                <constraint firstAttribute="bottom" secondItem="Oxa-1O-c9d" secondAttribute="bottom" constant="4" id="sZf-3c-L8h"/>
+                <constraint firstAttribute="bottom" secondItem="Oxa-1O-c9d" secondAttribute="bottom" constant="10" id="sZf-3c-L8h"/>
             </constraints>
             <size key="customSize" width="139" height="165"/>
             <connections>

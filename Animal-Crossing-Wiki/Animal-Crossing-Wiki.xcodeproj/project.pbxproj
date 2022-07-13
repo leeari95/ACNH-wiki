@@ -69,6 +69,7 @@
 		9A6DC207287C6BBE004EEC41 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC206287C6BBE004EEC41 /* HapticManager.swift */; };
 		9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC208287C7B42004EEC41 /* AppSettingView.swift */; };
 		9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */; };
+		9A7ACED5287EA0CA001D47CB /* ItemOtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED4287EA0CA001D47CB /* ItemOtherInfoView.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -234,6 +235,7 @@
 		9A6DC206287C6BBE004EEC41 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		9A6DC208287C7B42004EEC41 /* AppSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingView.swift; sourceTree = "<group>"; };
 		9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewModel.swift; sourceTree = "<group>"; };
+		9A7ACED4287EA0CA001D47CB /* ItemOtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemOtherInfoView.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 				9AD343E328742DF2008A3D6D /* ItemBellsView.swift */,
 				9AD343ED28756773008A3D6D /* ItemDetailInfoView.swift */,
 				9AD343FB2876D395008A3D6D /* CalendarView.swift */,
+				9A7ACED4287EA0CA001D47CB /* ItemOtherInfoView.swift */,
 				9AD343FD2876ED9A008A3D6D /* ItemSeasonView.swift */,
 				9A62D73C2878364D0047750F /* CategoryRow.swift */,
 				9A62D73D2878364D0047750F /* CategoryRow.xib */,
@@ -1045,6 +1048,7 @@
 				9A6A2ED5287AA2CE007D2EEA /* CollectionProgressViewModel.swift in Sources */,
 				9A99AA92286C1E2000629C4A /* VillagersCoordinator.swift in Sources */,
 				9A99AA52285C32C300629C4A /* PreferencesView.swift in Sources */,
+				9A7ACED5287EA0CA001D47CB /* ItemOtherInfoView.swift in Sources */,
 				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9A6CB3FE2872C25300B368D4 /* VillagerDetailViewController.swift in Sources */,

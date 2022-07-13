@@ -9,12 +9,19 @@ import UIKit
 
 class ItemDetailInfoView: UIView {
     
+    enum ImageSize {
+        static let large: CGFloat = 150
+        static let medium: CGFloat = 100
+    }
+    
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 6
+        stackView.spacing = 15
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         return stackView
     }()
     
@@ -44,7 +51,6 @@ class ItemDetailInfoView: UIView {
     private func configure(in category: Category, item: Item) {
         addSubviews(backgroundStackView)
         setUpImageView(item)
-        setUpInfo(item)
         setUpItemBells(item)
         
         NSLayoutConstraint.activate([
@@ -71,14 +77,13 @@ class ItemDetailInfoView: UIView {
             let iconImageView = UIImageView(path: item.iconImage)
             
             NSLayoutConstraint.activate([
-                critterpediaImageView.widthAnchor.constraint(equalToConstant: 150),
+                critterpediaImageView.widthAnchor.constraint(equalToConstant: ImageSize.large),
                 critterpediaImageView.heightAnchor.constraint(equalTo: critterpediaImageView.widthAnchor),
-                furnitureImageView.widthAnchor.constraint(equalToConstant: 100),
+                furnitureImageView.widthAnchor.constraint(equalToConstant: ImageSize.medium),
                 furnitureImageView.heightAnchor.constraint(equalTo: furnitureImageView.widthAnchor),
-                iconImageView.widthAnchor.constraint(equalToConstant: 100),
+                iconImageView.widthAnchor.constraint(equalToConstant: ImageSize.medium),
                 iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor)
             ])
-            
             subImageStackView.addArrangedSubviews(furnitureImageView, iconImageView)
             backgroundStackView.addArrangedSubviews(critterpediaImageView, subImageStackView)
         } else if let art = item as? Art, let highResTexture = art.highResTexture {
@@ -90,56 +95,9 @@ class ItemDetailInfoView: UIView {
             ])
         } else {
             let imageView = UIImageView(path: item.image)
-            imageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            imageView.widthAnchor.constraint(equalToConstant: ImageSize.large).isActive = true
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
             backgroundStackView.addArrangedSubviews(imageView)
-        }
-    }
-    
-    private func setUpInfo(_ item: Item) {
-        let titleLabel = UILabel(
-            text: "",
-            font: .preferredFont(for: .callout, weight: .semibold),
-            color: .acSecondaryText
-        )
-        titleLabel.numberOfLines = 0
-        if item.whereHow != "" {
-            titleLabel.text = item.whereHow.localized
-        } else if item.source != "" {
-            titleLabel.text = item.source.localized
-        } else if item.category == .seaCreatures {
-            titleLabel.text = "Underwater".localized
-        }
-        backgroundStackView.addArrangedSubviews(titleLabel)
-        
-        if [Category.fishes, Category.seaCreatures].contains(item.category) {
-            let titleLabel = UILabel(
-                text: "Shadow size:".localized,
-                font: .preferredFont(forTextStyle: .footnote)
-            )
-            let shadowLabel = UILabel(
-                text: item.shadow.rawValue.localized,
-                font: .preferredFont(forTextStyle: .footnote),
-                color: .acSecondaryText
-            )
-            let infoStackView = infoStackView()
-            infoStackView.addArrangedSubviews(titleLabel, shadowLabel)
-            backgroundStackView.addArrangedSubviews(infoStackView)
-        }
-        
-        if item.category == .seaCreatures {
-            let titleLabel = UILabel(
-                text: "Movement speed:".localized,
-                font: .preferredFont(forTextStyle: .footnote)
-            )
-            let speedLabel = UILabel(
-                text: item.movementSpeed.rawValue.localized,
-                font: .preferredFont(forTextStyle: .footnote),
-                color: .acSecondaryText
-            )
-            let infoStackView = infoStackView()
-            infoStackView.addArrangedSubviews(titleLabel, speedLabel)
-            backgroundStackView.addArrangedSubviews(infoStackView)
         }
     }
     

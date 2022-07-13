@@ -17,15 +17,16 @@ class ItemSeasonView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 8
+        stackView.spacing = 15
         return stackView
     }()
     
     private lazy var timeLabel = UILabel(text: "", font: .preferredFont(forTextStyle: .body), color: .acSecondaryText)
     
     private lazy var timeInfoView: UIStackView = {
-        let stackView = UIStackView(axis: .horizontal, alignment: .fill, distribution: .fill, spacing: 4)
-        let iconImageView = UIImageView(image: UIImage(systemName: "clock.fill"))
+        let stackView = UIStackView(axis: .horizontal, alignment: .center, distribution: .equalCentering, spacing: 5)
+        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+        let iconImageView = UIImageView(image: UIImage(systemName: "clock.fill", withConfiguration: config))
         iconImageView.tintColor = .acSecondaryText
         stackView.addArrangedSubviews(iconImageView, timeLabel)
         return stackView
@@ -56,8 +57,8 @@ class ItemSeasonView: UIView {
             }).disposed(by: disposeBag)
         
         NSLayoutConstraint.activate([
-            backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            backgroundStackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            backgroundStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
@@ -67,7 +68,8 @@ class ItemSeasonView: UIView {
         if times.count == 1 {
             timeLabel.text = times.first?.localized
         } else {
-            timeLabel.text = times.reduce("") { $0 + $1.localized + " / " }.trimmingCharacters(in: ["/", " "])
+            timeLabel.text = times.reduce("") { $0 + $1.localized + "\n" }.trimmingCharacters(in: ["\n"])
+            timeLabel.numberOfLines = 0
         }
     }
     

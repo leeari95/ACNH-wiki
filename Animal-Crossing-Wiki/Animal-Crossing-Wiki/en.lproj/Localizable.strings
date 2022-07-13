@@ -139,11 +139,15 @@ Find the villagers you have visited and tap the home icon on the villager's page
 
 // ItemDetailViewController
 "Seasonality" = "Seasonality";
+"Where how" = "Where how";
 
 // ItemDetailInfoView
 "Underwater" = "Underwater";
-"Shadow size:" = "Shadow size:";
-"Movement speed:" = "Movement speed:";
+"Shadow size" = "Shadow size";
+"Movement speed" = "Movement speed";
+"Whether fake" = "Whether fake";
+"Original" = "Original";
+"Fake" = "Fake";
 
 "Disguised on shoreline" = "Disguised on shoreline";
 "Disguised under trees" = "Disguised under trees";
