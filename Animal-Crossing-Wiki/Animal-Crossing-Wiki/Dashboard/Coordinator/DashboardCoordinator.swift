@@ -51,7 +51,6 @@ final class DashboardCoordinator: Coordinator {
             let viewController = PreferencesViewController()
             viewController.bind(to: PreferencesViewModel(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.isModalInPresentation = true
             rootViewController.present(navigationController, animated: true)
         case .about:
             let viewController = AboutViewController()
@@ -62,7 +61,6 @@ final class DashboardCoordinator: Coordinator {
             let viewController = TaskEditViewController()
             viewController.bind(to: TasksEditViewModel(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.isModalInPresentation = true
             rootViewController.present(navigationController, animated: true)
         case .customTask(let task):
             let viewController = CustomTaskViewController()
