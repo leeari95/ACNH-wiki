@@ -1,9 +1,9 @@
 /* 
-  ImfoPlist.strings
+  InfoPlist.strings
   Animal-Crossing-Wiki
 
   Created by Ari on 2022/07/12.
   
 */
 
- "CFBundleDisplayName" = "ACNH Wiki";
+"CFBundleDisplayName" = "ACNH Wiki";
