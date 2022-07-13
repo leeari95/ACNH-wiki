@@ -21,7 +21,7 @@ class DashboardViewController: UIViewController {
     
     private lazy var settingButton: UIBarButtonItem = {
         return .init(
-            image: UIImage(systemName: "slider.horizontal.3"),
+            image: UIImage(systemName: "gearshape.fill"),
             style: .plain,
             target: self,
             action: nil

@@ -33,7 +33,7 @@ class CustomTaskViewController: UIViewController {
     )
     private lazy var checkButton: UIBarButtonItem = {
         return .init(
-            image: UIImage(systemName: "checkmark.circle"),
+            image: UIImage(systemName: "square.and.arrow.down"),
             style: .plain,
             target: self,
             action: nil
@@ -51,7 +51,7 @@ class CustomTaskViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         
         navigationItem.rightBarButtonItem = checkButton
-        navigationItem.rightBarButtonItem?.tintColor = .acHeaderBackground
+        navigationItem.rightBarButtonItem?.tintColor = .acNavigationBarTint
 
         view.addSubviews(sectionsScrollView)
         
