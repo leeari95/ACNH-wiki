@@ -32,7 +32,6 @@ final class CatalogCoordinator: Coordinator {
         switch route {
         case .items(let category):
             let viewController = ItemsViewController()
-            viewController.category = category
             viewController.bind(to: ItemsViewModel(category: category, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):

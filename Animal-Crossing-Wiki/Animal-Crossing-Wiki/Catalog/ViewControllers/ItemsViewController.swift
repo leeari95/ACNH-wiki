@@ -10,6 +10,11 @@ import RxSwift
 import RxRelay
 
 class ItemsViewController: UIViewController {
+    enum Mode {
+        case user
+        case all
+    }
+    
     enum Menu: Int {
         case all
         case month
@@ -47,7 +52,8 @@ class ItemsViewController: UIViewController {
         }
     }
 
-    var category: Category?
+    private var category: Category?
+    private var mode: Mode = .all
     private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.title]
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.title])
@@ -77,6 +83,8 @@ class ItemsViewController: UIViewController {
     }
     
     func bind(to viewModel: ItemsViewModel) {
+        self.category = viewModel.category
+        self.mode = viewModel.mode == .all ? .all : .user
         let input = ItemsViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
@@ -233,25 +241,26 @@ class ItemsViewController: UIViewController {
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
         }
-        let notCollectedAction = UIAction(title: Menu.notCollected.title, handler: { [weak self] action in
-            if self?.currentSelected[.collected] != nil {
-                self?.currentSelected[.collected] = nil
-            }
-            self?.currentSelected[.notCollected] = self?.currentSelected[.notCollected] == nil ? action.title : nil
-            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-        })
-        
-        let collectedAction = UIAction(title: Menu.collected.title, handler: { [weak self] action in
-            if self?.currentSelected[.notCollected] != nil {
-                self?.currentSelected[.notCollected] = nil
-            }
-            self?.currentSelected[.collected] = self?.currentSelected[.collected] == nil ? action.title : nil
-            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-        })
-        filterMenuList.append(contentsOf: [collectedAction, notCollectedAction])
-        
+        if mode == .all {
+            let notCollectedAction = UIAction(title: Menu.notCollected.title, handler: { [weak self] action in
+                if self?.currentSelected[.collected] != nil {
+                    self?.currentSelected[.collected] = nil
+                }
+                self?.currentSelected[.notCollected] = self?.currentSelected[.notCollected] == nil ? action.title : nil
+                self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
+                self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+            })
+            
+            let collectedAction = UIAction(title: Menu.collected.title, handler: { [weak self] action in
+                if self?.currentSelected[.notCollected] != nil {
+                    self?.currentSelected[.notCollected] = nil
+                }
+                self?.currentSelected[.collected] = self?.currentSelected[.collected] == nil ? action.title : nil
+                self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
+                self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+            })
+            filterMenuList.append(contentsOf: [collectedAction, notCollectedAction])
+        }
         return filterMenuList
     }
 }

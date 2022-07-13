@@ -19,16 +19,6 @@ class CollectionViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var progressButton: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "list.bullet"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
-        return barButtonItem
-    }()
-    
     private lazy var emptyView: UIStackView = {
         let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 8)
         let titleLabel = UILabel(
@@ -65,14 +55,12 @@ class CollectionViewController: UIViewController {
     
     private func setUpNavigationItem() {
         navigationItem.title = "Collection".localized
-        self.navigationItem.rightBarButtonItem = progressButton
     }
     
     func bind(to viewModel: CollectionViewModel) {
         setUpNavigationItem()
         let input = CollectionViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable(),
-            didTapRightBarButton: progressButton.rx.tap.asObservable()
+            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         

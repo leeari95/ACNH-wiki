@@ -10,9 +10,9 @@ import RxSwift
 import RxRelay
 
 final class CollectionProgressViewModel {
-    var coordinator: Coordinator?
+    let coordinator: DashboardCoordinator
     
-    init(coordinator: Coordinator) {
+    init(coordinator: DashboardCoordinator) {
         self.coordinator = coordinator
     }
     
@@ -29,19 +29,13 @@ final class CollectionProgressViewModel {
         input.selectedCategory
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { category in
-                if let coordinator = self.coordinator as? CollectionCoordinator {
-                    coordinator.transition(for: .items(category: category, mode: .all))
-                } else if let coordinator = self.coordinator as? DashboardCoordinator {
-                    coordinator.transition(for: .item(category: category))
-                }
+                self.coordinator.transition(for: .item(category: category))
             }).disposed(by: disposeBag)
         
         input.didTapCancel
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                if let coordinator = self.coordinator as? CollectionCoordinator {
-                    coordinator.transition(for: .dismiss)
-                } 
+                self.coordinator.transition(for: .dismiss)
             }).disposed(by: disposeBag)
         
         return Output(items: Observable.just(Category.items()))

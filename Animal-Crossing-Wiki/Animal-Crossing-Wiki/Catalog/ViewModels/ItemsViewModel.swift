@@ -15,9 +15,9 @@ final class ItemsViewModel {
         case all
     }
     
-    private let category: Category
+    let category: Category
+    let mode: Mode
     private let coordinator: Coordinator?
-    private let mode: Mode
     
     init(category: Category, coordinator: Coordinator?, mode: Mode = .all) {
         self.category = category

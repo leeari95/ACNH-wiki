@@ -22,7 +22,7 @@ class ItemProgressRow: UITableViewCell {
             progressView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             progressView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             progressView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            progressView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
+            progressView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
     

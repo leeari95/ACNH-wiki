@@ -11,7 +11,6 @@ final class CollectionCoordinator: Coordinator {
     enum Route {
         case items(category: Category, mode: ItemsViewModel.Mode)
         case itemDetail(item: Item)
-        case progress
         case dismiss
     }
     
@@ -33,7 +32,6 @@ final class CollectionCoordinator: Coordinator {
         switch route {
         case .items(let category, let mode):
             let viewController = ItemsViewController()
-            viewController.category = category
             viewController.bind(to: ItemsViewModel(category: category, coordinator: self, mode: mode))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
@@ -42,10 +40,6 @@ final class CollectionCoordinator: Coordinator {
             viewController.bind(to: ItemDetailViewModel(item: item))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
-        case .progress:
-            let viewController = CollectionProgressViewController()
-            viewController.bind(to: CollectionProgressViewModel(coordinator: self))
-            rootViewController.present(UINavigationController(rootViewController: viewController), animated: true)
         case .dismiss:
             rootViewController.visibleViewController?.dismiss(animated: true)
         }
