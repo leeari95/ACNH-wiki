@@ -124,11 +124,14 @@
 "Art" = "미술품";
 
 // ItemsViewController
-"Search..." = "검색어를 입력해주세요. (초성도 가능)";
+"To catch now" = "아직 늦지 않았어요!";
+"Currently Available" = "오늘 수집하러 가볼까요?";
+"Search..." = "검색어를 입력해주세요. (초성 가능)";
 "All" = "전체";
 "Month" = "월별";
 "Name" = "이름";
 "Sell" = "판매가격";
+"Collected" = "획득한 아이템";
 "Not collected" = "획득하지 못한 아이템";
 "descending" = "descending";
 "ascending" = "ascending";

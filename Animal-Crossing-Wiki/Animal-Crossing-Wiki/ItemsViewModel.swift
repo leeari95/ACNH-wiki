@@ -38,7 +38,8 @@ final class ItemsViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let items = BehaviorRelay<[Item]>(value: [])
         var allItems = [Item]()
-        var userItems = [Item]()
+        var collectedItems = [Item]()
+        var notCollectedItems = [Item]()
         var filteredItems = [Item]()
         var currentHemisphere = Hemisphere.north
         var currentFilter = [ItemsViewController.Menu]()
@@ -73,8 +74,17 @@ final class ItemsViewModel {
         input.didSelectedMenuKeyword
             .subscribe(onNext: { keywords in
                 var itemList = [Item]()
-                if keywords.keys.contains(.uncollected) == false {
-                    for item in userItems where !filteredItems.contains(where: { $0.name == item.name }) {
+                if keywords.keys.contains(.notCollected) == false {
+                    for item in collectedItems where !filteredItems.contains(where: {
+                        $0.name == item.name && $0.genuine == item.genuine
+                    }) {
+                        filteredItems.append(item)
+                    }
+                }
+                if keywords.keys.contains(.collected) == false {
+                    for item in notCollectedItems where !filteredItems.contains(where: {
+                        $0.name == item.name && $0.genuine == item.genuine
+                    }) {
                         filteredItems.append(item)
                     }
                 }
@@ -92,6 +102,25 @@ final class ItemsViewModel {
                             $0.hemispheres.south.monthsArray.contains(month)
                         }
                         itemList = filteredData
+                    case .collected:
+                        if currentFilter.contains(.month) {
+                            let filteredData = itemList.filter { item in
+                                collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
+                            }
+                            itemList = filteredData
+                        } else {
+                            itemList = collectedItems
+                        }
+                    case .notCollected:
+                        if currentFilter.contains(.month) {
+                            let filteredData = itemList.filter { item in
+                                !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
+                            }
+                            itemList = filteredData
+                        } else {
+                            itemList = notCollectedItems.isEmpty ? itemList.isEmpty ? allItems : itemList : notCollectedItems
+                        }
+                        
                     case .name:
                         let filteredData = (itemList.isEmpty ? filteredItems : itemList)
                             .sorted {
@@ -106,10 +135,6 @@ final class ItemsViewModel {
                                 value == ItemsViewController.Menu.ascending ?
                                 $0.sell < $1.sell : $0.sell > $1.sell
                             }
-                        itemList = filteredData
-                    case .uncollected:
-                        let filteredData = (itemList.isEmpty ? filteredItems : itemList)
-                            .filter { !userItems.map { $0.name }.contains($0.name) }
                         itemList = filteredData
                     }
                 }
@@ -140,10 +165,17 @@ final class ItemsViewModel {
             
             Items.shared.itemList
                 .compactMap { $0[self.category] }
-                .subscribe(onNext: { list in
-                    userItems = list
-                    if currentFilter.contains(.uncollected) {
-                        let filteredData = filteredItems.filter { !userItems.map { $0.name }.contains($0.name) }
+                .subscribe(onNext: { userItems in
+                    collectedItems = userItems
+                    let notCollected = allItems.filter { item in
+                        !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
+                    }
+                    notCollectedItems = notCollected
+                    if currentFilter.contains(.notCollected) {
+                        let filteredData = (filteredItems.isEmpty ? notCollected : filteredItems)
+                            .filter { item in
+                                !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
+                            }
                         items.accept(filteredData)
                         filteredItems = filteredData
                     }

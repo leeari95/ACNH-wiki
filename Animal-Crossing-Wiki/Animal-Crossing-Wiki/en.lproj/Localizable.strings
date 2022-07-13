@@ -122,11 +122,14 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Art" = "Art";
 
 // ItemsViewController
+"To catch now" = "To catch now";
+"Currently Available" = "Currently Available";
 "Search..." = "Search...";
 "All" = "All";
 "Month" = "Month";
 "Name" = "Name";
 "Sell" = "Sell";
+"Collected" = "Collected";
 "Not collected" = "Not collected";
 "descending" = "descending";
 "ascending" = "ascending";

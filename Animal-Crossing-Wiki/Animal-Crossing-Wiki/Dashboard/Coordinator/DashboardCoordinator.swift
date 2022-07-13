@@ -93,6 +93,12 @@ final class DashboardCoordinator: Coordinator {
             let viewController = ItemsViewController()
             viewController.category = category
             viewController.bind(to: ItemsViewModel(category: category, coordinator: self))
+            let currentMonth = (Calendar.current.dateComponents([.month], from: Date()).month ?? 1).description
+            viewController.setUpFilterKeyword([
+                .month: currentMonth,
+                .notCollected : ItemsViewController.Menu.notCollected.title
+            ])
+            
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
