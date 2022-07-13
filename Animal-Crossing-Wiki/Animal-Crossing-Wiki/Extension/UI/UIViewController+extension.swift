@@ -14,7 +14,7 @@ extension UIViewController {
         return Observable.create { observer in
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             items.forEach { item in
-                let title = item == currentItem ? "✓" + item : item
+                let title = item == currentItem ? "✓ " + item : item
                 alert.addAction(
                     UIAlertAction(title: title, style: .default) { _ in
                         observer.onNext(title)
