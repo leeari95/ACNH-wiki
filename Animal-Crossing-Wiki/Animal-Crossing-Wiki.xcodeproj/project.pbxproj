@@ -24,6 +24,7 @@
 		9A541B8528225F8E001B57FD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A541B8428225F8E001B57FD /* RxSwift */; };
 		9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */; };
 		9A62CFE1287D7C56005D737D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A62CFE3287D7C56005D737D /* Localizable.strings */; };
+		9A62CFE7287DB9F9005D737D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A62CFE9287DB9F9005D737D /* InfoPlist.strings */; };
 		9A62D73E2878364D0047750F /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62D73C2878364D0047750F /* CategoryRow.swift */; };
 		9A62D73F2878364D0047750F /* CategoryRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A62D73D2878364D0047750F /* CategoryRow.xib */; };
 		9A62D74128783A4D0047750F /* UITableView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62D74028783A4D0047750F /* UITableView+extension.swift */; };
@@ -186,6 +187,8 @@
 		9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+extension.swift"; sourceTree = "<group>"; };
 		9A62CFE2287D7C56005D737D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9A62CFE4287D7C64005D737D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9A62CFE8287DB9F9005D737D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9A62CFEA287DB9FB005D737D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9A62D73B2877E13C0047750F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		9A62D73C2878364D0047750F /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
 		9A62D73D2878364D0047750F /* CategoryRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryRow.xib; sourceTree = "<group>"; };
@@ -401,6 +404,7 @@
 				9A4B4C3828503A6100CC687C /* Models */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
 				9A62CFE3287D7C56005D737D /* Localizable.strings */,
+				9A62CFE9287DB9F9005D737D /* InfoPlist.strings */,
 			);
 			path = "Animal-Crossing-Wiki";
 			sourceTree = "<group>";
@@ -949,6 +953,7 @@
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A99AA6228603CB800629C4A /* IconCell.xib in Resources */,
 				9A62D73F2878364D0047750F /* CategoryRow.xib in Resources */,
+				9A62CFE7287DB9F9005D737D /* InfoPlist.strings in Resources */,
 				9A62CFE1287D7C56005D737D /* Localizable.strings in Resources */,
 				9A6A2ED2287AA1F9007D2EEA /* ItemProgressRow.xib in Resources */,
 				9A99AA90286C187600629C4A /* VillagersCell.xib in Resources */,
@@ -1163,6 +1168,15 @@
 				9A62CFE4287D7C64005D737D /* ko */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		9A62CFE9287DB9F9005D737D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A62CFE8287DB9F9005D737D /* en */,
+				9A62CFEA287DB9FB005D737D /* ko */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
