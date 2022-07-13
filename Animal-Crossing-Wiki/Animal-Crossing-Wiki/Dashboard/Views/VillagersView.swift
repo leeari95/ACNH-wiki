@@ -36,6 +36,7 @@ class VillagersView: UIView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.registerNib(IconCell.self)
+        collectionView.addGestureRecognizer(longPressGesture)
         return collectionView
     }()
     
