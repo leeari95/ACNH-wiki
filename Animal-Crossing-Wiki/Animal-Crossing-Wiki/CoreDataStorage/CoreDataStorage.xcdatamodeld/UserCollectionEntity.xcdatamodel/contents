@@ -11,29 +11,53 @@
     </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES" codeGenerationType="class">
         <attribute name="artCategory" optional="YES" attributeType="String"/>
+        <attribute name="bodyCustomize" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="bodyTitle" optional="YES" attributeType="String"/>
         <attribute name="buy" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="catalog" optional="YES" attributeType="String"/>
         <attribute name="catchDifficulty" optional="YES" attributeType="String"/>
         <attribute name="category" attributeType="String"/>
         <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="concepts" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="critterpediaImage" optional="YES" attributeType="String"/>
+        <attribute name="diy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="exchangeCurrency" optional="YES" attributeType="String"/>
+        <attribute name="exchangePrice" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="furnitureImage" optional="YES" attributeType="String"/>
         <attribute name="genuine" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="hemispheres" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String: [Any]]]"/>
+        <attribute name="hhaCategory" optional="YES" attributeType="String"/>
         <attribute name="highResTexture" optional="YES" attributeType="String"/>
         <attribute name="iconImage" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="internalId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="keyword" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String]]"/>
+        <attribute name="lightingType" optional="YES" attributeType="String"/>
         <attribute name="movementSpeed" optional="YES" attributeType="String"/>
         <attribute name="museum" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="outdoor" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="pattern" optional="YES" attributeType="String"/>
+        <attribute name="patternCustomize" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="patternTitle" optional="YES" attributeType="String"/>
+        <attribute name="recipe" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: Any]"/>
+        <attribute name="seasonEvent" optional="YES" attributeType="String"/>
         <attribute name="sell" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="series" optional="YES" attributeType="String"/>
+        <attribute name="seriesTranslations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="set" optional="YES" attributeType="String"/>
         <attribute name="shadow" optional="YES" attributeType="String"/>
         <attribute name="size" optional="YES" attributeType="String"/>
         <attribute name="source" optional="YES" attributeType="String"/>
+        <attribute name="sourceNotes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="sources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="spawnRates" optional="YES" attributeType="String"/>
+        <attribute name="speakerType" optional="YES" attributeType="String"/>
         <attribute name="styles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="tag" optional="YES" attributeType="String"/>
         <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="variation" optional="YES" attributeType="String"/>
+        <attribute name="variations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String: Any]]"/>
         <attribute name="vision" optional="YES" attributeType="String"/>
         <attribute name="weather" optional="YES" attributeType="String"/>
         <attribute name="whereHow" optional="YES" attributeType="String"/>
@@ -97,7 +121,7 @@
     </entity>
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
-        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="449"/>
+        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="809"/>
         <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
         <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>

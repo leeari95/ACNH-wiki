@@ -12,33 +12,55 @@ extension ItemEntity {
     
     convenience init(_ item: Item, context: NSManagedObjectContext) {
         self.init(context: context)
-        self.artCategory = item.artCategory?.rawValue
-        self.buy = Int64(item.buy ?? -1)
-        self.catchDifficulty = item.catchDifficulty?.rawValue
+        self.name = item.name
         self.category = item.category.rawValue
+        self.sell = Int64(item.sell)
+        self.translations = item.translations.toDictionary()
         self.colors = item.colors.map { $0.rawValue }
-        self.concepts = item.keyword[.concept] // 머여?
+        self.image = item.image
+        self.iconImage = item.iconImage
         self.critterpediaImage = item.critterpediaImage
         self.furnitureImage = item.furnitureImage
-        self.genuine = item.genuine ?? true
         self.hemispheres = item.hemispheres?.toDictionary()
-        self.highResTexture = item.highResTexture
-        self.iconImage = item.iconImage
-        self.image = item.image
-        self.keyword = item.toKeyword()
-        self.movementSpeed = item.movementSpeed?.rawValue
-        self.museum = item.museum?.rawValue
-        self.name = item.name
-        self.sell = Int64(item.sell)
-        self.shadow = item.shadow?.rawValue
-        self.size = item.size?.rawValue
-        self.spawnRates = item.spawnRates
-        self.styles = item.keyword[.style]
-        self.translations = item.translations.toDictionary()
-        self.vision = item.vision?.rawValue
-        self.weather = item.weather?.rawValue
         self.whereHow = item.whereHow
+        self.weather = item.weather?.rawValue
+        self.spawnRates = item.spawnRates
+        self.catchDifficulty = item.catchDifficulty?.rawValue
+        self.vision = item.vision?.rawValue
+        self.shadow = item.shadow?.rawValue
+        self.movementSpeed = item.movementSpeed?.rawValue
+        self.buy = Int64(item.buy ?? -1)
+        self.museum = item.museum?.rawValue
+        self.highResTexture = item.highResTexture
+        self.genuine = item.genuine ?? false
+        self.artCategory = item.artCategory?.rawValue
+        self.size = item.size?.rawValue
         self.source = item.source
+        self.tag = item.tag
+        self.concepts = item.concepts?.map { $0.rawValue }
+        self.variation = item.variation
+        self.bodyTitle = item.bodyTitle
+        self.pattern = item.pattern
+        self.patternTitle = item.patternTitle
+        self.diy = item.diy ?? false
+        self.bodyCustomize = item.bodyCustomize ?? false
+        self.patternCustomize = item.patternCustomize ?? false
+        self.exchangePrice = Int64(item.exchangePrice ?? -1)
+        self.exchangeCurrency = item.exchangeCurrency?.rawValue
+        self.sources = item.sources?.map { $0.rawValue }
+        self.sourceNotes = item.sourceNotes
+        self.seasonEvent = item.seasonEvent
+        self.hhaCategory = item.hhaCategory?.rawValue
+        self.outdoor = item.outdoor ?? false
+        self.speakerType = item.speakerType
+        self.lightingType = item.lightingType?.rawValue
+        self.catalog = item.catalog?.rawValue
+        self.internalId = Int64(item.internalId ?? -1)
+        self.set = item.set
+        self.series = item.series
+        self.recipe = item.recipe?.toDictionary()
+        self.seriesTranslations = item.seriesTranslations?.toDictionary()
+        self.variations = item.variations?.compactMap { $0.toDictionary() }
     }
     
     func toKeyword() -> [Keyword: [String]] {
@@ -55,33 +77,55 @@ extension ItemEntity {
         guard let category = Category(rawValue: self.category ?? "") else {
             throw CoreDataStorageError.categoryNotFound
         }
-        return Item(
-            name: name ?? "",
-            category: category, 
-            sell: Int(sell), 
-            translations: Translations(translations ?? [:]),
-            colors: colors?.compactMap { Color(rawValue: $0) } ?? [],
-            keyword: toKeyword(),
-            image: image ?? "",
-            iconImage: iconImage, 
-            critterpediaImage: critterpediaImage, 
-            furnitureImage: furnitureImage, 
-            hemispheres: Hemispheres(hemispheres ?? [:]),
-            whereHow: whereHow, 
-            weather: Weather(rawValue: weather ?? "") ?? .anyExceptRain,
-            spawnRates: spawnRates, 
-            catchDifficulty: CatchDifficulty(rawValue: catchDifficulty ?? "") ?? .medium,
-            vision: Vision(rawValue: vision ?? "") ?? .medium,
-            shadow: Shadow(rawValue: shadow ?? "") ?? .medium,
-            movementSpeed: MovementSpeed(rawValue: movementSpeed ?? "") ?? .medium,
-            buy: Int(buy),
-            museum: Museum(rawValue: self.museum ?? "") ?? .room1,
-            highResTexture: highResTexture, 
-            genuine: genuine, 
-            artCategory: ArtCategory(rawValue: self.artCategory ?? "") .unsafelyUnwrapped,
-            size: Size(rawValue: self.size ?? "") ?? .the1X1,
-            source: source
-        )
+        return Item(name: name ?? "",
+                    category: category,
+                    sell: Int(sell),
+                    translations: Translations(translations ?? [:]),
+                    colors: colors?.compactMap { Color(rawValue: $0) } ?? [],
+                    image: image,
+                    iconImage: iconImage,
+                    critterpediaImage: critterpediaImage,
+                    furnitureImage: furnitureImage,
+                    hemispheres: Hemispheres(hemispheres ?? [:]),
+                    whereHow: whereHow,
+                    weather: Weather(rawValue: weather ?? ""),
+                    spawnRates: spawnRates,
+                    catchDifficulty: CatchDifficulty(rawValue: catchDifficulty ?? ""),
+                    vision: Vision(rawValue: vision ?? ""),
+                    shadow: Shadow(rawValue: shadow ?? ""),
+                    movementSpeed: MovementSpeed(rawValue: movementSpeed ?? ""),
+                    buy: Int(buy),
+                    museum: Museum(rawValue: museum ?? ""),
+                    highResTexture: highResTexture,
+                    genuine: genuine,
+                    artCategory: ArtCategory(rawValue: artCategory ?? ""),
+                    size: Size(rawValue: size ?? ""),
+                    source: source,
+                    tag: tag,
+                    concepts: concepts?.compactMap { Concept(rawValue: $0) },
+                    variation: variation,
+                    bodyTitle: bodyTitle,
+                    pattern: pattern,
+                    patternTitle: patternTitle,
+                    diy: diy,
+                    bodyCustomize: bodyCustomize,
+                    patternCustomize: patternCustomize,
+                    exchangePrice: Int(exchangePrice),
+                    exchangeCurrency: ExchangeCurrency(rawValue: exchangeCurrency ?? ""),
+                    sources: sources?.compactMap { Source(rawValue: $0) },
+                    sourceNotes: sourceNotes,
+                    seasonEvent: seasonEvent,
+                    hhaCategory: HhaCategory(rawValue: hhaCategory ?? ""),
+                    outdoor: outdoor,
+                    speakerType: speakerType,
+                    lightingType: LightingType(rawValue: lightingType ?? ""),
+                    catalog: Catalog(rawValue: catalog ?? ""),
+                    internalId: Int(internalId),
+                    set: set,
+                    series: series,
+                    recipe: Recipe(recipe ?? [:]),
+                    seriesTranslations: Translations(seriesTranslations ?? [:]),
+                    variations: variations?.compactMap { Variant($0)})
     }
 }
 
@@ -155,6 +199,122 @@ extension Translations {
             kRko: dictionary["kRko"] ?? "",
             tWzh: dictionary["tWzh"] ?? "",
             cNzh: dictionary["cNzh"] ?? ""
+        )
+    }
+}
+
+extension Recipe {
+    func toDictionary() -> [String: Any] {
+        var translations = [String: [String: String]]()
+        materialsTranslations.forEach { (key: String, value: Translations?) in
+            translations[key] = value?.toDictionary() ?? [:]
+        }
+        return [
+            "name" : name,
+            "image" : image,
+            "imageSh" : imageSh ?? "",
+            "buy" : buy,
+            "sell" : sell ?? 0,
+            "exchangePrice" : exchangePrice ?? 0,
+            "exchangeCurrency" : exchangeCurrency?.rawValue ?? "",
+            "source" : source,
+            "sourceNotes" : sourceNotes ?? [],
+            "seasonEvent" : seasonEvent ?? "",
+            "seasonEventExclusive" : seasonEventExclusive ?? false,
+            "versionAdded" : versionAdded,
+            "unlocked" : unlocked,
+            "recipesToUnlock" : recipesToUnlock,
+            "category" : category,
+            "craftedItemInternalId" : craftedItemInternalId,
+            "cardColor" : cardColor.rawValue,
+            "diyIconFilename" : diyIconFilename,
+            "diyIconFilenameSh" : diyIconFilenameSh ?? "",
+            "serialId" : serialId,
+            "internalId" : internalId,
+            "materials" : materials,
+            "materialsTranslations" : translations
+        ]
+    }
+    
+    init(_ dictionary: [String: Any]) {
+        var translations = [String: Translations?]()
+        (dictionary["materialsTranslations"] as? [String: [String: String]])?.forEach({ (key: String, value: [String: String]) in
+            translations[key] = Translations(value)
+        })
+        self.init(
+            name: dictionary["name"] as? String ?? "",
+            image: dictionary["image"] as? String ?? "",
+            imageSh: dictionary["imageSh"] as? String,
+            buy: dictionary["buy"] as? Int ?? -1,
+            sell: dictionary["sell"] as? Int,
+            exchangePrice: dictionary["exchangePrice"] as? Int,
+            exchangeCurrency: ExchangeCurrency(rawValue: dictionary["exchangeCurrency"] as? String ?? ""),
+            source: dictionary["source"] as? [String] ?? [],
+            sourceNotes: dictionary["sourceNotes"] as? [String],
+            seasonEvent: dictionary["seasonEvent"] as? String,
+            seasonEventExclusive: dictionary["seasonEventExclusive"] as? Bool,
+            versionAdded: dictionary["versionAdded"] as? String ?? "",
+            unlocked: dictionary["unlocked"] as? Bool ?? false,
+            recipesToUnlock: dictionary["recipesToUnlock"] as? Int ?? 0,
+            category: dictionary["category"] as? String ?? "",
+            craftedItemInternalId: dictionary["craftedItemInternalId"] as? Int ?? 0,
+            cardColor: CardColor(rawValue: dictionary["cardColor"] as? String ?? "") ?? .blue,
+            diyIconFilename: dictionary["diyIconFilename"] as? String ?? "",
+            diyIconFilenameSh: dictionary["diyIconFilenameSh"] as? String,
+            serialId: dictionary["serialId"] as? Int ?? 0,
+            internalId: dictionary["internalId"] as? Int ?? 0,
+            materials: dictionary["materials"] as? [String: Int] ?? [:],
+            materialsTranslations: translations
+        )
+    }
+}
+
+extension Variant {
+    func toDictionary() -> [String: Any] {
+        return [
+            "image": image,
+            "variation": variation ?? "",
+            "pattern": pattern ?? "",
+            "patternTitle": patternTitle ?? "",
+            "kitType": kitType?.rawValue ?? "",
+            "cyrusCustomizePrice": cyrusCustomizePrice,
+            "surface": surface,
+            "exchangePrice": exchangePrice ?? -1,
+            "exchangeCurrency": exchangeCurrency?.rawValue ?? "",
+            "seasonEvent": seasonEvent ?? "",
+            "seasonEventExclusive": seasonEventExclusive ?? false,
+            "hhaCategory": hhaCategory?.rawValue ?? "",
+            "filename": filename,
+            "variantId": variantId,
+            "internalId": internalId,
+            "variantTranslations": variantTranslations?.toDictionary() ?? [:],
+            "colors": colors.map { $0.rawValue },
+            "concepts": concepts.map { $0.rawValue },
+            "patternTranslations": patternTranslations?.toDictionary() ?? [:]
+        ]
+    }
+    
+    init(_ dictionary: [String: Any]) {
+        self.init(
+            image: dictionary["image"] as? String ?? "",
+            variation: dictionary["variation"] as? String ?? "",
+            pattern: dictionary["pattern"] as? String ?? "",
+            patternTitle: dictionary["patternTitle"] as? String ?? "",
+            kitType: Kit(rawValue: dictionary["kitType"] as? String ?? ""),
+            cyrusCustomizePrice: dictionary["cyrusCustomizePrice"] as? Int ?? -1,
+            surface: dictionary["surface"] as? Bool ?? false,
+            exchangePrice: dictionary["exchangePrice"] as? Int,
+            exchangeCurrency: ExchangeCurrency(rawValue: dictionary["exchangeCurrency"] as? String ?? ""),
+            seasonEvent: dictionary["seasonEvent"] as? String,
+            seasonEventExclusive: dictionary["seasonEventExclusive"] as? Bool,
+            hhaCategory: HhaCategory(rawValue: dictionary["hhaCategory"] as? String ?? ""),
+            filename: dictionary["filename"] as? String ?? "",
+            variantId: dictionary["variantId"] as? String ?? "",
+            internalId: dictionary["internalId"] as? Int ?? -1,
+            variantTranslations: Translations(dictionary["variantTranslations"] as? [String: String] ?? [:]),
+            colors: (dictionary["colors"] as? [String] ?? []).compactMap { Color(rawValue: $0) },
+            concepts: (dictionary["concepts"] as? [String] ?? []).compactMap { Concept(rawValue: $0) },
+            patternTranslations: Translations(dictionary["patternTranslations"] as? [String: String] ?? [:])
         )
     }
 }

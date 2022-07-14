@@ -38,7 +38,7 @@ enum ArtCategory: String, Codable {
     case wallMounted = "Wall-mounted"
 }
 
-enum Concept: String, Codable {
+enum Concept: String, Codable, CaseIterable {
     case ancient = "ancient"
     case cityLife = "city life"
     case european = "European"
@@ -85,6 +85,58 @@ enum Concept: String, Codable {
     case stylish = "stylish"
     case supermarket = "supermarket"
     case workshop = "workshop"
+    
+    static func transform(_ localizedString: String) -> String? {
+        switch localizedString {
+        case Concept.ancient.rawValue.localized: return Concept.ancient.rawValue
+        case Concept.cityLife.rawValue.localized: return Concept.cityLife.rawValue
+        case Concept.european.rawValue.localized: return Concept.european.rawValue
+        case Concept.expensive.rawValue.localized: return Concept.expensive.rawValue
+        case Concept.harmonious.rawValue.localized: return Concept.harmonious.rawValue
+        case Concept.horror.rawValue.localized: return Concept.horror.rawValue
+        case Concept.resort.rawValue.localized: return Concept.resort.rawValue
+        case Concept.amusementPark.rawValue.localized: return Concept.amusementPark.rawValue
+        case Concept.apparelShop.rawValue.localized: return Concept.apparelShop.rawValue
+        case Concept.arcade.rawValue.localized: return Concept.arcade.rawValue
+        case Concept.bathroom.rawValue.localized: return Concept.bathroom.rawValue
+        case Concept.café.rawValue.localized: return Concept.café.rawValue
+        case Concept.childSRoom.rawValue.localized: return Concept.childSRoom.rawValue
+        case Concept.concert.rawValue.localized: return Concept.concert.rawValue
+        case Concept.constructionSite.rawValue.localized: return Concept.constructionSite.rawValue
+        case Concept.den.rawValue.localized: return Concept.den.rawValue
+        case Concept.facility.rawValue.localized: return Concept.facility.rawValue
+        case Concept.fancy.rawValue.localized: return Concept.fancy.rawValue
+        case Concept.fantasy.rawValue.localized: return Concept.fantasy.rawValue
+        case Concept.fitness.rawValue.localized: return Concept.fitness.rawValue
+        case Concept.freezingCold.rawValue.localized: return Concept.freezingCold.rawValue
+        case Concept.garden.rawValue.localized: return Concept.garden.rawValue
+        case Concept.heritage.rawValue.localized: return Concept.heritage.rawValue
+        case Concept.hospital.rawValue.localized: return Concept.hospital.rawValue
+        case Concept.kitchen.rawValue.localized: return Concept.kitchen.rawValue
+        case Concept.lab.rawValue.localized: return Concept.lab.rawValue
+        case Concept.livingRoom.rawValue.localized: return Concept.livingRoom.rawValue
+        case Concept.local.rawValue.localized: return Concept.local.rawValue
+        case Concept.music.rawValue.localized: return Concept.music.rawValue
+        case Concept.nature.rawValue.localized: return Concept.nature.rawValue
+        case Concept.ocean.rawValue.localized: return Concept.ocean.rawValue
+        case Concept.office.rawValue.localized: return Concept.office.rawValue
+        case Concept.outdoors.rawValue.localized: return Concept.outdoors.rawValue
+        case Concept.park.rawValue.localized: return Concept.park.rawValue
+        case Concept.party.rawValue.localized: return Concept.party.rawValue
+        case Concept.publicBath.rawValue.localized: return Concept.publicBath.rawValue
+        case Concept.restaurant.rawValue.localized: return Concept.restaurant.rawValue
+        case Concept.retro.rawValue.localized: return Concept.retro.rawValue
+        case Concept.school.rawValue.localized: return Concept.school.rawValue
+        case Concept.sciFi.rawValue.localized: return Concept.sciFi.rawValue
+        case Concept.shop.rawValue.localized: return Concept.shop.rawValue
+        case Concept.space.rawValue.localized: return Concept.space.rawValue
+        case Concept.sports.rawValue.localized: return Concept.sports.rawValue
+        case Concept.stylish.rawValue.localized: return Concept.stylish.rawValue
+        case Concept.supermarket.rawValue.localized: return Concept.supermarket.rawValue
+        case Concept.workshop.rawValue.localized: return Concept.workshop.rawValue
+        default: return nil
+        }
+    }
 }
 
 extension ArtResponseDTO {
@@ -103,11 +155,7 @@ extension ArtResponseDTO {
             tag: self.tag,
             translations: self.translations,
             colors: self.colors,
-            concepts: self.concepts,
-            keyword: [
-                .color: self.colors.map { $0.rawValue },
-                .concept: self.concepts.map { $0.rawValue }
-            ]
+            concepts: self.concepts
         )
     }
 }

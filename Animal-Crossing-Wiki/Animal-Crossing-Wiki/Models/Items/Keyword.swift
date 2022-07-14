@@ -11,5 +11,4 @@ enum Keyword: String {
     case color
     case concept
     case tag
-    case style
 }

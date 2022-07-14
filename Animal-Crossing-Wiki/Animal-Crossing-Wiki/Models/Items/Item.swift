@@ -13,7 +13,6 @@ struct Item {
     let sell: Int
     let translations: Translations
     let colors: [Color]
-    let keyword: [Keyword: [String]]
     
     var image: String?
     var iconImage: String?
@@ -60,7 +59,7 @@ struct Item {
     var set: String?
     var series: String?
     var recipe: Recipe?
-    var seriesTranslations: SeriesTranslations?
+    var seriesTranslations: Translations?
     var variations: [Variant]?
 }
 
@@ -80,8 +79,7 @@ extension Item {
         vision: Vision,
         translations: Translations,
         hemispheres: Hemispheres,
-        colors: [Color],
-        keyword: [Keyword : [String]]
+        colors: [Color]
     ) {
         self.name = name
         self.category = category
@@ -96,7 +94,6 @@ extension Item {
         self.translations = translations
         self.hemispheres = hemispheres
         self.colors = colors
-        self.keyword = keyword
     }
     
     // Fossils
@@ -110,8 +107,7 @@ extension Item {
         source: String,
         museum: Museum,
         translations: Translations,
-        colors: [Color],
-        keyword: [Keyword : [String]]
+        colors: [Color]
     ) {
         self.name = name
         self.category = category
@@ -123,7 +119,6 @@ extension Item {
         self.museum = museum
         self.translations = translations
         self.colors = colors
-        self.keyword = keyword
     }
     
     // bug
@@ -140,8 +135,7 @@ extension Item {
         size: Size,
         translations: Translations,
         hemispheres: Hemispheres,
-        colors: [Color],
-        keyword: [Keyword : [String]]
+        colors: [Color]
     ) {
         self.name = name
         self.category = category
@@ -156,7 +150,6 @@ extension Item {
         self.translations = translations
         self.hemispheres = hemispheres
         self.colors = colors
-        self.keyword = keyword
     }
     
     // SeaCreatures
@@ -173,8 +166,7 @@ extension Item {
         size: Size,
         translations: Translations,
         hemispheres: Hemispheres,
-        colors: [Color],
-        keyword: [Keyword : [String]]
+        colors: [Color]
     ) {
         self.name = name
         self.category = category
@@ -189,7 +181,6 @@ extension Item {
         self.translations = translations
         self.hemispheres = hemispheres
         self.colors = colors
-        self.keyword = keyword
     }
     
     // Art
@@ -207,8 +198,7 @@ extension Item {
         tag: String,
         translations: Translations,
         colors: [Color],
-        concepts: [Concept],
-        keyword: [Keyword : [String]]
+        concepts: [Concept]
     ) {
         self.name = name
         self.category = category
@@ -224,7 +214,6 @@ extension Item {
         self.translations = translations
         self.colors = colors
         self.concepts = concepts
-        self.keyword = keyword
     }
     
     // Housewares
@@ -260,9 +249,8 @@ extension Item {
         set: String?,
         series: String?,
         recipe: Recipe?,
-        seriesTranslations: SeriesTranslations?,
-        variations: [Variant]?,
-        keyword: [Keyword : [String]]
+        seriesTranslations: Translations?,
+        variations: [Variant]?
     ) {
         self.name = name
         self.category = category
@@ -297,16 +285,16 @@ extension Item {
         self.recipe = recipe
         self.seriesTranslations = seriesTranslations
         self.variations = variations
-        self.keyword = keyword
     }
 }
 
 extension Item {
-    func toKeyword() -> [String: [String]] {
-        var keywordList = [String: [String]]()
-        self.keyword.forEach { key, value in
-            keywordList[key.rawValue] = value
+
+    var keyword: [String] {
+        var list = colors.map { $0.rawValue } + (concepts?.map { $0.rawValue } ?? [])
+        if let tag = tag, !list.contains(tag.lowercased()) {
+            list.append(tag)
         }
-        return keywordList
+        return list
     }
 }

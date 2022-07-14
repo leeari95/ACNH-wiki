@@ -114,10 +114,7 @@ extension FishResponseDTO {
             vision: self.vision,
             translations: self.translations,
             hemispheres: self.hemispheres,
-            colors: self.colors,
-            keyword: [
-                .color: self.colors.map { $0.rawValue }
-            ]
+            colors: self.colors
         )
     }
 }

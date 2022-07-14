@@ -88,6 +88,8 @@
 		9A7ACF1A287EC2F3001D47CB /* ItemProgressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */; };
 		9A7ACF22287EC459001D47CB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF20287EC459001D47CB /* HapticManager.swift */; };
 		9A7ACF23287EC459001D47CB /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF21287EC459001D47CB /* Items.swift */; };
+		9A7ACF25287F9C87001D47CB /* HousewaresResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */; };
+		9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -249,6 +251,8 @@
 		9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemProgressRow.swift; path = Collection/Views/ItemProgressRow.swift; sourceTree = "<group>"; };
 		9A7ACF20287EC459001D47CB /* HapticManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		9A7ACF21287EC459001D47CB /* Items.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
+		9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HousewaresResponseDTO.swift; sourceTree = "<group>"; };
+		9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HousewaresRequest.swift; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -432,6 +436,7 @@
 				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
 				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
 				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
+				9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -446,6 +451,7 @@
 				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
 				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
 				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
+				9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1077,6 +1083,7 @@
 				9A99AA222858802B00629C4A /* UIView+extension.swift in Sources */,
 				9A6A2ED7287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift in Sources */,
 				9A99AA6128603CB800629C4A /* IconCell.swift in Sources */,
+				9A7ACF25287F9C87001D47CB /* HousewaresResponseDTO.swift in Sources */,
 				9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */,
 				9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */,
 				9A7ACF0A287EC26F001D47CB /* CalendarView.swift in Sources */,
@@ -1117,6 +1124,7 @@
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,
 				9A99AA2028587A7500629C4A /* SectionHeaderView.swift in Sources */,
+				9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
 				9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */,
 				9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */,

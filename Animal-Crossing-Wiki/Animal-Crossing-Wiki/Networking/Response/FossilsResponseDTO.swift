@@ -45,10 +45,7 @@ extension FossilsResponseDTO {
             source: self.source.first ?? "",
             museum: self.museum,
             translations: self.translations,
-            colors: self.colors,
-            keyword: [
-                .color: self.colors.map { $0.rawValue }
-            ]
+            colors: self.colors
         )
     }
 }

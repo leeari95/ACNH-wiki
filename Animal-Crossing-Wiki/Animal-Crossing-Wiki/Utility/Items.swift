@@ -24,6 +24,7 @@ final class Items {
     private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
     
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
+    private let allItems = BehaviorRelay<[Item]>(value: [])
     private let currentItemsCount = BehaviorRelay<[Category: Int]>(value: [:])
     private let isLoad = BehaviorRelay<Bool>(value: false)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
@@ -118,6 +119,7 @@ final class Items {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
                 itemList[.fishes] = items
+                
             case .failure(let error):
                 os_log(
                     .error,
@@ -172,11 +174,29 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.requestList(HousewaresRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.housewares] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 가구을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.categories.accept(itemList)
             var itemsCount = [Category: Int]()
             itemList.forEach { (key: Category, value: [Item]) in
                 itemsCount[key] = value.count
+                var currentItems = self.allItems.value
+                currentItems.append(contentsOf: value)
+                self.allItems.accept(currentItems)
             }
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
@@ -272,5 +292,10 @@ extension Items {
         }
         currentUserItems[item.category] = items
         userItems.accept(currentUserItems)
+    }
+    
+    func itemFilter(keyword: String, category: Keyword) -> [Item] {
+        let items = allItems.value
+        return items.filter { $0.keyword.contains(keyword) }
     }
 }

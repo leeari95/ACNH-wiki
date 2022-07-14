@@ -153,7 +153,7 @@ enum KitchenEquipment: Codable {
     }
 }
 
-enum Color: String, Codable {
+enum Color: String, Codable, CaseIterable {
     case aqua = "Aqua"
     case beige = "Beige"
     case black = "Black"
@@ -168,6 +168,26 @@ enum Color: String, Codable {
     case red = "Red"
     case white = "White"
     case yellow = "Yellow"
+    
+    static func transform(_ localizedString: String) -> String? {
+        switch localizedString {
+        case Color.aqua.rawValue.localized : return Color.aqua.rawValue
+        case Color.beige.rawValue.localized : return Color.beige.rawValue
+        case Color.black.rawValue.localized : return Color.black.rawValue
+        case Color.blue.rawValue.localized : return Color.blue.rawValue
+        case Color.brown.rawValue.localized : return Color.brown.rawValue
+        case Color.colorful.rawValue.localized : return Color.colorful.rawValue
+        case Color.gray.rawValue.localized : return Color.gray.rawValue
+        case Color.green.rawValue.localized : return Color.green.rawValue
+        case Color.orange.rawValue.localized : return Color.orange.rawValue
+        case Color.pink.rawValue.localized : return Color.pink.rawValue
+        case Color.purple.rawValue.localized : return Color.purple.rawValue
+        case Color.red.rawValue.localized : return Color.red.rawValue
+        case Color.white.rawValue.localized : return Color.white.rawValue
+        case Color.yellow.rawValue.localized : return Color.yellow.rawValue
+        default: return nil
+        }
+    }
 }
 
 enum Gender: String, Codable, CaseIterable {
