@@ -136,11 +136,6 @@
 		9AF0418828503B9400C51449 /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418528503B9400C51449 /* CoreDataStorage.xcdatamodeld */; };
 		9AF0418A28503F7900C51449 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418928503F7900C51449 /* Item.swift */; };
 		9AF0418C2850451100C51449 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418B2850451100C51449 /* Category.swift */; };
-		9AF0418E285045EF00C51449 /* Bug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418D285045EF00C51449 /* Bug.swift */; };
-		9AF0419028505AE200C51449 /* Fish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0418F28505AE200C51449 /* Fish.swift */; };
-		9AF0419228505AE900C51449 /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419128505AE900C51449 /* Art.swift */; };
-		9AF0419428505AF800C51449 /* Fossils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419328505AF800C51449 /* Fossils.swift */; };
-		9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0419528505B1100C51449 /* SeaCreature.swift */; };
 		9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */; };
 		9AF042042852F2F500C51449 /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF042032852F2F500C51449 /* Keyword.swift */; };
 		9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF0420528530C1E00C51449 /* CoreDataVillagersLikeStorage.swift */; };
@@ -300,11 +295,6 @@
 		9AF0418628503B9400C51449 /* UserCollectionEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserCollectionEntity.xcdatamodel; sourceTree = "<group>"; };
 		9AF0418928503F7900C51449 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9AF0418B2850451100C51449 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		9AF0418D285045EF00C51449 /* Bug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bug.swift; sourceTree = "<group>"; };
-		9AF0418F28505AE200C51449 /* Fish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fish.swift; sourceTree = "<group>"; };
-		9AF0419128505AE900C51449 /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
-		9AF0419328505AF800C51449 /* Fossils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fossils.swift; sourceTree = "<group>"; };
-		9AF0419528505B1100C51449 /* SeaCreature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeaCreature.swift; sourceTree = "<group>"; };
 		9AF041AB2851B20D00C51449 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		9AF042032852F2F500C51449 /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
 		9AF0420528530C1E00C51449 /* CoreDataVillagersLikeStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataVillagersLikeStorage.swift; sourceTree = "<group>"; };
@@ -731,12 +721,7 @@
 		9AF0419728505B1C00C51449 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				9AF0419128505AE900C51449 /* Art.swift */,
-				9AF0418D285045EF00C51449 /* Bug.swift */,
 				9AF0418B2850451100C51449 /* Category.swift */,
-				9AF0418F28505AE200C51449 /* Fish.swift */,
-				9AF0419328505AF800C51449 /* Fossils.swift */,
-				9AF0419528505B1100C51449 /* SeaCreature.swift */,
 				9AF0418928503F7900C51449 /* Item.swift */,
 				9AF042032852F2F500C51449 /* Keyword.swift */,
 			);
@@ -1018,7 +1003,6 @@
 				9A7ACEE9287EC194001D47CB /* VillagerHouseView.swift in Sources */,
 				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
-				9AF0419428505AF800C51449 /* Fossils.swift in Sources */,
 				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
 				9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
@@ -1050,7 +1034,6 @@
 				9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */,
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
-				9AF0419028505AE200C51449 /* Fish.swift in Sources */,
 				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
@@ -1070,7 +1053,6 @@
 				9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */,
 				9A7ACF0F287EC2D3001D47CB /* CollectionProgressViewController.swift in Sources */,
 				9AF0421F285312FB00C51449 /* CoreDataDailyTaskStorage.swift in Sources */,
-				9AF0419228505AE900C51449 /* Art.swift in Sources */,
 				9AF04229285315FA00C51449 /* CoreDataUserInfoStorage.swift in Sources */,
 				9A99AA56285C422200629C4A /* UIViewController+extension.swift in Sources */,
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
@@ -1096,7 +1078,6 @@
 				9A6A2ED7287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift in Sources */,
 				9A99AA6128603CB800629C4A /* IconCell.swift in Sources */,
 				9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */,
-				9AF0418E285045EF00C51449 /* Bug.swift in Sources */,
 				9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */,
 				9A7ACF0A287EC26F001D47CB /* CalendarView.swift in Sources */,
 				9A7ACF09287EC26F001D47CB /* ItemOtherInfoView.swift in Sources */,
@@ -1132,7 +1113,6 @@
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */,
 				9A1DB1D92840857300689F11 /* APIError.swift in Sources */,
-				9AF0419628505B1100C51449 /* SeaCreature.swift in Sources */,
 				9AF0420A28530C3800C51449 /* CoreDataItemsStorage.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,

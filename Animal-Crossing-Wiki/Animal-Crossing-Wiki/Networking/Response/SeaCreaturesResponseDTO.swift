@@ -46,9 +46,10 @@ enum MovementSpeed: String, Codable {
 }
 
 extension SeaCreaturesResponseDTO {
-    func toDomain() -> SeaCreature {
-        return SeaCreature(
+    func toDomain() -> Item {
+        return Item(
             name: self.name,
+            category: .seaCreatures,
             iconImage: self.iconImage,
             critterpediaImage: self.critterpediaImage,
             furnitureImage: self.furnitureImage,

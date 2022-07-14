@@ -72,9 +72,9 @@ class ItemDetailInfoView: UIView {
     
     private func setUpImageView(_ item: Item) {
         if Category.critters.contains(item.category) {
-            let critterpediaImageView = UIImageView(path: item.critterpediaImage)
-            let furnitureImageView = UIImageView(path: item.furnitureImage)
-            let iconImageView = UIImageView(path: item.iconImage)
+            let critterpediaImageView = UIImageView(path: item.critterpediaImage ?? "")
+            let furnitureImageView = UIImageView(path: item.furnitureImage ?? "")
+            let iconImageView = UIImageView(path: item.iconImage ?? "")
             
             NSLayoutConstraint.activate([
                 critterpediaImageView.widthAnchor.constraint(equalToConstant: ImageSize.large),
@@ -86,7 +86,7 @@ class ItemDetailInfoView: UIView {
             ])
             subImageStackView.addArrangedSubviews(furnitureImageView, iconImageView)
             backgroundStackView.addArrangedSubviews(critterpediaImageView, subImageStackView)
-        } else if let art = item as? Art, let highResTexture = art.highResTexture {
+        } else if let highResTexture = item.highResTexture {
             let highResTextureImageView = UIImageView(path: highResTexture)
             backgroundStackView.addArrangedSubviews(highResTextureImageView)
             NSLayoutConstraint.activate([
@@ -94,7 +94,7 @@ class ItemDetailInfoView: UIView {
                 highResTextureImageView.heightAnchor.constraint(equalTo: highResTextureImageView.widthAnchor)
             ])
         } else {
-            let imageView = UIImageView(path: item.image)
+            let imageView = UIImageView(path: item.image ?? "")
             imageView.widthAnchor.constraint(equalToConstant: ImageSize.large).isActive = true
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
             backgroundStackView.addArrangedSubviews(imageView)
@@ -116,8 +116,8 @@ class ItemDetailInfoView: UIView {
             infoStackView.spacing = 16
             infoStackView.addArrangedSubviews(sell, flickSell)
             backgroundStackView.addArrangedSubviews(infoStackView)
-        } else if item.buy > 0 {
-            let buy = ItemBellsView(mode: .buy, price: item.buy)
+        } else if let buy = item.buy, buy > 0 {
+            let buy = ItemBellsView(mode: .buy, price: buy)
             let sell = ItemBellsView(mode: .sell, price: item.sell)
             let infoStackView = infoStackView()
             infoStackView.spacing = 16

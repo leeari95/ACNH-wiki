@@ -34,7 +34,6 @@
         <attribute name="spawnRates" optional="YES" attributeType="String"/>
         <attribute name="styles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
-        <attribute name="unlocked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="vision" optional="YES" attributeType="String"/>
         <attribute name="weather" optional="YES" attributeType="String"/>
         <attribute name="whereHow" optional="YES" attributeType="String"/>
@@ -98,7 +97,7 @@
     </entity>
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
-        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="464"/>
+        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="449"/>
         <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
         <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>

@@ -61,6 +61,9 @@ struct EmergenceInfo: Codable {
 enum LightingType: String, Codable {
     case emission = "Emission"
     case fluorescent = "Fluorescent"
+    case candle = "Candle"
+    case monitor = "Monitor"
+    case spotlight = "Spotlight"
 }
 
 enum Shadow: String, Codable {
@@ -75,12 +78,17 @@ enum Shadow: String, Codable {
 }
 
 enum Size: String, Codable {
+    case the1X05 = "1x0.5"
     case the1X1 = "1x1"
     case the1X2 = "1x2"
+    case the2X05 = "2x0.5"
     case the2X1 = "2x1"
-    case the2X15 = "2x1.5"
     case the2X2 = "2x2"
+    case the2X15 = "2x1.5"
+    case the3X1 = "3x1"
     case the3X2 = "3x2"
+    case the3X3 = "3x3"
+    case the15X15 = "1.5x1.5"
 }
 
 enum Vision: String, Codable {
@@ -92,9 +100,10 @@ enum Vision: String, Codable {
 }
 
 extension FishResponseDTO {
-    func toDomain() -> Fish {
-        return Fish(
+    func toDomain() -> Item {
+        return Item(
             name: self.name,
+            category: .fishes,
             iconImage: self.iconImage,
             critterpediaImage: self.critterpediaImage,
             furnitureImage: self.furnitureImage,

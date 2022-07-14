@@ -98,8 +98,8 @@ final class ItemsViewModel {
                         let month = Int(value) ?? 1
                         let filteredData = allItems.filter {
                             currentHemisphere == .north ?
-                            $0.hemispheres.north.monthsArray.contains(month) :
-                            $0.hemispheres.south.monthsArray.contains(month)
+                            ($0.hemispheres?.north.monthsArray ?? []).contains(month) :
+                            ($0.hemispheres?.south.monthsArray ?? []).contains(month)
                         }
                         itemList = filteredData
                     case .collected:

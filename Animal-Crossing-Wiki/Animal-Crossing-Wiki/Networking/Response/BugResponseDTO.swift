@@ -40,9 +40,10 @@ enum Weather: String, Codable {
 }
 
 extension BugResponseDTO {
-    func toDomain() -> Bug {
-        return Bug(
+    func toDomain() -> Item {
+        return Item(
             name: self.name,
+            category: .bugs,
             iconImage: self.iconImage,
             critterpediaImage: self.critterpediaImage,
             furnitureImage: self.furnitureImage,

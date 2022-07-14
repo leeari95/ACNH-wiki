@@ -7,147 +7,306 @@
 
 import Foundation
 
-protocol Item {
-    var name: String { get }
-    var category: Category { get }
-    var sell: Int { get }
-    var translations: Translations { get }
-    var colors: [Color] { get }
-    var keyword: [Keyword: [String]] { get }
+struct Item {
+    let name: String
+    let category: Category
+    let sell: Int
+    let translations: Translations
+    let colors: [Color]
+    let keyword: [Keyword: [String]]
     
-    var image: String { get }
-    var iconImage: String { get }
-    var critterpediaImage: String { get }
-    var furnitureImage: String { get }
-    var hemispheres: Hemispheres { get }
-    var whereHow: String { get }
-    var weather: Weather { get }
-    var spawnRates: String { get }
-    var catchDifficulty: CatchDifficulty { get }
-    var vision: Vision { get }
-    var shadow: Shadow { get }
-    var movementSpeed: MovementSpeed { get }
-    var buy: Int { get }
-    var museum: Museum { get }
-    var highResTexture: String { get }
-    var genuine: Bool { get }
-    var artCategory: ArtCategory { get }
-    var unlocked: Bool { get }
-    var size: Size { get }
-    var source: String { get }
-}
-
-extension Item {
-    var image: String {
-        return ""
-    }
-    var iconImage: String {
-        return ""
-    }
-    var critterpediaImage: String {
-        return ""
-    }
-    var furnitureImage: String {
-        return ""
-    }
-    var hemispheres: Hemispheres {
-        return Hemispheres(
-            north: .init(
-                time: [],
-                months: [],
-                monthsArray: []
-            ),
-            south: .init(
-                time: [],
-                months: [],
-                monthsArray: []
-            )
-        )
-    }
-    var whereHow: String {
-        return ""
-    }
-    var weather: Weather {
-        return .anyExceptRain
-    }
-    var spawnRates: String {
-        return ""
-    }
-    var catchDifficulty: CatchDifficulty {
-        return .easy
-    }
-    var vision: Vision {
-        return .medium
-    }
-    var shadow: Shadow {
-        return .medium
-    }
-    var movementSpeed: MovementSpeed {
-        return .medium
-    }
-    var buy: Int {
-        return 0
-    }
-    var museum: Museum {
-        return .room1
-    }
-    var highResTexture: String {
-        return ""
-    }
-    var genuine: Bool {
-        return false
-    }
-    var artCategory: ArtCategory {
-        return .housewares
-    }
-    var unlocked: Bool {
-        return false
-    }
-    var size: Size {
-        return .the1X1
-    }
-    var source: String {
-        return ""
-    }
+    var image: String?
+    var iconImage: String?
+    var critterpediaImage: String?
+    var furnitureImage: String?
+    var hemispheres: Hemispheres?
+    var whereHow: String?
+    var weather: Weather?
+    var spawnRates: String?
+    var catchDifficulty: CatchDifficulty?
+    var vision: Vision?
+    var shadow: Shadow?
+    var movementSpeed: MovementSpeed?
+    var buy: Int?
+    
+    var museum: Museum?
+    
+    var highResTexture: String?
+    var genuine: Bool?
+    var artCategory: ArtCategory?
+    var size: Size?
+    var source: String?
+    var tag: String?
+    var concepts: [Concept]?
+    
+    var variation: String?
+    var bodyTitle: String?
+    var pattern: String?
+    var patternTitle: String?
+    var diy: Bool?
+    var bodyCustomize: Bool?
+    var patternCustomize: Bool?
+    var exchangePrice: Int?
+    var exchangeCurrency: ExchangeCurrency?
+    var sources: [Source]?
+    var sourceNotes: [String]?
+    var seasonEvent: String?
+    var hhaCategory: HhaCategory?
+    var outdoor: Bool?
+    var speakerType: String?
+    var lightingType: LightingType?
+    var catalog: Catalog?
+    var internalId: Int?
+    var set: String?
+    var series: String?
+    var recipe: Recipe?
+    var seriesTranslations: SeriesTranslations?
+    var variations: [Variant]?
 }
 
 extension Item {
     
+    // Fish
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        whereHow: String,
+        shadow: Shadow,
+        catchDifficulty: CatchDifficulty,
+        vision: Vision,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color],
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.whereHow = whereHow
+        self.shadow = shadow
+        self.catchDifficulty = catchDifficulty
+        self.vision = vision
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+        self.keyword = keyword
+    }
+    
+    // Fossils
+    init(
+        name: String,
+        category: Category,
+        image: String,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        source: String,
+        museum: Museum,
+        translations: Translations,
+        colors: [Color],
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.source = source
+        self.museum = museum
+        self.translations = translations
+        self.colors = colors
+        self.keyword = keyword
+    }
+    
+    // bug
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        whereHow: String,
+        weather: Weather,
+        spawnRates: String,
+        size: Size,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color],
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.whereHow = whereHow
+        self.weather = weather
+        self.spawnRates = spawnRates
+        self.size = size
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+        self.keyword = keyword
+    }
+    
+    // SeaCreatures
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        shadow: Shadow,
+        movementSpeed: MovementSpeed,
+        spawnRates: String,
+        size: Size,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color],
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.shadow = shadow
+        self.movementSpeed = movementSpeed
+        self.spawnRates = spawnRates
+        self.size = size
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+        self.keyword = keyword
+    }
+    
+    // Art
+    init(
+        name: String,
+        category: Category,
+        image: String,
+        highResTexture: String?,
+        genuine: Bool,
+        artCategory: ArtCategory,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        source: String,
+        tag: String,
+        translations: Translations,
+        colors: [Color],
+        concepts: [Concept],
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.highResTexture = highResTexture
+        self.genuine = genuine
+        self.artCategory = artCategory
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.source = source
+        self.tag = tag
+        self.translations = translations
+        self.colors = colors
+        self.concepts = concepts
+        self.keyword = keyword
+    }
+    
+    // Housewares
+    init(
+        name: String,
+        category: Category,
+        image: String?,
+        variation: String?,
+        bodyTitle: String?,
+        pattern: String?,
+        patternTitle: String?,
+        diy: Bool,
+        bodyCustomize: Bool,
+        patternCustomize: Bool,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency?,
+        sources: [Source],
+        sourceNotes: [String]?,
+        seasonEvent: String?,
+        hhaCategory: HhaCategory?,
+        tag: String,
+        outdoor: Bool,
+        speakerType: String?,
+        lightingType: LightingType?,
+        catalog: Catalog?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color]?,
+        concepts: [Concept]?,
+        set: String?,
+        series: String?,
+        recipe: Recipe?,
+        seriesTranslations: SeriesTranslations?,
+        variations: [Variant]?,
+        keyword: [Keyword : [String]]
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.variation = variation
+        self.bodyTitle = bodyTitle
+        self.pattern = pattern
+        self.patternTitle = patternTitle
+        self.diy = diy
+        self.bodyCustomize = bodyCustomize
+        self.patternCustomize = patternCustomize
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.sourceNotes = sourceNotes
+        self.seasonEvent = seasonEvent
+        self.hhaCategory = hhaCategory
+        self.tag = tag
+        self.outdoor = outdoor
+        self.speakerType = speakerType
+        self.lightingType = lightingType
+        self.catalog = catalog
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors ?? []
+        self.concepts = concepts
+        self.set = set
+        self.series = series
+        self.recipe = recipe
+        self.seriesTranslations = seriesTranslations
+        self.variations = variations
+        self.keyword = keyword
+    }
+}
+
+extension Item {
     func toKeyword() -> [String: [String]] {
         var keywordList = [String: [String]]()
         self.keyword.forEach { key, value in
             keywordList[key.rawValue] = value
         }
         return keywordList
-    }
-    
-    func toDictionary() -> [String: Any] {
-        return [
-            "name": self.name,
-            "category": self.category.rawValue,
-            "sell": self.sell,
-            "translations": self.translations.toDictionary(),
-            "colors": self.colors.map { $0.rawValue },
-            "keyword": toKeyword(),
-            "image": self.image,
-            "iconImage": self.iconImage,
-            "critterpediaImage": self.critterpediaImage,
-            "furnitureImage": self.furnitureImage,
-            "hemispheres": self.hemispheres.toDictionary(),
-            "whereHow": self.whereHow,
-            "weather": self.weather.rawValue,
-            "spawnRates": self.spawnRates,
-            "catchDifficulty": self.catchDifficulty.rawValue,
-            "vision": self.vision.rawValue,
-            "shadow": self.shadow.rawValue,
-            "movementSpeed": self.movementSpeed.rawValue,
-            "buy": self.buy,
-            "museum": self.museum.rawValue,
-            "highResTexture": self.highResTexture,
-            "genuine": self.genuine,
-            "artCategory": self.artCategory.rawValue,
-            "unlocked": self.unlocked,
-            "size": self.size.rawValue
-        ]
     }
 }

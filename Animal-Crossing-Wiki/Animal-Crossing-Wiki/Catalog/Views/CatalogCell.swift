@@ -51,10 +51,10 @@ class CatalogCell: UICollectionViewCell {
     }
     
     private func setUpIconImage(_ item: Item) {
-        if item.iconImage == "" {
-            iconImageView.setImage(with: item.image)
+        if let iconImage = item.iconImage {
+            iconImageView.setImage(with: iconImage)
         } else {
-            iconImageView.setImage(with: item.iconImage)
+            iconImageView.setImage(with: item.image ?? "")
         }
     }
     

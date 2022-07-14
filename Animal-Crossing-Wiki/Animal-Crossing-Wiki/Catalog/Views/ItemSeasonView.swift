@@ -48,11 +48,11 @@ class ItemSeasonView: UIView {
             .subscribe(onNext: { owner, hemisphere in
                 switch hemisphere {
                 case .south:
-                    owner.setUpTime(times: item.hemispheres.south.time)
-                    owner.setUpCalendar(months: item.hemispheres.south.monthsArray)
+                    owner.setUpTime(times: item.hemispheres?.south.time ?? [])
+                    owner.setUpCalendar(months: item.hemispheres?.south.monthsArray ?? [])
                 case .north:
-                    owner.setUpTime(times: item.hemispheres.north.time)
-                    owner.setUpCalendar(months: item.hemispheres.north.monthsArray)
+                    owner.setUpTime(times: item.hemispheres?.north.time ?? [])
+                    owner.setUpCalendar(months: item.hemispheres?.north.monthsArray ?? [])
                 }
             }).disposed(by: disposeBag)
         

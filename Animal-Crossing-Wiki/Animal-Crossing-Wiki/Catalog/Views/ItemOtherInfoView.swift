@@ -38,10 +38,10 @@ class ItemOtherInfoView: UIView {
     
     private func setUpLabel(_ item: Item) {
         let whereHowLabel = descriptionLabel("")
-        if item.whereHow != "" {
-            whereHowLabel.text = item.whereHow.localized
-        } else if item.source != "" {
-            whereHowLabel.text = item.source.localized
+        if let whereHow = item.whereHow {
+            whereHowLabel.text = whereHow.localized
+        } else if let source = item.source {
+            whereHowLabel.text = source.localized
         } else if item.category == .seaCreatures {
             whereHowLabel.text = "Underwater".localized
         }
@@ -49,24 +49,24 @@ class ItemOtherInfoView: UIView {
         backgroundStackView.addArrangedSubviews(placeInfo)
         
         if [Category.fishes, Category.seaCreatures].contains(item.category) {
-            let shadowLabel = descriptionLabel(item.shadow.rawValue.localized)
+            let shadowLabel = descriptionLabel(item.shadow?.rawValue.localized)
             let shadowInfo = InfoContentView(title: "Shadow size".localized, contentView: shadowLabel)
             backgroundStackView.addArrangedSubviews(shadowInfo)
         }
         
         if item.category == .seaCreatures {
-            let speedLabel = descriptionLabel(item.movementSpeed.rawValue.localized)
+            let speedLabel = descriptionLabel(item.movementSpeed?.rawValue.localized)
             let speedInfo = InfoContentView(title: "Movement speed".localized, contentView: speedLabel)
             backgroundStackView.addArrangedSubviews(speedInfo)
         }
-        if item.category == .art {
-            let fakeInfoLabel = descriptionLabel(item.genuine ? "Original".localized : "Fake".localized)
+        if item.category == .art, let genuine = item.genuine {
+            let fakeInfoLabel = descriptionLabel(genuine ? "Original".localized : "Fake".localized)
             let akeInfo = InfoContentView(title: "Whether fake".localized, contentView: fakeInfoLabel)
             backgroundStackView.addArrangedSubviews(akeInfo)
         }
     }
     
-    private func descriptionLabel(_ text: String) -> UILabel {
+    private func descriptionLabel(_ text: String?) -> UILabel {
         let label = UILabel(
             text: text,
             font: .preferredFont(for: .callout, weight: .semibold),

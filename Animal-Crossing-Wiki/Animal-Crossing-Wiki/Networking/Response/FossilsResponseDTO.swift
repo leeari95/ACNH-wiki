@@ -34,9 +34,10 @@ enum Museum: String, Codable {
 }
 
 extension FossilsResponseDTO {
-    func toDomain() -> Fossils {
-        return Fossils(
+    func toDomain() -> Item {
+        return Item(
             name: self.name,
+            category: .fossils,
             image: self.image,
             buy: self.buy,
             sell: self.sell,
