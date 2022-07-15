@@ -78,9 +78,12 @@ enum Shadow: String, Codable {
 }
 
 enum Size: String, Codable {
+    case the05X1 = "0.5x1"
     case the1X05 = "1x0.5"
     case the1X1 = "1x1"
+    case the1X15 = "1x1.5"
     case the1X2 = "1x2"
+    case the15X15 = "1.5x1.5"
     case the2X05 = "2x0.5"
     case the2X1 = "2x1"
     case the2X2 = "2x2"
@@ -88,7 +91,9 @@ enum Size: String, Codable {
     case the3X1 = "3x1"
     case the3X2 = "3x2"
     case the3X3 = "3x3"
-    case the15X15 = "1.5x1.5"
+    case the4X3 = "4x3"
+    case the4X4 = "4x4"
+    case the5X5 = "5x5"
 }
 
 enum Vision: String, Codable {

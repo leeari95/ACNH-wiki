@@ -27,7 +27,7 @@ struct HousewaresResponseDTO: Codable, APIResponse {
     let surface: Bool?
     let exchangePrice: Int?
     let exchangeCurrency: ExchangeCurrency?
-    let source: [Source]
+    let source: [String]
     let sourceNotes: [String]?
     let seasonEvent: String?
     let seasonEventExclusive: Bool?
@@ -96,6 +96,8 @@ enum ExchangeCurrency: String, Codable {
     case heartCrystals = "Heart Crystals"
     case nookMiles = "Nook Miles"
     case poki = "Poki"
+    case nookPoints = "Nook Points"
+    case bells = "Bells"
 }
 
 enum HhaCategory: String, Codable {
@@ -113,6 +115,7 @@ enum HhaCategory: String, Codable {
     case smallGoods = "SmallGoods"
     case trash = "Trash"
     case tv = "TV"
+    case food = "Food"
 }
 
 enum InteractUnion: Codable {
@@ -179,58 +182,13 @@ struct Recipe: Codable {
     let recipesToUnlock: Int
     let category: String
     let craftedItemInternalId: Int
-    let cardColor: CardColor
+    let cardColor: String?
     let diyIconFilename: String
     let diyIconFilenameSh: String?
     let serialId: Int
     let internalId: Int
     let materials: [String: Int]
     let materialsTranslations: [String: Translations?]
-}
-
-enum CardColor: String, Codable {
-    case blue = "blue"
-    case brick = "brick"
-    case brown = "brown"
-    case color56 = "color_56"
-    case cream = "cream"
-    case darkGray = "dark gray"
-    case gold = "gold"
-    case green = "green"
-    case lightGray = "light gray"
-    case orange = "orange"
-    case pink = "pink"
-    case purple = "purple"
-    case red = "red"
-    case silver = "silver"
-    case white = "white"
-    case yellow = "yellow"
-}
-
-enum Source: String, Codable {
-    case birthday = "Birthday"
-    case brewster = "Brewster"
-    case cJ = "C.J."
-    case crafting = "Crafting"
-    case cyrus = "Cyrus"
-    case flick = "Flick"
-    case franklin = "Franklin"
-    case groupStretching = "Group Stretching"
-    case gullivarrr = "Gullivarrr"
-    case gulliver = "Gulliver"
-    case hhpOffice = "HHP Office"
-    case jack = "Jack"
-    case jingle = "Jingle"
-    case luna = "Luna"
-    case nookMilesRedemption = "Nook Miles Redemption"
-    case nookSCranny = "Nook's Cranny"
-    case nookShoppingDailySelection = "Nook Shopping Daily Selection"
-    case nookShoppingPromotion = "Nook Shopping Promotion"
-    case nookShoppingSeasonal = "Nook Shopping Seasonal"
-    case pavé = "Pavé"
-    case recycleBox = "Recycle box"
-    case startingItems = "Starting items"
-    case wardell = "Wardell"
 }
 
 // MARK: - Variation
@@ -241,7 +199,7 @@ struct Variant: Codable {
     let patternTitle: String?
     let kitType: Kit?
     let cyrusCustomizePrice: Int
-    let surface: Bool
+    let surface: Bool?
     let exchangePrice: Int?
     let exchangeCurrency: ExchangeCurrency?
     let seasonEvent: String?

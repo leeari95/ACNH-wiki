@@ -14,6 +14,12 @@ enum Category: String, CaseIterable {
     case fossils = "Fossils"
     case art = "Art"
     case housewares = "Housewares"
+    case miscellaneous = "Miscellaneous"
+    case wallMounted = "Wall mounted"
+    case wallpaper = "Wallpaper"
+    case floors = "Floors"
+    case rugs = "Rugs"
+    case other = "Other"
     
     var iconName: String {
         switch self {
@@ -23,7 +29,12 @@ enum Category: String, CaseIterable {
         case .fossils: return "icon-fossil"
         case .art: return "icon-board"
         case .housewares: return "icon-housewares"
-            
+        case .miscellaneous: return "icon-leaf"
+        case .wallMounted: return "icon-wallmounted"
+        case .wallpaper: return "icon-wallpaper"
+        case .floors: return "icon-floor"
+        case .rugs: return "icon-rug"
+        case .other: return "icon-leaf"
         }
     }
 
@@ -35,11 +46,17 @@ enum Category: String, CaseIterable {
         case .fossils: return "icon-fossil"
         case .art: return "icon-board"
         case .housewares: return "icon-housewares"
+        case .miscellaneous: return "icon-leaf"
+        case .wallMounted: return "icon-wallmounted"
+        case .wallpaper: return "icon-wallpaper"
+        case .floors: return "icon-floor"
+        case .rugs: return "icon-rug"
+        case .other: return "icon-leaf"
         }
     }
     
     static func items() -> [Category] {
-        [.fishes, .seaCreatures, .bugs, .fossils, .art, .housewares]
+        [.fishes, .seaCreatures, .bugs, .fossils, .art, .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other]
     }
     
     static func progress() -> [Category] {
@@ -48,5 +65,9 @@ enum Category: String, CaseIterable {
     
     static var critters: [Category] {
         [.fishes, .seaCreatures, .bugs]
+    }
+    
+    static func housewares() -> [Category] {
+        [.housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs]
     }
 }

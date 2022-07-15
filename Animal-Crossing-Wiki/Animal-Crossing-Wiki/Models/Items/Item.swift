@@ -47,7 +47,7 @@ struct Item {
     var patternCustomize: Bool?
     var exchangePrice: Int?
     var exchangeCurrency: ExchangeCurrency?
-    var sources: [Source]?
+    var sources: [String]?
     var sourceNotes: [String]?
     var seasonEvent: String?
     var hhaCategory: HhaCategory?
@@ -61,11 +61,14 @@ struct Item {
     var recipe: Recipe?
     var seriesTranslations: Translations?
     var variations: [Variant]?
+    
+    var foodPower: Int?
+    var doorDeco: Bool?
 }
 
 extension Item {
     
-    // Fish
+    // MARK: - Fish
     init(
         name: String,
         category: Category,
@@ -96,7 +99,7 @@ extension Item {
         self.colors = colors
     }
     
-    // Fossils
+    // MARK: - Fossils
     init(
         name: String,
         category: Category,
@@ -121,7 +124,7 @@ extension Item {
         self.colors = colors
     }
     
-    // bug
+    // MARK: - bug
     init(
         name: String,
         category: Category,
@@ -152,7 +155,7 @@ extension Item {
         self.colors = colors
     }
     
-    // SeaCreatures
+    // MARK: - SeaCreatures
     init(
         name: String,
         category: Category,
@@ -183,7 +186,7 @@ extension Item {
         self.colors = colors
     }
     
-    // Art
+    // MARK: - Art
     init(
         name: String,
         category: Category,
@@ -216,7 +219,7 @@ extension Item {
         self.concepts = concepts
     }
     
-    // Housewares
+    // MARK: - Housewares, Miscellaneous, WallMounted
     init(
         name: String,
         category: Category,
@@ -233,13 +236,13 @@ extension Item {
         size: Size,
         exchangePrice: Int?,
         exchangeCurrency: ExchangeCurrency?,
-        sources: [Source],
+        sources: [String],
         sourceNotes: [String]?,
         seasonEvent: String?,
         hhaCategory: HhaCategory?,
         tag: String,
         outdoor: Bool,
-        speakerType: String?,
+        speakerType: String? = nil,
         lightingType: LightingType?,
         catalog: Catalog?,
         internalId: Int?,
@@ -250,7 +253,9 @@ extension Item {
         series: String?,
         recipe: Recipe?,
         seriesTranslations: Translations?,
-        variations: [Variant]?
+        variations: [Variant]?,
+        foodPower: Int? = nil,
+        doorDeco: Bool? = nil
     ) {
         self.name = name
         self.category = category
@@ -285,6 +290,92 @@ extension Item {
         self.recipe = recipe
         self.seriesTranslations = seriesTranslations
         self.variations = variations
+        self.foodPower = foodPower
+        self.doorDeco = doorDeco
+    }
+    
+    // MARK: - Wallpaper, Floors
+    init(
+        name: String,
+        category: Category,
+        image: String?,
+        diy: Bool,
+        buy: Int,
+        sell: Int,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency? = nil,
+        sources: [String],
+        sourceNotes: [String]?,
+        seasonEvent: String?,
+        tag: String,
+        catalog: Catalog?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color],
+        series: String?,
+        recipe: Recipe?,
+        seriesTranslations: Translations?
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.diy = diy
+        self.buy = buy
+        self.sell = sell
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.sourceNotes = sourceNotes
+        self.seasonEvent = seasonEvent
+        self.tag = tag
+        self.catalog = catalog
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors
+        self.series = series
+        self.recipe = recipe
+        self.seriesTranslations = seriesTranslations
+    }
+    
+    // MARK: - Other
+    init(
+        name: String,
+        category: Category,
+        iconImage: String?,
+        image: String?,
+        diy: Bool,
+        buy: Int,
+        sell: Int?,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency?,
+        sources: [String],
+        sourceNotes: [String]?,
+        seasonEvent: String?,
+        tag: String,
+        foodPower: Int?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color],
+        recipe: Recipe?
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.image = image
+        self.diy = diy
+        self.buy = buy
+        self.sell = sell ?? -1
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.sourceNotes = sourceNotes
+        self.seasonEvent = seasonEvent
+        self.tag = tag
+        self.foodPower = foodPower
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors
+        self.recipe = recipe
     }
 }
 

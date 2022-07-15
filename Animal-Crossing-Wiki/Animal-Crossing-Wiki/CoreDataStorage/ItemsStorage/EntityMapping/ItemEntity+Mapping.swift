@@ -47,7 +47,7 @@ extension ItemEntity {
         self.patternCustomize = item.patternCustomize ?? false
         self.exchangePrice = Int64(item.exchangePrice ?? -1)
         self.exchangeCurrency = item.exchangeCurrency?.rawValue
-        self.sources = item.sources?.map { $0.rawValue }
+        self.sources = item.sources
         self.sourceNotes = item.sourceNotes
         self.seasonEvent = item.seasonEvent
         self.hhaCategory = item.hhaCategory?.rawValue
@@ -112,7 +112,7 @@ extension ItemEntity {
                     patternCustomize: patternCustomize,
                     exchangePrice: Int(exchangePrice),
                     exchangeCurrency: ExchangeCurrency(rawValue: exchangeCurrency ?? ""),
-                    sources: sources?.compactMap { Source(rawValue: $0) },
+                    sources: sources,
                     sourceNotes: sourceNotes,
                     seasonEvent: seasonEvent,
                     hhaCategory: HhaCategory(rawValue: hhaCategory ?? ""),
@@ -226,7 +226,7 @@ extension Recipe {
             "recipesToUnlock" : recipesToUnlock,
             "category" : category,
             "craftedItemInternalId" : craftedItemInternalId,
-            "cardColor" : cardColor.rawValue,
+            "cardColor" : cardColor,
             "diyIconFilename" : diyIconFilename,
             "diyIconFilenameSh" : diyIconFilenameSh ?? "",
             "serialId" : serialId,
@@ -258,7 +258,7 @@ extension Recipe {
             recipesToUnlock: dictionary["recipesToUnlock"] as? Int ?? 0,
             category: dictionary["category"] as? String ?? "",
             craftedItemInternalId: dictionary["craftedItemInternalId"] as? Int ?? 0,
-            cardColor: CardColor(rawValue: dictionary["cardColor"] as? String ?? "") ?? .blue,
+            cardColor: dictionary["cardColor"] as? String ?? "",
             diyIconFilename: dictionary["diyIconFilename"] as? String ?? "",
             diyIconFilenameSh: dictionary["diyIconFilenameSh"] as? String,
             serialId: dictionary["serialId"] as? Int ?? 0,
@@ -278,7 +278,7 @@ extension Variant {
             "patternTitle": patternTitle ?? "",
             "kitType": kitType?.rawValue ?? "",
             "cyrusCustomizePrice": cyrusCustomizePrice,
-            "surface": surface,
+            "surface": surface ?? false,
             "exchangePrice": exchangePrice ?? -1,
             "exchangeCurrency": exchangeCurrency?.rawValue ?? "",
             "seasonEvent": seasonEvent ?? "",

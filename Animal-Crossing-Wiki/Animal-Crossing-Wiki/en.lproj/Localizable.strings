@@ -6,22 +6,22 @@
   
 */
 
-// Tab Bar Titles
+// MARK: - Tab Bar Titles
 "Dashboard" = "Dashboard";
 "Catalog" = "Catalog";
 "Villagers" = "Villagers";
 "Collection" = "Collection";
 
-// etc
+// MARK: - etc
 "Cancel" = "Cancel";
 
-// DashboardViewContrller - section title
+// MARK: - DashboardViewContrller - section title
 "My Island" = "My Island";
 "Today's Tasks" = "Today's Tasks";
 "My Villagers" = "My Villagers";
 "Collection Progress" = "Collection Progress";
 
-// UserInfoView
+// MARK: - UserInfoView
 "Please set a name." = "Please set a name.";
 "Please set a Island Name." = "Please set a Island Name.";
 "Please set a Hemisphere." = "Please set a Hemisphere.";
@@ -30,22 +30,22 @@
 "HEMISPHERE" = "HEMISPHERE";
 "FRUIT" = "FRUIT";
 
-// TodaysTasksView
+// MARK: - TodaysTasksView
 "Edit" = "Edit";
 "Reset" = "Reset";
 
-// VillagersView
+// MARK: - VillagersView
 "Reset" = "Reset";
 "vilagerEmpty" = "Who have you talked to today?
 Find the villagers you have visited and tap the home icon on the villager's page to keep track.";
 "tip" = "Long press on a villager to see more info about them.";
 
-// PreferencesViewController
+// MARK: - PreferencesViewController
 "Island" = "Island";
 "Preferences" = "Preferences";
 "App Settings" = "App Settings";
 
-// PreferencesView
+// MARK: - PreferencesView
 "Your island name" = "Your island name";
 "Your user name" = "Your user name";
 "Island name" = "Island name";
@@ -53,13 +53,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Hemisphere" = "Hemisphere";
 "Starting fruit" = "Starting fruit";
 
-// AppSettingView
+// MARK: - AppSettingView
 "System haptic" = "System haptic";
 
-// TaskEditViewController
+// MARK: - TaskEditViewController
 "Today's Tasks" = "Today's Tasks";
 
-// DailyTask - tasks
+// MARK: - DailyTask - tasks
 "Hit rocks" = "Hit rocks";
 "Find fossils" = "Find fossils";
 "Find furniture" = "Find furniture";
@@ -70,37 +70,37 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Buy music" = "Buy music";
 "Find peral" = "Find peral";
 
-// TasksEditViewModel
+// MARK: - TasksEditViewModel
 "Add a custom task" = "Add a custom task";
 
-// CustomTaskView
+// MARK: - CustomTaskView
 "Name of the task" = "Name of the task";
 "Task Name" = "Task Name";
 "Icon" = "Icon";
 "Max amount" = "Max amount";
 
-// CustomTaskViewController - Mode
+// MARK: - CustomTaskViewController - Mode
 "New task" = "New task";
 "Edit task" = "Edit task";
 
-// Fruit
+// MARK: - Fruit
 "Apple" = "Apple";
 "Orange" = "Orange";
 "Pear" = "Pear";
 "Cherry" = "Cherry";
 "Peach" = "Peach";
 
-// Hemisphere
+// MARK: - Hemisphere
 "North" = "North";
 "South" = "South";
 
-// AboutViewController
+// MARK: - AboutViewController
 "About" = "About";
 "Version" = "Version";
 "The app" = "The app";
 "Credit / Thanks" = "Credit / Thanks";
 
-// AboutItem
+// MARK: - AboutItem
 "Source code / report an issue" = "Source code / report an issue";
 "Contact / Mail" = "Contact / Mail";
 "Contact / follow us on Instagram" = "Contact / follow us on Instagram";
@@ -111,17 +111,24 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "App version" = "App version";
 "Game patch data" = "Game patch data";
 
-// CollectionProgressViewController
+// MARK: - CollectionProgressViewController
 "Collection Progress" = "Collection Progress";
 
-// Category
+// MARK: - Category
 "Fishes" = "Fishes";
 "Sea Creatures" = "Sea Creatures";
 "Bugs" = "Bugs";
 "Fossils" = "Fossils";
 "Art" = "Art";
+"Housewares" = "Housewares";
+"Miscellaneous" = "Miscellaneous";
+"Wall mounted" = "Wall mounted";
+"Wallpaper" = "Wallpaper";
+"Floors" = "Floors";
+"Rugs" = "Rugs";
+"Other" = "Other";
 
-// ItemsViewController
+// MARK: - ItemsViewController
 "To catch now" = "To catch now";
 "Currently Available" = "Currently Available";
 "Search..." = "Search...";
@@ -134,14 +141,17 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "descending" = "descending";
 "ascending" = "ascending";
 
-// CatalogViewController
+// MARK: - CatalogViewController
 "Catalog" = "Catalog";
 
-// ItemDetailViewController
+// MARK: - ItemDetailViewController
 "Seasonality" = "Seasonality";
 "Where how" = "Where how";
+"Variants" = "Variants";
+"Reformable" = "Reformable";
+"Not reformed" = "Not reformed";
 
-// ItemDetailInfoView
+// MARK: - ItemDetailInfoView
 "Underwater" = "Underwater";
 "Shadow size" = "Shadow size";
 "Movement speed" = "Movement speed";
@@ -182,11 +192,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Shaking trees (hardwood or cedar only)" = "Shaking trees (hardwood or cedar only)";
 "Underground (dig where noise is loudest)" = "Underground (dig where noise is loudest)";
 
-// Source
+// MARK: - Source
 "Assessing fossils" = "Assessing fossils";
 "Jolly Redd\'s Treasure Trawler" = "Jolly Redd\'s Treasure Trawler";
 
-// Shadow
+// MARK: - Shadow
 "Large" = "Large";
 "Long" = "Long";
 "Medium" = "Medium";
@@ -196,7 +206,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "X-Small" = "X-Small";
 "XX-Large" = "XX-Large";
 
-// MovementSpeed
+// MARK: - MovementSpeed
 "Fast" = "Fast";
 "Medium" = "Medium";
 "Slow" = "Slow";
@@ -204,7 +214,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Very fast" = "Very fast";
 "Very slow" = "Very slow";
 
-// time
+// MARK: - time
 "11 PM – 4 PM" = "11 PM – 4 PM";
 "11 PM – 8 AM" = "11 PM – 8 AM";
 "4 AM – 5 PM" = "4 AM – 5 PM";
@@ -228,7 +238,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "9 PM – 4 AM" = "9 PM – 4 AM";
 "All day" = "All day";
 
-// VillagersViewController
+// MARK: - VillagersViewController
 "All" = "All";
 "Personality" = "Personality";
 "Gender" = "Gender";
@@ -239,7 +249,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Search a villager" = "Search a villager";
 "Villagers" = "Villagers";
 
-// Personality
+// MARK: - Personality
 "Big Sister" = "Big Sister";
 "Cranky" = "Cranky";
 "Jock" = "Jock";
@@ -249,11 +259,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Smug" = "Smug";
 "Snooty" = "Snooty";
 
-// Gender
+// MARK: - Gender
 "Female" = "Female";
 "Male" = "Male";
 
-// Specie
+// MARK: - Specie
 "Hamster" = "Hamster";
 "Dog" = "Dog";
 "Cow" = "Cow";
@@ -290,10 +300,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Elephant" = "Elephant";
 "Lion" = "Lion";
 
-// VillagerDetailViewController
+// MARK: - VillagerDetailViewController
 "Villager house" = "Villager house";
 
-// VillagerDetailView
+// MARK: - VillagerDetailView
 "Personality" = "Personality";
 "Gender" = "Gender";
 "Hobby" = "Hobby";
@@ -303,7 +313,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Specie" = "Specie";
 "Catch phrase" = "Catch phrase";
 
-// Hobby
+// MARK: - Hobby
 "Education" = "Education";
 "Fashion" = "Fashion";
 "Fitness" = "Fitness";
@@ -311,7 +321,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Nature" = "Nature";
 "Play" = "Play";
 
-// Style
+// MARK: - Style
 "Active" = "Active";
 "Cool" = "Cool";
 "Cute" = "Cute";
@@ -319,7 +329,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Gorgeous" = "Gorgeous";
 "Simple" = "Simple";
 
-// Color
+// MARK: - Color
 "Aqua" = "Aqua";
 "Beige" = "Beige";
 "Black" = "Black";
@@ -335,7 +345,454 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "White" = "White";
 "Yellow" = "Yellow";
 
-// CollectionViewController
+// MARK: - CollectionViewController
 "There are no collectibles." = "There are no collectibles.";
 "when you check some items, they'll be displayed here." = "when you check some items, they'll be displayed here.";
 "Collection" = "Collection";
+
+// MARK: - Source
+"Birthday" = "Birthday";
+"Brewster" = "Brewster";
+"C.J." = "C.J.";
+"Crafting" = "Crafting";
+"Cyrus" = "Cyrus";
+"Flick" = "Flick";
+"Franklin" = "Franklin";
+"Group Stretching" = "Group Stretching";
+"Gullivarrr" = "Gullivarrr";
+"Gulliver" = "Gulliver";
+"HHP Office" = "HHP Office";
+"Jack" = "Jack";
+"Jingle" = "Jingle";
+"Luna" = "Luna";
+"Nook Miles Redemption" = "Nook Miles Redemption";
+"Nook's Cranny" = "Nook's Cranny";
+"Nook Shopping Daily Selection" = "Nook Shopping Daily Selection";
+"Nook Shopping Promotion" = "Nook Shopping Promotion";
+"Nook Shopping Seasonal" = "Nook Shopping Seasonal";
+"Pavé" = "Pavé";
+"Recycle box" = "Recycle box";
+"Starting items" = "Starting items";
+"Wardell" = "Wardell";
+"All villagers" = "All villagers";
+"Cooking" = "Cooking";
+"Dodo Airlines" = "Dodo Airlines";
+"HHA" = "HHA";
+"HHP Café" = "HHP Café";
+"Katrina's Cleansing Service" = "Katrina's Cleansing Service";
+"Mom" = "Mom";
+"Nintendo" = "Nintendo";
+"NookLink" = "NookLink";
+"Rover" = "Rover";
+"Zipper" = "Zipper";
+"Donating all sea creatures" = "Donating all sea creatures";
+"Donating all fish" = "Donating all fish";
+"Donating all bugs" = "Donating all bugs";
+"Blathers" = "Blathers";
+"Donating all art" = "Donating all art";
+"Donating all fossils" = "Donating all fossils";
+"Saharah\'s Co-op" = "Saharah\'s Co-op";
+"Saharah" = "Saharah";
+"Chopping a tree" = "Chopping a tree";
+"Clam dig spot" = "Clam dig spot";
+"Nook Shopping" = "Nook Shopping";
+"Pascal" = "Pascal";
+"Picking sugarcane" = "Picking sugarcane";
+"Glowing dig spot" = "Glowing dig spot";
+"On ground" = "On ground";
+"Fishing" = "Fishing";
+"Cedar Tree" = "Cedar Tree";
+"Planting a cedar sapling" = "Planting a cedar sapling";
+"Orange Tree" = "Orange Tree";
+"Don\'t return treasure quest item" = "Don\'t return treasure quest item";
+"5-star town status" = "5-star town status";
+"Digging up a wheat plant" = "Digging up a wheat plant";
+"Shaking a hardwood or cedar tree" = "Shaking a hardwood or cedar tree";
+"Reese" = "Reese";
+"Burying bells in a glowing spot" = "Burying bells in a glowing spot";
+"NotAvailable" = "NotAvailable";
+"Hitting a rock" = "Hitting a rock";
+"Beach" = "Beach";
+"Picking potatoes" = "Picking potatoes";
+"Dive spot" = "Dive spot";
+"Delivering item for a villager" = "Delivering item for a villager";
+"Picking wheat" = "Picking wheat";
+"Label" = "Label";
+"Hardwood Tree" = "Hardwood Tree";
+"Egg balloon" = "Egg balloon";
+"Planting a sapling" = "Planting a sapling";
+"Picking flowers" = "Picking flowers";
+"Mail" = "Mail";
+"Digging up a carrot plant" = "Digging up a carrot plant";
+"Planting a peach" = "Planting a peach";
+"Dig Spot" = "Dig Spot";
+"Redd\'s Raffle" = "Redd\'s Raffle";
+"Wrapping a present" = "Wrapping a present";
+"Digging up a fully grown bush" = "Digging up a fully grown bush";
+"Tom Nook" = "Tom Nook";
+"Pear Tree" = "Pear Tree";
+"Digging up a pumpkin plant" = "Digging up a pumpkin plant";
+"Planting a bamboo shoot" = "Planting a bamboo shoot";
+"Picking tomatoes" = "Picking tomatoes";
+"Nook\'s Cranny" = "Nook\'s Cranny";
+"Digging up a sugarcane plant" = "Digging up a sugarcane plant";
+"Use a fountain firework" = "Use a fountain firework";
+"Wishing on shooting stars" = "Wishing on shooting stars";
+"Coconut Tree" = "Coconut Tree";
+"Planting a coconut" = "Planting a coconut";
+"Catching with a net" = "Catching with a net";
+"Digging up a potato plant" = "Digging up a potato plant";
+"Planting an orange" = "Planting an orange";
+"Breeding" = "Breeding";
+"Peach Tree" = "Peach Tree";
+"Seed bag" = "Seed bag";
+"Kapp\'n islands" = "Kapp\'n islands";
+"Picking carrots" = "Picking carrots";
+"Expired turnips" = "Expired turnips";
+"Planting a cherry" = "Planting a cherry";
+"Planting an apple" = "Planting an apple";
+"Cherry Tree" = "Cherry Tree";
+"Chopping a bamboo tree" = "Chopping a bamboo tree";
+"Daisy Mae" = "Daisy Mae";
+"Apple Tree" = "Apple Tree";
+"Digging up a tomato plant" = "Digging up a tomato plant";
+"May Day Tour" = "May Day Tour";
+"Leif" = "Leif";
+"Don\'t return lost item" = "Don\'t return lost item";
+"Snowboy" = "Snowboy";
+"Planting a pear" = "Planting a pear";
+"Picking pumpkins" = "Picking pumpkins";
+
+
+
+// MARK: - source note
+"Source Note" = "Source Note";
+"Mailed to the player from Luna" = "Mailed to the player from Luna";
+"Available in Nook\'s Cranny (either upgrade tier) in the unique furniture slot" = "Available in Nook\'s Cranny (either upgrade tier) in the unique furniture slot";
+"Available in Nook\'s Cranny (upgraded only), in the unique furniture slot" = "Available in Nook\'s Cranny (upgraded only), in the unique furniture slot";
+"Scan the associated Sanrio amiibo card" = "Scan the associated Sanrio amiibo card";
+"Sit down for coffee on 20 different days" = "Sit down for coffee on 20 different days";
+"Link Nintendo Account to Pocket Camp, then redeem a 16-digit code on your Nintendo Switch" = "Link Nintendo Account to Pocket Camp, then redeem a 16-digit code on your Nintendo Switch";
+"Sent in the mail after doing group stretches on 10 different days" = "Sent in the mail after doing group stretches on 10 different days";
+"Available in Nook\'s Cranny (upgraded only), in the seasonal slot" = "Available in Nook\'s Cranny (upgraded only), in the seasonal slot";
+"Reward from Pavé after receiving 9 furniture items and giving 3 rainbow feathers" = "Reward from Pavé after receiving 9 furniture items and giving 3 rainbow feathers";
+"Trade 3 fish to receive a model in the mail the next day" = "Trade 3 fish to receive a model in the mail the next day";
+"Trade 3 insects to receive a model in the mail the next day" = "Trade 3 insects to receive a model in the mail the next day";
+"Available in all tiers of shops, including Timmy & Tommy before the shop is opened" = "Available in all tiers of shops, including Timmy & Tommy before the shop is opened";
+"Available in the re-buyable slot in Nook\'s Cranny" = "Available in the re-buyable slot in Nook\'s Cranny";
+"Available in Nook\'s Cranny (upgraded only), in the third unique furniture slot" = "Available in Nook\'s Cranny (upgraded only), in the third unique furniture slot";
+
+// MARK: - Housewares - tag
+"Museum" = "Museum";
+"My Melody" = "My Melody";
+"Compass" = "Compass";
+"Facility Decor" = "Facility Decor";
+"Toilet" = "Toilet";
+"Vehicle" = "Vehicle";
+"Insect" = "Insect";
+"Musical Instrument" = "Musical Instrument";
+"Chair" = "Chair";
+"Fish" = "Fish";
+"Bathroom Things" = "Bathroom Things";
+"Hello Kitty" = "Hello Kitty";
+"Mario" = "Mario";
+"Seaside" = "Seaside";
+"Heating" = "Heating";
+"School" = "School";
+"Garden" = "Garden";
+"Audio" = "Audio";
+"Arch" = "Arch";
+"Work Bench" = "Work Bench";
+"Playground" = "Playground";
+"Supplies" = "Supplies";
+"Desk" = "Desk";
+"Kiki & Lala" = "Kiki & Lala";
+"Chest" = "Chest";
+"Sports" = "Sports";
+"Plants" = "Plants";
+"Cinnamoroll" = "Cinnamoroll";
+"Seasonal Decor" = "Seasonal Decor";
+"Bathtub" = "Bathtub";
+"Shop" = "Shop";
+"Home Appliances" = "Home Appliances";
+"Fan" = "Fan";
+"Sofa" = "Sofa";
+"Easter" = "Easter";
+"Dresser" = "Dresser";
+"Space" = "Space";
+"TV" = "TV";
+"Toy" = "Toy";
+"Folk Craft Decor" = "Folk Craft Decor";
+"Table" = "Table";
+"Bed" = "Bed";
+"Shelf" = "Shelf";
+"Lamp" = "Lamp";
+"Pompompurin" = "Pompompurin";
+"Ranch" = "Ranch";
+"Hospital" = "Hospital";
+"Fireplace" = "Fireplace";
+"Kerokerokeroppi" = "Kerokerokeroppi";
+"Screen" = "Screen";
+"Kitchen" = "Kitchen";
+"Japanese Style" = "Japanese Style";
+"Animal" = "Animal";
+
+// MARK: - Housewares - Concept
+"ancient" = "ancient";
+"city life" = "city life";
+"European" = "European";
+"expensive" = "expensive";
+"harmonious" = "harmonious";
+"horror" = "horror";
+"resort" = "resort";
+"amusement park" = "amusement park";
+"apparel shop" = "apparel shop";
+"arcade" = "arcade";
+"bathroom" = "bathroom";
+"café" = "café";
+"child's room" = "child's room";
+"concert" = "concert";
+"construction site" = "construction site";
+"den" = "den";
+"facility" = "facility";
+"fancy" = "fancy";
+"fantasy" = "fantasy";
+"fitness" = "fitness";
+"freezing cold" = "freezing cold";
+"garden" = "garden";
+"heritage" = "heritage";
+"hospital" = "hospital";
+"kitchen" = "kitchen";
+"lab" = "lab";
+"living room" = "living room";
+"local" = "local";
+"music" = "music";
+"nature" = "nature";
+"ocean" = "ocean";
+"office" = "office";
+"outdoors" = "outdoors";
+"park" = "park";
+"party" = "party";
+"public bath" = "public bath";
+"restaurant" = "restaurant";
+"retro" = "retro";
+"school" = "school";
+"sci-fi" = "sci-fi";
+"shop" = "shop";
+"space" = "space";
+"sports" = "sports";
+"stylish" = "stylish";
+"supermarket" = "supermarket";
+"workshop" = "workshop";
+
+// MARK: - materials
+"scallop" = "scallop";
+"seaweed" = "seaweed";
+"sweet shrimp" = "sweet shrimp";
+"tiger prawn" = "tiger prawn";
+"sandy-beach flooring" = "sandy-beach flooring";
+"ruins wall" = "ruins wall";
+"screen wall" = "screen wall";
+"anchovy" = "anchovy";
+"barred knifejaw" = "barred knifejaw";
+"blue marlin" = "blue marlin";
+"carp" = "carp";
+"dab" = "dab";
+"horse mackerel" = "horse mackerel";
+"olive flounder" = "olive flounder";
+"red snapper" = "red snapper";
+"salmon" = "salmon";
+"sea bass" = "sea bass";
+"squid" = "squid";
+"Aquarius fragment" = "Aquarius fragment";
+"Aries fragment" = "Aries fragment";
+"Cancer fragment" = "Cancer fragment";
+"Capricorn fragment" = "Capricorn fragment";
+"Gemini fragment" = "Gemini fragment";
+"Leo fragment" = "Leo fragment";
+"Libra fragment" = "Libra fragment";
+"Pisces fragment" = "Pisces fragment";
+"Sagittarius fragment" = "Sagittarius fragment";
+"Scorpius fragment" = "Scorpius fragment";
+"Taurus fragment" = "Taurus fragment";
+"Virgo fragment" = "Virgo fragment";
+"acorn" = "acorn";
+"apple" = "apple";
+"bamboo piece" = "bamboo piece";
+"bamboo shoot" = "bamboo shoot";
+"black cosmos" = "black cosmos";
+"black lilies" = "black lilies";
+"black roses" = "black roses";
+"black tulips" = "black tulips";
+"blue feather" = "blue feather";
+"blue hyacinths" = "blue hyacinths";
+"blue ornament" = "blue ornament";
+"blue pansies" = "blue pansies";
+"blue roses" = "blue roses";
+"blue windflowers" = "blue windflowers";
+"boot" = "boot";
+"brown sugar" = "brown sugar";
+"candy" = "candy";
+"carrot" = "carrot";
+"cherry" = "cherry";
+"cherry-blossom petal" = "cherry-blossom petal";
+"clay" = "clay";
+"clump of weeds" = "clump of weeds";
+"coconut" = "coconut";
+"conch" = "conch";
+"coral" = "coral";
+"cowrie" = "cowrie";
+"earth egg" = "earth egg";
+"elegant mushroom" = "elegant mushroom";
+"empty can" = "empty can";
+"flat mushroom" = "flat mushroom";
+"flour" = "flour";
+"fossil" = "fossil";
+"giant clam" = "giant clam";
+"glowing moss" = "glowing moss";
+"gold nugget" = "gold nugget";
+"gold ornament" = "gold ornament";
+"gold roses" = "gold roses";
+"green feather" = "green feather";
+"green mums" = "green mums";
+"green pumpkin" = "green pumpkin";
+"hardwood" = "hardwood";
+"iron nugget" = "iron nugget";
+"large snowflake" = "large snowflake";
+"large star fragment" = "large star fragment";
+"leaf egg" = "leaf egg";
+"manila clam" = "manila clam";
+"maple leaf" = "maple leaf";
+"old tire" = "old tire";
+"orange" = "orange";
+"orange cosmos" = "orange cosmos";
+"orange hyacinths" = "orange hyacinths";
+"orange lilies" = "orange lilies";
+"orange pansies" = "orange pansies";
+"orange pumpkin" = "orange pumpkin";
+"orange roses" = "orange roses";
+"orange tulips" = "orange tulips";
+"orange windflowers" = "orange windflowers";
+"peach" = "peach";
+"pear" = "pear";
+"pearl" = "pearl";
+"pine cone" = "pine cone";
+"pink cosmos" = "pink cosmos";
+"pink hyacinths" = "pink hyacinths";
+"pink lilies" = "pink lilies";
+"pink mums" = "pink mums";
+"pink roses" = "pink roses";
+"pink tulips" = "pink tulips";
+"pink windflowers" = "pink windflowers";
+"potato" = "potato";
+"purple feather" = "purple feather";
+"purple hyacinths" = "purple hyacinths";
+"purple mums" = "purple mums";
+"purple pansies" = "purple pansies";
+"purple roses" = "purple roses";
+"purple tulips" = "purple tulips";
+"purple windflowers" = "purple windflowers";
+"rare mushroom" = "rare mushroom";
+"red cosmos" = "red cosmos";
+"red feather" = "red feather";
+"red hyacinths" = "red hyacinths";
+"red lilies" = "red lilies";
+"red mums" = "red mums";
+"red ornament" = "red ornament";
+"red pansies" = "red pansies";
+"red roses" = "red roses";
+"red tulips" = "red tulips";
+"red windflowers" = "red windflowers";
+"red wrapping paper" = "red wrapping paper";
+"round mushroom" = "round mushroom";
+"rusted part" = "rusted part";
+"sand dollar" = "sand dollar";
+"sea snail" = "sea snail";
+"skinny mushroom" = "skinny mushroom";
+"sky egg" = "sky egg";
+"snowflake" = "snowflake";
+"softwood" = "softwood";
+"star fragment" = "star fragment";
+"stone" = "stone";
+"stone egg" = "stone egg";
+"sugar" = "sugar";
+"sugarcane" = "sugarcane";
+"summer shell" = "summer shell";
+"tomato" = "tomato";
+"tree branch" = "tree branch";
+"venus comb" = "venus comb";
+"vine" = "vine";
+"wasp nest" = "wasp nest";
+"water egg" = "water egg";
+"wheat" = "wheat";
+"white cosmos" = "white cosmos";
+"white hyacinths" = "white hyacinths";
+"white lilies" = "white lilies";
+"white mums" = "white mums";
+"white pansies" = "white pansies";
+"white pumpkin" = "white pumpkin";
+"white roses" = "white roses";
+"white tulips" = "white tulips";
+"white windflowers" = "white windflowers";
+"whole-wheat flour" = "whole-wheat flour";
+"wood" = "wood";
+"wood egg" = "wood egg";
+"yellow cosmos" = "yellow cosmos";
+"yellow hyacinths" = "yellow hyacinths";
+"yellow lilies" = "yellow lilies";
+"yellow mums" = "yellow mums";
+"yellow pansies" = "yellow pansies";
+"yellow pumpkin" = "yellow pumpkin";
+"yellow roses" = "yellow roses";
+"yellow tulips" = "yellow tulips";
+"young spring bamboo" = "young spring bamboo";
+"Baby bear" = "Baby bear";
+"book" = "book";
+"bottle crate" = "bottle crate";
+"bunny garden decoration" = "bunny garden decoration";
+"cardboard box" = "cardboard box";
+"cherry-blossom bonsai" = "cherry-blossom bonsai";
+"cutting board" = "cutting board";
+"decorative plate" = "decorative plate";
+"dharma" = "dharma";
+"document stack" = "document stack";
+"fish container" = "fish container";
+"glowing-moss jar" = "glowing-moss jar";
+"lucky cat" = "lucky cat";
+"magazine" = "magazine";
+"metal pot" = "metal pot";
+"mini dharma" = "mini dharma";
+"painting set" = "painting set";
+"piggy bank" = "piggy bank";
+"pine bonsai tree" = "pine bonsai tree";
+"shopping basket" = "shopping basket";
+"skateboard" = "skateboard";
+"tomato puree" = "tomato puree";
+"wooden-block toy" = "wooden-block toy";
+"wristwatch" = "wristwatch";
+"gears" = "gears";
+"Mama bear" = "Mama bear";
+"Papa bear" = "Papa bear";
+"campfire" = "campfire";
+"drinking fountain" = "drinking fountain";
+"fine vase" = "fine vase";
+"forbidden altar" = "forbidden altar";
+"gear apparatus" = "gear apparatus";
+"gear tower" = "gear tower";
+"ironwood dresser" = "ironwood dresser";
+"log bench" = "log bench";
+"log chair" = "log chair";
+"log stakes" = "log stakes";
+"log stool" = "log stool";
+"meter and pipes" = "meter and pipes";
+"mini DIY workbench" = "mini DIY workbench";
+"mining car" = "mining car";
+"oil barrel" = "oil barrel";
+"plate armor" = "plate armor";
+"rocket" = "rocket";
+"samurai suit" = "samurai suit";
+"scattered papers" = "scattered papers";
+"senmaizuke barrel" = "senmaizuke barrel";
+"square bathtub" = "square bathtub";
+"upright piano" = "upright piano";
+"zen cushion" = "zen cushion";
