@@ -51,6 +51,7 @@ struct Item {
     var sourceNotes: [String]?
     var seasonEvent: String?
     var hhaCategory: HhaCategory?
+    var hhaBasePoints: Int?
     var outdoor: Bool?
     var speakerType: String?
     var lightingType: LightingType?
@@ -224,10 +225,6 @@ extension Item {
         name: String,
         category: Category,
         image: String?,
-        variation: String?,
-        bodyTitle: String?,
-        pattern: String?,
-        patternTitle: String?,
         diy: Bool,
         bodyCustomize: Bool,
         patternCustomize: Bool,
@@ -239,13 +236,13 @@ extension Item {
         sources: [String],
         sourceNotes: [String]?,
         seasonEvent: String?,
+        hhaBasePoints: Int? = nil,
         hhaCategory: HhaCategory?,
         tag: String,
-        outdoor: Bool,
         speakerType: String? = nil,
-        lightingType: LightingType?,
+        lightingType: LightingType? = nil,
         catalog: Catalog?,
-        internalId: Int?,
+        internalId: Int? = nil,
         translations: Translations,
         colors: [Color]?,
         concepts: [Concept]?,
@@ -260,10 +257,6 @@ extension Item {
         self.name = name
         self.category = category
         self.image = image
-        self.variation = variation
-        self.bodyTitle = bodyTitle
-        self.pattern = pattern
-        self.patternTitle = patternTitle
         self.diy = diy
         self.bodyCustomize = bodyCustomize
         self.patternCustomize = patternCustomize
@@ -275,9 +268,9 @@ extension Item {
         self.sources = sources
         self.sourceNotes = sourceNotes
         self.seasonEvent = seasonEvent
+        self.hhaBasePoints = hhaBasePoints
         self.hhaCategory = hhaCategory
         self.tag = tag
-        self.outdoor = outdoor
         self.speakerType = speakerType
         self.lightingType = lightingType
         self.catalog = catalog
@@ -294,7 +287,7 @@ extension Item {
         self.doorDeco = doorDeco
     }
     
-    // MARK: - Wallpaper, Floors
+    // MARK: - Wallpaper, Floors, Rugs
     init(
         name: String,
         category: Category,
@@ -307,6 +300,7 @@ extension Item {
         sources: [String],
         sourceNotes: [String]?,
         seasonEvent: String?,
+        hhaBasePoints: Int?,
         tag: String,
         catalog: Catalog?,
         internalId: Int?,
@@ -327,6 +321,7 @@ extension Item {
         self.sources = sources
         self.sourceNotes = sourceNotes
         self.seasonEvent = seasonEvent
+        self.hhaBasePoints = hhaBasePoints
         self.tag = tag
         self.catalog = catalog
         self.internalId = internalId
@@ -351,6 +346,7 @@ extension Item {
         sources: [String],
         sourceNotes: [String]?,
         seasonEvent: String?,
+        hhaBasePoints: Int?,
         tag: String,
         foodPower: Int?,
         internalId: Int?,
@@ -370,12 +366,68 @@ extension Item {
         self.sources = sources
         self.sourceNotes = sourceNotes
         self.seasonEvent = seasonEvent
+        self.hhaBasePoints = hhaBasePoints
         self.tag = tag
         self.foodPower = foodPower
         self.internalId = internalId
         self.translations = translations
         self.colors = colors
         self.recipe = recipe
+    }
+    
+    // MARK: - Ceiling Decor
+    init(
+        name: String,
+        category: Category,
+        image: String?,
+        diy: Bool,
+        bodyCustomize: Bool,
+        patternCustomize: Bool,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency?,
+        sources: [String],
+        hhaBasePoints: Int?,
+        hhaCategory: HhaCategory?,
+        tag: String,
+        catalog: Catalog?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color]?,
+        concepts: [Concept]?,
+        set: String?,
+        series: String?,
+        recipe: Recipe?,
+        seriesTranslations: Translations?,
+        variations: [Variant]?
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.diy = diy
+        self.bodyCustomize = bodyCustomize
+        self.patternCustomize = patternCustomize
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.hhaBasePoints = hhaBasePoints
+        self.hhaCategory = hhaCategory
+        self.tag = tag
+        self.catalog = catalog
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors ?? []
+        self.concepts = concepts
+        self.set = set
+        self.series = series
+        self.recipe = recipe
+        self.seriesTranslations = seriesTranslations
+        self.variations = variations
     }
 }
 
@@ -387,5 +439,21 @@ extension Item {
             list.append(tag)
         }
         return list
+    }
+    
+    var canExchangeNookMiles: Bool {
+        return exchangeCurrency == .nookMiles || variations?.first?.exchangeCurrency == .nookMiles
+    }
+    
+    var canExchangeNookPoints: Bool {
+        return exchangeCurrency == .nookPoints || variations?.first?.exchangeCurrency == .nookPoints
+    }
+    
+    var canExchangePoki: Bool {
+        return exchangeCurrency == .poki || variations?.first?.exchangeCurrency == .poki
+    }
+    
+    var isCritters: Bool {
+        Category.critters.contains(category)
     }
 }

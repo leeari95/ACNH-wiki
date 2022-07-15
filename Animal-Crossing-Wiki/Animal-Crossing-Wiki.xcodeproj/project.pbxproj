@@ -23,6 +23,9 @@
 		9A3CFB3B2880790C00B0FFCB /* RugsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */; };
 		9A3CFB3D2880809100B0FFCB /* OtherResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */; };
 		9A3CFB3F288082AF00B0FFCB /* OtherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */; };
+		9A3CFB45288128CD00B0FFCB /* Array+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB44288128CD00B0FFCB /* Array+extension.swift */; };
+		9A3CFB47288291C300B0FFCB /* CeilingDecorResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */; };
+		9A3CFB49288295CA00B0FFCB /* CeilingDecorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */; };
 		9A4B4C33285033B300CC687C /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C32285033B300CC687C /* Fruit.swift */; };
 		9A4B4C35285034BA00CC687C /* Villager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C34285034BA00CC687C /* Villager.swift */; };
 		9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C3628503A0400CC687C /* DailyTask.swift */; };
@@ -196,6 +199,9 @@
 		9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RugsRequest.swift; sourceTree = "<group>"; };
 		9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherResponseDTO.swift; sourceTree = "<group>"; };
 		9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherRequest.swift; sourceTree = "<group>"; };
+		9A3CFB44288128CD00B0FFCB /* Array+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extension.swift"; sourceTree = "<group>"; };
+		9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CeilingDecorResponseDTO.swift; sourceTree = "<group>"; };
+		9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CeilingDecorRequest.swift; sourceTree = "<group>"; };
 		9A4B4C32285033B300CC687C /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		9A4B4C34285034BA00CC687C /* Villager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Villager.swift; sourceTree = "<group>"; };
 		9A4B4C3628503A0400CC687C /* DailyTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTask.swift; sourceTree = "<group>"; };
@@ -467,6 +473,7 @@
 				9A3CFB36288076B900B0FFCB /* FloorsRequest.swift */,
 				9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */,
 				9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */,
+				9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -488,6 +495,7 @@
 				9A3CFB3228806EDB00B0FFCB /* FloorsResponseDTO.swift */,
 				9A3CFB382880787100B0FFCB /* RugsResponseDTO.swift */,
 				9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */,
+				9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -778,6 +786,7 @@
 				9A6CB3F228728B3100B368D4 /* String+extension.swift */,
 				9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */,
 				9AD343EB28746593008A3D6D /* Int+extension.swift */,
+				9A3CFB44288128CD00B0FFCB /* Array+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1076,12 +1085,14 @@
 				9A99AA2C28597B7500629C4A /* TodaysTasksView.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
+				9A3CFB49288295CA00B0FFCB /* CeilingDecorRequest.swift in Sources */,
 				9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */,
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
+				9A3CFB47288291C300B0FFCB /* CeilingDecorResponseDTO.swift in Sources */,
 				9A7ACEF5287EC239001D47CB /* CatalogViewModel.swift in Sources */,
 				9A7ACF07287EC26F001D47CB /* CategoryRow.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
@@ -1175,6 +1186,7 @@
 				9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
 				9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */,
+				9A3CFB45288128CD00B0FFCB /* Array+extension.swift in Sources */,
 				9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */,
 				9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */,
 			);

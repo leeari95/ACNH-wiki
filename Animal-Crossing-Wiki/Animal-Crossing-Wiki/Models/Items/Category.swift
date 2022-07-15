@@ -20,6 +20,7 @@ enum Category: String, CaseIterable {
     case floors = "Floors"
     case rugs = "Rugs"
     case other = "Other"
+    case ceilingDecor = "Ceiling Decor"
     
     var iconName: String {
         switch self {
@@ -29,12 +30,13 @@ enum Category: String, CaseIterable {
         case .fossils: return "icon-fossil"
         case .art: return "icon-board"
         case .housewares: return "icon-housewares"
-        case .miscellaneous: return "icon-leaf"
+        case .miscellaneous: return "icon-miscellaneous"
         case .wallMounted: return "icon-wallmounted"
         case .wallpaper: return "icon-wallpaper"
         case .floors: return "icon-floor"
         case .rugs: return "icon-rug"
         case .other: return "icon-leaf"
+        case .ceilingDecor: return "icon-ceiling"
         }
     }
 
@@ -46,17 +48,18 @@ enum Category: String, CaseIterable {
         case .fossils: return "icon-fossil"
         case .art: return "icon-board"
         case .housewares: return "icon-housewares"
-        case .miscellaneous: return "icon-leaf"
+        case .miscellaneous: return "icon-miscellaneous"
         case .wallMounted: return "icon-wallmounted"
         case .wallpaper: return "icon-wallpaper"
         case .floors: return "icon-floor"
         case .rugs: return "icon-rug"
         case .other: return "icon-leaf"
+        case .ceilingDecor: return "icon-ceiling"
         }
     }
     
     static func items() -> [Category] {
-        [.fishes, .seaCreatures, .bugs, .fossils, .art, .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other]
+        [.fishes, .seaCreatures, .bugs, .fossils, .art, .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other]
     }
     
     static func progress() -> [Category] {
@@ -68,6 +71,6 @@ enum Category: String, CaseIterable {
     }
     
     static func housewares() -> [Category] {
-        [.housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs]
+        [.housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other]
     }
 }

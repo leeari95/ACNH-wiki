@@ -57,29 +57,25 @@ struct WallMountedResponseDTO: Codable, APIResponse {
 
 extension WallMountedResponseDTO {
     func toDomain() -> Item {
+        let image = image ?? variations?.first?.image
         return Item(
             name: name,
-            category: .housewares,
+            category: .wallMounted,
             image: image,
-            variation: variation,
-            bodyTitle: bodyTitle,
-            pattern: pattern,
-            patternTitle: patternTitle,
             diy: diy,
             bodyCustomize: bodyCustomize,
             patternCustomize: patternCustomize,
             buy: buy,
             sell: sell,
             size: size,
-            exchangePrice: exchangePrice,
+            exchangePrice: exchangePrice ?? variations?.first?.exchangePrice,
             exchangeCurrency: exchangeCurrency,
             sources: source,
             sourceNotes: sourceNotes,
             seasonEvent: seasonEvent,
+            hhaBasePoints: hhaBasePoints,
             hhaCategory: hhaCategory,
             tag: tag,
-            outdoor: outdoor,
-            lightingType: lightingType,
             catalog: catalog,
             internalId: internalId,
             translations: translations,

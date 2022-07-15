@@ -57,6 +57,7 @@ extension WallpaperResponseDTO {
             sources: source,
             sourceNotes: sourceNotes,
             seasonEvent: seasonEvent,
+            hhaBasePoints: hhaBasePoints,
             tag: tag,
             catalog: catalog,
             internalId: internalId,

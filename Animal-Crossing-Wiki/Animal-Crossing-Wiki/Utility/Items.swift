@@ -31,6 +31,8 @@ final class Items {
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     private let userItems = BehaviorRelay<[Category: [Item]]>(value: [:])
     
+    private(set) var allItemList: [String: Item] = [:]
+    
     private init() {
         setUpUserCollection()
         fetchCatalog()
@@ -220,6 +222,21 @@ final class Items {
             group.leave()
         }
         group.enter()
+        network.requestList(CeilingDecorRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.ceilingDecor] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 천장을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
         network.requestList(WallpaperRequest()) { result in
             switch result {
             case .success(let response):
@@ -290,6 +307,9 @@ final class Items {
             }
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
+            self.allItems.value.forEach { item in
+                self.allItemList[item.name] = item
+            }
         }
     }
 }

@@ -127,6 +127,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Floors" = "Floors";
 "Rugs" = "Rugs";
 "Other" = "Other";
+"Ceiling Decor" = "Ceiling Decor";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -192,7 +193,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Shaking trees (hardwood or cedar only)" = "Shaking trees (hardwood or cedar only)";
 "Underground (dig where noise is loudest)" = "Underground (dig where noise is loudest)";
 
-// MARK: - Source
+// MARK: - fossils, art Source
 "Assessing fossils" = "Assessing fossils";
 "Jolly Redd\'s Treasure Trawler" = "Jolly Redd\'s Treasure Trawler";
 
@@ -363,9 +364,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Gulliver" = "Gulliver";
 "HHP Office" = "HHP Office";
 "Jack" = "Jack";
-"Jingle" = "Jingle";
 "Luna" = "Luna";
 "Nook Miles Redemption" = "Nook Miles Redemption";
+"Nook\'s Cranny" = "Nook's Cranny";
 "Nook's Cranny" = "Nook's Cranny";
 "Nook Shopping Daily Selection" = "Nook Shopping Daily Selection";
 "Nook Shopping Promotion" = "Nook Shopping Promotion";
@@ -374,7 +375,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Recycle box" = "Recycle box";
 "Starting items" = "Starting items";
 "Wardell" = "Wardell";
-"All villagers" = "All villagers";
 "Cooking" = "Cooking";
 "Dodo Airlines" = "Dodo Airlines";
 "HHA" = "HHA";
@@ -396,7 +396,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Chopping a tree" = "Chopping a tree";
 "Clam dig spot" = "Clam dig spot";
 "Nook Shopping" = "Nook Shopping";
-"Pascal" = "Pascal";
 "Picking sugarcane" = "Picking sugarcane";
 "Glowing dig spot" = "Glowing dig spot";
 "On ground" = "On ground";
@@ -434,7 +433,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Digging up a pumpkin plant" = "Digging up a pumpkin plant";
 "Planting a bamboo shoot" = "Planting a bamboo shoot";
 "Picking tomatoes" = "Picking tomatoes";
-"Nook\'s Cranny" = "Nook\'s Cranny";
 "Digging up a sugarcane plant" = "Digging up a sugarcane plant";
 "Use a fountain firework" = "Use a fountain firework";
 "Wishing on shooting stars" = "Wishing on shooting stars";
@@ -459,11 +457,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "May Day Tour" = "May Day Tour";
 "Leif" = "Leif";
 "Don\'t return lost item" = "Don\'t return lost item";
-"Snowboy" = "Snowboy";
 "Planting a pear" = "Planting a pear";
 "Picking pumpkins" = "Picking pumpkins";
-
-
+"Basic Cooking Recipes" = "Basic Cooking Recipes";
+"Digging up clams" = "Digging up clams";
+"All villagers (while stung)" = "All villagers (while stung)";
+"Basic Cooking Recipes" = "Basic Cooking Recipes";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -481,6 +480,74 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Available in all tiers of shops, including Timmy & Tommy before the shop is opened" = "Available in all tiers of shops, including Timmy & Tommy before the shop is opened";
 "Available in the re-buyable slot in Nook\'s Cranny" = "Available in the re-buyable slot in Nook\'s Cranny";
 "Available in Nook\'s Cranny (upgraded only), in the third unique furniture slot" = "Available in Nook\'s Cranny (upgraded only), in the third unique furniture slot";
+"Received in April in the Northern Hemisphere and received in October in the Southern Hemisphere" = "Received in April in the Northern Hemisphere and received in October in the Southern Hemisphere";
+"Reward for finishing all recipes" = "Reward for finishing all recipes";
+"Mailed to players once ordered from NookLink within the Nintendo Switch Online app" = "Mailed to players once ordered from NookLink within the Nintendo Switch Online app";
+"From Zipper after trading one of every egg (all 6 types)" = "From Zipper after trading one of every egg (all 6 types)";
+"Received in August in the Northern Hemisphere and received in July in the Southern Hemisphere" = "Received in August in the Northern Hemisphere and received in July in the Southern Hemisphere";
+"Reward for gifting candy on Halloween" = "Reward for gifting candy on Halloween";
+"Received in July in the Northern Hemisphere and received in February in the Southern Hemisphere" = "Received in July in the Northern Hemisphere and received in February in the Southern Hemisphere";
+"Sit down for coffee on 10 different days" = "Sit down for coffee on 10 different days";
+"Received in mail from DAL after 50 flights" = "Received in mail from DAL after 50 flights";
+"Received in March in the Northern Hemisphere and received in September in the Southern Hemisphere" = "Received in March in the Northern Hemisphere and received in September in the Southern Hemisphere";
+"Sit down for coffee on 40 different days" = "Sit down for coffee on 40 different days";
+"Mailed to players using the limited edition ACNH Nintendo Switch after the 1.1.0 update in a letter from Nintendo" = "Mailed to players using the limited edition ACNH Nintendo Switch after the 1.1.0 update in a letter from Nintendo";
+"Mailed to players after the 1.6.0 update in a letter from Nintendo" = "Mailed to players after the 1.6.0 update in a letter from Nintendo";
+"Mailed to players after the 1.5.0 update in a letter from Nintendo" = "Mailed to players after the 1.5.0 update in a letter from Nintendo";
+"Requires Katrina to see bad luck in your future" = "Requires Katrina to see bad luck in your future";
+"Sit down for coffee on 30 different days" = "Sit down for coffee on 30 different days";
+"Received in October in the Northern Hemisphere and received in April in the Southern Hemisphere" = "Received in October in the Northern Hemisphere and received in April in the Southern Hemisphere";
+"Mailed to players after the 1.9.0 update in a letter from Nook Inc." = "Mailed to players after the 1.9.0 update in a letter from Nook Inc.";
+"Received in September in the Northern Hemisphere and received in March in the Southern Hemisphere" = "Received in September in the Northern Hemisphere and received in March in the Southern Hemisphere";
+"Reward for solving May Day maze" = "Reward for solving May Day maze";
+"Received in mail from DAL after 300 flights" = "Received in mail from DAL after 300 flights";
+"Requires a Nintendo Switch Online membership" = "Requires a Nintendo Switch Online membership";
+"Mailed to players after the 1.1.0 update in a letter from Nintendo" = "Mailed to players after the 1.1.0 update in a letter from Nintendo";
+"Sit down for coffee on 15 different days" = "Sit down for coffee on 15 different days";
+"Received in the mail" = "Received in the mail";
+"Trade candy or a lollipop with a villager" = "Trade candy or a lollipop with a villager";
+"Received in January in both Hemipsheres" = "Received in January in both Hemipsheres";
+"Received in February in the Northern Hemisphere and received in August in the Southern Hemisphere" = "Received in February in the Northern Hemisphere and received in August in the Southern Hemisphere";
+"Reward for completing the Stamp Rally in the bug exhibit during International Museum Day" = "Reward for completing the Stamp Rally in the bug exhibit during International Museum Day";
+"Reward for completing the Stamp Rally in the art gallery during International Museum Day" = "Reward for completing the Stamp Rally in the art gallery during International Museum Day";
+"Mailed to players after the 1.2.0 update in a letter from Nintendo" = "Mailed to players after the 1.2.0 update in a letter from Nintendo";
+"Reward for completing the Stamp Rally in the fossil gallery during International Museum Day" = "Reward for completing the Stamp Rally in the fossil gallery during International Museum Day";
+"Reward for completing the Stamp Rally in the fish gallery during International Museum Day" = "Reward for completing the Stamp Rally in the fish gallery during International Museum Day";
+"Reward for giving Franklin the requested ingredients" = "Reward for giving Franklin the requested ingredients";
+"Mailed to players after the 1.4.0 update in a letter from Nintendo" = "Mailed to players after the 1.4.0 update in a letter from Nintendo";
+"Mailed to players after the 1.8.0 update in a letter from Nintendo" = "Mailed to players after the 1.8.0 update in a letter from Nintendo";
+"Reward for giving Franklin the requested ingredients" = "Reward for giving Franklin the requested ingredients";
+"Mailed to players after the 1.2.0 update in a letter from Bank of Nook" = "Mailed to players after the 1.2.0 update in a letter from Bank of Nook";
+"Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere" = "Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere";
+"Obtained from Franklin after completing 4 recipes with secret ingredient" = "Obtained from Franklin after completing 4 recipes with secret ingredient";
+"sold in Nook\'s Cranny after Turkey Day until the end of November" = "sold in Nook\'s Cranny after Turkey Day until the end of November";
+"Black roses watered with gold watering can" = "Black roses watered with gold watering can";
+"Large shadow" = "Large shadow";
+"Since 1.6.0" = "Since 1.6.0";
+"Leif sells pumpkin starts year-round." = "Leif sells pumpkin starts year-round.";
+"Sold in Nook\'s Cranny during the month of October" = "Sold in Nook\'s Cranny during the month of October";
+"gifted by talking to villagers during Halloween" = "gifted by talking to villagers during Halloween";
+"Shaking decorated trees" = "Shaking decorated trees";
+"Near a bamboo tree" = "Near a bamboo tree";
+"Reward for helping Cyrus & Reese during Wedding Season" = "Reward for helping Cyrus & Reese during Wedding Season";
+"Near cedar and hardwood trees" = "Near cedar and hardwood trees";
+"Only available on Sundays" = "Only available on Sundays";
+"buy value ranges from 90-110 per turnip but can only be bought in stacks of 10 or more" = "buy value ranges from 90-110 per turnip but can only be bought in stacks of 10 or more";
+"sell value ranges from 9-660 depending on the current market price" = "sell value ranges from 9-660 depending on the current market price";
+"Only available while on a quest for Wisp" = "Only available while on a quest for Wisp";
+"Only available while on a quest for Gullivarrr" = "Only available while on a quest for Gullivarrr";
+"Shaking" = "Shaking";
+"X-Small shadow when fishing" = "X-Small shadow when fishing";
+"Placed randomly on island for a villager\'s treasure hunt quest" = "Placed randomly on island for a villager\'s treasure hunt quest";
+"Available from Redd\'s Raffle during Fireworks Shows" = "Available from Redd\'s Raffle during Fireworks Shows";
+"Available from Nook\'s Cranny rotating cabinet stock outside of August" = "Available from Nook\'s Cranny rotating cabinet stock outside of August";
+"Medium shadow" = "Medium shadow";
+"Received in the mail the day after uploading your island to Luna\'s Dream Library" = "Received in the mail the day after uploading your island to Luna\'s Dream Library";
+"Found under the Special tab of the Nook Miles Redemption service." = "Found under the Special tab of the Nook Miles Redemption service.";
+"Obtained from crafting villagers during October if player already knows the recipe or as a reward for gifting candy on Halloween" = "Obtained from crafting villagers during October if player already knows the recipe or as a reward for gifting candy on Halloween";
+"Only available while on a quest for Gulliver" = "Only available while on a quest for Gulliver";
+"Small shadow" = "Small shadow";
+"Since 1.6.0, Leif sells pumpkin starts year-round." = "Since 1.6.0, Leif sells pumpkin starts year-round.";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";
@@ -796,3 +863,94 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "square bathtub" = "square bathtub";
 "upright piano" = "upright piano";
 "zen cushion" = "zen cushion";
+
+// MARK: - Source Recipe
+"Snooty villagers" = "Snooty villagers";
+"Smug villagers" = "Smug villagers";
+"Cranky villagers" = "Cranky villagers";
+"Egg bottles" = "Egg bottles";
+"Cozy Turkey Day DIY" = "Cozy Turkey Day DIY";
+"Egg balloons" = "Egg balloons";
+"Test Your DIY Skills" = "Test Your DIY Skills";
+"Normal villagers" = "Normal villagers";
+"Jock villagers" = "Jock villagers";
+"Celeste" = "Celeste";
+"Wildest Dreams DIY" = "Wildest Dreams DIY";
+"Be a Chef! DIY Recipes+" = "Be a Chef! DIY Recipes+";
+"DIY for Beginners" = "DIY for Beginners";
+"HHP island bottles" = "HHP island bottles";
+"Lazy villagers" = "Lazy villagers";
+"Big Sister villagers" = "Big Sister villagers";
+"Balloons" = "Balloons";
+"Tom Nook" = "Tom Nook";
+"Kapp\'n island bottles" = "Kapp\'n island bottles";
+"Peppy villagers" = "Peppy villagers";
+"Catching a horse mackerel" = "Catching a horse mackerel";
+"Turkey Day Recipes" = "Turkey Day Recipes";
+"Catching a barred knifejaw" = "Catching a barred knifejaw";
+"Catching a salmon" = "Catching a salmon";
+"Catching an anchovy" = "Catching an anchovy";
+"Catching a olive flounder" = "Catching a olive flounder";
+"Catching a sea bass" = "Catching a sea bass";
+"Catching a dab" = "Catching a dab";
+"Catching a red snapper" = "Catching a red snapper";
+"Catching a blue marlin" = "Catching a blue marlin";
+"Catching a squid" = "Catching a squid";
+
+// MARK: - Source Notes Recipe
+"Obtained during the main storyline during the villager house development quest if the native fruit is oranges" = "Obtained during the main storyline during the villager house development quest if the native fruit is oranges";
+"Obtained during the main storyline during the villager house development quest if the native flower is roses" = "Obtained during the main storyline during the villager house development quest if the native flower is roses";
+"Obtained during the main storyline during the villager house development quest if the native flower is tulips" = "Obtained during the main storyline during the villager house development quest if the native flower is tulips";
+"Obtained during the main storyline during the villager house development quest if the native flower is windflowers" = "Obtained during the main storyline during the villager house development quest if the native flower is windflowers";
+"Obtained during the main storyline during the villager house development quest if the native fruit is cherries" = "Obtained during the main storyline during the villager house development quest if the native fruit is cherries";
+"Obtained during the main storyline during the villager house development quest if the native flower is pansies" = "Obtained during the main storyline during the villager house development quest if the native flower is pansies";
+"Obtained during the main storyline during the villager house development quest if the native flower is cosmos" = "Obtained during the main storyline during the villager house development quest if the native flower is cosmos";
+"Obtained during the main storyline during the villager house development quest if the native flower is lilies" = "Obtained during the main storyline during the villager house development quest if the native flower is lilies";
+"Obtained during the main storyline during the villager house development quest if the native flower is mums" = "Obtained during the main storyline during the villager house development quest if the native flower is mums";
+"Purchase Test Your DIY Skills from Nook\'s Cranny" = "Purchase Test Your DIY Skills from Nook\'s Cranny";
+"Obtained during the main storyline during the villager house development quest if the native flower is hyacinths" = "Obtained during the main storyline during the villager house development quest if the native flower is hyacinths";
+"Purchase Wildest Dreams DIY from Nook\'s Cranny" = "Purchase Wildest Dreams DIY from Nook\'s Cranny";
+"Reward for making a perfect Snowboy" = "Reward for making a perfect Snowboy";
+"Fish up 15 trash" = "Fish up 15 trash";
+"Obtained during the main storyline" = "Obtained during the main storyline";
+"Talk to Pavé during the Festivale event" = "Talk to Pavé during the Festivale event";
+"Also obtained from digging up an existing pitfall" = "Also obtained from digging up an existing pitfall";
+"Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook\'s Cranny" = "Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook\'s Cranny";
+"Obtain Turkey Day Recipes from Franklin or buy it from Nook\'s Cranny" = "Obtain Turkey Day Recipes from Franklin or buy it from Nook\'s Cranny";
+"Fish up 3 empty cans" = "Fish up 3 empty cans";
+"Obtained during the main storyline during the villager house development quest if the native fruit is peaches" = "Obtained during the main storyline during the villager house development quest if the native fruit is peaches";
+"Received in the mail after buying veggies from Leif on 3 different days." = "Received in the mail after buying veggies from Leif on 3 different days.";
+"Purchase DIY for Beginners at Nook\'s Cranny" = "Purchase DIY for Beginners at Nook\'s Cranny";
+"Reward from Zipper after crafting all Bunny Day recipes" = "Reward from Zipper after crafting all Bunny Day recipes";
+"Sent in the mail after purchasing turnips" = "Sent in the mail after purchasing turnips";
+"50% chance of being obtained during the main storyline during the villager house development quest" = "50% chance of being obtained during the main storyline during the villager house development quest";
+"Sit down for coffee on 5 different days" = "Sit down for coffee on 5 different days";
+"Obtained from crafting villagers during October or as a reward for gifting candy on Halloween" = "Obtained from crafting villagers during October or as a reward for gifting candy on Halloween";
+"Obtained during the main storyline during the villager house development quest" = "Obtained during the main storyline during the villager house development quest";
+"Fish up 1 empty can" = "Fish up 1 empty can";
+
+// MARK: - ItemOtherInfoView
+"Catalog" = "Catalog";
+"For sale" = "For sale";
+"Not for sale" = "Not for sale";
+"Seasonal" = "Seasonal";
+"Source recipe" = "Source recipe";
+"HHA theme" = "HHA theme";
+"HHA points" = "HHA points";
+
+// MARK: - hhaCategory
+"AC" = "AC";
+"Appliance" = "Appliance";
+"Audio" = "Audio";
+"Clock" = "Clock";
+"Doll" = "Doll";
+"Dresser" = "Dresser";
+"Kitchen" = "Kitchen";
+"Lighting" = "Lighting";
+"MusicalInstrument" = "MusicalInstrument";
+"Pet" = "Pet";
+"Plant" = "Plant";
+"SmallGoods" = "SmallGoods";
+"Trash" = "Trash";
+"TV" = "TV";
+"Food" = "Food";

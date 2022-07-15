@@ -40,7 +40,7 @@ extension RugsResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .wallpaper,
+            category: .rugs,
             image: image,
             diy: diy,
             buy: buy,
@@ -49,6 +49,7 @@ extension RugsResponseDTO {
             sources: source,
             sourceNotes: sourceNotes,
             seasonEvent: seasonEvent,
+            hhaBasePoints: hhaBasePoints,
             tag: tag,
             catalog: catalog,
             internalId: internalId,

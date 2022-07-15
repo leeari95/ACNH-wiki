@@ -41,7 +41,7 @@ extension FloorsResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .wallpaper,
+            category: .floors,
             image: image,
             diy: diy,
             buy: buy,
@@ -51,6 +51,7 @@ extension FloorsResponseDTO {
             sources: source,
             sourceNotes: sourceNotes,
             seasonEvent: seasonEvent,
+            hhaBasePoints: hhaBasePoints,
             tag: tag,
             catalog: catalog,
             internalId: internalId,
