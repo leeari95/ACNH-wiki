@@ -81,8 +81,26 @@ extension CatalogCell {
     func setUp(_ item: Item) {
         viewModel = CatalogCellViewModel(item: item, category: item.category)
         bind()
-        let sellView = ItemBellsView(mode: .buy, price: item.sell)
-        backgroundStackView.addArrangedSubviews(sellView)
+        var priceView: ItemBellsView
+        switch item.category {
+        case .bugs, .fishes, .seaCreatures:
+            priceView = ItemBellsView(mode: .buy, price: item.sell)
+        case .fossils:
+            priceView = ItemBellsView(mode: .sell, price: item.sell)
+        case .art:
+            priceView = ItemBellsView(mode: .buy, price: item.sell)
+        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other, .ceilingDecor:
+            if item.canExchangeNookMiles, let price = item.exchangePrice {
+                priceView = ItemBellsView(mode: .miles, price: price)
+            } else if item.canExchangeNookPoints, let price = item.exchangePrice {
+                priceView = ItemBellsView(mode: .point, price: price)
+            } else if !Category.critters.contains(item.category), let buy = item.buy, buy != -1 {
+                priceView = ItemBellsView(mode: .buy, price: buy)
+            } else {
+                priceView = ItemBellsView(mode: .sell, price: item.sell)
+            }
+        }
+        backgroundStackView.addArrangedSubviews(priceView)
         setUpIconImage(item)
         nameLabel.text = item.translations.localizedName()
     }
