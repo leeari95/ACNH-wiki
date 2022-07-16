@@ -36,6 +36,7 @@ struct OtherResponseDTO: Codable, APIResponse {
     let recipe: Recipe?
     
 }
+
 extension OtherResponseDTO {
     func toDomain() -> Item {
         return Item(
@@ -59,5 +60,49 @@ extension OtherResponseDTO {
             colors: colors,
             recipe: recipe
         )
+    }
+}
+
+extension Item {
+    init(
+        name: String,
+        category: Category,
+        iconImage: String?,
+        image: String?,
+        diy: Bool,
+        buy: Int,
+        sell: Int?,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency?,
+        sources: [String],
+        sourceNotes: [String]?,
+        seasonEvent: String?,
+        hhaBasePoints: Int?,
+        tag: String,
+        foodPower: Int?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color],
+        recipe: Recipe?
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.image = image
+        self.diy = diy
+        self.buy = buy
+        self.sell = sell ?? -1
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.sourceNotes = sourceNotes
+        self.seasonEvent = seasonEvent
+        self.hhaBasePoints = hhaBasePoints
+        self.tag = tag
+        self.foodPower = foodPower
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors
+        self.recipe = recipe
     }
 }

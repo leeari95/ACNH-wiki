@@ -123,3 +123,36 @@ extension FishResponseDTO {
         )
     }
 }
+
+extension Item {
+    
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        whereHow: String,
+        shadow: Shadow,
+        catchDifficulty: CatchDifficulty,
+        vision: Vision,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.whereHow = whereHow
+        self.shadow = shadow
+        self.catchDifficulty = catchDifficulty
+        self.vision = vision
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+    }
+}

@@ -49,3 +49,30 @@ extension FossilsResponseDTO {
         )
     }
 }
+extension Item {
+
+    init(
+        name: String,
+        category: Category,
+        image: String,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        source: String,
+        museum: Museum,
+        translations: Translations,
+        colors: [Color]
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.source = source
+        self.museum = museum
+        self.translations = translations
+        self.colors = colors
+    }
+    
+}

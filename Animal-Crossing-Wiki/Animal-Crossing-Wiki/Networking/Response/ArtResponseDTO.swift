@@ -159,3 +159,38 @@ extension ArtResponseDTO {
         )
     }
 }
+
+extension Item {
+    
+    init(
+        name: String,
+        category: Category,
+        image: String,
+        highResTexture: String?,
+        genuine: Bool,
+        artCategory: ArtCategory,
+        buy: Int,
+        sell: Int,
+        size: Size,
+        source: String,
+        tag: String,
+        translations: Translations,
+        colors: [Color],
+        concepts: [Concept]
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.highResTexture = highResTexture
+        self.genuine = genuine
+        self.artCategory = artCategory
+        self.buy = buy
+        self.sell = sell
+        self.size = size
+        self.source = source
+        self.tag = tag
+        self.translations = translations
+        self.colors = colors
+        self.concepts = concepts
+    }
+}

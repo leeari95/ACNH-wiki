@@ -59,7 +59,10 @@ enum Category: String, CaseIterable {
     }
     
     static func items() -> [Category] {
-        [.fishes, .seaCreatures, .bugs, .fossils, .art, .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other]
+        [
+            .fishes, .seaCreatures, .bugs, .fossils, .art,
+            .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other
+        ]
     }
     
     static func progress() -> [Category] {

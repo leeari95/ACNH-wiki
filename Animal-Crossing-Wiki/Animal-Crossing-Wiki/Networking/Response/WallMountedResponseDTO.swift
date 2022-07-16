@@ -90,3 +90,49 @@ extension WallMountedResponseDTO {
         )
     }
 }
+
+extension Item {
+    init(
+        name: String,
+        category: Category,
+        image: String?,
+        diy: Bool,
+        buy: Int,
+        sell: Int,
+        exchangePrice: Int?,
+        exchangeCurrency: ExchangeCurrency? = nil,
+        sources: [String],
+        sourceNotes: [String]?,
+        seasonEvent: String?,
+        hhaBasePoints: Int?,
+        tag: String,
+        catalog: Catalog?,
+        internalId: Int?,
+        translations: Translations,
+        colors: [Color],
+        series: String?,
+        recipe: Recipe?,
+        seriesTranslations: Translations?
+    ) {
+        self.name = name
+        self.category = category
+        self.image = image
+        self.diy = diy
+        self.buy = buy
+        self.sell = sell
+        self.exchangePrice = exchangePrice
+        self.exchangeCurrency = exchangeCurrency
+        self.sources = sources
+        self.sourceNotes = sourceNotes
+        self.seasonEvent = seasonEvent
+        self.hhaBasePoints = hhaBasePoints
+        self.tag = tag
+        self.catalog = catalog
+        self.internalId = internalId
+        self.translations = translations
+        self.colors = colors
+        self.series = series
+        self.recipe = recipe
+        self.seriesTranslations = seriesTranslations
+    }
+}

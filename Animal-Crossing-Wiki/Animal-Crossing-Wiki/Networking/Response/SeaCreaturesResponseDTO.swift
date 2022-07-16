@@ -64,3 +64,35 @@ extension SeaCreaturesResponseDTO {
         )
     }
 }
+
+extension Item {
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        shadow: Shadow,
+        movementSpeed: MovementSpeed,
+        spawnRates: String,
+        size: Size,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.shadow = shadow
+        self.movementSpeed = movementSpeed
+        self.spawnRates = spawnRates
+        self.size = size
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+    }
+}

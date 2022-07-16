@@ -58,3 +58,36 @@ extension BugResponseDTO {
         )
     }
 }
+
+extension Item {
+    init(
+        name: String,
+        category: Category,
+        iconImage: String,
+        critterpediaImage: String,
+        furnitureImage: String,
+        sell: Int,
+        whereHow: String,
+        weather: Weather,
+        spawnRates: String,
+        size: Size,
+        translations: Translations,
+        hemispheres: Hemispheres,
+        colors: [Color]
+    ) {
+        self.name = name
+        self.category = category
+        self.iconImage = iconImage
+        self.critterpediaImage = critterpediaImage
+        self.furnitureImage = furnitureImage
+        self.sell = sell
+        self.whereHow = whereHow
+        self.weather = weather
+        self.spawnRates = spawnRates
+        self.size = size
+        self.translations = translations
+        self.hemispheres = hemispheres
+        self.colors = colors
+    }
+
+}
