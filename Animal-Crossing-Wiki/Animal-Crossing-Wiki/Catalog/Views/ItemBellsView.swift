@@ -9,7 +9,7 @@ import UIKit
 
 class ItemBellsView: UIView {
     enum Mode {
-        case buy, sell, cj, flick
+        case buy, sell, cj, flick, poki, miles, point
         
         var iconName: String {
             switch self {
@@ -17,12 +17,16 @@ class ItemBellsView: UIView {
             case .buy: return "icon-bells"
             case .cj: return "cj"
             case .flick: return "flick"
+            case .poki: return "icon-poki"
+            case .miles: return "icon-nookmiles"
+            case .point: return "icon-nookpoint"
             }
         }
     }
     
     private var mode: Mode = .buy
     private var price: Int = 0
+    private var note: String = ""
     
     convenience init(mode: Mode, price: Int) {
         self.init(frame: .zero)
@@ -42,7 +46,7 @@ class ItemBellsView: UIView {
         let priceLabel = UILabel()
         priceLabel.font = .preferredFont(for: .footnote, weight: .bold)
         priceLabel.textColor = .acTabBarTint
-        priceLabel.text = price.decimalFormatted
+        priceLabel.text = price == -1 ? "0" : price.decimalFormatted
         
         addSubviews(iconImage, priceLabel)
         
