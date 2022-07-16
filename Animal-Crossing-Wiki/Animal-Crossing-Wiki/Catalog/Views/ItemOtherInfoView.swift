@@ -37,32 +37,31 @@ class ItemOtherInfoView: UIView {
     }
     
     private func setUpLabel(_ item: Item) {
-        let whereHowLabel = descriptionLabel("")
-        if let whereHow = item.whereHow {
-            whereHowLabel.text = whereHow.localized
-        } else if let source = item.source {
-            whereHowLabel.text = source.localized
-        } else if item.category == .seaCreatures {
-            whereHowLabel.text = "Underwater".localized
+        setUpWhereHow(item)
+        setUpShadowSize(item)
+        setUpMovementSpeed(item)
+        setUpWhetherFake(item)
+        item.sourceNotes.flatMap { sourceNotes in
+            let sourceNotesLabel = descriptionLabel(sourceNotes.reduce(with: ", ", characters: [",", " "]))
+            sourceNotesLabel.numberOfLines = 0
+            let sourceNoteInfo = InfoContentView(title: "Source Note".localized, contentView: sourceNotesLabel)
+            backgroundStackView.addArrangedSubviews(sourceNoteInfo)
         }
-        let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)
-        backgroundStackView.addArrangedSubviews(placeInfo)
-        
-        if [Category.fishes, Category.seaCreatures].contains(item.category) {
-            let shadowLabel = descriptionLabel(item.shadow?.rawValue.localized)
-            let shadowInfo = InfoContentView(title: "Shadow size".localized, contentView: shadowLabel)
-            backgroundStackView.addArrangedSubviews(shadowInfo)
+        item.catalog.flatMap { catalog in
+            let catalogLabel = descriptionLabel(catalog.rawValue.localized)
+            let catalogInfo = InfoContentView(title: "Whether to buy".localized, contentView: catalogLabel)
+            backgroundStackView.addArrangedSubviews(catalogInfo)
         }
-        
-        if item.category == .seaCreatures {
-            let speedLabel = descriptionLabel(item.movementSpeed?.rawValue.localized)
-            let speedInfo = InfoContentView(title: "Movement speed".localized, contentView: speedLabel)
-            backgroundStackView.addArrangedSubviews(speedInfo)
+        if let hhaBasePoint = item.hhaBasePoints, hhaBasePoint > 0 {
+            let hhaPointLabel = descriptionLabel(hhaBasePoint.decimalFormatted)
+            let hhaPointInfo = InfoContentView(title: "HHA points".localized, contentView: hhaPointLabel)
+            backgroundStackView.addArrangedSubviews(hhaPointInfo)
         }
-        if item.category == .art, let genuine = item.genuine {
-            let fakeInfoLabel = descriptionLabel(genuine ? "Original".localized : "Fake".localized)
-            let akeInfo = InfoContentView(title: "Whether fake".localized, contentView: fakeInfoLabel)
-            backgroundStackView.addArrangedSubviews(akeInfo)
+        if let sourceRecipe = item.recipe?.source, item.diy == true {
+            let sourceRecipeLabel = descriptionLabel(sourceRecipe.reduce(with: ", ", characters: [",", " "]))
+            sourceRecipeLabel.numberOfLines = 0
+            let sourceRecipeInfo = InfoContentView(title: "Source recipe".localized, contentView: sourceRecipeLabel)
+            backgroundStackView.addArrangedSubviews(sourceRecipeInfo)
         }
     }
     
@@ -77,4 +76,47 @@ class ItemOtherInfoView: UIView {
         return label
     }
     
+    private func setUpWhereHow(_ item: Item) {
+        let whereHowLabel = descriptionLabel("")
+        switch item.category {
+        case .bugs, .fishes:
+            whereHowLabel.text = item.whereHow?.localized
+        case .seaCreatures:
+            whereHowLabel.text = "Underwater".localized
+        case .fossils, .art:
+            whereHowLabel.text = item.source?.localized
+        case .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other:
+            whereHowLabel.text = item.sources?.reduce(with: ", ", characters: [",", " "])
+        }
+        let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)
+        backgroundStackView.addArrangedSubviews(placeInfo)
+    }
+    
+    private func setUpShadowSize(_ item: Item) {
+        guard [Category.fishes, Category.seaCreatures].contains(item.category) else {
+            return
+        }
+        let shadowLabel = descriptionLabel(item.shadow?.rawValue.localized)
+        let shadowInfo = InfoContentView(title: "Shadow size".localized, contentView: shadowLabel)
+        backgroundStackView.addArrangedSubviews(shadowInfo)
+        
+    }
+    
+    private func setUpMovementSpeed(_ item: Item) {
+        guard item.category == .seaCreatures else {
+            return
+        }
+        let speedLabel = descriptionLabel(item.movementSpeed?.rawValue.localized)
+        let speedInfo = InfoContentView(title: "Movement speed".localized, contentView: speedLabel)
+        backgroundStackView.addArrangedSubviews(speedInfo)
+    }
+    
+    private func setUpWhetherFake(_ item: Item) {
+        guard item.category == .art, let genuine = item.genuine else {
+            return
+        }
+        let fakeInfoLabel = descriptionLabel(genuine ? "Original".localized : "Fake".localized)
+        let fakeInfo = InfoContentView(title: "Whether fake".localized, contentView: fakeInfoLabel)
+        backgroundStackView.addArrangedSubviews(fakeInfo)
+    }
 }
