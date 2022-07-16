@@ -68,7 +68,7 @@ class ItemSeasonView: UIView {
         if times.count == 1 {
             timeLabel.text = times.first?.localized
         } else {
-            timeLabel.text = times.reduce("") { $0 + $1.localized + "\n" }.trimmingCharacters(in: ["\n"])
+            timeLabel.text = times.reduce(with: "\n", characters: ["\n"])
             timeLabel.numberOfLines = 0
         }
     }
