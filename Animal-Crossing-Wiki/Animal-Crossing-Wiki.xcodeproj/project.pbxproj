@@ -105,6 +105,9 @@
 		9A7ACF23287EC459001D47CB /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF21287EC459001D47CB /* Items.swift */; };
 		9A7ACF25287F9C87001D47CB /* HousewaresResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */; };
 		9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */; };
+		9A7ACF29287FD984001D47CB /* ItemVariantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF28287FD984001D47CB /* ItemVariantsView.swift */; };
+		9A7ACF2C287FDA07001D47CB /* VariantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF2A287FDA07001D47CB /* VariantCell.swift */; };
+		9A7ACF2D287FDA07001D47CB /* VariantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A7ACF2B287FDA07001D47CB /* VariantCell.xib */; };
 		9A99AA062858247700629C4A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA052858247700629C4A /* Coordinator.swift */; };
 		9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA072858248600629C4A /* AppCoordinator.swift */; };
 		9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA09285824DF00629C4A /* AppAppearance.swift */; };
@@ -283,6 +286,9 @@
 		9A7ACF21287EC459001D47CB /* Items.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HousewaresResponseDTO.swift; sourceTree = "<group>"; };
 		9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HousewaresRequest.swift; sourceTree = "<group>"; };
+		9A7ACF28287FD984001D47CB /* ItemVariantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemVariantsView.swift; path = Catalog/Views/ItemVariantsView.swift; sourceTree = "<group>"; };
+		9A7ACF2A287FDA07001D47CB /* VariantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VariantCell.swift; path = Catalog/Views/VariantCell.swift; sourceTree = "<group>"; };
+		9A7ACF2B287FDA07001D47CB /* VariantCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = VariantCell.xib; path = Catalog/Views/VariantCell.xib; sourceTree = "<group>"; };
 		9A99AA052858247700629C4A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		9A99AA072858248600629C4A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9A99AA09285824DF00629C4A /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
@@ -708,7 +714,10 @@
 				9A7ACEFC287EC26F001D47CB /* CatalogCell.xib */,
 				9A7ACF03287EC26F001D47CB /* ItemBellsView.swift */,
 				9A7ACEFB287EC26F001D47CB /* ItemDetailInfoView.swift */,
+				9A7ACF28287FD984001D47CB /* ItemVariantsView.swift */,
 				9A7ACF00287EC26F001D47CB /* ItemOtherInfoView.swift */,
+				9A7ACF2A287FDA07001D47CB /* VariantCell.swift */,
+				9A7ACF2B287FDA07001D47CB /* VariantCell.xib */,
 				9A7ACF01287EC26F001D47CB /* CalendarView.swift */,
 				9A7ACF02287EC26F001D47CB /* ItemSeasonView.swift */,
 				9A7ACEFE287EC26F001D47CB /* CategoryRow.swift */,
@@ -999,6 +1008,7 @@
 				9A541B7228220A73001B57FD /* Assets.xcassets in Resources */,
 				9A99AA6228603CB800629C4A /* IconCell.xib in Resources */,
 				9A7ACF19287EC2F3001D47CB /* ItemProgressRow.xib in Resources */,
+				9A7ACF2D287FDA07001D47CB /* VariantCell.xib in Resources */,
 				9A7ACF05287EC26F001D47CB /* CatalogCell.xib in Resources */,
 				9A62CFE7287DB9F9005D737D /* InfoPlist.strings in Resources */,
 				9A7ACF06287EC26F001D47CB /* CategoryRow.xib in Resources */,
@@ -1123,6 +1133,7 @@
 				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
+				9A7ACF29287FD984001D47CB /* ItemVariantsView.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */,
 				9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */,
@@ -1168,6 +1179,7 @@
 				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
 				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
+				9A7ACF2C287FDA07001D47CB /* VariantCell.swift in Sources */,
 				9A7ACF08287EC26F001D47CB /* CatalogCell.swift in Sources */,
 				9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,

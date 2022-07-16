@@ -1,0 +1,78 @@
+//
+//  ItemVariantsView.swift
+//  Animal-Crossing-Wiki
+//
+//  Created by Ari on 2022/07/14.
+//
+
+import UIKit
+import RxSwift
+import RxRelay
+
+class ItemVariantsView: UIView {
+    
+    enum Mode {
+        case color
+        case pattern
+    }
+    
+    private let disposeBag = DisposeBag()
+    private var mode: Mode = .color
+    private let cellImage = BehaviorRelay<UIImage?>(value: nil)
+    
+    private lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.itemSize = CGSize(width: 90, height: 90)
+        flowLayout.minimumLineSpacing = 5
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.registerNib(VariantCell.self)
+        return collectionView
+    }()
+    
+    convenience init(item: [Variant], mode: Mode) {
+        self.init(frame: .zero)
+        self.mode = mode
+        configure()
+        setUpItems(by: item)
+    }
+    
+    private func configure() {
+        addSubviews(collectionView)
+        
+        let heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 100)
+        heightConstraint.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor),
+            heightConstraint
+        ])
+    }
+    
+    private func setUpItems(by variations: [Variant]) {
+        Observable.just(variations)
+            .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)) { _, item, cell in
+                cell.setUp(item)
+            }.disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                let cell = owner.collectionView.cellForItem(at: indexPath) as? VariantCell
+                owner.cellImage.accept(cell?.imageView.image)
+            }).disposed(by: disposeBag)
+    }
+}
+
+extension ItemVariantsView {
+    
+    var didTapImage: Observable<UIImage?> {
+        return cellImage.asObservable()
+    }
+}

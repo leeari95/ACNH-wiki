@@ -442,18 +442,26 @@ extension Item {
     }
     
     var canExchangeNookMiles: Bool {
-        return exchangeCurrency == .nookMiles || variations?.first?.exchangeCurrency == .nookMiles
+        exchangeCurrency == .nookMiles || variations?.first?.exchangeCurrency == .nookMiles
     }
     
     var canExchangeNookPoints: Bool {
-        return exchangeCurrency == .nookPoints || variations?.first?.exchangeCurrency == .nookPoints
+        exchangeCurrency == .nookPoints || variations?.first?.exchangeCurrency == .nookPoints
     }
     
     var canExchangePoki: Bool {
-        return exchangeCurrency == .poki || variations?.first?.exchangeCurrency == .poki
+        exchangeCurrency == .poki || variations?.first?.exchangeCurrency == .poki
     }
     
     var isCritters: Bool {
         Category.critters.contains(category)
+    }
+    
+    var variationsWithColor: [Variant] {
+        variations?.filter { $0.variantId.suffix(2) == ("_0") } ?? []
+    }
+    
+    var variationsWithPattern: [Variant] {
+        variations?.filter { $0.pattern != nil } ?? []
     }
 }
