@@ -35,6 +35,7 @@ final class Items {
     
     private init() {
         setUpUserCollection()
+        fetchVillagers()
         fetchCatalog()
     }
     
@@ -80,26 +81,20 @@ final class Items {
                 debugPrint(error)
             }).disposed(by: disposeBag)
     }
+    
+    private func fetchVillagers() {
+        network.requestList(VillagersRequest()) { result in
+            guard let response = try? result.get() else {
+                return
+            }
+            let items = response.map { $0.toDomain() }
+            self.villagers.accept(items)
+        }
+    }
 
     private func fetchCatalog() {
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
-        
-        group.enter()
-        network.requestList(VillagersRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                self.villagers.accept(items)
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 주민을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
         group.enter()
         network.requestList(BugRequest()) { result in
             switch result {
@@ -305,49 +300,51 @@ final class Items {
                 currentItems.append(contentsOf: value)
                 self.allItems.accept(currentItems)
             }
+            let materialsValues = self.allItems.value.compactMap { $0.recipe?.materials.map { $0.key.description } }
+            let materials = Array(Set(materialsValues.flatMap { $0 }))
+            let materialsItems = self.allItems.value.filter { materials.contains($0.name) }
+            self.allItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
-            self.allItems.value.forEach { item in
-                self.allItemList[item.name] = item
-            }
         }
     }
 }
 
+// MARK: - Internal
 extension Items {
     
     var villagerList: Observable<[Villager]> {
-        return self.villagers.asObservable()
+        return villagers.asObservable()
     }
     
     var villagerHouseList: Observable<[Villager]> {
-        return self.villagersHouse.asObservable()
+        return villagersHouse.asObservable()
     }
     
     var villagerLikeList: Observable<[Villager]> {
-        return self.villagersLike.asObservable()
+        return villagersLike.asObservable()
     }
     
     var categoryList: Observable<[Category: [Item]]> {
-        return self.categories.asObservable()
+        return categories.asObservable()
     }
     var isLoading: Observable<Bool> {
-        return self.isLoad.asObservable()
+        return isLoad.asObservable()
     }
     var userInfo: Observable<UserInfo?> {
-        return self.currentUserInfo.asObservable()
+        return currentUserInfo.asObservable()
     }
     
     var dailyTasks: Observable<[DailyTask]> {
-        return self.currentDailyTasks.asObservable()
+        return currentDailyTasks.asObservable()
     }
     
     var itemList: Observable<[Category: [Item]]> {
-        return self.userItems.asObservable()
+        return userItems.asObservable()
     }
     
     func updateUserInfo(_ userInfo: UserInfo) {
-        self.currentUserInfo.accept(userInfo)
+        currentUserInfo.accept(userInfo)
     }
     
     var itemsCount: Observable<[Category: Int]> {
