@@ -156,6 +156,7 @@ final class ItemsViewModel {
                 isLoading.accept(true)
                 items.accept(newItems)
                 allItems = newItems
+                isLoading.accept(false)
             }).disposed(by: disposeBag)
         
         setUpUserItems(disposeBag)
@@ -169,7 +170,9 @@ final class ItemsViewModel {
                     items.accept(filteredData)
                     filteredItems = filteredData
                 }
-                isLoading.accept(false)
+                if currentFilter.contains(.collected) {
+                    items.accept(userItems)
+                }
             }).disposed(by: disposeBag)
         
         return  Output(

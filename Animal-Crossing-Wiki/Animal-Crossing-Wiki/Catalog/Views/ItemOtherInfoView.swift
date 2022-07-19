@@ -58,7 +58,7 @@ class ItemOtherInfoView: UIView {
             backgroundStackView.addArrangedSubviews(hhaPointInfo)
         }
         if let sourceRecipe = item.recipe?.source, item.diy == true {
-            let sourceRecipeLabel = descriptionLabel(sourceRecipe.reduce(with: ", ", characters: [",", " "]))
+            let sourceRecipeLabel = descriptionLabel(sourceRecipe.reduce(with: "\n", characters: ["\n"]))
             sourceRecipeLabel.numberOfLines = 0
             let sourceRecipeInfo = InfoContentView(title: "Source recipe".localized, contentView: sourceRecipeLabel)
             backgroundStackView.addArrangedSubviews(sourceRecipeInfo)

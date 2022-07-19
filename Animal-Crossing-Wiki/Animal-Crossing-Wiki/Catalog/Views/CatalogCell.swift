@@ -35,10 +35,10 @@ class CatalogCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
         iconImageView.image = nil
         nameLabel.text = nil
         nameLabel.textColor = .acText
+        disposeBag = DisposeBag()
         backgroundStackView.subviews.compactMap { $0 as? ItemBellsView }.first?.removeFromSuperview()
     }
     
