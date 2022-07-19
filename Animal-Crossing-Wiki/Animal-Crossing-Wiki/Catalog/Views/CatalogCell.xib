@@ -21,7 +21,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-1O-c9d">
                         <rect key="frame" x="4" y="4" width="97" height="151"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fish0" translatesAutoresizingMaskIntoConstraints="NO" id="1Ae-WZ-Z5e">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Ae-WZ-Z5e">
                                 <rect key="frame" x="1" y="0.0" width="95" height="95"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="1Ae-WZ-Z5e" secondAttribute="height" multiplier="1:1" id="Clj-lb-fuz"/>
@@ -55,7 +55,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Fish0" width="64" height="64"/>
         <namedColor name="ACText">
             <color red="0.33725490196078434" green="0.31764705882352939" blue="0.24705882352941178" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

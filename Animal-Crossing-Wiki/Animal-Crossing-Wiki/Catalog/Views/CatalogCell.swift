@@ -80,6 +80,8 @@ extension CatalogCell {
     
     func setUp(_ item: Item) {
         viewModel = CatalogCellViewModel(item: item, category: item.category)
+        setUpIconImage(item)
+        nameLabel.text = item.translations.localizedName()
         bind()
         var priceView: ItemBellsView
         switch item.category {
@@ -101,7 +103,5 @@ extension CatalogCell {
             }
         }
         backgroundStackView.addArrangedSubviews(priceView)
-        setUpIconImage(item)
-        nameLabel.text = item.translations.localizedName()
     }
 }
