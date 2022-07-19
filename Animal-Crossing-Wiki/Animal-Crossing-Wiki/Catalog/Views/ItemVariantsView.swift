@@ -23,7 +23,7 @@ class ItemVariantsView: UIView {
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize = CGSize(width: 90, height: 90)
+        flowLayout.itemSize = CGSize(width: 90, height: 110)
         flowLayout.minimumLineSpacing = 5
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
@@ -42,7 +42,7 @@ class ItemVariantsView: UIView {
     private func configure() {
         addSubviews(collectionView)
         
-        let heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 100)
+        let heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 110)
         heightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
@@ -58,7 +58,8 @@ class ItemVariantsView: UIView {
     private func setUpItems(by variations: [Variant]) {
         Observable.just(variations)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)) { _, item, cell in
-                cell.setUp(item)
+                let name = self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName()
+                cell.setUp(imageURL: item.image, name: name)
             }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
