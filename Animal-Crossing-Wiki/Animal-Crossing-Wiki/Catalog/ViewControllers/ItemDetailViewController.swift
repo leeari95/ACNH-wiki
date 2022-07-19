@@ -35,6 +35,11 @@ class ItemDetailViewController: UIViewController {
         setUpViews()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationController?.navigationBar.sizeToFit()
+    }
+    
     private func setUpViews() {
         setUpNavigationItem()
         view.backgroundColor = .acBackground
@@ -51,6 +56,7 @@ class ItemDetailViewController: UIViewController {
     private func setUpNavigationItem() {
         let checkBarButton = UIBarButtonItem(customView: checkButton)
         navigationItem.rightBarButtonItems = [checkBarButton]
+        navigationItem.enableMultilineTitle()
     }
 
     func bind(to viewModel: ItemDetailViewModel) {
