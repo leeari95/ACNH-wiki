@@ -88,6 +88,7 @@ extension Item {
         self.translations = translations
         self.hemispheres = hemispheres
         self.colors = colors
+        self.genuine = true
     }
 
 }

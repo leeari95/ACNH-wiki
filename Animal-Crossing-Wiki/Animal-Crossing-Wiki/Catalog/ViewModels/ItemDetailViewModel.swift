@@ -42,7 +42,7 @@ final class ItemDetailViewModel {
         Items.shared.itemList
             .compactMap { $0[self.item.category] }
             .subscribe(onNext: { items in
-                isAcquired.accept(items.contains(where: { $0.name == self.item.name && $0.genuine == self.item.genuine }))
+                isAcquired.accept(items.contains(self.item))
             }).disposed(by: disposeBag)
         
         return Output(

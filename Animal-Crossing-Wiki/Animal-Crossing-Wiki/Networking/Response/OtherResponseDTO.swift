@@ -104,5 +104,6 @@ extension Item {
         self.translations = translations
         self.colors = colors
         self.recipe = recipe
+        self.genuine = true
     }
 }

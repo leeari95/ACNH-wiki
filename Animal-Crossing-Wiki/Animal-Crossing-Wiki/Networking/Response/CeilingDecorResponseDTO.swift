@@ -120,5 +120,6 @@ extension Item {
         self.recipe = recipe
         self.seriesTranslations = seriesTranslations
         self.variations = variations
+        self.genuine = true
     }
 }

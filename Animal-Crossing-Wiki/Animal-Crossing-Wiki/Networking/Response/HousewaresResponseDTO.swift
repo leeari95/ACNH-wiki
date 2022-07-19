@@ -324,5 +324,6 @@ extension Item {
         self.variations = variations
         self.foodPower = foodPower
         self.doorDeco = doorDeco
+        self.genuine = true
     }
 }

@@ -226,7 +226,7 @@ extension Recipe {
             "recipesToUnlock" : recipesToUnlock,
             "category" : category,
             "craftedItemInternalId" : craftedItemInternalId,
-            "cardColor" : cardColor,
+            "cardColor" : cardColor ?? "",
             "diyIconFilename" : diyIconFilename,
             "diyIconFilenameSh" : diyIconFilenameSh ?? "",
             "serialId" : serialId,

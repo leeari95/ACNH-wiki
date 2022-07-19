@@ -281,6 +281,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
+                    .filter { !($0.keyword.contains("Unnecessary") && $0.sell == -1) }
                 itemList[.other] = items
             case .failure(let error):
                 os_log(
@@ -392,7 +393,7 @@ extension Items {
     func updateItem(_ item: Item) {
         var currentUserItems = userItems.value
         var items = currentUserItems[item.category] ?? []
-        if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+        if let index = items.firstIndex(of: item) {
             items.remove(at: index)
         } else {
             items.append(item)
@@ -403,6 +404,8 @@ extension Items {
     
     func itemFilter(keyword: String, category: Keyword) -> [Item] {
         let items = allItems.value
-        return items.filter { $0.keyword.contains(keyword) }
+        return items
+            .filter { $0.keyword.contains(keyword) }
+            .sorted(by: {$0.category.rawValue < $1.category.rawValue })
     }
 }

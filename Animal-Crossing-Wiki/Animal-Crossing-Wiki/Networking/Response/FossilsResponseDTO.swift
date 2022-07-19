@@ -73,6 +73,7 @@ extension Item {
         self.museum = museum
         self.translations = translations
         self.colors = colors
+        self.genuine = true
     }
     
 }

@@ -134,5 +134,6 @@ extension Item {
         self.series = series
         self.recipe = recipe
         self.seriesTranslations = seriesTranslations
+        self.genuine = true
     }
 }

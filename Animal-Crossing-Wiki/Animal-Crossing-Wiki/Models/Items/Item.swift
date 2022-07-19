@@ -101,3 +101,9 @@ extension Item {
         variations?.filter { $0.pattern != nil } ?? []
     }
 }
+
+extension Item: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.name == rhs.name && lhs.genuine  == rhs.genuine
+    }
+}
