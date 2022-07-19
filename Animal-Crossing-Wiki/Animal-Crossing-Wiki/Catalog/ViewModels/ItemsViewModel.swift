@@ -13,6 +13,7 @@ final class ItemsViewModel {
     enum Mode {
         case user
         case all
+        case keyword(title: String, category: Keyword)
     }
     
     let category: Category
@@ -25,6 +26,10 @@ final class ItemsViewModel {
         self.mode = mode
     }
     
+    convenience init (coordinator: Coordinator?, mode: Mode) {
+        self.init(category: .housewares, coordinator: coordinator, mode: mode)
+    }
+    
     struct Input {
         let searchBarText: Observable<String?>
         let didSelectedMenuKeyword: Observable<[ItemsViewController.Menu: String]>
@@ -33,6 +38,7 @@ final class ItemsViewModel {
     struct Output {
         let category: Observable<Category>
         let items: Observable<[Item]>
+        let isLoading: Observable<Bool>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -43,6 +49,7 @@ final class ItemsViewModel {
         var filteredItems = [Item]()
         var currentHemisphere = Hemisphere.north
         var currentFilter = [ItemsViewController.Menu]()
+        let isLoading = BehaviorRelay<Bool>(value: true)
         
         Items.shared.userInfo
             .compactMap { $0 }
@@ -51,16 +58,18 @@ final class ItemsViewModel {
             }).disposed(by: disposeBag)
         
         input.searchBarText
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
             .compactMap { $0 }
             .subscribe(onNext: { text in
                 guard text != "" else {
                     items.accept(filteredItems.isEmpty ? allItems : filteredItems)
                     return
                 }
-                var filterItems = filteredItems.isEmpty ? allItems : filteredItems
-                filterItems = filterItems
+                isLoading.accept(true)
+                let text = text.lowercased()
+                let filteredData = (filteredItems.isEmpty ? allItems : filteredItems)
                     .filter {
-                        let itemName = $0.translations.localizedName()
+                        let itemName = $0.translations.localizedName().lowercased()
                         let isChosungCheck = text.isChosung
                         if isChosungCheck {
                             return (itemName.contains(text) || itemName.chosung.contains(text))
@@ -68,26 +77,15 @@ final class ItemsViewModel {
                             return itemName.contains(text)
                         }
                     }
-                items.accept(filterItems)
+                items.accept(filteredData)
+                isLoading.accept(false)
             }).disposed(by: disposeBag)
         
         input.didSelectedMenuKeyword
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
             .subscribe(onNext: { keywords in
+                isLoading.accept(true)
                 var itemList = [Item]()
-                if keywords.keys.contains(.notCollected) == false {
-                    for item in collectedItems where !filteredItems.contains(where: {
-                        $0.name == item.name && $0.genuine == item.genuine
-                    }) {
-                        filteredItems.append(item)
-                    }
-                }
-                if keywords.keys.contains(.collected) == false {
-                    for item in notCollectedItems where !filteredItems.contains(where: {
-                        $0.name == item.name && $0.genuine == item.genuine
-                    }) {
-                        filteredItems.append(item)
-                    }
-                }
                 currentFilter = keywords.keys.sorted(by: { $0.rawValue < $1.rawValue })
                 keywords.sorted { $0.key.rawValue < $1.key.rawValue }.forEach { (key, value) in
                     switch key {
@@ -104,18 +102,14 @@ final class ItemsViewModel {
                         itemList = filteredData
                     case .collected:
                         if currentFilter.contains(.month) {
-                            let filteredData = itemList.filter { item in
-                                collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
-                            }
+                            let filteredData = itemList.filter { collectedItems.contains($0) }
                             itemList = filteredData
                         } else {
                             itemList = collectedItems
                         }
                     case .notCollected:
                         if currentFilter.contains(.month) {
-                            let filteredData = itemList.filter { item in
-                                !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
-                            }
+                            let filteredData = itemList.filter { !collectedItems.contains($0) }
                             itemList = filteredData
                         } else {
                             itemList = notCollectedItems.isEmpty ? itemList.isEmpty ? allItems : itemList : notCollectedItems
@@ -140,60 +134,92 @@ final class ItemsViewModel {
                 }
                 items.accept(itemList)
                 filteredItems = itemList
+                isLoading.accept(false)
             }).disposed(by: disposeBag)
         
         input.itemSelected
             .compactMap { items.value[safe: $0.item] }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, item in
-                if let coordinator = owner.coordinator as? CatalogCoordinator {
+            .subscribe(onNext: { item in
+                if let coordinator = self.coordinator as? CatalogCoordinator {
                     coordinator.transition(for: .itemDetail(item))
-                } else if let coordinator = owner.coordinator as? CollectionCoordinator {
+                } else if let coordinator = self.coordinator as? CollectionCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
-                } else if let coordinator = owner.coordinator as? DashboardCoordinator {
+                } else if let coordinator = self.coordinator as? DashboardCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
                 }
             }).disposed(by: disposeBag)
         
-        if mode == .all {
+        setUpItems(disposeBag)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+            .filter { !$0.isEmpty }
+            .subscribe(onNext: { newItems in
+                isLoading.accept(true)
+                items.accept(newItems)
+                allItems = newItems
+            }).disposed(by: disposeBag)
+        
+        setUpUserItems(disposeBag)
+            .subscribe(onNext: { userItems in
+                collectedItems = userItems
+                let notCollected = allItems.filter { !collectedItems.contains($0) }
+                notCollectedItems = notCollected
+                if currentFilter.contains(.notCollected) {
+                    let filteredData = (filteredItems.isEmpty ? notCollected : filteredItems)
+                        .filter { !collectedItems.contains($0) }
+                    items.accept(filteredData)
+                    filteredItems = filteredData
+                }
+                isLoading.accept(false)
+            }).disposed(by: disposeBag)
+        
+        return  Output(
+            category: Observable.just(category),
+            items: items.asObservable(),
+            isLoading: isLoading.asObservable()
+        )
+    }
+    
+    private func setUpItems(_ disposeBag: DisposeBag) -> Observable<[Item]> {
+        let items = BehaviorRelay<[Item]>(value: [])
+        switch mode {
+        case .all:
             Items.shared.categoryList
                 .compactMap { $0[self.category] }
                 .subscribe(onNext: { newItems in
                     items.accept(newItems)
-                    allItems = newItems
                 }).disposed(by: disposeBag)
-            
-            Items.shared.itemList
-                .compactMap { $0[self.category] }
-                .subscribe(onNext: { userItems in
-                    collectedItems = userItems
-                    let notCollected = allItems.filter { item in
-                        !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
-                    }
-                    notCollectedItems = notCollected
-                    if currentFilter.contains(.notCollected) {
-                        let filteredData = (filteredItems.isEmpty ? notCollected : filteredItems)
-                            .filter { item in
-                                !collectedItems.contains(where: { $0.name == item.name && $0.genuine == item.genuine })
-                            }
-                        items.accept(filteredData)
-                        filteredItems = filteredData
-                    }
-                }).disposed(by: disposeBag)
-            
-        } else {
+        case .user:
             Items.shared.itemList
                 .compactMap { $0[self.category] }
                 .subscribe(onNext: { newItems in
                     items.accept(newItems)
-                    allItems = newItems
+                }).disposed(by: disposeBag)
+        case .keyword(let title, let category):
+            let filteredData = Items.shared.itemFilter(keyword: title, category: category)
+            items.accept(filteredData)
+        }
+        return items.asObservable()
+    }
+    
+    private func setUpUserItems(_ disposeBag: DisposeBag) -> Observable<[Item]> {
+        let items = BehaviorRelay<[Item]>(value: [])
+        switch mode {
+        case .all, .user:
+            Items.shared.itemList
+                .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+                .compactMap { $0[self.category] }
+                .subscribe(onNext: { userItems in
+                    items.accept(userItems)
+                }).disposed(by: disposeBag)
+        case .keyword(let title, _):
+            Items.shared.itemList
+                .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .default))
+                .compactMap { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
+                .subscribe(onNext: { userItems in
+                    items.accept(userItems)
                 }).disposed(by: disposeBag)
         }
-        
-        return  Output(
-            category: Observable.just(category),
-            items: items.asObservable()
-        )
+        return items.asObservable()
     }
     
 }

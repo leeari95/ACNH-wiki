@@ -24,7 +24,12 @@ class ItemDetailViewController: UIViewController {
         )
         return button
     }()
-
+    
+    private var itemDetailInfoView: ItemDetailInfoView?
+    private var itemVariantsColorView: ItemVariantsView?
+    private var itemVariantsPatternView: ItemVariantsView?
+    private var keywordView: ItemKeywordView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -49,18 +54,15 @@ class ItemDetailViewController: UIViewController {
     }
 
     func bind(to viewModel: ItemDetailViewModel) {
+        keywordView = ItemKeywordView(item: viewModel.item)
+        navigationItem.title = viewModel.item.translations.localizedName()
+        setUpSection(in: viewModel.item)
+        
         let input = ItemDetailViewModel.Input(
-            didTapCheck: checkButton.rx.tap.asObservable()
+            didTapCheck: checkButton.rx.tap.asObservable(),
+            didTapKeyword: keywordView?.didTapKeyword
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
-        
-        output.item
-            .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, item in
-                owner.navigationItem.title = item.translations.localizedName()
-                owner.setUpSection(in: item)
-            }).disposed(by: disposeBag)
         
         output.isAcquired
             .observe(on: MainScheduler.instance)
@@ -72,25 +74,124 @@ class ItemDetailViewController: UIViewController {
                     for: .normal
                 )
             }).disposed(by: disposeBag)
+        
+        itemVariantsColorView?.didTapImage
+            .compactMap { $0 }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, image in
+                owner.itemDetailInfoView?.changeImage(image)
+            }).disposed(by: disposeBag)
+        
+        itemVariantsPatternView?.didTapImage
+            .compactMap { $0 }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, image in
+                owner.itemDetailInfoView?.changeImage(image)
+            }).disposed(by: disposeBag)
     }
     
     private func setUpSection(in item: Item) {
-        let itemDetailInfo = SectionView(
-            title: item.category.rawValue.localized.uppercased(),
-            category: item.category,
-            contentView: ItemDetailInfoView(item: item)
-        )
+        setUpDetail(item)
+        setUpVariant(item)
+        setUpOther(item)
+        setUpSaeson(item)
+        setUpKeyword(item)
+    }
+    
+    private func setUpDetail(_ item: Item) {
+        itemDetailInfoView = ItemDetailInfoView(item: item)
+        itemDetailInfoView.flatMap {
+            let itemDetailInfo = SectionView(
+                title: item.category.rawValue.localized.uppercased(),
+                category: item.category,
+                contentView: $0
+            )
+            sectionsScrollView.addSection(itemDetailInfo)
+        }
+    }
+    
+    private func setUpVariant(_ item: Item) {
+        guard Category.housewares().contains(item.category), item.variations != nil else {
+            return
+        }
+        itemVariantsColorView = ItemVariantsView(item: item.variationsWithColor, mode: .color)
+        itemVariantsPatternView = ItemVariantsView(item: item.variationsWithPattern, mode: .pattern)
+        
+        let isNoColor = item.variations?.compactMap { $0.filename }.filter { $0.suffix(2) == "_0" }.count ?? 1 <= 1
+        let isNoPattern = item.patternCustomize == false
+        let canBodyCustomize = item.bodyCustomize == true
+        let canPatternCustomize = item.patternCustomize == true
+        let bodyTitle = "\("Variants".localized) (\(canBodyCustomize ? "Reformable".localized : "Not reformed".localized))"
+        let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
+        
+        if isNoPattern {
+            itemVariantsColorView.flatMap { view in
+                let variantsView = SectionView(
+                    title: bodyTitle,
+                    iconName: "paintbrush.fill",
+                    contentView: view
+                )
+                sectionsScrollView.addSection(variantsView)
+            }
+        } else if isNoColor {
+            itemVariantsPatternView.flatMap { view in
+                let variantsView = SectionView(
+                    title: patternTitle,
+                    iconName: "camera.macro",
+                    contentView: view
+                )
+                sectionsScrollView.addSection(variantsView)
+            }
+        } else {
+            itemVariantsColorView.flatMap { view in
+                let variantsView = SectionView(
+                    title: bodyTitle,
+                    iconName: "paintbrush.fill",
+                    contentView: view
+                )
+                sectionsScrollView.addSection(variantsView)
+            }
+            itemVariantsPatternView.flatMap { view in
+                let variantsView = SectionView(
+                    title: patternTitle,
+                    iconName: "camera.macro",
+                    contentView: view
+                )
+                sectionsScrollView.addSection(variantsView)
+            }
+        }
+    }
+    
+    private func setUpOther(_ item: Item) {
         let otherInfoView = SectionView(
             contentView: ItemOtherInfoView(item: item)
         )
-        sectionsScrollView.addSection(itemDetailInfo, otherInfoView)
-        if Category.critters.contains(item.category) {
-            let seasonView = SectionView(
-                title: "Seasonality".localized,
-                iconName: "calendar",
-                contentView: ItemSeasonView(item: item)
+        sectionsScrollView.addSection(otherInfoView)
+    }
+    
+    private func setUpSaeson(_ item: Item) {
+        guard Category.critters.contains(item.category) else {
+            return
+        }
+        let seasonView = SectionView(
+            title: "Seasonality".localized,
+            iconName: "calendar",
+            contentView: ItemSeasonView(item: item)
+        )
+        sectionsScrollView.addSection(seasonView)
+    }
+    
+    private func setUpKeyword(_ item: Item) {
+        guard item.keyword.isEmpty == false else {
+            return
+        }
+        keywordView.flatMap {
+            let keywordListView = SectionView(
+                title: "Keyword".localized,
+                iconName: "link",
+                contentView: $0
             )
-            sectionsScrollView.addSection(seasonView)
+            sectionsScrollView.addSection(keywordListView)
         }
     }
 }

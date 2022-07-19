@@ -22,14 +22,18 @@ final class CatalogViewModel {
     
     struct Output {
         let catagories: Observable<[(title: Category, count: Int)]>
+        let isLoading: Observable<Bool>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let catagories = BehaviorRelay<[(title: Category, count: Int)]>(value: [])
+        let isLoading = BehaviorRelay<Bool>(value: true)
         
-        Items.shared.itemsCount.subscribe(onNext: { itemsCount in
+        Items.shared.itemsCount
+            .subscribe(onNext: { itemsCount in
             let newCategories = Category.items().map { ($0, itemsCount[$0] ?? 0)}
             catagories.accept(newCategories)
+            isLoading.accept(itemsCount.isEmpty ? true : false)
         }).disposed(by: disposeBag)
         
         input.selectedCategory
@@ -39,6 +43,9 @@ final class CatalogViewModel {
                 self.coordinator?.transition(for: .items(for: category))
             }).disposed(by: disposeBag)
         
-        return Output(catagories: catagories.asObservable())
+        return Output(
+            catagories: catagories.asObservable(),
+            isLoading: isLoading.asObservable()
+        )
     }
 }

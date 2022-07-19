@@ -11,6 +11,7 @@ final class CollectionCoordinator: Coordinator {
     enum Route {
         case items(category: Category, mode: ItemsViewModel.Mode)
         case itemDetail(item: Item)
+        case keyword(title: String, keyword: Keyword)
         case dismiss
     }
     
@@ -37,9 +38,13 @@ final class CollectionCoordinator: Coordinator {
             navigationController?.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item))
+            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
+        case .keyword(let title, let keyword):
+            let viewController = ItemsViewController()
+            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            rootViewController.pushViewController(viewController, animated: true)
         case .dismiss:
             rootViewController.visibleViewController?.dismiss(animated: true)
         }

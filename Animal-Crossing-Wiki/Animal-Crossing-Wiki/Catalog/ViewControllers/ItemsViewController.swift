@@ -10,9 +10,10 @@ import RxSwift
 import RxRelay
 
 class ItemsViewController: UIViewController {
-    enum Mode {
+    enum Mode: Equatable {
         case user
         case all
+        case keyword(title: String)
     }
     
     enum Menu: Int {
@@ -70,6 +71,14 @@ class ItemsViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var activityIndicator: LoadingView = {
+        let activityIndicator = LoadingView(backgroundColor: .acBackground, alpha: 1)
+        view.addSubviews(activityIndicator)
+        activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        return activityIndicator
+    }()
+    
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
@@ -82,9 +91,18 @@ class ItemsViewController: UIViewController {
         setUpViews()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationController?.navigationBar.sizeToFit()
+    }
+    
     func bind(to viewModel: ItemsViewModel) {
         self.category = viewModel.category
-        self.mode = viewModel.mode == .all ? .all : .user
+        switch viewModel.mode {
+        case .user: mode = .user
+        case .keyword(let title, _): mode = .keyword(title: title)
+        case .all: mode = .all
+        }
         let input = ItemsViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
@@ -92,15 +110,22 @@ class ItemsViewController: UIViewController {
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
+        output.isLoading
+            .observe(on: MainScheduler.asyncInstance)
+            .bind(to: self.activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+
         output.items
             .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
                 cell.setUp(item)
             }.disposed(by: disposeBag)
         
-        output.category
-            .map { $0.rawValue.localized }
-            .bind(to: navigationItem.rx.title)
-            .disposed(by: disposeBag)
+        if [Mode.all, Mode.user].contains(mode) {
+            output.category
+                .map { $0.rawValue.localized }
+                .bind(to: navigationItem.rx.title)
+                .disposed(by: disposeBag)
+        }
         
         selectedKeyword
             .map { !$0.keys.contains(.all) }
@@ -125,18 +150,25 @@ class ItemsViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        view.addSubviews(collectionView)
+        view.addSubviews(collectionView, activityIndicator)
         NSLayoutConstraint.activate([
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor),
+            activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
         setUpNavigationItem()
         setUpSearchController()
     }
     
     private func setUpNavigationItem() {
+        switch mode {
+        case .keyword(let title):
+            navigationItem.title = title.localized
+        default: break
+        }
         let filterButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -160,6 +192,7 @@ class ItemsViewController: UIViewController {
             if self.currentSelected.keys.contains(currentMenu) {
                 let action = action as? UIAction
                 action?.state = .on
+                action?.attributes = .disabled
             }
         }
         return menu
@@ -217,6 +250,9 @@ class ItemsViewController: UIViewController {
     }
     
     private func createFilterMenu() -> [UIMenuElement] {
+        guard mode != .user else {
+            return []
+        }
         var filterMenuList = [UIMenuElement]()
         if let category = category, Category.critters.contains(category) {
             let actionHandler: (UIAction) -> Void = { [weak self] action in
@@ -241,26 +277,24 @@ class ItemsViewController: UIViewController {
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
         }
-        if mode == .all {
-            let notCollectedAction = UIAction(title: Menu.notCollected.title, handler: { [weak self] action in
-                if self?.currentSelected[.collected] != nil {
-                    self?.currentSelected[.collected] = nil
-                }
-                self?.currentSelected[.notCollected] = self?.currentSelected[.notCollected] == nil ? action.title : nil
-                self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-                self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-            })
-            
-            let collectedAction = UIAction(title: Menu.collected.title, handler: { [weak self] action in
-                if self?.currentSelected[.notCollected] != nil {
-                    self?.currentSelected[.notCollected] = nil
-                }
-                self?.currentSelected[.collected] = self?.currentSelected[.collected] == nil ? action.title : nil
-                self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-                self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-            })
-            filterMenuList.append(contentsOf: [collectedAction, notCollectedAction])
-        }
+        let notCollectedAction = UIAction(title: Menu.notCollected.title, handler: { [weak self] action in
+            if self?.currentSelected[.collected] != nil {
+                self?.currentSelected[.collected] = nil
+            }
+            self?.currentSelected[.notCollected] = self?.currentSelected[.notCollected] == nil ? action.title : nil
+            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+        })
+        
+        let collectedAction = UIAction(title: Menu.collected.title, handler: { [weak self] action in
+            if self?.currentSelected[.notCollected] != nil {
+                self?.currentSelected[.notCollected] = nil
+            }
+            self?.currentSelected[.collected] = self?.currentSelected[.collected] == nil ? action.title : nil
+            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+        })
+        filterMenuList.append(contentsOf: [collectedAction, notCollectedAction])
         return filterMenuList
     }
 }

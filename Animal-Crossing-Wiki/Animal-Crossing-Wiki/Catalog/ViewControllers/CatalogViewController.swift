@@ -16,14 +16,28 @@ class CatalogViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .clear
         tableView.registerNib(CategoryRow.self)
+        tableView.contentInsetAdjustmentBehavior = .always
         return tableView
     }()
     
+    private lazy var activityIndicator: LoadingView = {
+        let activityIndicator = LoadingView(backgroundColor: .acBackground, alpha: 0.5)
+        view.addSubviews(activityIndicator)
+        activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        return activityIndicator
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationController?.navigationBar.sizeToFit()
+    }
+
     private func setUpNavigationItem() {
         view.backgroundColor = .acBackground
         navigationItem.title = "Catalog".localized
@@ -33,10 +47,10 @@ class CatalogViewController: UIViewController {
         setUpNavigationItem()
         view.addSubviews(tableView)
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
@@ -60,5 +74,8 @@ class CatalogViewController: UIViewController {
             .subscribe(onNext: { owner, indexPath in
                 owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
+        output.isLoading
+            .bind(to: self.activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
     }
 }

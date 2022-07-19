@@ -12,6 +12,7 @@ final class CatalogCoordinator: Coordinator {
     enum Route {
         case items(for: Category)
         case itemDetail(_ item: Item)
+        case keyword(title: String, keyword: Keyword)
     }
     
     var type: CoordinatorType = .catalog
@@ -36,7 +37,11 @@ final class CatalogCoordinator: Coordinator {
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item))
+            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            rootViewController.pushViewController(viewController, animated: true)
+        case .keyword(let title, let keyword):
+            let viewController = ItemsViewController()
+            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

@@ -19,6 +19,7 @@ final class DashboardCoordinator: Coordinator {
         case progress
         case item(category: Category)
         case itemDetail(item: Item)
+        case keyword(title: String, keyword: Keyword)
         case pop
         case dismiss
     }
@@ -97,11 +98,14 @@ final class DashboardCoordinator: Coordinator {
                 .month: currentMonth,
                 .notCollected : ItemsViewController.Menu.notCollected.title
             ])
-            
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item))
+            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            rootViewController.pushViewController(viewController, animated: true)
+        case .keyword(let title, let keyword):
+            let viewController = ItemsViewController()
+            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)

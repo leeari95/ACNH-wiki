@@ -78,6 +78,11 @@ class VillagersViewController: UIViewController {
         setUpViews()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationController?.navigationBar.sizeToFit()
+    }
+    
     func bind(to viewModel: VillagersViewModel) {
         let input = VillagersViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
