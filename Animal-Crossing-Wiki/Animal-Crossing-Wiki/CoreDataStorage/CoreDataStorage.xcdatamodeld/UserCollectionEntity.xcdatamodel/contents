@@ -21,8 +21,10 @@
         <attribute name="concepts" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="critterpediaImage" optional="YES" attributeType="String"/>
         <attribute name="diy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="doorDeco" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="exchangeCurrency" optional="YES" attributeType="String"/>
         <attribute name="exchangePrice" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="foodPower" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="furnitureImage" optional="YES" attributeType="String"/>
         <attribute name="genuine" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="hemispheres" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String: [Any]]]"/>
@@ -121,7 +123,7 @@
     </entity>
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
-        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="809"/>
+        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="839"/>
         <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
         <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>

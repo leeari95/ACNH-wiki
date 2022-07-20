@@ -61,6 +61,8 @@ extension ItemEntity {
         self.recipe = item.recipe?.toDictionary()
         self.seriesTranslations = item.seriesTranslations?.toDictionary()
         self.variations = item.variations?.compactMap { $0.toDictionary() }
+        self.foodPower = Int64(item.foodPower ?? 0)
+        self.doorDeco = item.doorDeco ?? false
     }
     
     func toKeyword() -> [Keyword: [String]] {
@@ -125,7 +127,9 @@ extension ItemEntity {
                     series: series,
                     recipe: RecipeResponseDTO(recipe ?? [:]),
                     seriesTranslations: Translations(seriesTranslations ?? [:]),
-                    variations: variations?.compactMap { Variant($0)})
+                    variations: variations?.compactMap { Variant($0)},
+                    foodPower: Int(foodPower),
+                    doorDeco: doorDeco)
     }
 }
 

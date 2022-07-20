@@ -312,20 +312,22 @@ final class Items {
             var itemsCount = [Category: Int]()
             itemList.forEach { (key: Category, value: [Item]) in
                 itemsCount[key] = value.count
-                var currentItems = self.allItems.value
-                currentItems.append(contentsOf: value)
-                self.allItems.accept(currentItems)
             }
-            let materialsValues = self.allItems.value
-                .filter { $0.category == .recipes }
-                .compactMap { $0.recipe?.materials.map { $0.key.description } }
-            let materials = Array(Set(materialsValues.flatMap { $0 }))
-            let materialsItems = self.allItems.value
-                .filter { $0.category != .recipes && materials.contains($0.name) }
-            self.materialsItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
+            self.allItems.accept(itemList.flatMap { $0.value })
+            self.setUpMaterialsItems()
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
         }
+    }
+    
+    private func setUpMaterialsItems() {
+        let values = allItems.value
+            .filter { $0.category == .recipes }
+            .compactMap { $0.recipe?.materials.map { $0.key.description } }
+        let materials = Array(Set(values.flatMap { $0 }))
+        let materialsItems = allItems.value
+            .filter { $0.category != .recipes && materials.contains($0.name) }
+        self.materialsItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
     }
 }
 
