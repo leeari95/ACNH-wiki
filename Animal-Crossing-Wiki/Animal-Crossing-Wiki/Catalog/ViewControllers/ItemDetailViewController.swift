@@ -118,7 +118,7 @@ class ItemDetailViewController: UIViewController {
     }
     
     private func setUpVariant(_ item: Item) {
-        guard Category.housewares().contains(item.category), item.variations != nil else {
+        guard Category.furniture().contains(item.category), item.variations != nil else {
             return
         }
         itemVariantsColorView = ItemVariantsView(item: item.variationsWithColor, mode: .color)

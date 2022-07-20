@@ -129,6 +129,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Other" = "Other";
 "Ceiling Decor" = "Ceiling Decor";
 "Recipes" = "Recipes";
+"Songs" = "Songs";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -466,6 +467,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "All villagers (while stung)" = "All villagers (while stung)";
 "Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Niko" = "Niko";
+"K.K. concert" = "K.K. concert";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -551,6 +553,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Only available while on a quest for Gulliver" = "Only available while on a quest for Gulliver";
 "Small shadow" = "Small shadow";
 "Since 1.6.0, Leif sells pumpkin starts year-round." = "Since 1.6.0, Leif sells pumpkin starts year-round.";
+"Hidden song" = "Hidden song";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";

@@ -131,6 +131,7 @@
 "Other" = "기타";
 "Ceiling Decor" = "천장";
 "Recipes" = "레시피";
+"Songs" = "음악";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -467,6 +468,7 @@
 "Digging up clams" = "조개를 삽으로 파기";
 "All villagers (while stung)" = "모든 주민";
 "Niko" = "방글";
+"K.K. concert" = "K.K. 콘서트";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -552,6 +554,7 @@
 "Only available while on a quest for Gulliver" = "죠니의 심부름 후";
 "Small shadow" = "작은 그림자";
 "Since 1.6.0, Leif sells pumpkin starts year-round." = "1.6.0 업데이트 후\n늘봉에게서 구매.";
+"Hidden song" = "숨겨진 음악";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";
