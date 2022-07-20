@@ -91,12 +91,20 @@ final class Items {
     }
     
     private func fetchVillagers() {
+        networkGroup.enter()
         network.requestList(VillagersRequest()) { result in
-            guard let response = try? result.get() else {
-                return
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                self.villagers.accept(items)
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 주민을을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
             }
-            let items = response.map { $0.toDomain() }
-            self.villagers.accept(items)
+            self.networkGroup.leave()
         }
     }
     

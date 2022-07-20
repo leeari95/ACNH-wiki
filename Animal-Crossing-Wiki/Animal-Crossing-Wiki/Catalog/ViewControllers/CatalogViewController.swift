@@ -74,6 +74,7 @@ class CatalogViewController: UIViewController {
             .subscribe(onNext: { owner, indexPath in
                 owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
+        
         output.isLoading
             .bind(to: self.activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)

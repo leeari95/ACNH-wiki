@@ -26,6 +26,7 @@ final class VillagersViewModel {
     
     struct Output {
         let villagers: Observable<[Villager]>
+        let isLoading: Observable<Bool>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -34,6 +35,7 @@ final class VillagersViewModel {
         var allVillagers = [Villager]()
         var likeVillagers = [Villager]()
         var houseVillagers = [Villager]()
+        let isLoading = BehaviorRelay<Bool>(value: true)
         
         input.searchBarText
             .compactMap { $0 }
@@ -155,6 +157,14 @@ final class VillagersViewModel {
                 }
             }).disposed(by: disposeBag)
         
-        return Output(villagers: indicationVillagers.asObservable())
+        Items.shared.isLoading
+            .subscribe(onNext: { value in
+                isLoading.accept(value)
+            }).disposed(by: disposeBag)
+        
+        return Output(
+            villagers: indicationVillagers.asObservable(),
+            isLoading: isLoading.asObservable()
+        )
     }
 }

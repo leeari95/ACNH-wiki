@@ -73,6 +73,14 @@ class VillagersViewController: UIViewController {
         return searchController
     }()
     
+    private lazy var activityIndicator: LoadingView = {
+        let activityIndicator = LoadingView(backgroundColor: .acBackground, alpha: 0.5)
+        view.addSubviews(activityIndicator)
+        activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        return activityIndicator
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -114,6 +122,10 @@ class VillagersViewController: UIViewController {
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
         }).disposed(by: disposeBag)
+        
+        output.isLoading
+            .bind(to: self.activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
     }
     
     private func setUpViews() {
