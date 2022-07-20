@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct CeilingDecorRequest: APIRequest {
-    typealias Response = CeilingDecorResponseDTO
+    typealias Response = [CeilingDecorResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Ceiling Decor.json"

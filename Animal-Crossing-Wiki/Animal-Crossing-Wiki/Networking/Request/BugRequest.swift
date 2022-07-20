@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct BugRequest: APIRequest {
-    typealias Response = BugResponseDTO
+    typealias Response = [BugResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Insects.json"

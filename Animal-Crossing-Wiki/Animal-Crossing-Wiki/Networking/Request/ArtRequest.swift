@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct ArtRequest: APIRequest {
-    typealias Response = ArtResponseDTO
+    typealias Response = [ArtResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Artwork.json"

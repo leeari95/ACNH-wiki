@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct SeaCreaturesRequest: APIRequest {
-    typealias Response = SeaCreaturesResponseDTO
+    typealias Response = [SeaCreaturesResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Sea Creatures.json"

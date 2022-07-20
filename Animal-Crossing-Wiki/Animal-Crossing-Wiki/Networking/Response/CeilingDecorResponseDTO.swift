@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CeilingDecorResponseDTO: Codable, APIResponse {
+struct CeilingDecorResponseDTO: Codable {
     let name: String
     let diy: Bool
     let patternCustomize: Bool

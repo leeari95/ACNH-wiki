@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct MiscellaneousRequest: APIRequest {
-    typealias Response = MiscellaneousResponseDTO
+    typealias Response = [MiscellaneousResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Miscellaneous.json"

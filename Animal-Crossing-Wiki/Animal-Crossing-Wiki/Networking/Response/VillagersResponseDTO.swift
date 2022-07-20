@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - VillagersResponseDTO
-struct VillagersResponseDTO: Codable, APIResponse {
+struct VillagersResponseDTO: Codable {
     let name: String
     let iconImage: String
     let photoImage: String

@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 protocol APIRequest: URLConvertible, URLRequestConvertible {
-    associatedtype Response: APIResponse
+    associatedtype Response: Decodable
 
     var method: HTTPMethod { get }
     var baseURL: URL? { get }

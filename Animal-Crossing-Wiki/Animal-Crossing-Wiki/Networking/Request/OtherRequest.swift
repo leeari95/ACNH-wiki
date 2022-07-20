@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct OtherRequest: APIRequest {
-    typealias Response = OtherResponseDTO
+    typealias Response = [OtherResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Other.json"

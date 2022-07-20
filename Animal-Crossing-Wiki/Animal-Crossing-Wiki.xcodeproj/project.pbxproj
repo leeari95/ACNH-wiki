@@ -49,7 +49,6 @@
 		9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */; };
 		9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919A28335AE90061AAF1 /* APIProvider.swift */; };
 		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
-		9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919E28335B130061AAF1 /* APIResponce.swift */; };
 		9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A3283361F20061AAF1 /* VillagersRequest.swift */; };
 		9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */; };
 		9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */; };
@@ -238,7 +237,6 @@
 		9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIProvider.swift; sourceTree = "<group>"; };
 		9A68919A28335AE90061AAF1 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
-		9A68919E28335B130061AAF1 /* APIResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponce.swift; sourceTree = "<group>"; };
 		9A6891A3283361F20061AAF1 /* VillagersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersRequest.swift; sourceTree = "<group>"; };
 		9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersResponseDTO.swift; sourceTree = "<group>"; };
 		9A6891A8283366220061AAF1 /* EnvironmentsVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentsVariable.swift; sourceTree = "<group>"; };
@@ -461,7 +459,6 @@
 			children = (
 				9A68919A28335AE90061AAF1 /* APIProvider.swift */,
 				9A68919C28335AFF0061AAF1 /* APIRequest.swift */,
-				9A68919E28335B130061AAF1 /* APIResponce.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1135,7 +1132,6 @@
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
 				9A7ACEEE287EC20B001D47CB /* ItemDetailViewController.swift in Sources */,
 				9A99AA52285C32C300629C4A /* PreferencesView.swift in Sources */,
-				9A68919F28335B130061AAF1 /* APIResponce.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,

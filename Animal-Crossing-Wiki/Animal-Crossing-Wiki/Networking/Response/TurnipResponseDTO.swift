@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - TurnipResponseDTO
-struct TurnipResponseDTO: Decodable, APIResponse {
+struct TurnipResponseDTO: Decodable {
     /// Request와 함께 서버로 전송된 입력들을 포함하는 배열, 최대 12개의 값이 담겨있습니다.
     let filters: [Int]
     /// 해당하는 주의 최소 가격.

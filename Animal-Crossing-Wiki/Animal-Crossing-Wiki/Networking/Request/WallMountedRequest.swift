@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct WallMountedRequest: APIRequest {
-    typealias Response = WallMountedResponseDTO
+    typealias Response = [WallMountedResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Wall-mounted.json"

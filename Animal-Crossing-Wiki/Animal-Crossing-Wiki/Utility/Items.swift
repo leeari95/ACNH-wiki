@@ -92,7 +92,7 @@ final class Items {
     
     private func fetchVillagers() {
         networkGroup.enter()
-        network.requestList(VillagersRequest()) { result in
+        network.request(VillagersRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -113,7 +113,7 @@ final class Items {
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
         group.enter()
-        network.requestList(BugRequest()) { result in
+        network.request(BugRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -128,7 +128,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(FishRequest()) { result in
+        network.request(FishRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -144,7 +144,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(FossilsRequest()) { result in
+        network.request(FossilsRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -159,7 +159,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(SeaCreaturesRequest()) { result in
+        network.request(SeaCreaturesRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -186,7 +186,7 @@ final class Items {
         var itemList: [Category: [Item]] = [:]
         
         group.enter()
-        network.requestList(ArtRequest()) { result in
+        network.request(ArtRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -201,7 +201,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(HousewaresRequest()) { result in
+        network.request(HousewaresRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -216,7 +216,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(MiscellaneousRequest()) { result in
+        network.request(MiscellaneousRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -231,7 +231,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(WallMountedRequest()) { result in
+        network.request(WallMountedRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -246,7 +246,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(CeilingDecorRequest()) { result in
+        network.request(CeilingDecorRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -261,7 +261,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(WallpaperRequest()) { result in
+        network.request(WallpaperRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -276,7 +276,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(FloorsRequest()) { result in
+        network.request(FloorsRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -291,7 +291,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(RugsRequest()) { result in
+        network.request(RugsRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -306,7 +306,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(OtherRequest()) { result in
+        network.request(OtherRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
@@ -322,7 +322,7 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(RecipesRequest()) { result in
+        network.request(RecipesRequest()) { result in
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }

@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct VillagersRequest: APIRequest {
-    typealias Response = VillagersResponseDTO
+    typealias Response = [VillagersResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Villagers.json"

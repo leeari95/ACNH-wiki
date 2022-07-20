@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct HousewaresRequest: APIRequest {
-    typealias Response = HousewaresResponseDTO
+    typealias Response = [HousewaresResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Housewares.json"

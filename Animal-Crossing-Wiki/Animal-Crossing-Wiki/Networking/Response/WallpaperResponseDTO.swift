@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WallpaperResponseDTO: Codable, APIResponse {
+struct WallpaperResponseDTO: Codable {
     let name: String //
     let image: String //
     let vfx: Bool

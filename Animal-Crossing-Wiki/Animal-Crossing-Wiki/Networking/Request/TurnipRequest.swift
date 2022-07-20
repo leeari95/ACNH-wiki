@@ -10,7 +10,7 @@ import Alamofire
 
 // MARK: - TurnipRequest
 struct TurnipRequest: APIRequest {
-    typealias Response = TurnipResponseDTO
+    typealias Response = [TurnipResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.turnupURL)
     let path: String = ""

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MiscellaneousResponseDTO: Codable, APIResponse {
+struct MiscellaneousResponseDTO: Codable {
     
     let name: String
     let image: String?

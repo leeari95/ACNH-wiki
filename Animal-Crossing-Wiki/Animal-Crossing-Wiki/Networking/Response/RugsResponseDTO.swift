@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RugsResponseDTO: Codable, APIResponse {
+struct RugsResponseDTO: Codable {
     let name: String
     let image: String
     let diy: Bool

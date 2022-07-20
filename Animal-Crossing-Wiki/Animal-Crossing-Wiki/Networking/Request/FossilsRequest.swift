@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct FossilsRequest: APIRequest {
-    typealias Response = FossilsResponseDTO
+    typealias Response = [FossilsResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Fossils.json"

@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct FloorsRequest: APIRequest {
-    typealias Response = FloorsResponseDTO
+    typealias Response = [FloorsResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Floors.json"

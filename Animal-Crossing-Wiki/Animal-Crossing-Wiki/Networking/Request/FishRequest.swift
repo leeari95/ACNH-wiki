@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct FishRequest: APIRequest {
-    typealias Response = FishResponseDTO
+    typealias Response = [FishResponseDTO]
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Fish.json"

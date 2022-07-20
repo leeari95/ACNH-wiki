@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct RugsRequest: APIRequest {
-    typealias Response = RugsResponseDTO
+    typealias Response = [RugsResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Rugs.json"

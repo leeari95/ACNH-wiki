@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct WallpaperRequest: APIRequest {
-    typealias Response = WallpaperResponseDTO
+    typealias Response = [WallpaperResponseDTO]
     let method: HTTPMethod = HTTPMethod.get
     let baseURL: URL? = URL(string: EnvironmentsVariable.repoURL)
     let path: String = "Wallpaper.json"
