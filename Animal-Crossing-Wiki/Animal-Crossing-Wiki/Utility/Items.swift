@@ -31,7 +31,7 @@ final class Items {
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     private let userItems = BehaviorRelay<[Category: [Item]]>(value: [:])
     
-    private(set) var allItemList: [String: Item] = [:]
+    private(set) var materialsItemList: [String: Item] = [:]
     
     private init() {
         setUpUserCollection()
@@ -322,7 +322,7 @@ final class Items {
             let materials = Array(Set(materialsValues.flatMap { $0 }))
             let materialsItems = self.allItems.value
                 .filter { $0.category != .recipes && materials.contains($0.name) }
-            self.allItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
+            self.materialsItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)
         }

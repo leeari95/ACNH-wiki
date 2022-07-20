@@ -155,6 +155,7 @@
 "Pattern" = "패턴";
 "Reformable" = "리폼 가능";
 "Not reformed" = "리폼 불가";
+"Materials" = "재료";
 
 // MARK: - ItemDetailInfoView
 "Underwater" = "바닷속 수중";
@@ -1046,59 +1047,58 @@
 "Pretty Good Tools Recipes" = "언제나 쓸 수 있는 도구 레시피";
 
 // MARK: - Source Notes Recipe
-"Obtained during the main storyline during the villager house development quest if the native fruit is oranges" = "섬의 과일이 오렌지일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is roses" = "섬의 꽃이 장미일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is tulips" = "섬의 꽃이 튤립일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is windflowers" = "섬의 꽃이 아네모네일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native fruit is cherries" = "섬의 과일이 체리일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is pansies" = "섬의 꽃이 팬지일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is cosmos" = "섬의 꽃이 코스모스일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is lilies" = "섬의 꽃이 백합일 때 주민집 발전 퀘스트 완료";
-"Obtained during the main storyline during the villager house development quest if the native flower is mums" = "섬의 꽃이 국화일 때 주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native fruit is oranges" = "섬의 과일이 오렌지일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is roses" = "섬의 꽃이 장미일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is tulips" = "섬의 꽃이 튤립일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is windflowers" = "섬의 꽃이 아네모네일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native fruit is cherries" = "섬의 과일이 체리일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is pansies" = "섬의 꽃이 팬지일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is cosmos" = "섬의 꽃이 코스모스일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is lilies" = "섬의 꽃이 백합일 때\n주민집 발전 퀘스트 완료";
+"Obtained during the main storyline during the villager house development quest if the native flower is mums" = "섬의 꽃이 국화일 때\n주민집 발전 퀘스트 완료";
 "Purchase Test Your DIY Skills from Nook\'s Cranny" = "도전! DIY 레시피를 너굴 상점에서 구매";
-"Obtained during the main storyline during the villager house development quest if the native flower is hyacinths" = "섬의 꽃이 히아신스일 때 주민집 발전 퀘스트 완료";
-"Purchase Wildest Dreams DIY from Nook\'s Cranny" = "DIY 레시피
-무엇이든 뚝딱?! DIY 레시피를 너굴 상점에서 구매";
+"Obtained during the main storyline during the villager house development quest if the native flower is hyacinths" = "섬의 꽃이 히아신스일 때\n주민집 발전 퀘스트 완료";
+"Purchase Wildest Dreams DIY from Nook\'s Cranny" = "DIY 레시피\n무엇이든 뚝딱?! DIY 레시피를\n너굴 상점에서 구매";
 "Reward for making a perfect Snowboy" = "완벽한 눈사람을 만든 후 획득";
 "Fish up 15 trash" = "낚시로 쓰레기 15개 낚기";
 "Obtained during the main storyline" = "메인 스토리 진행 중 획득";
 "Talk to Pavé during the Festivale event" = "축제 때 베르리나와 대화하기";
 "Also obtained from digging up an existing pitfall" = "기존 함정을 파헤쳐 획득";
-"Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서 삶에 풍요를! 하베스트 DIY 레시피를 구매";
-"Obtain Turkey Day Recipes from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서 추수감사절 레시피를 구매";
+"Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서\n삶에 풍요를! 하베스트 DIY\n레시피를 구매";
+"Obtain Turkey Day Recipes from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서\n추수감사절 레시피를 구매";
 "Fish up 3 empty cans" = "빈 통조림 캔 3개 낚기";
-"Obtained during the main storyline during the villager house development quest if the native fruit is peaches" = "섬 과일이 복숭아일 때 스토리 잰행 중에 주민 집 발전 퀘스트 완료";
-"Received in the mail after buying veggies from Leif on 3 different days." = "늘봉에게서 야채를 3일 이상 구매하였을 때 우편으로 획득";
-"Purchase DIY for Beginners at Nook\'s Cranny" = "너굴 상점에서 첫 DIY 레시피 구매";
-"Reward from Zipper after crafting all Bunny Day recipes" = "모든 이스터 아이템을 만든 후 토빗에게 획득";
+"Obtained during the main storyline during the villager house development quest if the native fruit is peaches" = "섬 과일이 복숭아일 때\n스토리 잰행 중에 주민 집 발전 퀘스트 완료";
+"Received in the mail after buying veggies from Leif on 3 different days." = "늘봉에게서 야채를\n3일 이상 구매하였을 때\n우편으로 획득";
+"Purchase DIY for Beginners at Nook\'s Cranny" = "너굴 상점에서\n첫 DIY 레시피 구매";
+"Reward from Zipper after crafting all Bunny Day recipes" = "모든 이스터 아이템을 만든 후\n토빗에게 획득";
 "Sent in the mail after purchasing turnips" = "무 구매 후 편지로 획득";
-"50% chance of being obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중 메인 스토리 진행 중 50% 확률로 획득";
+"50% chance of being obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중\n메인 스토리 진행 중\n50% 확률로 획득";
 "Sit down for coffee on 5 different days" = "5일 동안 앉아서 커피 마시기";
-"Obtained from crafting villagers during October or as a reward for gifting candy on Halloween" = "10월에 마을 주민, 할로윈 때 사탕을 선물로 주면 보상으로 획득";
-"Obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중 메인 스토리 진행 중 획득";
+"Obtained from crafting villagers during October or as a reward for gifting candy on Halloween" = "10월에 마을 주민\n할로윈 때 사탕을 선물로 주면\n보상으로 획득";
+"Obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중\n메인 스토리 진행 중 획득";
 "Fish up 1 empty can" = "빈 통조림 캔 1개 낚기";
-"Balloon appears after shooting 300 balloons" = "Balloon appears after shooting 300 balloons";
-"Fish up 1 boot" = "Fish up 1 boot";
-"Fish up 1 old tire" = "Fish up 1 old tire";
-"Fish up 3 old tires" = "Fish up 3 old tires";
+"Balloon appears after shooting 300 balloons" = "300개의 풍선을\n터뜨리면 나타나는 특별한 풍선";
+"Fish up 1 boot" = "장화 1개 낚기";
+"Fish up 1 old tire" = "타이어 1개 낚기";
+"Fish up 3 old tires" = "타이어 3개 낚기";
 "Obtained after the 5-star island evaluation" = "5성 섬 평가 후 획득";
 "Obtained during the main storyline during the customization workshop" = "리폼 체험 워크숍 진행 중 획득";
 "Obtained during the main storyline during the villager house development quest if the native fruit is apples" = "특산물이 사과일 때\n주민 집 발전 퀘스트\n완료 시 획득";
 "Obtained during the main storyline during the villager house development quest if the native fruit is pears" = "특산물이 배일 때\n주민 집 발전 퀘스트\n완료 시 획득";
 "Obtained from Tom Nook after completing his DIY Workshop at the beginning of the game" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득";
-"Obtained from Tom Nook after completing one Nature Day Nook Miles+ task" = "지구의 날 마일리지 완료 후 너굴에게서 획득";
+"Obtained from Tom Nook after completing one Nature Day Nook Miles+ task" = "지구의 날 마일리지 완료 후\n너굴에게서 획득";
 "Obtained from Leif after buying anything from him on three different days" = "3일 동안 늘봉에게\n물건을 구매한 후\n늘봉에게서 획득";
-"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game" = "게임 진행 중 너굴의 DIY 워크숍 진행 중";
+"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game" = "게임 진행 중\n너굴의 DIY 워크숍 진행 중";
 "Obtained through Tom Nook\'s DIY Workshop at the beginning of the game and can also be purchased at Nook\'s Cranny" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득,\n너굴 상점";
 "Picking up gold nuggets knocked out of rocks" = "돌을 친 후 금광석 줍기";
 "Purchase Pretty Good Tools Recipes via Nook Miles Redemption" = "너굴 상점에서\n언제나 쓸 수 있는 도구 레시피 구매";
-"Received after completing 8th HHP house" = "8번째 해피홈 파라다이스 하우스를 완료하였을 때";
-"Received after donating DIY materials after 19th HHP house" = "DIY 재료 기부 후\n19번째 해피홈 파라다이스 하우스 때";
+"Received after completing 8th HHP house" = "8번째 해피홈 파라다이스 하우스를\n완료하였을 때";
+"Received after donating DIY materials, after 19th HHP house" = "DIY 재료 기부 후\n19번째 해피홈 파라다이스 하우스 때";
 "Received the day after completing 15th HHP house" = "15번째 해피홈 파라다이스 하우스를\n완료하였을 때";
-"Reward for gifting lollipop on Halloween" = "할로윈 때 롤리팝을 선물로 주었을 때";
+"Reward for gifting lollipop on Halloween" = "할로윈 때\n롤리팝을 선물로 주었을 때";
 "Reward from Jingle after delivering more than half the gifts on Toy Day" = "크리스마스 이브 때\n선물 배달 후 루돌에게서 획득";
 "Reward from Zipper after collecting all 6 egg types" = "6개 달걀을 모두 모은 후\n토빗에게서 획득";
-"Reward from Zipper after crafting wobbling Zipper toy" = "토빗 오뚝이를 만든 후 토빗에게 획득";
+"Reward from Zipper after crafting wobbling Zipper toy" = "토빗 오뚝이를 만든 후\n토빗에게 획득";
 
 // MARK: - ItemOtherInfoView
 "Whether to buy" = "구매 여부";

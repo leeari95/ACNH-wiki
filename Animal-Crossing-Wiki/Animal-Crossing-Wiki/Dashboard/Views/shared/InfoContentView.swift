@@ -18,28 +18,31 @@ class InfoContentView: UIStackView {
         return label
     }()
     
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    
     private func configure() {
         axis = .horizontal
         alignment = .fill
         distribution = .fill
-        spacing = 4
-        addArrangedSubviews(titleLabel)
+        spacing = 8
     }
 }
 
 extension InfoContentView {
     convenience init(title: String, contentView: UIView...) {
         self.init(frame: .zero)
+        configure()
         self.titleLabel.text = title
+        addArrangedSubviews(titleLabel)
+        addArrangedSubviews(contentView)
+    }
+    
+    convenience init(item: Item, contentView: UIView...) {
+        self.init(frame: .zero)
+        configure()
+        self.titleLabel.text = item.translations.localizedName()
+        let icon = UIImageView(path: item.image ?? item.iconImage ?? "")
+        icon.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        icon.heightAnchor.constraint(equalTo: icon.widthAnchor).isActive = true
+        addArrangedSubviews(icon, titleLabel)
         addArrangedSubviews(contentView)
     }
     

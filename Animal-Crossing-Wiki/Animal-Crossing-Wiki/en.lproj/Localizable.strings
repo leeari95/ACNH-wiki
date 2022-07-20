@@ -152,6 +152,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Variants" = "Variants";
 "Reformable" = "Reformable";
 "Not reformed" = "Not reformed";
+"Materials" = "Materials";
 
 // MARK: - ItemDetailInfoView
 "Underwater" = "Underwater";
@@ -1085,7 +1086,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Picking up gold nuggets knocked out of rocks" = "Picking up gold nuggets knocked out of rocks";
 "Purchase Pretty Good Tools Recipes via Nook Miles Redemption" = "Purchase Pretty Good Tools Recipes via Nook Miles Redemption";
 "Received after completing 8th HHP house" = "Received after completing 8th HHP house";
-"Received after donating DIY materials after 19th HHP house" = "Received after donating DIY materials after 19th HHP house";
+"Received after donating DIY materials, after 19th HHP house" = "Received after donating DIY materials, after 19th HHP house";
 "Received the day after completing 15th HHP house" = "Received the day after completing 15th HHP house";
 "Reward for gifting lollipop on Halloween" = "Reward for gifting lollipop on Halloween";
 "Reward from Jingle after delivering more than half the gifts on Toy Day" = "Reward from Jingle after delivering more than half the gifts on Toy Day";

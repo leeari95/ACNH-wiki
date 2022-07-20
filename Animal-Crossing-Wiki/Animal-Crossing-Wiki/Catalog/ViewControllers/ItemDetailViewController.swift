@@ -102,6 +102,7 @@ class ItemDetailViewController: UIViewController {
         setUpOther(item)
         setUpSaeson(item)
         setUpKeyword(item)
+        setUpMaterials(item)
     }
     
     private func setUpDetail(_ item: Item) {
@@ -199,5 +200,18 @@ class ItemDetailViewController: UIViewController {
             )
             sectionsScrollView.addSection(keywordListView)
         }
+    }
+    
+    private func setUpMaterials(_ item: Item) {
+        guard item.recipe?.materials.isEmpty == false else {
+            return
+        }
+        let materialsView = ItemMaterialsView(item: item)
+        let materialsSection = SectionView(
+            title: "Materials".localized,
+            iconName: "book.closed.fill",
+            contentView: materialsView
+        )
+        sectionsScrollView.addSection(materialsSection)
     }
 }
