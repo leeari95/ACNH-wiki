@@ -32,7 +32,7 @@ struct RugsResponseDTO: Codable, APIResponse {
     let colors: [Color]
     let concepts: [String]
     let series: String?
-    let recipe: Recipe?
+    let recipe: RecipeResponseDTO?
     let seriesTranslations: Translations?
 }
 

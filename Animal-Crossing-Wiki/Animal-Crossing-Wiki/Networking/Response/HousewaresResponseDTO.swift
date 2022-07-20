@@ -50,7 +50,7 @@ struct HousewaresResponseDTO: Codable, APIResponse {
     let concepts: [Concept]?
     let set: String?
     let series: String?
-    let recipe: Recipe?
+    let recipe: RecipeResponseDTO?
     let seriesTranslations: Translations?
     let variations: [Variant]?
 
@@ -164,33 +164,6 @@ enum InteractEnum: String, Codable {
     case workbench = "Workbench"
 }
 
-// MARK: - Recipe
-struct Recipe: Codable {
-    let name: String
-    let image: String
-    let imageSh: String?
-    let buy: Int
-    let sell: Int?
-    let exchangePrice: Int?
-    let exchangeCurrency: ExchangeCurrency?
-    let source: [String]
-    let sourceNotes: [String]?
-    let seasonEvent: String?
-    let seasonEventExclusive: Bool?
-    let versionAdded: String
-    let unlocked: Bool
-    let recipesToUnlock: Int
-    let category: String
-    let craftedItemInternalId: Int
-    let cardColor: String?
-    let diyIconFilename: String
-    let diyIconFilenameSh: String?
-    let serialId: Int
-    let internalId: Int
-    let materials: [String: Int]
-    let materialsTranslations: [String: Translations?]
-}
-
 // MARK: - Variation
 struct Variant: Codable {
     let image: String
@@ -287,7 +260,7 @@ extension Item {
         concepts: [Concept]?,
         set: String?,
         series: String?,
-        recipe: Recipe?,
+        recipe: RecipeResponseDTO?,
         seriesTranslations: Translations?,
         variations: [Variant]?,
         foodPower: Int? = nil,

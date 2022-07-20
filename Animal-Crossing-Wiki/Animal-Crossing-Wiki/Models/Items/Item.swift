@@ -59,7 +59,7 @@ struct Item {
     var internalId: Int?
     var set: String?
     var series: String?
-    var recipe: Recipe?
+    var recipe: RecipeResponseDTO?
     var seriesTranslations: Translations?
     var variations: [Variant]?
     

@@ -292,6 +292,21 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.requestList(RecipesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.recipes] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 레시피를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.categories.accept(itemList)
             var itemsCount = [Category: Int]()
@@ -301,9 +316,12 @@ final class Items {
                 currentItems.append(contentsOf: value)
                 self.allItems.accept(currentItems)
             }
-            let materialsValues = self.allItems.value.compactMap { $0.recipe?.materials.map { $0.key.description } }
+            let materialsValues = self.allItems.value
+                .filter { $0.category == .recipes }
+                .compactMap { $0.recipe?.materials.map { $0.key.description } }
             let materials = Array(Set(materialsValues.flatMap { $0 }))
-            let materialsItems = self.allItems.value.filter { materials.contains($0.name) }
+            let materialsItems = self.allItems.value
+                .filter { $0.category != .recipes && materials.contains($0.name) }
             self.allItemList = Dictionary(uniqueKeysWithValues: zip(materialsItems.map { $0.name }, materialsItems))
             self.currentItemsCount.accept(itemsCount)
             self.isLoad.accept(true)

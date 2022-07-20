@@ -53,7 +53,7 @@ struct MiscellaneousResponseDTO: Codable, APIResponse {
     let concepts: [Concept]?
     let set: String?
     let series: String?
-    let recipe: Recipe?
+    let recipe: RecipeResponseDTO?
     let variations: [Variant]?
     
 }

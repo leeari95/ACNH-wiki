@@ -85,7 +85,7 @@ class ItemOtherInfoView: UIView {
             whereHowLabel.text = "Underwater".localized
         case .fossils, .art:
             whereHowLabel.text = item.source?.localized
-        case .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other:
+        case .housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other, .recipes:
             whereHowLabel.text = item.sources?.reduce(with: ", ", characters: [",", " "])
         }
         let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)

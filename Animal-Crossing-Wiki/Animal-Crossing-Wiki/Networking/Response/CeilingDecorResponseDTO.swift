@@ -31,7 +31,7 @@ struct CeilingDecorResponseDTO: Codable, APIResponse {
     let variations: [Variant]
     let set: String?
     let series: String?
-    let recipe: Recipe?
+    let recipe: RecipeResponseDTO?
 }
 
 extension CeilingDecorResponseDTO {
@@ -91,7 +91,7 @@ extension Item {
         concepts: [Concept]?,
         set: String?,
         series: String?,
-        recipe: Recipe?,
+        recipe: RecipeResponseDTO?,
         seriesTranslations: Translations?,
         variations: [Variant]?
     ) {

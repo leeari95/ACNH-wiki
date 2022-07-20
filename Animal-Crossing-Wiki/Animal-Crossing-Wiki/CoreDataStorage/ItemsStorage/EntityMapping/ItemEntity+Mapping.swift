@@ -123,7 +123,7 @@ extension ItemEntity {
                     internalId: Int(internalId),
                     set: set,
                     series: series,
-                    recipe: Recipe(recipe ?? [:]),
+                    recipe: RecipeResponseDTO(recipe ?? [:]),
                     seriesTranslations: Translations(seriesTranslations ?? [:]),
                     variations: variations?.compactMap { Variant($0)})
     }
@@ -203,7 +203,7 @@ extension Translations {
     }
 }
 
-extension Recipe {
+extension RecipeResponseDTO {
     func toDictionary() -> [String: Any] {
         var translations = [String: [String: String]]()
         materialsTranslations.forEach { (key: String, value: Translations?) in
@@ -231,6 +231,7 @@ extension Recipe {
             "diyIconFilenameSh" : diyIconFilenameSh ?? "",
             "serialId" : serialId,
             "internalId" : internalId,
+            "translations": self.translations?.toDictionary() ?? [:],
             "materials" : materials,
             "materialsTranslations" : translations
         ]
@@ -263,6 +264,7 @@ extension Recipe {
             diyIconFilenameSh: dictionary["diyIconFilenameSh"] as? String,
             serialId: dictionary["serialId"] as? Int ?? 0,
             internalId: dictionary["internalId"] as? Int ?? 0,
+            translations: Translations(dictionary["translations"] as? [String: String] ?? [:]),
             materials: dictionary["materials"] as? [String: Int] ?? [:],
             materialsTranslations: translations
         )

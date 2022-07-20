@@ -91,7 +91,7 @@ extension CatalogCell {
             priceView = ItemBellsView(mode: .sell, price: item.sell)
         case .art:
             priceView = ItemBellsView(mode: .buy, price: item.sell)
-        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other, .ceilingDecor:
+        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other, .ceilingDecor, .recipes:
             if item.canExchangeNookMiles, let price = item.exchangePrice {
                 priceView = ItemBellsView(mode: .miles, price: price)
             } else if item.canExchangeNookPoints, let price = item.exchangePrice {

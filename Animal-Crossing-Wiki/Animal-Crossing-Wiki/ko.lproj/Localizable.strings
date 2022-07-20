@@ -130,6 +130,7 @@
 "Rugs" = "러그";
 "Other" = "기타";
 "Ceiling Decor" = "천장";
+"Recipes" = "레시피";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -464,6 +465,7 @@
 "Basic Cooking Recipes" = "간단! 쿠킹 레시피";
 "Digging up clams" = "조개를 삽으로 파기";
 "All villagers (while stung)" = "모든 주민";
+"Niko" = "방글";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -1026,6 +1028,22 @@
 "Catching a red snapper" = "도미 잡기";
 "Catching a blue marlin" = "청새치 잡기";
 "Catching a squid" = "오징어 잡기";
+"Breaking 100 axes" = "도끼 100개 부러뜨리기";
+"Collecting earth eggs" = "땅 달걀 수집";
+"Collecting leaf eggs" = "나뭇잎 달걀 수집";
+"Collecting sky eggs" = "하늘 달걀 수집";
+"Collecting stone eggs" = "돌 달걀 수집";
+"Collecting water eggs" = "물 달걀 수집";
+"Collecting wood eggs" = "나무 달걀 수집";
+"Completing bug Critterpedia" = "곤충 도감 채우기";
+"Completing fish Critterpedia" = "물고기 도감 채우기";
+"Custom Fencing in a Flash" = "뚝딱! 울타리 리폼 BOOK";
+"Gold balloon" = "금 풍선";
+"Harvey" = "파니엘";
+"Helping Gulliver 30 times" = "죠니 퀘스트 30번 완료";
+"Jack" = "펌킹";
+"Learning all egg outfit DIYs" = "모든 달걀 DIY 배우기";
+"Pretty Good Tools Recipes" = "언제나 쓸 수 있는 도구 레시피";
 
 // MARK: - Source Notes Recipe
 "Obtained during the main storyline during the villager house development quest if the native fruit is oranges" = "섬의 과일이 오렌지일 때 주민집 발전 퀘스트 완료";
@@ -1059,6 +1077,28 @@
 "Obtained from crafting villagers during October or as a reward for gifting candy on Halloween" = "10월에 마을 주민, 할로윈 때 사탕을 선물로 주면 보상으로 획득";
 "Obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중 메인 스토리 진행 중 획득";
 "Fish up 1 empty can" = "빈 통조림 캔 1개 낚기";
+"Balloon appears after shooting 300 balloons" = "Balloon appears after shooting 300 balloons";
+"Fish up 1 boot" = "Fish up 1 boot";
+"Fish up 1 old tire" = "Fish up 1 old tire";
+"Fish up 3 old tires" = "Fish up 3 old tires";
+"Obtained after the 5-star island evaluation" = "5성 섬 평가 후 획득";
+"Obtained during the main storyline during the customization workshop" = "리폼 체험 워크숍 진행 중 획득";
+"Obtained during the main storyline during the villager house development quest if the native fruit is apples" = "특산물이 사과일 때\n주민 집 발전 퀘스트\n완료 시 획득";
+"Obtained during the main storyline during the villager house development quest if the native fruit is pears" = "특산물이 배일 때\n주민 집 발전 퀘스트\n완료 시 획득";
+"Obtained from Tom Nook after completing his DIY Workshop at the beginning of the game" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득";
+"Obtained from Tom Nook after completing one Nature Day Nook Miles+ task" = "지구의 날 마일리지 완료 후 너굴에게서 획득";
+"Obtained from Leif after buying anything from him on three different days" = "3일 동안 늘봉에게\n물건을 구매한 후\n늘봉에게서 획득";
+"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game" = "게임 진행 중 너굴의 DIY 워크숍 진행 중";
+"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game and can also be purchased at Nook\'s Cranny" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득,\n너굴 상점";
+"Picking up gold nuggets knocked out of rocks" = "돌을 친 후 금광석 줍기";
+"Purchase Pretty Good Tools Recipes via Nook Miles Redemption" = "너굴 상점에서\n언제나 쓸 수 있는 도구 레시피 구매";
+"Received after completing 8th HHP house" = "8번째 해피홈 파라다이스 하우스를 완료하였을 때";
+"Received after donating DIY materials after 19th HHP house" = "DIY 재료 기부 후\n19번째 해피홈 파라다이스 하우스 때";
+"Received the day after completing 15th HHP house" = "15번째 해피홈 파라다이스 하우스를\n완료하였을 때";
+"Reward for gifting lollipop on Halloween" = "할로윈 때 롤리팝을 선물로 주었을 때";
+"Reward from Jingle after delivering more than half the gifts on Toy Day" = "크리스마스 이브 때\n선물 배달 후 루돌에게서 획득";
+"Reward from Zipper after collecting all 6 egg types" = "6개 달걀을 모두 모은 후\n토빗에게서 획득";
+"Reward from Zipper after crafting wobbling Zipper toy" = "토빗 오뚝이를 만든 후 토빗에게 획득";
 
 // MARK: - ItemOtherInfoView
 "Whether to buy" = "구매 여부";

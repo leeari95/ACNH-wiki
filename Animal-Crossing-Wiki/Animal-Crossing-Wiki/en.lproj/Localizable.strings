@@ -128,6 +128,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Rugs" = "Rugs";
 "Other" = "Other";
 "Ceiling Decor" = "Ceiling Decor";
+"Recipes" = "Recipes";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -463,6 +464,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Digging up clams" = "Digging up clams";
 "All villagers (while stung)" = "All villagers (while stung)";
 "Basic Cooking Recipes" = "Basic Cooking Recipes";
+"Niko" = "Niko";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -1019,6 +1021,22 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Catching a red snapper" = "Catching a red snapper";
 "Catching a blue marlin" = "Catching a blue marlin";
 "Catching a squid" = "Catching a squid";
+"Breaking 100 axes" = "Breaking 100 axes";
+"Collecting earth eggs" = "Collecting earth eggs";
+"Collecting leaf eggs" = "Collecting leaf eggs";
+"Collecting sky eggs" = "Collecting sky eggs";
+"Collecting stone eggs" = "Collecting stone eggs";
+"Collecting water eggs" = "Collecting water eggs";
+"Collecting wood eggs" = "Collecting wood eggs";
+"Completing bug Critterpedia" = "Completing bug Critterpedia";
+"Completing fish Critterpedia" = "Completing fish Critterpedia";
+"Custom Fencing in a Flash" = "Custom Fencing in a Flash";
+"Gold balloon" = "Gold balloon";
+"Harvey" = "Harvey";
+"Helping Gulliver 30 times" = "Helping Gulliver 30 times";
+"Jack" = "Jack";
+"Learning all egg outfit DIYs" = "Learning all egg outfit DIYs";
+"Pretty Good Tools Recipes" = "Pretty Good Tools Recipes";
 
 // MARK: - Source Notes Recipe
 "Obtained during the main storyline during the villager house development quest if the native fruit is oranges" = "Obtained during the main storyline during the villager house development quest if the native fruit is oranges";
@@ -1051,6 +1069,29 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Obtained from crafting villagers during October or as a reward for gifting candy on Halloween" = "Obtained from crafting villagers during October or as a reward for gifting candy on Halloween";
 "Obtained during the main storyline during the villager house development quest" = "Obtained during the main storyline during the villager house development quest";
 "Fish up 1 empty can" = "Fish up 1 empty can";
+"Balloon appears after shooting 300 balloons" = "Balloon appears after shooting 300 balloons";
+"Fish up 1 boot" = "Fish up 1 boot";
+"Fish up 1 old tire" = "Fish up 1 old tire";
+"Fish up 3 old tires" = "Fish up 3 old tires";
+"Obtained after the 5-star island evaluation" = "Obtained after the 5-star island evaluation";
+"Obtained during the main storyline during the customization workshop" = "Obtained during the main storyline during the customization workshop";
+"Obtained during the main storyline during the villager house development quest if the native fruit is apples" = "Obtained during the main storyline during the villager house development quest if the native fruit is apples";
+"Obtained during the main storyline during the villager house development quest if the native fruit is pears" = "Obtained during the main storyline during the villager house development quest if the native fruit is pears";
+"Obtained from Tom Nook after completing his DIY Workshop at the beginning of the game" = "Obtained from Tom Nook after completing his DIY Workshop at the beginning of the game";
+"Obtained from Tom Nook after completing one Nature Day Nook Miles+ task" = "Obtained from Tom Nook after completing one Nature Day Nook Miles+ task";
+"Obtained from Leif after buying anything from him on three different days" = "Obtained from Leif after buying anything from him on three different days";
+"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game" = "Obtained through Tom Nook\'s DIY Workshop at the beginning of the game";
+"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game and can also be purchased at Nook\'s Cranny" = "Obtained through Tom Nook\'s DIY Workshop at the beginning of the game and can also be purchased at Nook\'s Cranny";
+"Picking up gold nuggets knocked out of rocks" = "Picking up gold nuggets knocked out of rocks";
+"Purchase Pretty Good Tools Recipes via Nook Miles Redemption" = "Purchase Pretty Good Tools Recipes via Nook Miles Redemption";
+"Received after completing 8th HHP house" = "Received after completing 8th HHP house";
+"Received after donating DIY materials after 19th HHP house" = "Received after donating DIY materials after 19th HHP house";
+"Received the day after completing 15th HHP house" = "Received the day after completing 15th HHP house";
+"Reward for gifting lollipop on Halloween" = "Reward for gifting lollipop on Halloween";
+"Reward from Jingle after delivering more than half the gifts on Toy Day" = "Reward from Jingle after delivering more than half the gifts on Toy Day";
+"Reward from Zipper after collecting all 6 egg types" = "Reward from Zipper after collecting all 6 egg types";
+"Reward from Zipper after crafting wobbling Zipper toy" = "Reward from Zipper after crafting wobbling Zipper toy";
+
 
 // MARK: - ItemOtherInfoView
 "Catalog" = "Catalog";

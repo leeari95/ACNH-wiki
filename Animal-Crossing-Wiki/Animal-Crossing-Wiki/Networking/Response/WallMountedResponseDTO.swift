@@ -50,7 +50,7 @@ struct WallMountedResponseDTO: Codable, APIResponse {
     let concepts: [Concept]?
     let set: String?
     let series: String?
-    let recipe: Recipe?
+    let recipe: RecipeResponseDTO?
     let variations: [Variant]?
 
 }
@@ -111,7 +111,7 @@ extension Item {
         translations: Translations,
         colors: [Color],
         series: String?,
-        recipe: Recipe?,
+        recipe: RecipeResponseDTO?,
         seriesTranslations: Translations?
     ) {
         self.name = name

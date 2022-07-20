@@ -28,6 +28,8 @@
 		9A3CFB49288295CA00B0FFCB /* CeilingDecorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */; };
 		9A3DE3CA28869137006EECF7 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3C928869137006EECF7 /* LoadingView.swift */; };
 		9A3DE3CC2886AFDA006EECF7 /* UINavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3CB2886AFDA006EECF7 /* UINavigationItem.swift */; };
+		9A3DE3CE2887B6F5006EECF7 /* RecipeResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */; };
+		9A3DE3D02887B7E6006EECF7 /* RecipesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */; };
 		9A4B4C33285033B300CC687C /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C32285033B300CC687C /* Fruit.swift */; };
 		9A4B4C35285034BA00CC687C /* Villager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C34285034BA00CC687C /* Villager.swift */; };
 		9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C3628503A0400CC687C /* DailyTask.swift */; };
@@ -212,6 +214,8 @@
 		9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CeilingDecorRequest.swift; sourceTree = "<group>"; };
 		9A3DE3C928869137006EECF7 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		9A3DE3CB2886AFDA006EECF7 /* UINavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationItem.swift; sourceTree = "<group>"; };
+		9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeResponseDTO.swift; sourceTree = "<group>"; };
+		9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesRequest.swift; sourceTree = "<group>"; };
 		9A4B4C32285033B300CC687C /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		9A4B4C34285034BA00CC687C /* Villager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Villager.swift; sourceTree = "<group>"; };
 		9A4B4C3628503A0400CC687C /* DailyTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTask.swift; sourceTree = "<group>"; };
@@ -490,6 +494,7 @@
 				9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */,
 				9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */,
 				9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */,
+				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -512,6 +517,7 @@
 				9A3CFB382880787100B0FFCB /* RugsResponseDTO.swift */,
 				9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */,
 				9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */,
+				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1110,6 +1116,7 @@
 				9A7ACEE7287EC194001D47CB /* VillagerDetailView.swift in Sources */,
 				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
 				9A99AA2C28597B7500629C4A /* TodaysTasksView.swift in Sources */,
+				9A3DE3D02887B7E6006EECF7 /* RecipesRequest.swift in Sources */,
 				9A4B4C33285033B300CC687C /* Fruit.swift in Sources */,
 				9A6891AF2833690A0061AAF1 /* TurnipResponseDTO.swift in Sources */,
 				9A3CFB49288295CA00B0FFCB /* CeilingDecorRequest.swift in Sources */,
@@ -1150,6 +1157,7 @@
 				9A99AA6A28618C8200629C4A /* UserInfoSectionViewModel.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
+				9A3DE3CE2887B6F5006EECF7 /* RecipeResponseDTO.swift in Sources */,
 				9A7ACF29287FD984001D47CB /* ItemVariantsView.swift in Sources */,
 				9A4B4C35285034BA00CC687C /* Villager.swift in Sources */,
 				9AF0420C28530C5F00C51449 /* VillagersLikeEntity+Mapping.swift in Sources */,
