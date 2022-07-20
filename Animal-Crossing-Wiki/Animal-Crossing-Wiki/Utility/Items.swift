@@ -18,6 +18,7 @@ final class Items {
     private let villagersLikeStorage = CoreDataVillagersLikeStorage()
     private let villagersHouseStorage = CoreDataVillagersHouseStorage()
     private let disposeBag = DisposeBag()
+    private let networkGroup = DispatchGroup()
     
     private let villagers = BehaviorRelay<[Villager]>(value: [])
     private let villagersLike = BehaviorRelay<[Villager]>(value: [])
@@ -26,7 +27,7 @@ final class Items {
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
     private let allItems = BehaviorRelay<[Item]>(value: [])
     private let currentItemsCount = BehaviorRelay<[Category: Int]>(value: [:])
-    private let isLoad = BehaviorRelay<Bool>(value: false)
+    private let isLoad = BehaviorRelay<Bool>(value: true)
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     private let userItems = BehaviorRelay<[Category: [Item]]>(value: [:])
@@ -36,7 +37,14 @@ final class Items {
     private init() {
         setUpUserCollection()
         fetchVillagers()
-        fetchCatalog()
+        fetchCritters()
+        fetchFurniture()
+        
+        networkGroup.notify(queue: .main) {
+            self.isLoad.accept(false)
+            self.allItems.accept(self.categories.value.flatMap { $0.value })
+            self.setUpMaterialsItems()
+        }
     }
     
     private func setUpUserCollection() {
@@ -91,8 +99,9 @@ final class Items {
             self.villagers.accept(items)
         }
     }
-
-    private func fetchCatalog() {
+    
+    private func fetchCritters() {
+        networkGroup.enter()
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
         group.enter()
@@ -142,21 +151,6 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.requestList(ArtRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.art] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 미술품을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
         network.requestList(SeaCreaturesRequest()) { result in
             switch result {
             case .success(let response):
@@ -167,6 +161,33 @@ final class Items {
                     .error,
                     log: .default,
                     "⛔️ 해산물을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            self.updateAllItemList(by: itemList)
+            self.networkGroup.leave()
+        }
+    }
+
+    private func fetchFurniture() {
+        self.networkGroup.enter()
+        let group = DispatchGroup()
+        var itemList: [Category: [Item]] = [:]
+        
+        group.enter()
+        network.requestList(ArtRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.art] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 미술품을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
                 )
             }
             group.leave()
@@ -308,16 +329,20 @@ final class Items {
             group.leave()
         }
         group.notify(queue: .main) {
-            self.categories.accept(itemList)
-            var itemsCount = [Category: Int]()
-            itemList.forEach { (key: Category, value: [Item]) in
-                itemsCount[key] = value.count
-            }
-            self.allItems.accept(itemList.flatMap { $0.value })
-            self.setUpMaterialsItems()
-            self.currentItemsCount.accept(itemsCount)
-            self.isLoad.accept(true)
+            self.updateAllItemList(by: itemList)
+            self.networkGroup.leave()
         }
+    }
+    
+    private func updateAllItemList(by items: [Category: [Item]]) {
+        var currentItems = self.categories.value
+        var itemsCount = self.currentItemsCount.value
+        items.forEach { (category: Category, items: [Item]) in
+            currentItems[category] = items
+            itemsCount[category] = items.count
+        }
+        self.categories.accept(currentItems)
+        self.currentItemsCount.accept(itemsCount)
     }
     
     private func setUpMaterialsItems() {

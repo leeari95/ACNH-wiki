@@ -33,8 +33,12 @@ final class CatalogViewModel {
             .subscribe(onNext: { itemsCount in
             let newCategories = Category.items().map { ($0, itemsCount[$0] ?? 0)}
             catagories.accept(newCategories)
-            isLoading.accept(itemsCount.isEmpty ? true : false)
         }).disposed(by: disposeBag)
+        
+        Items.shared.isLoading
+            .subscribe(onNext: { value in
+                isLoading.accept(value)
+            }).disposed(by: disposeBag)
         
         input.selectedCategory
             .map { $0.title }
