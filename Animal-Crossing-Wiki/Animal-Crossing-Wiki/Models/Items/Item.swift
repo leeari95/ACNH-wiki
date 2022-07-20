@@ -65,6 +65,8 @@ struct Item {
     
     var foodPower: Int?
     var doorDeco: Bool?
+    
+    var musicURL: String?
 }
 
 extension Item {

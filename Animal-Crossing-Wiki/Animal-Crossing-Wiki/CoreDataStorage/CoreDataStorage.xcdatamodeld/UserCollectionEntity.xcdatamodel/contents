@@ -37,6 +37,7 @@
         <attribute name="lightingType" optional="YES" attributeType="String"/>
         <attribute name="movementSpeed" optional="YES" attributeType="String"/>
         <attribute name="museum" optional="YES" attributeType="String"/>
+        <attribute name="musicURL" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="outdoor" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="pattern" optional="YES" attributeType="String"/>
@@ -123,7 +124,7 @@
     </entity>
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
-        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="839"/>
+        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="854"/>
         <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
         <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
         <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>
