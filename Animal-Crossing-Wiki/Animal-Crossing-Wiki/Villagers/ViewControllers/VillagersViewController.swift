@@ -74,7 +74,7 @@ class VillagersViewController: UIViewController {
     }()
     
     private lazy var activityIndicator: LoadingView = {
-        let activityIndicator = LoadingView(backgroundColor: .acBackground, alpha: 0.5)
+        let activityIndicator = LoadingView(backgroundColor: .acBackground, alpha: 1)
         view.addSubviews(activityIndicator)
         activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
