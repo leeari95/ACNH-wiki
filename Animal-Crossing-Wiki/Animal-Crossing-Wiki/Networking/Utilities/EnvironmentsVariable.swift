@@ -10,4 +10,5 @@ import Foundation
 enum EnvironmentsVariable {
     static let repoURL = "https://raw.githubusercontent.com/leeari95/animal-crossing/master/json/data/"
     static let turnupURL = "https://api.ac-turnip.com/data/"
+    static let acnhAPI = "https://acnhapi.com/v1/"
 }

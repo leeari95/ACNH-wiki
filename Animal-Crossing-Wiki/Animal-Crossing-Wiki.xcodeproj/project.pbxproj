@@ -46,6 +46,8 @@
 		9A62CFE1287D7C56005D737D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A62CFE3287D7C56005D737D /* Localizable.strings */; };
 		9A62CFE7287DB9F9005D737D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A62CFE9287DB9F9005D737D /* InfoPlist.strings */; };
 		9A62D74128783A4D0047750F /* UITableView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62D74028783A4D0047750F /* UITableView+extension.swift */; };
+		9A680EB32888219900F0E0C7 /* MusicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A680EB22888219900F0E0C7 /* MusicRequest.swift */; };
+		9A680EB52888222200F0E0C7 /* MusicResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A680EB42888222200F0E0C7 /* MusicResponseDTO.swift */; };
 		9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */; };
 		9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919A28335AE90061AAF1 /* APIProvider.swift */; };
 		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
@@ -234,6 +236,8 @@
 		9A62CFEA287DB9FB005D737D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9A62D73B2877E13C0047750F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		9A62D74028783A4D0047750F /* UITableView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+extension.swift"; sourceTree = "<group>"; };
+		9A680EB22888219900F0E0C7 /* MusicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRequest.swift; sourceTree = "<group>"; };
+		9A680EB42888222200F0E0C7 /* MusicResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicResponseDTO.swift; sourceTree = "<group>"; };
 		9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIProvider.swift; sourceTree = "<group>"; };
 		9A68919A28335AE90061AAF1 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		9A68919C28335AFF0061AAF1 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -494,6 +498,7 @@
 				9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */,
 				9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */,
 				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
+				9A680EB22888219900F0E0C7 /* MusicRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -517,6 +522,7 @@
 				9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */,
 				9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */,
 				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
+				9A680EB42888222200F0E0C7 /* MusicResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1082,6 +1088,7 @@
 				9A3CFB3B2880790C00B0FFCB /* RugsRequest.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9A7ACEF7287EC239001D47CB /* CatalogCellViewModel.swift in Sources */,
+				9A680EB32888219900F0E0C7 /* MusicRequest.swift in Sources */,
 				9A99AA362859C8BD00629C4A /* VillagersView.swift in Sources */,
 				9A7ACF30288000D7001D47CB /* KeywordCell.swift in Sources */,
 				9A7ACF04287EC26F001D47CB /* ItemDetailInfoView.swift in Sources */,
@@ -1174,6 +1181,7 @@
 				9A6A2ED7287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift in Sources */,
 				9A99AA6128603CB800629C4A /* IconCell.swift in Sources */,
 				9A7ACF25287F9C87001D47CB /* HousewaresResponseDTO.swift in Sources */,
+				9A680EB52888222200F0E0C7 /* MusicResponseDTO.swift in Sources */,
 				9A3CFB2D2880637100B0FFCB /* WallMountedResponseDTO.swift in Sources */,
 				9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */,
 				9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */,
