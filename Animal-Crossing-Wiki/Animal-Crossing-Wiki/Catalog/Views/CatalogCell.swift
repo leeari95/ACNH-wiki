@@ -22,12 +22,15 @@ class CatalogCell: UICollectionViewCell {
         let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
         button.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
         button.tintColor = .acNavigationBarTint
+        button.backgroundColor = .acSecondaryBackground
+        button.layer.cornerRadius = 12
         return button
     }()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         configure()
+        iconImageView.layer.cornerRadius = 12
         contentView.backgroundColor = .acSecondaryBackground
         contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .bold)
