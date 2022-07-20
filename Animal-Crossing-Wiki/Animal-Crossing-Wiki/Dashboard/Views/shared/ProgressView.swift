@@ -43,7 +43,7 @@ class ProgressView: UIStackView {
         NSLayoutConstraint.activate([
             iconImageView.heightAnchor.constraint(equalToConstant: 30),
             iconImageView.widthAnchor.constraint(equalTo: iconImageView.heightAnchor),
-            progressLabel.widthAnchor.constraint(equalToConstant: 46)
+            progressLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 46)
         ])
     }
     
