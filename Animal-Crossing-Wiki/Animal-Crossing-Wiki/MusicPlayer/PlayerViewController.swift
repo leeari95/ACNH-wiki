@@ -85,7 +85,9 @@ class PlayerViewController: UIViewController {
             ],
             didTapPrevButton: maximizeView.previousButton.rx.tap.asObservable(),
             didTapPlayList: maximizeView.listButton.rx.tap.asObservable(),
-            seletedSong: tableView.rx.modelSelected(Item.self).asObservable()
+            seletedSong: tableView.rx.modelSelected(Item.self).asObservable(),
+            didTapShuffle: maximizeView.shuffleButton.rx.tap.asObservable(),
+            didTapRepeat: maximizeView.repeatButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         

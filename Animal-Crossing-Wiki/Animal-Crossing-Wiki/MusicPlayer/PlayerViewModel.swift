@@ -27,6 +27,8 @@ final class PlayerViewModel {
         let didTapPrevButton: Observable<Void>
         let didTapPlayList: Observable<Void>
         let seletedSong: Observable<Item>
+        let didTapShuffle: Observable<Void>
+        let didTapRepeat: Observable<Void>
     }
     
     struct Output {
@@ -97,6 +99,15 @@ final class PlayerViewModel {
         MusicPlayerManager.shared.songList
             .subscribe(onNext: { items in
                 songs.accept(items)
+            }).disposed(by: disposeBag)
+        
+        input.didTapShuffle
+            .subscribe(onNext: { _ in
+                MusicPlayerManager.shared.updatePlayerMode(to: .shuffle)
+            }).disposed(by: disposeBag)
+        input.didTapRepeat
+            .subscribe(onNext: { _ in
+                MusicPlayerManager.shared.updatePlayerMode(to: .fullRepeat)
             }).disposed(by: disposeBag)
         
         return Output(playerMode: playerMode.asObservable(), songs: songs.asObservable())

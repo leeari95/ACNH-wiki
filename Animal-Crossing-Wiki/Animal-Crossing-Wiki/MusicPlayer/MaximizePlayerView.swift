@@ -54,8 +54,8 @@ class MaximizePlayerView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 50
-        stackView.addArrangedSubviews(previousButton, playButton, nextButton)
+        stackView.spacing = 40
+        stackView.addArrangedSubviews(shuffleButton, previousButton, playButton, nextButton, repeatButton)
         return stackView
     }()
     
@@ -123,6 +123,22 @@ class MaximizePlayerView: UIView {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .title2, weight: .bold))
         button.setImage(UIImage(systemName: "forward.fill")?.withConfiguration(config), for: .normal)
+        button.tintColor = .acText
+        return button
+    }()
+    
+    lazy var shuffleButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .title3, weight: .semibold))
+        button.setImage(UIImage(systemName: "shuffle")?.withConfiguration(config), for: .normal)
+        button.tintColor = .acText
+        return button
+    }()
+    
+    lazy var repeatButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .title3, weight: .bold))
+        button.setImage(UIImage(systemName: "repeat")?.withConfiguration(config), for: .normal)
         button.tintColor = .acText
         return button
     }()
@@ -203,6 +219,24 @@ class MaximizePlayerView: UIView {
             .withUnretained(self)
             .subscribe(onNext: { owner, value in
                 owner.durationLabel.text = value
+            }).disposed(by: disposeBag)
+        
+        MusicPlayerManager.shared.currentPlayerMode
+            .withUnretained(self)
+            .subscribe(onNext: { owner, playerMode in
+                let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .title3, weight: .semibold))
+                switch playerMode {
+                case .fullRepeat:
+                    owner.repeatButton.setImage(UIImage(systemName: "repeat")?.withConfiguration(config), for: .normal)
+                    owner.repeatButton.tintColor = .acHeaderBackground
+                    owner.shuffleButton.tintColor = .acText
+                case .oneSongRepeat:
+                    owner.repeatButton.setImage(UIImage(systemName: "repeat.1")?.withConfiguration(config), for: .normal)
+                    owner.repeatButton.tintColor = .acHeaderBackground
+                case .shuffle:
+                    owner.shuffleButton.tintColor = .acHeaderBackground
+                    owner.repeatButton.tintColor = .acText
+                }
             }).disposed(by: disposeBag)
     }
 }

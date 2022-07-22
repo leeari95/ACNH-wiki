@@ -29,7 +29,7 @@ final class MusicPlayerManager {
     private let currentSong = BehaviorRelay<Item?>(value: nil)
     private var songs = BehaviorRelay<[String: Item]>(value: [:])
     private var songsItem = BehaviorRelay<[Item]>(value: [])
-    private let playerMode = BehaviorRelay<PlayerMode>(value: .shuffle)
+    private let playerMode = BehaviorRelay<PlayerMode>(value: .fullRepeat)
     
     private let playerProgress = BehaviorRelay<Float>(value: 0)
     private let durationTime = BehaviorRelay<String>(value: "0:00")
@@ -198,17 +198,24 @@ extension MusicPlayerManager {
         return currentIndex.asObservable()
     }
     
+    var currentPlayerMode: Observable<PlayerMode> {
+        return playerMode.asObservable()
+    }
+    
     func togglePlaying() {
         isPlaying.accept(isPlaying.value == true ? false : true)
     }
     
-    func togglePlayerMode() {
-        if playerMode.value == .shuffle {
-            playerMode.accept(.fullRepeat)
-        } else if playerMode.value == .oneSongRepeat {
-            playerMode.accept(.shuffle)
-        } else {
-            playerMode.accept(.oneSongRepeat)
+    func updatePlayerMode(to mode: PlayerMode) {
+        switch mode {
+        case .shuffle:
+            playerMode.accept(playerMode.value == .shuffle ? .fullRepeat : .shuffle)
+        case .fullRepeat, .oneSongRepeat:
+            if playerMode.value == .oneSongRepeat || playerMode.value == .shuffle {
+                playerMode.accept(.fullRepeat)
+            } else {
+                playerMode.accept(.oneSongRepeat)
+            }
         }
     }
     
