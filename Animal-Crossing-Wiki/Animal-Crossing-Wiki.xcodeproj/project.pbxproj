@@ -79,6 +79,9 @@
 		9A6DE35D2889AF1000EB2F3F /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */; };
 		9A6DE3612889B18800EB2F3F /* MusicPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */; };
 		9A6DE363288A9BFB00EB2F3F /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE362288A9BFB00EB2F3F /* PlayerView.swift */; };
+		9A6DE366288ADAC300EB2F3F /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE364288ADAC300EB2F3F /* SongRow.swift */; };
+		9A6DE367288ADAC300EB2F3F /* SongRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A6DE365288ADAC300EB2F3F /* SongRow.xib */; };
+		9A6DE369288AE25400EB2F3F /* PlayerMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE368288AE25400EB2F3F /* PlayerMode.swift */; };
 		9A7ACED9287EC16E001D47CB /* VillagersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */; };
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
 		9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */; };
@@ -275,6 +278,9 @@
 		9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerManager.swift; sourceTree = "<group>"; };
 		9A6DE362288A9BFB00EB2F3F /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerView.swift; path = Catalog/Views/PlayerView.swift; sourceTree = "<group>"; };
+		9A6DE364288ADAC300EB2F3F /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
+		9A6DE365288ADAC300EB2F3F /* SongRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongRow.xib; sourceTree = "<group>"; };
+		9A6DE368288AE25400EB2F3F /* PlayerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMode.swift; sourceTree = "<group>"; };
 		9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewController.swift; path = ViewControllers/VillagersViewController.swift; sourceTree = "<group>"; };
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCoordinator.swift; path = Coordinator/VillagersCoordinator.swift; sourceTree = "<group>"; };
@@ -614,6 +620,9 @@
 				9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */,
 				9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */,
 				9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */,
+				9A6DE364288ADAC300EB2F3F /* SongRow.swift */,
+				9A6DE365288ADAC300EB2F3F /* SongRow.xib */,
+				9A6DE368288AE25400EB2F3F /* PlayerMode.swift */,
 			);
 			path = MusicPlayer;
 			sourceTree = "<group>";
@@ -1063,6 +1072,7 @@
 				9A7ACF19287EC2F3001D47CB /* ItemProgressRow.xib in Resources */,
 				9A7ACF2D287FDA07001D47CB /* VariantCell.xib in Resources */,
 				9A7ACF05287EC26F001D47CB /* CatalogCell.xib in Resources */,
+				9A6DE367288ADAC300EB2F3F /* SongRow.xib in Resources */,
 				9A62CFE7287DB9F9005D737D /* InfoPlist.strings in Resources */,
 				9A7ACF31288000D7001D47CB /* KeywordCell.xib in Resources */,
 				9A7ACF06287EC26F001D47CB /* CategoryRow.xib in Resources */,
@@ -1122,6 +1132,7 @@
 				9A7ACEE9287EC194001D47CB /* VillagerHouseView.swift in Sources */,
 				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9A3CFB2928805C4400B0FFCB /* MiscellaneousResponseDTO.swift in Sources */,
+				9A6DE369288AE25400EB2F3F /* PlayerMode.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
 				9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */,
@@ -1202,6 +1213,7 @@
 				9A7ACF23287EC459001D47CB /* Items.swift in Sources */,
 				9A3DE3CA28869137006EECF7 /* LoadingView.swift in Sources */,
 				9A99AA242858803D00629C4A /* UIStackView+extension.swift in Sources */,
+				9A6DE366288ADAC300EB2F3F /* SongRow.swift in Sources */,
 				9A6891B9283378630061AAF1 /* FossilsRequest.swift in Sources */,
 				9A3CFB2B28805F4000B0FFCB /* MiscellaneousRequest.swift in Sources */,
 				9A99AA0A285824DF00629C4A /* AppAppearance.swift in Sources */,

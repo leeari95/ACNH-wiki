@@ -34,6 +34,7 @@ final class MusicPlayerManager {
     private let playerProgress = BehaviorRelay<Float>(value: 0)
     private let durationTime = BehaviorRelay<String>(value: "0:00")
     private let elapsedTime = BehaviorRelay<String>(value: "0:00")
+    private let currentIndex = BehaviorRelay<Int?>(value: nil)
     
     private init() {
         Items.shared.categoryList
@@ -54,6 +55,13 @@ final class MusicPlayerManager {
             .withUnretained(self)
             .subscribe(onNext: { owner, musicURL in
                 owner.player = AVPlayer(url: musicURL)
+            }).disposed(by: disposeBag)
+        
+        currentSong
+            .compactMap { $0 }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, song in
+                owner.currentIndex.accept(owner.songsItem.value.firstIndex(of: song))
             }).disposed(by: disposeBag)
         
         isPlaying
@@ -180,6 +188,14 @@ extension MusicPlayerManager {
     
     var songProgress: Observable<Float> {
         return playerProgress.asObservable()
+    }
+    
+    var songList: Observable<[Item]> {
+        return songsItem.asObservable()
+    }
+    
+    var playingSongIndex: Observable<Int?> {
+        return currentIndex.asObservable()
     }
     
     func togglePlaying() {

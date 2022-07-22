@@ -25,25 +25,29 @@ final class PlayerViewModel {
         let didTapPlayButton: [Observable<Void>]
         let didTapNextButton: [Observable<Void>]
         let didTapPrevButton: Observable<Void>
+        let didTapPlayList: Observable<Void>
+        let seletedSong: Observable<Item>
     }
     
     struct Output {
-        let isMinimized: Observable<Bool?>
+        let playerMode: Observable<PlayerMode?>
+        let songs: Observable<[Item]>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
-        let isMinimized = BehaviorRelay<Bool?>(value: nil)
+        let playerMode = BehaviorRelay<PlayerMode?>(value: nil)
+        let songs = BehaviorRelay<[Item]>(value: [])
         
         input.didTapMiniPlayer
             .subscribe(onNext: { _ in
                 self.coordinator.maximize()
-                isMinimized.accept(false)
+                playerMode.accept(.large)
             }).disposed(by: disposeBag)
         
         input.didTapFoldingButton
             .subscribe(onNext: { _ in
                 self.coordinator.minimize()
-                isMinimized.accept(true)
+                playerMode.accept(.small)
             }).disposed(by: disposeBag)
         
         input.dragGesture
@@ -51,10 +55,10 @@ final class PlayerViewModel {
             .subscribe(onNext: { isSwipeUp in
                 if isSwipeUp {
                     self.coordinator.maximize()
-                    isMinimized.accept(false)
+                    playerMode.accept(.large)
                 } else {
                     self.coordinator.minimize()
-                    isMinimized.accept(true)
+                    playerMode.accept(.small)
                 }
             }).disposed(by: disposeBag)
         
@@ -80,6 +84,21 @@ final class PlayerViewModel {
                 MusicPlayerManager.shared.prev()
             }).disposed(by: disposeBag)
         
-        return Output(isMinimized: isMinimized.asObservable())
+        input.didTapPlayList
+            .subscribe(onNext: { _ in
+                playerMode.accept(.list)
+            }).disposed(by: disposeBag)
+        
+        input.seletedSong
+            .subscribe(onNext: { item in
+                MusicPlayerManager.shared.choice(item)
+            }).disposed(by: disposeBag)
+        
+        MusicPlayerManager.shared.songList
+            .subscribe(onNext: { items in
+                songs.accept(items)
+            }).disposed(by: disposeBag)
+        
+        return Output(playerMode: playerMode.asObservable(), songs: songs.asObservable())
     }
 }
