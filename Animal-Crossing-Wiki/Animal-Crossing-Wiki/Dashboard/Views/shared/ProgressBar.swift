@@ -14,6 +14,11 @@ class ProgressBar: UIProgressView {
         return CGSize(width: -1.0, height: height)
     }
     
+    convenience init(height: CGFloat) {
+        self.init(frame: .zero)
+        self.height = height
+    }
+    
     func setHeight(_ height: CGFloat) {
         self.height = height
         setUpCornerRadius()
