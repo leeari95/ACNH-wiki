@@ -73,6 +73,10 @@
 		9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutViewModel.swift */; };
 		9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC208287C7B42004EEC41 /* AppSettingView.swift */; };
 		9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */; };
+		9A6DE3532888E2E300EB2F3F /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3522888E2E300EB2F3F /* PlayerViewController.swift */; };
+		9A6DE3592889271200EB2F3F /* MinimizePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */; };
+		9A6DE35B2889327A00EB2F3F /* MaximizePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */; };
+		9A6DE35D2889AF1000EB2F3F /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */; };
 		9A6DE3612889B18800EB2F3F /* MusicPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */; };
 		9A7ACED9287EC16E001D47CB /* VillagersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */; };
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
@@ -264,6 +268,10 @@
 		9A6DC204287C6199004EEC41 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		9A6DC208287C7B42004EEC41 /* AppSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingView.swift; sourceTree = "<group>"; };
 		9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewModel.swift; sourceTree = "<group>"; };
+		9A6DE3522888E2E300EB2F3F /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimizePlayerView.swift; sourceTree = "<group>"; };
+		9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximizePlayerView.swift; sourceTree = "<group>"; };
+		9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerManager.swift; sourceTree = "<group>"; };
 		9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewController.swift; path = ViewControllers/VillagersViewController.swift; sourceTree = "<group>"; };
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
@@ -599,6 +607,10 @@
 		9A6DE35F2889AFB400EB2F3F /* MusicPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				9A6DE3522888E2E300EB2F3F /* PlayerViewController.swift */,
+				9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */,
+				9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */,
+				9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */,
 				9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */,
 			);
 			path = MusicPlayer;
@@ -1120,6 +1132,7 @@
 				9A99AA5A28602F4A00629C4A /* CustomTaskView.swift in Sources */,
 				9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */,
 				9A7ACEF8287EC239001D47CB /* ItemsViewModel.swift in Sources */,
+				9A6DE3592889271200EB2F3F /* MinimizePlayerView.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
 				9A62D74128783A4D0047750F /* UITableView+extension.swift in Sources */,
 				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
@@ -1141,6 +1154,7 @@
 				9A3CFB49288295CA00B0FFCB /* CeilingDecorRequest.swift in Sources */,
 				9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */,
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
+				9A6DE3532888E2E300EB2F3F /* PlayerViewController.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
@@ -1206,6 +1220,7 @@
 				9A6891BF283379B80061AAF1 /* SeaCreaturesResponseDTO.swift in Sources */,
 				9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */,
 				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
+				9A6DE35D2889AF1000EB2F3F /* PlayerViewModel.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
 				9A7ACF16287EC2E9001D47CB /* CollectionViewModel.swift in Sources */,
 				9A99AA262858827900629C4A /* UserInfoView.swift in Sources */,
@@ -1229,6 +1244,7 @@
 				9A7ACF2C287FDA07001D47CB /* VariantCell.swift in Sources */,
 				9A7ACF08287EC26F001D47CB /* CatalogCell.swift in Sources */,
 				9AD343F128766429008A3D6D /* UILabel+extension.swift in Sources */,
+				9A6DE35B2889327A00EB2F3F /* MaximizePlayerView.swift in Sources */,
 				9A6891C1283380CD0061AAF1 /* ArtRequest.swift in Sources */,
 				9A99AA50285C1C3500629C4A /* UIButton+extension.swift in Sources */,
 				9A7ACF0C287EC26F001D47CB /* ItemBellsView.swift in Sources */,
