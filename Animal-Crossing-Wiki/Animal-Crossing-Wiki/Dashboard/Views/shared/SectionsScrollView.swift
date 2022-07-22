@@ -55,7 +55,7 @@ class SectionsScrollView: UIView {
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -80),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
             heightAnchor
         ])

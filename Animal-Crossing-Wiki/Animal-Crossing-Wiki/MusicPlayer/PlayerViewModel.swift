@@ -110,6 +110,14 @@ final class PlayerViewModel {
                 MusicPlayerManager.shared.updatePlayerMode(to: .fullRepeat)
             }).disposed(by: disposeBag)
         
+        coordinator.rootViewController.rx.didSelect
+            .subscribe(onNext: { _ in
+                if playerMode.value == .large || playerMode.value == .list {
+                    playerMode.accept(.small)
+                    self.coordinator.minimize()
+                }
+            }).disposed(by: disposeBag)
+        
         return Output(playerMode: playerMode.asObservable(), songs: songs.asObservable())
     }
 }
