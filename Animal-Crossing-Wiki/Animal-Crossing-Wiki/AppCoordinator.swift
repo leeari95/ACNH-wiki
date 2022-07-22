@@ -22,6 +22,7 @@ final class AppCoordinator: Coordinator {
     func start() {
         let dashboardCoordinator = DashboardCoordinator()
         dashboardCoordinator.start()
+        dashboardCoordinator.setUpParent(to: self)
         addViewController(dashboardCoordinator.rootViewController, title: "Dashboard".localized, icon: "icon-bells-tabbar")
         childCoordinators.append(dashboardCoordinator)
         

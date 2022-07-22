@@ -27,6 +27,7 @@ final class DashboardCoordinator: Coordinator {
     let type: CoordinatorType = .dashboard
     var childCoordinators: [Coordinator] = []
     private(set) var rootViewController: UINavigationController!
+    private(set) var parentCoordinator: Coordinator?
     
     weak var delegate: CustomTaskViewControllerDelegate?
     
@@ -116,6 +117,10 @@ final class DashboardCoordinator: Coordinator {
     
     func selectedIcon(_ icon: String) {
         delegate?.selectedIcon(icon)
+    }
+    
+    func setUpParent(to coordinator: Coordinator) {
+        parentCoordinator = coordinator
     }
 }
 

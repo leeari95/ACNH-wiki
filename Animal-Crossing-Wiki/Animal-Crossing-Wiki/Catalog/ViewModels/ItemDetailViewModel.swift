@@ -68,6 +68,9 @@ final class ItemDetailViewModel {
                 if let coordinator = self.coordinator as? CatalogCoordinator {
                     let coordinator = coordinator.parentCoordinator as? AppCoordinator
                     coordinator?.showMusicPlayer(PlayerViewController(), item: self.item)
+                } else if let coordinator = self.coordinator as? DashboardCoordinator {
+                    let coordinator = coordinator.parentCoordinator as? AppCoordinator
+                    coordinator?.showMusicPlayer(PlayerViewController(), item: self.item)
                 } else if let coordinator = self.coordinator as? CollectionCoordinator {
                     let coordinator = coordinator.parentCoordinator as? AppCoordinator
                     coordinator?.showMusicPlayer(PlayerViewController(), item: self.item)
