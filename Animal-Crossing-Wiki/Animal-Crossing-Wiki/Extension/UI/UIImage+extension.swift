@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+import RxSwift
 
 extension UIImage {
     func resizedImage(Size sizeImage: CGSize) -> UIImage? {
@@ -16,5 +18,27 @@ extension UIImage {
         UIGraphicsEndImageContext()
         self.withRenderingMode(.alwaysOriginal)
         return resizedImage
+    }
+    
+    static func downloadImage(urlString: String) -> Observable<UIImage?> {
+        return Observable.create { observable in
+            if let url = URL(string: urlString) {
+                ImageCache.default.retrieveImage(forKey: urlString) { result in
+                    if let image = try? result.get().image {
+                        observable.onNext(image)
+                    } else {
+                        let resource = ImageResource(downloadURL: url, cacheKey: urlString)
+                        KingfisherManager.shared.retrieveImage(with: resource) { result in
+                            observable.onNext(try? result.get().image)
+                        }
+                    }
+                    observable.onCompleted()
+                }
+            } else {
+                observable.onNext(nil)
+                observable.onCompleted()
+            }
+            return Disposables.create()
+        }
     }
 }

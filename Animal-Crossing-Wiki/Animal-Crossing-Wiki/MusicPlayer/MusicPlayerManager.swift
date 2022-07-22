@@ -10,6 +10,7 @@ import OSLog
 import RxSwift
 import RxRelay
 import AVFoundation
+import MediaPlayer
 
 final class MusicPlayerManager {
     
@@ -72,6 +73,7 @@ final class MusicPlayerManager {
                     if owner.currentSong.value == nil {
                         owner.currentSong.accept(owner.songsItem.value.first)
                     }
+                    owner.setUpBackground()
                     owner.player?.play()
                 } else {
                     owner.player?.pause()
@@ -80,6 +82,7 @@ final class MusicPlayerManager {
             }).disposed(by: disposeBag)
         
         setUpNotification()
+        setupRemoteCommands()
     }
     
     private func changeSong(at newIndex: Int) {
@@ -120,6 +123,8 @@ final class MusicPlayerManager {
             let playTimeMinutes = Int(playTimeSecs % 3600) / 60
             let elapsedTime = "\(playTimeMinutes):\(String(format: "%02d", playTimeSeconds))"
             self.elapsedTime.accept(elapsedTime)
+            
+            setUpRemotePlayingInfo(duration: duration, playTime: playTime)
         }
     }
     
@@ -164,6 +169,61 @@ final class MusicPlayerManager {
                 }
             }
         }
+    }
+    
+    private func setUpBackground() {
+        if let currentSong = currentSong.value {
+            try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try? AVAudioSession.sharedInstance().setActive(true, options: [])
+            
+            var playingInfo: [String: Any] = [:]
+            playingInfo[MPMediaItemPropertyArtist] = "K.K. Slider"
+            playingInfo[MPMediaItemPropertyAlbumTitle] = "K.K. Slider"
+            playingInfo[MPMediaItemPropertyTitle] = currentSong.translations.localizedName()
+            
+            UIImage.downloadImage(urlString: currentSong.image ?? "")
+                .compactMap { $0 }
+                .subscribe(onNext: { image in
+                    playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(
+                        boundsSize: CGSize(width: 100, height: 100), requestHandler: { _ in
+                            image
+                        }
+                    )
+                    MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
+                }).disposed(by: disposeBag)
+        }
+    }
+    
+    private func setupRemoteCommands() {
+        MPRemoteCommandCenter.shared().playCommand.addTarget { [weak self] _ in
+            if self?.isPlaying.value == false {
+                self?.isPlaying.accept(true)
+                return .success
+            }
+            return .commandFailed
+        }
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget { [weak self] _ in
+            if self?.isPlaying.value == true {
+                self?.isPlaying.accept(false)
+                return .success
+            }
+            return .commandFailed
+        }
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget { [weak self] _ in
+            self?.next()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget { [weak self] _ in
+            self?.prev()
+            return .success
+        }
+    }
+    
+    private func setUpRemotePlayingInfo(duration: Double, playTime: Double) {
+        var playingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        playingInfo?[MPMediaItemPropertyPlaybackDuration] = duration
+        playingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = playTime
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
     }
 
 }
