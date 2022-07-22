@@ -85,6 +85,7 @@ class MinimizePlayerView: UIView {
             backgroundStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             backgroundStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor),
             durationBar.widthAnchor.constraint(equalToConstant: width),
             durationBar.bottomAnchor.constraint(equalTo: bottomAnchor),
             durationBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -20)

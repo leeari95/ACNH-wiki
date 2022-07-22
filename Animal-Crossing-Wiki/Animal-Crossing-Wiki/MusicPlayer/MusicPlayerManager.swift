@@ -46,7 +46,6 @@ final class MusicPlayerManager {
                 }
                 owner.songs.accept(newSongs)
                 owner.songsItem.accept(songs.shuffled())
-                owner.currentSong.accept(owner.songsItem.value.first)
             }).disposed(by: disposeBag)
         
         currentSong
@@ -62,6 +61,9 @@ final class MusicPlayerManager {
             .withUnretained(self)
             .subscribe(onNext: { owner, isPlaying in
                 if isPlaying {
+                    if owner.currentSong.value == nil {
+                        owner.currentSong.accept(owner.songsItem.value.first)
+                    }
                     owner.player?.play()
                 } else {
                     owner.player?.pause()
@@ -69,27 +71,7 @@ final class MusicPlayerManager {
                 owner.setUpPlayerTimer()
             }).disposed(by: disposeBag)
         
-        NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
-            object: player?.currentItem,
-            queue: .main
-        ) { [weak self] _ in
-            self.flatMap { owner in
-                owner.playerProgress.accept(0)
-                owner.elapsedTime.accept("0:00")
-                owner.isPlaying.accept(false)
-                switch owner.playerMode.value {
-                case .fullRepeat:
-                    owner.next()
-                case .shuffle:
-                    owner.currentSong.accept(owner.songsItem.value.randomElement())
-                    owner.isPlaying.accept(true)
-                case .oneSongRepeat:
-                    owner.currentSong.accept(owner.currentSong.value)
-                    owner.isPlaying.accept(true)
-                }
-            }
-        }
+        setUpNotification()
     }
     
     private func changeSong(at newIndex: Int) {
@@ -151,6 +133,30 @@ final class MusicPlayerManager {
             timer = nil
         }
     }
+    
+    private func setUpNotification() {
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: player?.currentItem,
+            queue: .main
+        ) { [weak self] _ in
+            self.flatMap { owner in
+                owner.playerProgress.accept(0)
+                owner.elapsedTime.accept("0:00")
+                owner.isPlaying.accept(false)
+                switch owner.playerMode.value {
+                case .fullRepeat:
+                    owner.next()
+                case .shuffle:
+                    owner.currentSong.accept(owner.songsItem.value.randomElement())
+                    owner.isPlaying.accept(true)
+                case .oneSongRepeat:
+                    owner.currentSong.accept(owner.currentSong.value)
+                    owner.isPlaying.accept(true)
+                }
+            }
+        }
+    }
 
 }
 
@@ -199,7 +205,18 @@ extension MusicPlayerManager {
     }
     
     func choice(_ item: Item) {
+        close()
         currentSong.accept(item)
         isPlaying.accept(true)
+        setUpNotification()
+    }
+    
+    func close() {
+        player = nil
+        isPlaying.accept(false)
+        elapsedTime.accept("0:00")
+        durationTime.accept("0:00")
+        playerProgress.accept(0)
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
     }
 }

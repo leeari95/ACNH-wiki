@@ -24,6 +24,7 @@ final class ItemDetailViewModel {
     struct Input {
         let didTapCheck: Observable<Void>
         let didTapKeyword: Observable<String>?
+        let didTapPlay: Observable<Void>?
     }
     
     struct Output {
@@ -59,6 +60,17 @@ final class ItemDetailViewModel {
                     } else if let coordinator = self.coordinator as? CollectionCoordinator {
                         coordinator.transition(for: .keyword(title: value, keyword: keyword))
                     }
+                }
+            }).disposed(by: disposeBag)
+        
+        input.didTapPlay?
+            .subscribe(onNext: { _ in
+                if let coordinator = self.coordinator as? CatalogCoordinator {
+                    let coordinator = coordinator.parentCoordinator as? AppCoordinator
+                    coordinator?.showMusicPlayer(PlayerViewController(), item: self.item)
+                } else if let coordinator = self.coordinator as? CollectionCoordinator {
+                    let coordinator = coordinator.parentCoordinator as? AppCoordinator
+                    coordinator?.showMusicPlayer(PlayerViewController(), item: self.item)
                 }
             }).disposed(by: disposeBag)
         

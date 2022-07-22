@@ -17,6 +17,7 @@ final class CatalogCoordinator: Coordinator {
     
     var type: CoordinatorType = .catalog
     var rootViewController: UINavigationController
+    private(set) var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     
     init(rootViewController: UINavigationController = UINavigationController()) {
@@ -44,5 +45,9 @@ final class CatalogCoordinator: Coordinator {
             viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         }
+    }
+    
+    func setUpParent(to coordinator: Coordinator) {
+        parentCoordinator = coordinator
     }
 }

@@ -78,6 +78,7 @@
 		9A6DE35B2889327A00EB2F3F /* MaximizePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */; };
 		9A6DE35D2889AF1000EB2F3F /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */; };
 		9A6DE3612889B18800EB2F3F /* MusicPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */; };
+		9A6DE363288A9BFB00EB2F3F /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE362288A9BFB00EB2F3F /* PlayerView.swift */; };
 		9A7ACED9287EC16E001D47CB /* VillagersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */; };
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
 		9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */; };
@@ -273,6 +274,7 @@
 		9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximizePlayerView.swift; sourceTree = "<group>"; };
 		9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerManager.swift; sourceTree = "<group>"; };
+		9A6DE362288A9BFB00EB2F3F /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayerView.swift; path = Catalog/Views/PlayerView.swift; sourceTree = "<group>"; };
 		9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewController.swift; path = ViewControllers/VillagersViewController.swift; sourceTree = "<group>"; };
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCoordinator.swift; path = Coordinator/VillagersCoordinator.swift; sourceTree = "<group>"; };
@@ -771,6 +773,7 @@
 				9A7ACF02287EC26F001D47CB /* ItemSeasonView.swift */,
 				9A7ACEFE287EC26F001D47CB /* CategoryRow.swift */,
 				9A7ACEFD287EC26F001D47CB /* CategoryRow.xib */,
+				9A6DE362288A9BFB00EB2F3F /* PlayerView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1125,6 +1128,7 @@
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
 				9A6A2ED9287BEB76007D2EEA /* DashboardViewModel.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,
+				9A6DE363288A9BFB00EB2F3F /* PlayerView.swift in Sources */,
 				9A6891A4283361F20061AAF1 /* VillagersRequest.swift in Sources */,
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A7ACEE8287EC194001D47CB /* VillagersCell.swift in Sources */,

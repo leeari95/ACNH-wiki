@@ -154,6 +154,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Reformable" = "Reformable";
 "Not reformed" = "Not reformed";
 "Materials" = "Materials";
+"Music Player" = "Music Player";
 
 // MARK: - ItemDetailInfoView
 "Underwater" = "Underwater";

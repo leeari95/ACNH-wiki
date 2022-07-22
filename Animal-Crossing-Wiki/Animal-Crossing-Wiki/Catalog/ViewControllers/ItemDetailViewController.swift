@@ -29,6 +29,7 @@ class ItemDetailViewController: UIViewController {
     private var itemVariantsColorView: ItemVariantsView?
     private var itemVariantsPatternView: ItemVariantsView?
     private var keywordView: ItemKeywordView?
+    private var playerView: ItemPlayerView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,12 +62,14 @@ class ItemDetailViewController: UIViewController {
 
     func bind(to viewModel: ItemDetailViewModel) {
         keywordView = ItemKeywordView(item: viewModel.item)
+        playerView = ItemPlayerView()
         navigationItem.title = viewModel.item.translations.localizedName()
         setUpSection(in: viewModel.item)
         
         let input = ItemDetailViewModel.Input(
             didTapCheck: checkButton.rx.tap.asObservable(),
-            didTapKeyword: keywordView?.didTapKeyword
+            didTapKeyword: keywordView?.didTapKeyword,
+            didTapPlay: playerView?.playButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
@@ -103,6 +106,7 @@ class ItemDetailViewController: UIViewController {
         setUpSaeson(item)
         setUpKeyword(item)
         setUpMaterials(item)
+        setUpPlayer(item)
     }
     
     private func setUpDetail(_ item: Item) {
@@ -213,5 +217,19 @@ class ItemDetailViewController: UIViewController {
             contentView: materialsView
         )
         sectionsScrollView.addSection(materialsSection)
+    }
+    
+    private func setUpPlayer(_ item: Item) {
+        guard item.category == .songs else {
+            return
+        }
+        playerView.flatMap {
+            let musicSection = SectionView(
+                title: "Music Player".localized,
+                iconName: "music.note",
+                contentView: $0
+            )
+            sectionsScrollView.addSection(musicSection)
+        }
     }
 }

@@ -18,6 +18,7 @@ final class CollectionCoordinator: Coordinator {
     var type: CoordinatorType = .collection
     var childCoordinators: [Coordinator] = []
     let rootViewController: UINavigationController
+    private(set) var parentCoordinator: Coordinator?
     
     init(rootViewController: UINavigationController = UINavigationController()) {
         self.rootViewController = rootViewController
@@ -48,5 +49,9 @@ final class CollectionCoordinator: Coordinator {
         case .dismiss:
             rootViewController.visibleViewController?.dismiss(animated: true)
         }
+    }
+    
+    func setUpParent(to coordinator: Coordinator) {
+        parentCoordinator = coordinator
     }
 }

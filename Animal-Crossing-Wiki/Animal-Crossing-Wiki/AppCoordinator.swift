@@ -13,10 +13,7 @@ final class AppCoordinator: Coordinator {
     private(set) var rootViewController: UITabBarController!
     
     private var playerViewController: PlayerViewController?
-    private lazy var topAnchorConstraint = self.playerViewController?.view.topAnchor.constraint(
-        equalTo: rootViewController.view.topAnchor,
-        constant: rootViewController.view.frame.height
-    )
+    private var topAnchorConstraint:  NSLayoutConstraint?
     
     init(rootViewController: UITabBarController = UITabBarController()) {
         self.rootViewController = rootViewController
@@ -30,6 +27,7 @@ final class AppCoordinator: Coordinator {
         
         let catalogCoordinator = CatalogCoordinator()
         catalogCoordinator.start()
+        catalogCoordinator.setUpParent(to: self)
         addViewController(catalogCoordinator.rootViewController, title: "Catalog".localized, icon: "icon-leaf-tabbar")
         childCoordinators.append(catalogCoordinator)
         
@@ -40,6 +38,7 @@ final class AppCoordinator: Coordinator {
         
         let collectionCoordinator = CollectionCoordinator()
         collectionCoordinator.start()
+        collectionCoordinator.setUpParent(to: self)
         addViewController(collectionCoordinator.rootViewController, title: "Collection".localized, icon: "icon-cardboard-tabbar")
         childCoordinators.append(collectionCoordinator)
     }
@@ -53,7 +52,12 @@ final class AppCoordinator: Coordinator {
         rootViewController.addChild(viewController)
     }
     
-    private func setUpMusicPlayer(_ viewController: PlayerViewController) {
+    func showMusicPlayer(_ viewController: PlayerViewController, item: Item) {
+        guard playerViewController == nil else {
+            MusicPlayerManager.shared.choice(item)
+            playerViewController?.view.isHidden = false
+            return
+        }
         playerViewController = viewController
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
@@ -62,9 +66,12 @@ final class AppCoordinator: Coordinator {
         viewController.bind(to: viewModel)
 
         let frame = rootViewController.view.frame
-        let tabBarHeight = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 34) + rootViewController.tabBar.frame.height
+        let tabBarHeight = rootViewController.tabBar.frame.height
         viewController.configure(tabBarHeight: tabBarHeight)
-        self.topAnchorConstraint?.constant = frame.height - tabBarHeight - 60
+        self.topAnchorConstraint = viewController.view.topAnchor.constraint(
+            equalTo: rootViewController.view.topAnchor,
+            constant: frame.height - rootViewController.tabBar.frame.height - 60
+        )
         
         topAnchorConstraint.flatMap {
             NSLayoutConstraint.activate([
@@ -74,29 +81,28 @@ final class AppCoordinator: Coordinator {
                 $0
             ])
         }
-        
+        MusicPlayerManager.shared.choice(item)
     }
     
     func minimize() {
         let frame = rootViewController.view.frame
-        let tabBarHeight = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 34) + rootViewController.tabBar.frame.height
+        let tabBarHeight = rootViewController.tabBar.frame.height
         UIView.animate(withDuration: 0.4) {
-            self.topAnchorConstraint?.constant = frame.height - tabBarHeight - 30
+            self.topAnchorConstraint?.constant = frame.height - tabBarHeight - 60
             self.rootViewController.view.layoutIfNeeded()
         }
     }
     
     func maximize() {
+        let frame = rootViewController.view.frame
         UIView.animate(withDuration: 0.4) {
-            self.topAnchorConstraint?.constant = 300
+            self.topAnchorConstraint?.constant = frame.height - 600
             self.rootViewController.view.layoutIfNeeded()
         }
     }
     
     func removePlayerViewController() {
-        playerViewController?.view.removeFromSuperview()
-        playerViewController?.removeFromParent()
-        playerViewController = nil
-        
+        playerViewController?.view.isHidden = true
+        MusicPlayerManager.shared.close()
     }
 }
