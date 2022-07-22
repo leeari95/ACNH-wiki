@@ -73,6 +73,7 @@
 		9A6DC205287C6199004EEC41 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutViewModel.swift */; };
 		9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC208287C7B42004EEC41 /* AppSettingView.swift */; };
 		9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */; };
+		9A6DE3612889B18800EB2F3F /* MusicPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */; };
 		9A7ACED9287EC16E001D47CB /* VillagersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */; };
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
 		9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */; };
@@ -263,6 +264,7 @@
 		9A6DC204287C6199004EEC41 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		9A6DC208287C7B42004EEC41 /* AppSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingView.swift; sourceTree = "<group>"; };
 		9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewModel.swift; sourceTree = "<group>"; };
+		9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerManager.swift; sourceTree = "<group>"; };
 		9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewController.swift; path = ViewControllers/VillagersViewController.swift; sourceTree = "<group>"; };
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCoordinator.swift; path = Coordinator/VillagersCoordinator.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				9AF041A42851ADFF00C51449 /* Extension */,
+				9A6DE35F2889AFB400EB2F3F /* MusicPlayer */,
 				9A99AA052858247700629C4A /* Coordinator.swift */,
 				9A99AA072858248600629C4A /* AppCoordinator.swift */,
 				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
@@ -591,6 +594,14 @@
 				9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */,
 			);
 			name = ViewModels;
+			sourceTree = "<group>";
+		};
+		9A6DE35F2889AFB400EB2F3F /* MusicPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */,
+			);
+			path = MusicPlayer;
 			sourceTree = "<group>";
 		};
 		9A7ACED6287EC04B001D47CB /* Catalog */ = {
@@ -1092,6 +1103,7 @@
 				9A99AA362859C8BD00629C4A /* VillagersView.swift in Sources */,
 				9A7ACF30288000D7001D47CB /* KeywordCell.swift in Sources */,
 				9A7ACF04287EC26F001D47CB /* ItemDetailInfoView.swift in Sources */,
+				9A6DE3612889B18800EB2F3F /* MusicPlayerManager.swift in Sources */,
 				9A7ACEE9287EC194001D47CB /* VillagerHouseView.swift in Sources */,
 				9A99AA3C285AE2FC00629C4A /* ProgressBar.swift in Sources */,
 				9A3CFB2928805C4400B0FFCB /* MiscellaneousResponseDTO.swift in Sources */,
