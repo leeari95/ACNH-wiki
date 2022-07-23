@@ -16,19 +16,24 @@ final class DashboardViewModel {
     }
     
     struct Input {
-        let didTapAbout: Observable<Void>
-        let didTapSetting: Observable<Void>
+        let didTapMore: Observable<Void>
     }
     
     func bind(input: Input, disposeBag: DisposeBag) {
-        input.didTapAbout
+        input.didTapMore
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                self.coordinator?.transition(for: .about)
-            }).disposed(by: disposeBag)
-        
-        input.didTapSetting
-            .subscribe(onNext: { _ in
-                self.coordinator?.transition(for: .setting)
+                self.coordinator?.rootViewController.visibleViewController?
+                    .showSelectedItemAlert(
+                        ["About".localized, "Setting".localized],
+                        currentItem: nil
+                    ).subscribe(onNext: { selected in
+                        if selected == "Setting".localized {
+                            self.coordinator?.transition(for: .setting)
+                        } else if selected == "About".localized {
+                            self.coordinator?.transition(for: .about)
+                        }
+                    }).disposed(by: disposeBag)
             }).disposed(by: disposeBag)
     }
 }

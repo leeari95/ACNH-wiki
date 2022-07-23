@@ -14,6 +14,7 @@
 
 // MARK: - etc
 "Cancel" = "Cancel";
+"Setting" = "Setting";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "My Island";

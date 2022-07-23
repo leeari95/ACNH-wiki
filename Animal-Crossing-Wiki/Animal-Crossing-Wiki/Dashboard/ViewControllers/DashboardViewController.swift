@@ -19,24 +19,15 @@ class DashboardViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private lazy var sectionsScrollView = SectionsScrollView()
     
-    private lazy var settingButton: UIBarButtonItem = {
+    private lazy var moreButton: UIBarButtonItem = {
         return .init(
-            image: UIImage(systemName: "gearshape.fill"),
+            image: UIImage(systemName: "ellipsis.circle"),
             style: .plain,
             target: self,
             action: nil
         )
     }()
     
-    private lazy var aboutButton: UIBarButtonItem = {
-        return .init(
-            image: UIImage(systemName: "info.circle"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -45,8 +36,7 @@ class DashboardViewController: UIViewController {
     private func setUpViews() {
         view.backgroundColor = .acBackground
         navigationItem.title = dateString
-        navigationItem.rightBarButtonItem = settingButton
-        navigationItem.leftBarButtonItem = aboutButton
+        navigationItem.rightBarButtonItem = moreButton
         
         view.addSubviews(sectionsScrollView)
         
@@ -89,8 +79,7 @@ class DashboardViewController: UIViewController {
 
     func bind(to viewModel: DashboardViewModel) {
         let input = DashboardViewModel.Input(
-            didTapAbout: aboutButton.rx.tap.asObservable(),
-            didTapSetting: settingButton.rx.tap.asObservable()
+            didTapMore: moreButton.rx.tap.asObservable()
         )
         viewModel.bind(input: input, disposeBag: disposeBag)
     }
