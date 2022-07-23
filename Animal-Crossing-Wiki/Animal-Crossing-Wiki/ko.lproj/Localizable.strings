@@ -22,6 +22,10 @@
 "My Villagers" = "마을 주민";
 "Collection Progress" = "수집 현황";
 
+// MARK: - MusicPlayerSection
+"What is today's song?" = "오늘의 노래는 뭘까요?";
+"Click the play button." = "재생 버튼을 눌러보세요.";
+
 // MARK: - UserInfoView
 "Please set a name." = "이름을 설정해주세요.";
 "Please set a Island Name." = "섬 이름을 설정해주세요.";

@@ -11,6 +11,8 @@
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
 		9A1DB1D92840857300689F11 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D82840857300689F11 /* APIError.swift */; };
+		9A30FC02288C517600F55B8D /* MusicPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30FC01288C517600F55B8D /* MusicPlayerView.swift */; };
+		9A30FC04288C57A400F55B8D /* MusicPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30FC03288C57A400F55B8D /* MusicPlayerViewModel.swift */; };
 		9A3CFB2928805C4400B0FFCB /* MiscellaneousResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB2828805C4400B0FFCB /* MiscellaneousResponseDTO.swift */; };
 		9A3CFB2B28805F4000B0FFCB /* MiscellaneousRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB2A28805F4000B0FFCB /* MiscellaneousRequest.swift */; };
 		9A3CFB2D2880637100B0FFCB /* WallMountedResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3CFB2C2880637100B0FFCB /* WallMountedResponseDTO.swift */; };
@@ -208,6 +210,8 @@
 /* Begin PBXFileReference section */
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		9A30FC01288C517600F55B8D /* MusicPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerView.swift; sourceTree = "<group>"; };
+		9A30FC03288C57A400F55B8D /* MusicPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewModel.swift; sourceTree = "<group>"; };
 		9A3CFB2828805C4400B0FFCB /* MiscellaneousResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousResponseDTO.swift; sourceTree = "<group>"; };
 		9A3CFB2A28805F4000B0FFCB /* MiscellaneousRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousRequest.swift; sourceTree = "<group>"; };
 		9A3CFB2C2880637100B0FFCB /* WallMountedResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallMountedResponseDTO.swift; sourceTree = "<group>"; };
@@ -685,6 +689,7 @@
 				9A99AA51285C32C300629C4A /* PreferencesView.swift */,
 				9A6DC208287C7B42004EEC41 /* AppSettingView.swift */,
 				9A99AA5928602F4A00629C4A /* CustomTaskView.swift */,
+				9A30FC01288C517600F55B8D /* MusicPlayerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -711,6 +716,7 @@
 				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
 				9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */,
 				9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */,
+				9A30FC03288C57A400F55B8D /* MusicPlayerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1170,6 +1176,7 @@
 				9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */,
 				9A99AA082858248600629C4A /* AppCoordinator.swift in Sources */,
 				9A6DE3532888E2E300EB2F3F /* PlayerViewController.swift in Sources */,
+				9A30FC04288C57A400F55B8D /* MusicPlayerViewModel.swift in Sources */,
 				9AF0421D28530DD200C51449 /* VillagersLikeStorage.swift in Sources */,
 				9A99AA54285C341E00629C4A /* InfoContentView.swift in Sources */,
 				9A99AA6D2861945B00629C4A /* PreferencesViewModel.swift in Sources */,
@@ -1274,6 +1281,7 @@
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,
 				9A99AA2028587A7500629C4A /* SectionHeaderView.swift in Sources */,
+				9A30FC02288C517600F55B8D /* MusicPlayerView.swift in Sources */,
 				9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
 				9A99AA0C285824F000629C4A /* UIColor+extension.swift in Sources */,
