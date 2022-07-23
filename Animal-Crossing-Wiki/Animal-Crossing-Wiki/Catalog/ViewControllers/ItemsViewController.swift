@@ -19,8 +19,6 @@ class ItemsViewController: UIViewController {
     enum Menu: Int {
         case all
         case month
-        case collected
-        case notCollected
         case name
         case sell
         
@@ -30,8 +28,6 @@ class ItemsViewController: UIViewController {
             case .month: return "Month".localized
             case .name: return "Name".localized
             case .sell: return "Sell".localized
-            case .collected: return "Collected".localized
-            case .notCollected: return "Not collected".localized
             }
         }
         
@@ -46,18 +42,31 @@ class ItemsViewController: UIViewController {
             case "Month".localized: return .month
             case "Name".localized: return .name
             case "Sell".localized: return .sell
-            case "Collected".localized: return .collected
-            case "Not collected".localized: return .notCollected
             default: return .all
             }
         }
     }
-
+    
+    enum SearchScope: String {
+        case all = "All"
+        case collected = "Collected"
+        case notCollected = "Not collected"
+        
+        static func transform(_ localizedString: String) -> String? {
+            switch localizedString {
+            case SearchScope.all.rawValue.localized: return SearchScope.all.rawValue
+            case SearchScope.collected.rawValue.localized: return SearchScope.collected.rawValue
+            case SearchScope.notCollected.rawValue.localized: return SearchScope.notCollected.rawValue
+            default: return nil
+            }
+        }
+    }
+    
     private var category: Category?
     private var mode: Mode = .all
     private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.title]
-    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.title])
+    private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [:])
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -83,6 +92,16 @@ class ItemsViewController: UIViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search...".localized
+        if mode != .user {
+            searchController.searchBar.scopeButtonTitles = [
+                SearchScope.all.rawValue.localized,
+                SearchScope.notCollected.rawValue.localized,
+                SearchScope.collected.rawValue.localized
+            ]
+            searchController.searchBar.showsScopeBar = true
+        }
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         return searchController
     }()
     
@@ -96,19 +115,32 @@ class ItemsViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
     
-    func bind(to viewModel: ItemsViewModel) {
+    func bind(to viewModel: ItemsViewModel, keyword: [Menu: String] = [:]) {
         self.category = viewModel.category
         switch viewModel.mode {
         case .user: mode = .user
         case .keyword(let title, _): mode = .keyword(title: title)
         case .all: mode = .all
         }
+        setUpFilterKeyword(keyword)
         let input = ItemsViewModel.Input(
             searchBarText: searchController.searchBar.rx.text.asObservable(),
             didSelectedMenuKeyword: selectedKeyword.asObservable(),
-            itemSelected: collectionView.rx.itemSelected.asObservable()
+            itemSelected: collectionView.rx.itemSelected.asObservable(),
+            seletedScopeButton:
+                searchController.searchBar.rx.selectedScopeButtonIndex
+                .compactMap { [weak self] in
+                    return self?.searchController.searchBar.scopeButtonTitles?[$0]
+                }
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        
+        if [Mode.all, Mode.user].contains(mode), navigationItem.title == nil {
+            output.category
+                .map { $0.rawValue.localized }
+                .bind(to: navigationItem.rx.title)
+                .disposed(by: disposeBag)
+        }
         
         output.isLoading
             .observe(on: MainScheduler.asyncInstance)
@@ -120,14 +152,8 @@ class ItemsViewController: UIViewController {
                 cell.setUp(item)
             }.disposed(by: disposeBag)
         
-        if [Mode.all, Mode.user].contains(mode) {
-            output.category
-                .map { $0.rawValue.localized }
-                .bind(to: navigationItem.rx.title)
-                .disposed(by: disposeBag)
-        }
-        
         selectedKeyword
+            .filter { $0.isEmpty == false }
             .map { !$0.keys.contains(.all) }
             .withUnretained(self)
             .observe(on: MainScheduler.instance)
@@ -136,9 +162,20 @@ class ItemsViewController: UIViewController {
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
         }).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .observe(on: MainScheduler.asyncInstance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.searchController.searchBar.endEditing(true)
+                owner.selectedKeyword.accept(owner.currentSelected)
+            }).disposed(by: disposeBag)
     }
     
-    func setUpFilterKeyword(_ keyword: [Menu: String]) {
+    private func setUpFilterKeyword(_ keyword: [Menu: String]) {
+        guard keyword.isEmpty == false else {
+            return
+        }
         currentSelected = keyword
         if let category = category, Category.critters.contains(category) {
             navigationItem.title = "To catch now".localized
@@ -146,6 +183,7 @@ class ItemsViewController: UIViewController {
             currentSelected[.month] = nil
             navigationItem.title = "Currently Available".localized
         }
+        searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
     }
     
     private func setUpViews() {
@@ -160,13 +198,11 @@ class ItemsViewController: UIViewController {
             activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
         setUpNavigationItem()
-        setUpSearchController()
     }
     
     private func setUpNavigationItem() {
         switch mode {
-        case .keyword(let title):
-            navigationItem.title = title.localized
+        case .keyword(let title): navigationItem.title = title.localized
         default: break
         }
         let filterButton = UIBarButtonItem(
@@ -178,11 +214,6 @@ class ItemsViewController: UIViewController {
         filterButton.tintColor = .acNavigationBarTint
         self.navigationItem.rightBarButtonItem = filterButton
         filterButton.menu = createFilterAndSortMenu()
-    }
-
-    private func setUpSearchController() {
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func createFilterAndSortMenu() -> UIMenu {
@@ -277,24 +308,6 @@ class ItemsViewController: UIViewController {
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
         }
-        let notCollectedAction = UIAction(title: Menu.notCollected.title, handler: { [weak self] action in
-            if self?.currentSelected[.collected] != nil {
-                self?.currentSelected[.collected] = nil
-            }
-            self?.currentSelected[.notCollected] = self?.currentSelected[.notCollected] == nil ? action.title : nil
-            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-        })
-        
-        let collectedAction = UIAction(title: Menu.collected.title, handler: { [weak self] action in
-            if self?.currentSelected[.notCollected] != nil {
-                self?.currentSelected[.notCollected] = nil
-            }
-            self?.currentSelected[.collected] = self?.currentSelected[.collected] == nil ? action.title : nil
-            self?.currentSelected[.all] = self?.currentSelected.isEmpty == true ? Menu.all.title : nil
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
-        })
-        filterMenuList.append(contentsOf: [collectedAction, notCollectedAction])
         return filterMenuList
     }
 }

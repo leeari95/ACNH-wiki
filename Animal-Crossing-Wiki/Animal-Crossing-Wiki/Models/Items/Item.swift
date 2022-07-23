@@ -109,3 +109,10 @@ extension Item: Equatable {
         return lhs.name == rhs.name && lhs.genuine  == rhs.genuine
     }
 }
+
+extension Item: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(genuine)
+    }
+}

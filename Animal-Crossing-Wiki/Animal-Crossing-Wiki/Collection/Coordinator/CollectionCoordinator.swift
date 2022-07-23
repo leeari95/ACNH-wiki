@@ -12,6 +12,7 @@ final class CollectionCoordinator: Coordinator {
         case items(category: Category, mode: ItemsViewModel.Mode)
         case itemDetail(item: Item)
         case keyword(title: String, keyword: Keyword)
+        case pop
         case dismiss
     }
     
@@ -46,6 +47,9 @@ final class CollectionCoordinator: Coordinator {
             let viewController = ItemsViewController()
             viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
+        case .pop:
+            let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
+            navigationController?.popViewController(animated: true)
         case .dismiss:
             rootViewController.visibleViewController?.dismiss(animated: true)
         }
