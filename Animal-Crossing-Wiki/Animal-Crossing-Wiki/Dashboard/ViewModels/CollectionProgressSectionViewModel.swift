@@ -18,11 +18,17 @@ final class CollectionProgressSectionViewModel {
     struct Input {
         let didTapSection: Observable<UITapGestureRecognizer>
     }
+    
+    struct Output {
+        let isLoading: Observable<Bool>
+    }
 
-    func bind(input: Input, disposeBag: DisposeBag) {
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
         input.didTapSection
             .subscribe(onNext: { _ in
                 self.coordinator?.transition(for: .progress)
             }).disposed(by: disposeBag)
+        
+        return Output(isLoading: Items.shared.isLoading)
     }
 }
