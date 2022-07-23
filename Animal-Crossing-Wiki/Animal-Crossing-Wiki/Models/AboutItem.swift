@@ -39,6 +39,11 @@ struct AboutItem {
                 icon: "lock",
                 title: "Privacy Policy",
                 url: URL(string: "https://github.com/leeari95/ACNH-wiki/blob/develop/privacy-policy.md")
+            ),
+            AboutItem(
+                icon: "dollarsign.circle.fill",
+                title: "Donate",
+                url: URL(string: "https://qr.kakaopay.com/Ej8LDsxFf")
             )
         ]
     }
