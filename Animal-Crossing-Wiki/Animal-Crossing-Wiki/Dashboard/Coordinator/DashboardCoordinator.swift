@@ -42,7 +42,8 @@ final class DashboardCoordinator: Coordinator {
             userInfoVM: UserInfoSectionViewModel(),
             tasksVM: TodaysTasksSectionViewModel(coordinator: self),
             villagersVM: VillagersSectionViewModel(coordinator: self),
-            progressVM: CollectionProgressSectionViewModel(coordinator: self)
+            progressVM: CollectionProgressSectionViewModel(coordinator: self),
+            musicPlayerVM: MusicPlayerViewModel(coordinator: self)
         )
         rootViewController.addChild(viewController)
     }

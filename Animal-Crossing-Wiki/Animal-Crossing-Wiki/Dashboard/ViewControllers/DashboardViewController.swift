@@ -52,7 +52,8 @@ class DashboardViewController: UIViewController {
         userInfoVM: UserInfoSectionViewModel,
         tasksVM: TodaysTasksSectionViewModel,
         villagersVM: VillagersSectionViewModel,
-        progressVM: CollectionProgressSectionViewModel
+        progressVM: CollectionProgressSectionViewModel,
+        musicPlayerVM: MusicPlayerViewModel
     ) {
         let userInfoSection = SectionView(
             title: "My Island".localized,
@@ -74,7 +75,14 @@ class DashboardViewController: UIViewController {
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )
-        sectionsScrollView.addSection(userInfoSection, tasksSection, villagersSection, progressSection)
+        let musicPlayerSection = SectionView(
+            title: "Music Player".localized,
+            iconName: "music.quarternote.3",
+            contentView: MusicPlayerView(viewModel: musicPlayerVM)
+        )
+        sectionsScrollView.addSection(
+            userInfoSection, tasksSection, villagersSection, progressSection, musicPlayerSection
+        )
     }
 
     func bind(to viewModel: DashboardViewModel) {
