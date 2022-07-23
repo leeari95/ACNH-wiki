@@ -19,16 +19,6 @@ class CollectionProgressViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var cancelButton: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark.app.fill"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
-        return barButtonItem
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -48,15 +38,11 @@ class CollectionProgressViewController: UIViewController {
     
     private func setUpNavigationItem() {
         navigationItem.title = "Collection Progress".localized
-        if navigationController?.viewControllers.count == 1 {
-            navigationItem.leftBarButtonItem = cancelButton
-        }
     }
     
     func bind(to viewModel: CollectionProgressViewModel) {
         let input = CollectionProgressViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected(Category.self).asObservable(),
-            didTapCancel: cancelButton.rx.tap.asObservable()
+            selectedCategory: tableView.rx.modelSelected(Category.self).asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         

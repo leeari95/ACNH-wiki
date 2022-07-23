@@ -18,7 +18,6 @@ final class CollectionProgressViewModel {
     
     struct Input {
         let selectedCategory: Observable<Category>
-        let didTapCancel: Observable<Void>
     }
     
     struct Output {
@@ -30,12 +29,6 @@ final class CollectionProgressViewModel {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { category in
                 self.coordinator.transition(for: .item(category: category))
-            }).disposed(by: disposeBag)
-        
-        input.didTapCancel
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                self.coordinator.transition(for: .dismiss)
             }).disposed(by: disposeBag)
         
         return Output(items: Observable.just(Category.items()))
