@@ -266,6 +266,10 @@ extension MusicPlayerManager {
         isPlaying.accept(isPlaying.value == true ? false : true)
     }
     
+    func updatePlayingState(to isNotPlaying: Bool) {
+        isPlaying.accept(isNotPlaying)
+    }
+    
     func updatePlayerMode(to mode: PlayerMode) {
         switch mode {
         case .shuffle:
@@ -287,7 +291,7 @@ extension MusicPlayerManager {
         changeSong(at: -1)
     }
     
-    func choice(_ item: Item) {
+    func choice(_ item: Item?) {
         close()
         currentSong.accept(item)
         isPlaying.accept(true)
@@ -295,7 +299,6 @@ extension MusicPlayerManager {
     }
     
     func close() {
-        player = nil
         isPlaying.accept(false)
         elapsedTime.accept("0:00")
         durationTime.accept("0:00")

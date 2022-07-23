@@ -53,12 +53,12 @@ final class AppCoordinator: Coordinator {
         rootViewController.addChild(viewController)
     }
     
-    func showMusicPlayer(_ viewController: PlayerViewController, item: Item) {
+    func showPlayerViewController() {
         guard playerViewController == nil else {
-            MusicPlayerManager.shared.choice(item)
             playerViewController?.view.isHidden = false
             return
         }
+        let viewController = PlayerViewController()
         playerViewController = viewController
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
@@ -82,7 +82,6 @@ final class AppCoordinator: Coordinator {
                 $0
             ])
         }
-        MusicPlayerManager.shared.choice(item)
     }
     
     func minimize() {
@@ -104,6 +103,5 @@ final class AppCoordinator: Coordinator {
     
     func removePlayerViewController() {
         playerViewController?.view.isHidden = true
-        MusicPlayerManager.shared.close()
     }
 }
