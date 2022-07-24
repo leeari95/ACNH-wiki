@@ -169,4 +169,4 @@
 
 #
 
-아리의 개발기에 대해 더 자세한 내용이 보고싶다면, [너굴포털 Wiki](https://github.com/leeari95/animal-crossing/wiki/)를 방문해주세요.
+아리의 개발기에 대해 더 자세한 내용이 보고싶다면, [너굴포털 Wiki](https://github.com/leeari95/ACNH-wiki/wiki)를 방문해주세요.
