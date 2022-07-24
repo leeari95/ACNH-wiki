@@ -199,8 +199,8 @@ final class ItemsViewModel {
                     ).sorted(by: { $0.name < $1.name })
                     notCollectedItems = notCollected
                 }
-                currentFilter.accept(currentFilter.value)
                 currentSearchBarText.accept(currentSearchBarText.value)
+                currentFilter.accept(currentFilter.value)
             }).disposed(by: disposeBag)
         
         return  Output(

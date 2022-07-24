@@ -245,7 +245,7 @@ class ItemsViewController: UIViewController {
     
     private func createSortMenu() -> UIMenu {
         let handler: (UIAction) -> Void = { [weak self] action in
-            let rawValue = action.title == Menu.name.title ? 4 : 5
+            let rawValue = action.title == Menu.name.title ? 2 : 3
             let menu = Menu(rawValue: rawValue) ?? .name
             if self?.currentSelected[menu] == nil {
                 self?.currentSelected[menu] = Menu.ascending
