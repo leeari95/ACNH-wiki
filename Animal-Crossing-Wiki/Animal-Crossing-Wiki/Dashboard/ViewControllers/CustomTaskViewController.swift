@@ -31,13 +31,8 @@ class CustomTaskViewController: UIViewController {
             contentView: customTaskSection
         )
     )
-    private lazy var checkButton: UIBarButtonItem = {
-        return .init(
-            image: UIImage(systemName: "square.and.arrow.down"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
+    private lazy var doneButton: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
     }()
 
     override func viewDidLoad() {
@@ -50,7 +45,7 @@ class CustomTaskViewController: UIViewController {
         self.navigationItem.title = mode?.rawValue.localized
         navigationItem.largeTitleDisplayMode = .never
         
-        navigationItem.rightBarButtonItem = checkButton
+        navigationItem.rightBarButtonItem = doneButton
         navigationItem.rightBarButtonItem?.tintColor = .acNavigationBarTint
 
         view.addSubviews(sectionsScrollView)
@@ -65,7 +60,7 @@ class CustomTaskViewController: UIViewController {
     
     func bind(to viewModel: CustomTaskViewModel) {
         let input = CustomTaskViewModel.Input(
-            didTapCheck: checkButton.rx.tap.asObservable(),
+            didTapCheck: doneButton.rx.tap.asObservable(),
             didTapIcon: customTaskSection.iconButtonObservable,
             didTapAmount: customTaskSection.maxAmountButtonObservable,
             taskNameText: customTaskSection.taskNameObservable,
