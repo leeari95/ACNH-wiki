@@ -427,7 +427,6 @@
 				9A4B4C34285034BA00CC687C /* Villager.swift */,
 				9AF04226285313ED00C51449 /* UserInfo.swift */,
 				9AF0423F2856F4C000C51449 /* Hemisphere.swift */,
-				9A99AA84286AE22200629C4A /* AboutItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -619,7 +618,6 @@
 				9A6DE35C2889AF1000EB2F3F /* PlayerViewModel.swift */,
 				9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */,
 				9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */,
-				9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */,
 				9A6DE364288ADAC300EB2F3F /* SongRow.swift */,
 				9A6DE365288ADAC300EB2F3F /* SongRow.xib */,
 				9A6DE368288AE25400EB2F3F /* PlayerMode.swift */,
@@ -643,6 +641,8 @@
 			children = (
 				9A7ACF21287EC459001D47CB /* Items.swift */,
 				9A7ACF20287EC459001D47CB /* HapticManager.swift */,
+				9A6DE3602889B18800EB2F3F /* MusicPlayerManager.swift */,
+				9A99AA84286AE22200629C4A /* AboutItem.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
