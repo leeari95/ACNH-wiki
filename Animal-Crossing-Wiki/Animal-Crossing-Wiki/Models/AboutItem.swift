@@ -28,7 +28,7 @@ struct AboutItem {
             AboutItem(
                 icon: "photo.fill",
                 title: "Contact / follow us on Instagram",
-                url: URL(string: "https://www.instagram.com/acnhwiki_app/")
+                url: URL(string: "https://www.instagram.com/nook_portal_plus/")
             ),
             AboutItem(
                 icon: "star.fill",
