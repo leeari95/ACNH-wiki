@@ -1,4 +1,4 @@
-[![Swift 5.6](https://img.shields.io/badge/swift-5.6-ED523F.svg?style=flat)](https://swift.org/download/) [![Xcode 14.0](https://img.shields.io/badge/Xcode-13.4-ED523F.svg?style=flat&color=blue)](https://swift.org/download/) [![RxSwift 14.0](https://img.shields.io/badge/RxSwift-6.5.0-ED523F.svg?style=flat&color=purple)](https://swift.org/download/) ![Build and Test](https://github.com/leeari95/ACNH-wiki/actions/workflows/test_on_develop.yml/badge.svg) [![@acnhwiki_app](https://img.shields.io/badge/contact-@acnhwiki__app-5AA9E7.svg?style=flat&color=yellow)](https://www.instagram.com/acnhwiki_app/) [![@lee_ari95](https://img.shields.io/badge/contact-@lee__ari95-5AA9E7.svg?style=flat&color=yellow)](https://www.instagram.com/lee_ari95)
+[![Swift 5.6](https://img.shields.io/badge/swift-5.6-ED523F.svg?style=flat)](https://swift.org/download/) [![Xcode 14.0](https://img.shields.io/badge/Xcode-13.4-ED523F.svg?style=flat&color=blue)](https://swift.org/download/) [![RxSwift 14.0](https://img.shields.io/badge/RxSwift-6.5.0-ED523F.svg?style=flat&color=purple)](https://swift.org/download/) ![Build and Test](https://github.com/leeari95/ACNH-wiki/actions/workflows/test_on_develop.yml/badge.svg) [![@nook_portal_plus](https://img.shields.io/badge/contact-@nook__portal__plus-5AA9E7.svg?style=flat&color=yellow)](https://www.instagram.com/acnhwiki_app/) [![@lee_ari95](https://img.shields.io/badge/contact-@lee__ari95-5AA9E7.svg?style=flat&color=yellow)](https://www.instagram.com/lee_ari95)
 
 # 너굴포털+
 
@@ -27,7 +27,7 @@
 모여봐요 동물의 숲을 플레이하면서 수많은 아이템들을 내가 수집했는지의 여부를 기록해둘 수 있어요. 
 (가구, 생물, 레시피 등...)
 
-아이템을 수집하는 방법에 대해서 간단하게 확인해볼 수 있어요.
+아이템의 상세정보 및 수집하는 방법에 대해서 간단하게 확인해볼 수 있어요.
 
 또한 동물의 숲의 인기 아티스트 K.K.의 음반도 맛보기로 감상할 수 있는 모동숲 가이드앱입니다. 🌳
 
@@ -38,6 +38,12 @@
 > 🌓 다크모드 라이트모드를 지원합니다.
 
 <img src="https://i.imgur.com/6Y0an0c.png" width="30%">
+
+#
+
+> 🇰🇷 🇺🇸 지역화 처리를 하여 영어, 한국어를 지원합니다.
+
+<img src="https://i.imgur.com/0ix2b2p.png" width="30%"> <img src="https://i.imgur.com/RrQDk2X.png" width="30%">
 
 #
 
@@ -135,6 +141,8 @@
 > **Coordinator**
 
 * 화면 전환에 대한 로직을 ViewController로부터 분리하고 의존성 객체에 대한 주입을 외부에서 처리하도록 하기 위해 코디네이터를 적용했습니다.
+
+&nbsp;
 
 ## 기술적 도전
 
