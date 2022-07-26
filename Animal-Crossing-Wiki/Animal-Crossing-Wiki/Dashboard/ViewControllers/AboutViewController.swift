@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import RxSwift
 import RxDataSources
+import ReactorKit
 
 class AboutViewController: UIViewController {
 
@@ -49,11 +49,12 @@ class AboutViewController: UIViewController {
         ])
     }
     
-    func bind(to viewModel: AboutViewModel) {
-        let input = AboutViewModel.Input(
-            didTapCancel: cancelButton.rx.tap.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: AboutReactor) {
+        cancelButton.rx.tap
+            .map { AboutReactor.Action.cancel }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
 
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, AboutItem>> { _, _, _, item in
             let cell = UITableViewCell()
@@ -78,18 +79,18 @@ class AboutViewController: UIViewController {
             return dataSource[sectionIndex].model
         }
         
-        output.items
+        reactor.state.map { $0.items }
             .map { $0.map { SectionModel(model: $0.title, items: $0.items) } }
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-        
+
         tableView.rx.itemSelected
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, indexPath in
                 owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
-        
+
         tableView.rx.modelSelected(AboutItem.self)
             .compactMap { $0.url }
             .subscribe(onNext: { url in
