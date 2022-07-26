@@ -46,15 +46,6 @@ class UserInfoView: UIView {
         return label
     }()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
@@ -82,15 +73,13 @@ class UserInfoView: UIView {
         ])
     }
     
-    private func bind(to viewModel: UserInfoSectionViewModel) {
-        let output = viewModel.transform(disposeBag: disposeBag)
-        output.userInfo
+    private func bind() {
+        Items.shared.userInfo
             .compactMap { $0 }
             .withUnretained(self)
-            .observe(on: MainScheduler.instance)
-            .bind { (owner, userInfo) in
+            .subscribe(onNext: { owner, userInfo in
                 owner.updateInfo(userInfo)
-        }.disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
     }
     
     private func updateInfo(_ userInfo: UserInfo) {
@@ -107,8 +96,9 @@ class UserInfoView: UIView {
 }
 
 extension UserInfoView {
-    convenience init(_ viewModel: UserInfoSectionViewModel) {
+    convenience init() {
         self.init(frame: .zero)
-        bind(to: viewModel)
+        bind()
+        configure()
     }
 }
