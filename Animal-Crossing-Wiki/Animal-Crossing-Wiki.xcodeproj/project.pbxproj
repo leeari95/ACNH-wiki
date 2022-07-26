@@ -48,6 +48,7 @@
 		9A62D74128783A4D0047750F /* UITableView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62D74028783A4D0047750F /* UITableView+extension.swift */; };
 		9A680EB32888219900F0E0C7 /* MusicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A680EB22888219900F0E0C7 /* MusicRequest.swift */; };
 		9A680EB52888222200F0E0C7 /* MusicResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A680EB42888222200F0E0C7 /* MusicResponseDTO.swift */; };
+		9A688E1F288FAFB300FFFB69 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9A688E1E288FAFB300FFFB69 /* ReactorKit */; };
 		9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919828335ADD0061AAF1 /* DefaultAPIProvider.swift */; };
 		9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919A28335AE90061AAF1 /* APIProvider.swift */; };
 		9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68919C28335AFF0061AAF1 /* APIRequest.swift */; };
@@ -400,6 +401,7 @@
 			files = (
 				9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */,
 				9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */,
+				9A688E1F288FAFB300FFFB69 /* ReactorKit in Frameworks */,
 				9A541B8528225F8E001B57FD /* RxSwift in Frameworks */,
 				9A541B8328225F8E001B57FD /* RxRelay in Frameworks */,
 				9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */,
@@ -991,6 +993,7 @@
 				9A1DB1D6284081E400689F11 /* Alamofire */,
 				9A99AA80286ACBBC00629C4A /* Differentiator */,
 				9A99AA82286ACBBC00629C4A /* RxDataSources */,
+				9A688E1E288FAFB300FFFB69 /* ReactorKit */,
 			);
 			productName = "Animal-Crossing-Wiki";
 			productReference = 9A541B6528220A72001B57FD /* Animal-Crossing-Wiki.app */;
@@ -1049,6 +1052,7 @@
 				9A1DB1D5284081E400689F11 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				9A4B4C2B284EEA2D00CC687C /* XCRemoteSwiftPackageReference "AnyCodable" */,
 				9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				9A688E1D288FAFB300FFFB69 /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = 9A541B6628220A72001B57FD /* Products */;
 			projectDirPath = "";
@@ -1606,6 +1610,14 @@
 				kind = branch;
 			};
 		};
+		9A688E1D288FAFB300FFFB69 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		9A99AA7F286ACBBC00629C4A /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
@@ -1641,6 +1653,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9A541B7F28225F8E001B57FD /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		9A688E1E288FAFB300FFFB69 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A688E1D288FAFB300FFFB69 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 		9A99AA80286ACBBC00629C4A /* Differentiator */ = {
 			isa = XCSwiftPackageProductDependency;
