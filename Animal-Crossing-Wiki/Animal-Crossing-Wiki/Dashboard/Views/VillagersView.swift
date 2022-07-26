@@ -96,27 +96,41 @@ class VillagersView: UIView {
         ])
     }
     
-    private func bind(to viewModel: VillagersSectionViewModel) {
-        let input = VillagersSectionViewModel.Input(
-            didSelectItem: collectionView.rx.itemSelected.asObservable(),
-            didTapVillagerLongPress: longPressGesture.rx.event
-                .map { (longPressGesture: UIGestureRecognizer) -> IndexPath? in
-                    guard let collectionView = longPressGesture.view as? UICollectionView else {
-                        return nil
-                    }
-                    if longPressGesture.state == .began,
-                       let indexPath = collectionView.indexPathForItem(
-                        at: longPressGesture.location(in: collectionView)
-                       ) {
-                        return indexPath
-                    }
+    private func bind(to reactor: VillagersSectionReactor) {
+        Items.shared.villagerHouseList
+            .map { VillagersSectionReactor.Action.updateVillagers(villagers: $0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        longPressGesture.rx.event
+            .map { (longPressGesture: UIGestureRecognizer) -> IndexPath? in
+                guard let collectionView = longPressGesture.view as? UICollectionView else {
                     return nil
-                }.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-
-        output.villagers
-            .observe(on: MainScheduler.asyncInstance)
+                }
+                if longPressGesture.state == .began,
+                   let indexPath = collectionView.indexPathForItem(
+                    at: longPressGesture.location(in: collectionView)
+                   ) {
+                    return indexPath
+                }
+                return nil
+            }.map { VillagersSectionReactor.Action.villagerLongPress(indexPath: $0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.villagers }
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: IconCell.className,
+                    cellType: IconCell.self
+                )
+            ) { _, villager, cell in
+                cell.setImage(url: villager.iconImage)
+            }.disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.villagers }
             .withUnretained(self)
             .subscribe(onNext: { owner, villagers in
                 if villagers.isEmpty {
@@ -130,17 +144,7 @@ class VillagersView: UIView {
                 owner.updateCollectionViewHeight()
                 owner.layoutIfNeeded()
             }).disposed(by: disposeBag)
-        
-        output.villagers
-            .bind(
-                to: collectionView.rx.items(
-                    cellIdentifier: IconCell.className,
-                    cellType: IconCell.self
-                )
-            ) { _, villager, cell in
-                cell.setImage(url: villager.iconImage)
-            }.disposed(by: disposeBag)
-        
+
         collectionView.rx.itemSelected
             .subscribe(onNext: { indexPath in
                 HapticManager.shared.selection()
@@ -157,7 +161,7 @@ class VillagersView: UIView {
 }
 
 extension VillagersView {
-    convenience init(_ viewModel: VillagersSectionViewModel) {
+    convenience init(_ viewModel: VillagersSectionReactor) {
         self.init(frame: .zero)
         configure()
         bind(to: viewModel)

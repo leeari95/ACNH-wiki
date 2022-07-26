@@ -50,7 +50,7 @@ class DashboardViewController: UIViewController {
     
     func setUpViewModels(
         tasksVM: TodaysTasksSectionViewModel,
-        villagersVM: VillagersSectionViewModel,
+        villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionViewModel
     ) {
         let userInfoSection = SectionView(

@@ -9,6 +9,6 @@ import Foundation
 import RxSwift
 
 protocol VillagersHouseStorage {
-    func fetch() -> Single<[Villager]>
+    func fetch() -> [Villager]
     func update(_ villager: Villager) 
 }

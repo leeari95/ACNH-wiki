@@ -62,12 +62,7 @@ final class Items {
                 debugPrint(error)
             }).disposed(by: disposeBag)
         
-        CoreDataVillagersHouseStorage().fetch()
-            .subscribe(onSuccess: { villagers in
-                self.villagersHouse.accept(villagers)
-            }, onFailure: { error in
-                debugPrint(error)
-            }).disposed(by: disposeBag)
+        self.villagersHouse.accept(CoreDataVillagersHouseStorage().fetch())
         
         CoreDataItemsStorage().fetch()
             .subscribe(onSuccess: { items in

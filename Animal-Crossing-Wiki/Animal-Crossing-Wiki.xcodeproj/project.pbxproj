@@ -160,7 +160,7 @@
 		9A99AA6D2861945B00629C4A /* PreferencesReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6C2861945B00629C4A /* PreferencesReactor.swift */; };
 		9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA6E28643CA700629C4A /* UIImage+extension.swift */; };
 		9A99AA712864433900629C4A /* UserCollectionEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */; };
-		9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */; };
+		9A99AA7428656D1600629C4A /* VillagersSectionReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7328656D1600629C4A /* VillagersSectionReactor.swift */; };
 		9A99AA7628657A9900629C4A /* TodaysTasksSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7528657A9900629C4A /* TodaysTasksSectionViewModel.swift */; };
 		9A99AA782865B82A00629C4A /* TasksEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */; };
 		9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */; };
@@ -358,7 +358,7 @@
 		9A99AA6C2861945B00629C4A /* PreferencesReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesReactor.swift; sourceTree = "<group>"; };
 		9A99AA6E28643CA700629C4A /* UIImage+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+extension.swift"; sourceTree = "<group>"; };
 		9A99AA702864433900629C4A /* UserCollectionEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCollectionEntity+Mapping.swift"; sourceTree = "<group>"; };
-		9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSectionViewModel.swift; sourceTree = "<group>"; };
+		9A99AA7328656D1600629C4A /* VillagersSectionReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSectionReactor.swift; sourceTree = "<group>"; };
 		9A99AA7528657A9900629C4A /* TodaysTasksSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSectionViewModel.swift; sourceTree = "<group>"; };
 		9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditViewModel.swift; sourceTree = "<group>"; };
 		9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewModel.swift; sourceTree = "<group>"; };
@@ -703,7 +703,7 @@
 				9A6A2ED8287BEB76007D2EEA /* DashboardReactor.swift */,
 				9A6DC204287C6199004EEC41 /* AboutReactor.swift */,
 				9A99AA6C2861945B00629C4A /* PreferencesReactor.swift */,
-				9A99AA7328656D1600629C4A /* VillagersSectionViewModel.swift */,
+				9A99AA7328656D1600629C4A /* VillagersSectionReactor.swift */,
 				9AD343F628767649008A3D6D /* ProgressViewModel.swift */,
 				9A99AA7528657A9900629C4A /* TodaysTasksSectionViewModel.swift */,
 				9A99AA772865B82A00629C4A /* TasksEditViewModel.swift */,
@@ -1254,7 +1254,7 @@
 				9A7ACF1A287EC2F3001D47CB /* ItemProgressRow.swift in Sources */,
 				9AD343F728767649008A3D6D /* ProgressViewModel.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
-				9A99AA7428656D1600629C4A /* VillagersSectionViewModel.swift in Sources */,
+				9A99AA7428656D1600629C4A /* VillagersSectionReactor.swift in Sources */,
 				9AF0420E28530C8600C51449 /* VillagersHouseEntity+Mapping.swift in Sources */,
 				9AF0420628530C1E00C51449 /* CoreDataVillagersLikeStorage.swift in Sources */,
 				9A7ACF2C287FDA07001D47CB /* VariantCell.swift in Sources */,
