@@ -38,6 +38,7 @@ class CatalogCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        iconImageView.kf.cancelDownloadTask()
         iconImageView.image = nil
         nameLabel.text = nil
         nameLabel.textColor = .acText

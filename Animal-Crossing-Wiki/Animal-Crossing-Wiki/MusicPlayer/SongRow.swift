@@ -21,6 +21,7 @@ class SongRow: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        coverImageView.kf.cancelDownloadTask()
         coverImageView.image = nil
         titleLabel.text = nil
         artistLabel.text = nil

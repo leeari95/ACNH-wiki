@@ -28,6 +28,7 @@ class VillagersCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        iconImage.kf.cancelDownloadTask()
         likeButton.setImage(nil, for: .normal)
         houseButton.setImage(nil, for: .normal)
         viewModel = nil

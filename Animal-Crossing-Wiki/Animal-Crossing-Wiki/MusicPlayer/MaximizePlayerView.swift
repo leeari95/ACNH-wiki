@@ -198,6 +198,7 @@ class MaximizePlayerView: UIView {
             .compactMap { $0 }
             .withUnretained(self)
             .subscribe(onNext: { owner, song in
+                owner.coverImageView.kf.cancelDownloadTask()
                 owner.titleLabel.text = song.translations.localizedName()
                 owner.coverImageView.setImage(with: song.image ?? "")
             }).disposed(by: disposeBag)
