@@ -76,11 +76,19 @@ class DashboardViewController: UIViewController {
         )
         sectionsScrollView.addSection(userInfoSection, tasksSection, villagersSection, progressSection)
     }
-
-    func bind(to viewModel: DashboardViewModel) {
-        let input = DashboardViewModel.Input(
-            didTapMore: moreButton.rx.tap.asObservable()
-        )
-        viewModel.bind(input: input, disposeBag: disposeBag)
+    
+    func bind(to reactor: DashboardReactor) {
+        moreButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                self.showSelectedItemAlert(
+                    [DashboardReactor.Menu.about.rawValue.localized, DashboardReactor.Menu.setting.rawValue.localized],
+                    currentItem: nil
+                ).map { DashboardReactor.Action.selected(title: $0) }
+                    .bind(to: reactor.action )
+                    .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
     }
 }

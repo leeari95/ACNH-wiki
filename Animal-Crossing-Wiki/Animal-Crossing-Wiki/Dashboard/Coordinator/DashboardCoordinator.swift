@@ -37,7 +37,7 @@ final class DashboardCoordinator: Coordinator {
     
     func start() {
         let viewController = DashboardViewController()
-        viewController.bind(to: DashboardViewModel(coordinator: self))
+        viewController.bind(to: DashboardReactor(coordinator: self))
         viewController.setUpViewModels(
             userInfoVM: UserInfoSectionViewModel(),
             tasksVM: TodaysTasksSectionViewModel(coordinator: self),
