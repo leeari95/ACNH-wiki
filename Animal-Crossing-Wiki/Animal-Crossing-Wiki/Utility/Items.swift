@@ -15,8 +15,6 @@ final class Items {
     
     // MARK: - Private
     private let network: APIProvider = DefaultAPIProvider()
-    private let villagersLikeStorage = CoreDataVillagersLikeStorage()
-    private let villagersHouseStorage = CoreDataVillagersHouseStorage()
     private let disposeBag = DisposeBag()
     private let networkGroup = DispatchGroup()
     
@@ -48,12 +46,7 @@ final class Items {
     }
     
     private func setUpUserCollection() {
-        CoreDataUserInfoStorage().fetchUserInfo()
-            .subscribe(onSuccess: { userInfo in
-                self.currentUserInfo.accept(userInfo)
-            }, onFailure: { error in
-                debugPrint(error)
-            }).disposed(by: disposeBag)
+        currentUserInfo.accept(CoreDataUserInfoStorage().fetchUserInfo())
         
         CoreDataDailyTaskStorage().fetchTasks()
             .subscribe(onSuccess: { tasks in

@@ -7,12 +7,13 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class PreferencesViewController: UIViewController {
     
-    private let currentHemisphere = BehaviorSubject<Hemisphere?>(value: nil)
-    private let currentFruit = BehaviorSubject<Fruit?>(value: nil)
-    private let disposeBag = DisposeBag()
+    private let currentHemisphere = BehaviorRelay<String?>(value: nil)
+    private let currentFruit = BehaviorRelay<String?>(value: nil)
+    let disposeBag = DisposeBag()
     
     private lazy var settingSection = PreferencesView()
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView(
@@ -49,54 +50,56 @@ class PreferencesViewController: UIViewController {
         ])
     }
     
-    func bind(to viewModel: PreferencesViewModel) {
-        let input = PreferencesViewModel.Input(
-            islandNameText: settingSection.islandNameObservable,
-            userNameText: settingSection.userNameObservable,
-            hemisphereButtonTitle: currentHemisphere.asObservable(),
-            startingFruitButtonTitle: currentFruit.asObservable(),
-            didTapCancel: cancelButton.rx.tap.asObservable(),
-            didTapHemisphere: settingSection.hemisphereButtonObservable,
-            didTapFruit: settingSection.startingFruitButtonObservable
-        )
+    func bind(to reactor: PreferencesReactor) {
+        cancelButton.rx.tap
+            .map { PreferencesReactor.Action.cancel }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-
-        output.userInfo
-            .compactMap { $0 }
+        settingSection.islandNameObservable
+            .map { PreferencesReactor.Action.islandName($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        settingSection.userNameObservable
+            .map { PreferencesReactor.Action.userName($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        settingSection.hemisphereButtonObservable
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                self.showSelectedItemAlert(
+                    Hemisphere.allCases.map { $0.rawValue.localized },
+                    currentItem: self.currentHemisphere.value
+                ).map { PreferencesReactor.Action.hemishphere(title: $0) }
+                    .bind(to: reactor.action)
+                    .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
+        
+        settingSection.startingFruitButtonObservable
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+                self.showSelectedItemAlert(
+                    Fruit.allCases.map { $0.rawValue.localized },
+                    currentItem: self.currentFruit.value
+                ).map { PreferencesReactor.Action.fruit(title: $0)}
+                    .bind(to: reactor.action)
+                    .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
+        
+        reactor.state
+            .compactMap { $0.userInfo }
             .withUnretained(self)
-            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, userInfo in
                 owner.settingSection.setUpViews(userInfo)
-        }, onError: { error in
-            print(error.localizedDescription)
-        }).disposed(by: disposeBag)
-        
-        output.errorMessage
-            .filter { $0 != "" }
-            .subscribe(onNext: { errorMessage in
-                print(errorMessage)
+                owner.currentHemisphere.accept(userInfo.hemisphere.rawValue.localized)
+                owner.currentFruit.accept(userInfo.islandFruit.rawValue.localized)
             }).disposed(by: disposeBag)
-        
-        output.didChangeHemisphere
-            .compactMap { $0 }
-            .compactMap { Hemisphere(rawValue: $0) }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, hemisphere in
-                owner.settingSection.updateHemisphere(hemisphere)
-                owner.currentHemisphere.onNext(hemisphere)
-            }).disposed(by: disposeBag)
-        
-        output.didChangeFruit
-            .compactMap { $0 }
-            .compactMap { Fruit(rawValue: $0) }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, fruit in
-                owner.settingSection.updateFruit(fruit)
-                owner.currentFruit.onNext(fruit)
-            }).disposed(by: disposeBag)
-        
-        setUpAppSettings(to: AppSettingViewModel())
     }
     
     private func setUpAppSettings(to viewModel: AppSettingViewModel) {

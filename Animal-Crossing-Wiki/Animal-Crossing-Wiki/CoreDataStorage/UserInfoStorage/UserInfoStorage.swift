@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserInfoStorage {
-    func fetchUserInfo(completion: @escaping (Result<UserInfo, Error>) -> Void)
-    func updateUserInfo(_ userInfo: UserInfo, completion: @escaping (Result<UserInfo, Error>) -> Void)
+    func fetchUserInfo() -> UserInfo?
+    func updateUserInfo(_ userInfo: UserInfo)
     func resetUserInfo()
 }

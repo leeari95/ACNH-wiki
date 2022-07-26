@@ -51,7 +51,7 @@ final class DashboardCoordinator: Coordinator {
         switch route {
         case .setting:
             let viewController = PreferencesViewController()
-            viewController.bind(to: PreferencesViewModel(coordinator: self))
+            viewController.bind(to: PreferencesReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .about:

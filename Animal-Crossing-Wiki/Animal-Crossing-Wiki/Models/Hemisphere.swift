@@ -11,7 +11,7 @@ enum Hemisphere: String, CaseIterable {
     case north = "North"
     case south = "South"
     
-    static func title(_ string: String) -> String? {
+    static func transform(_ string: String) -> String? {
         switch string {
         case Hemisphere.north.rawValue.localized: return Hemisphere.north.rawValue
         case Hemisphere.south.rawValue.localized: return Hemisphere.south.rawValue
