@@ -47,11 +47,14 @@ class ProgressView: UIStackView {
         ])
     }
     
-    private func bind(to viewModel: ProgressViewModel) {
-        let output = viewModel.transform(disposeBag: disposeBag)
+    private func bind(to reactor: ProgressReactor) {
+        Observable.combineLatest(Items.shared.itemList, Items.shared.itemsCount)
+            .map { ProgressReactor.Action.updateItemsList($0.0, $0.1) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.items
-            .observe(on: MainScheduler.instance)
+        reactor.state.map { $0.itemInfo }
             .withUnretained(self)
             .subscribe(onNext: { owner, items in
                 owner.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
@@ -66,12 +69,12 @@ extension ProgressView {
         self.barHeight = barHeight
         self.iconImageView.image = UIImage(named: category.progressIconName)
         configure()
-        bind(to: ProgressViewModel(category: category))
+        bind(to: ProgressReactor(category: category))
     }
     
     func updateView(category: Category) {
         self.iconImageView.image = UIImage(named: category.progressIconName)
         disposeBag = DisposeBag()
-        bind(to: ProgressViewModel(category: category))
+        bind(to: ProgressReactor(category: category))
     }
 }
