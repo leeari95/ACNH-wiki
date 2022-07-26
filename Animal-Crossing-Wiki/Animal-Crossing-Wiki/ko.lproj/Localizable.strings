@@ -783,8 +783,8 @@
 "FossilUnknown" = "미지의 화석";
 "HaniwaPiece" = "토용 조각";
 "Unnecessary" = "사용불가";
-
-
+"Sculpture" = "조각품";
+"Picture" = "그림";
 
 // MARK: - materials
 "scallop" = "가리비";
