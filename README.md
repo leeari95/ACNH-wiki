@@ -2,7 +2,7 @@
 
 # 너굴포털+
 
-<img src="https://i.imgur.com/XMixi1i.png" width="30%">
+<img src="https://i.imgur.com/iSzSS21.png" width="30%">
 
 &nbsp;
 
