@@ -60,7 +60,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.present(navigationController, animated: true)
         case .taskEdit:
             let viewController = TaskEditViewController()
-            viewController.bind(to: TasksEditViewModel(coordinator: self))
+            viewController.bind(to: TasksEditReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .customTask(let task):
