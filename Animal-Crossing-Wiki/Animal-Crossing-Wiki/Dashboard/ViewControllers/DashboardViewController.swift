@@ -49,7 +49,7 @@ class DashboardViewController: UIViewController {
     }
     
     func setUpViewModels(
-        tasksVM: TodaysTasksSectionViewModel,
+        tasksVM: TodaysTasksSectionReactor,
         villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionViewModel
     ) {
