@@ -86,7 +86,7 @@
 		9A7ACED9287EC16E001D47CB /* VillagersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */; };
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
 		9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */; };
-		9A7ACEE0287EC188001D47CB /* VillagersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */; };
+		9A7ACEE0287EC188001D47CB /* VillagersCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDD287EC188001D47CB /* VillagersCellReactor.swift */; };
 		9A7ACEE1287EC188001D47CB /* VillagersReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */; };
 		9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */; };
 		9A7ACEE7287EC194001D47CB /* VillagerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEE3287EC194001D47CB /* VillagerDetailView.swift */; };
@@ -284,7 +284,7 @@
 		9A7ACED7287EC16E001D47CB /* VillagersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewController.swift; path = ViewControllers/VillagersViewController.swift; sourceTree = "<group>"; };
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCoordinator.swift; path = Coordinator/VillagersCoordinator.swift; sourceTree = "<group>"; };
-		9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCellViewModel.swift; path = ViewModels/VillagersCellViewModel.swift; sourceTree = "<group>"; };
+		9A7ACEDD287EC188001D47CB /* VillagersCellReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCellReactor.swift; path = ViewModels/VillagersCellReactor.swift; sourceTree = "<group>"; };
 		9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersReactor.swift; path = ViewModels/VillagersReactor.swift; sourceTree = "<group>"; };
 		9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewModel.swift; path = ViewModels/VillagerDetailViewModel.swift; sourceTree = "<group>"; };
 		9A7ACEE3287EC194001D47CB /* VillagerDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailView.swift; path = Views/VillagerDetailView.swift; sourceTree = "<group>"; };
@@ -756,7 +756,7 @@
 			isa = PBXGroup;
 			children = (
 				9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */,
-				9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */,
+				9A7ACEDD287EC188001D47CB /* VillagersCellReactor.swift */,
 				9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */,
 			);
 			name = ViewModels;
@@ -1184,7 +1184,7 @@
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
-				9A7ACEE0287EC188001D47CB /* VillagersCellViewModel.swift in Sources */,
+				9A7ACEE0287EC188001D47CB /* VillagersCellReactor.swift in Sources */,
 				9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
 				9A99AA5C2860319100629C4A /* CustomTaskViewController.swift in Sources */,
