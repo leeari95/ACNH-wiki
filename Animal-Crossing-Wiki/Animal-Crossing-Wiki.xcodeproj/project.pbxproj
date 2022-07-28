@@ -96,7 +96,7 @@
 		9A7ACEEE287EC20B001D47CB /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEEB287EC20B001D47CB /* ItemDetailViewController.swift */; };
 		9A7ACEEF287EC20B001D47CB /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEEC287EC20B001D47CB /* CatalogViewController.swift */; };
 		9A7ACEF0287EC20B001D47CB /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEED287EC20B001D47CB /* ItemsViewController.swift */; };
-		9A7ACEF5287EC239001D47CB /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF1287EC239001D47CB /* CatalogViewModel.swift */; };
+		9A7ACEF5287EC239001D47CB /* CatalogReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */; };
 		9A7ACEF6287EC239001D47CB /* ItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */; };
 		9A7ACEF7287EC239001D47CB /* CatalogCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */; };
 		9A7ACEF8287EC239001D47CB /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */; };
@@ -294,7 +294,7 @@
 		9A7ACEEB287EC20B001D47CB /* ItemDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemDetailViewController.swift; path = Catalog/ViewControllers/ItemDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEEC287EC20B001D47CB /* CatalogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogViewController.swift; path = Catalog/ViewControllers/CatalogViewController.swift; sourceTree = "<group>"; };
 		9A7ACEED287EC20B001D47CB /* ItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemsViewController.swift; path = Catalog/ViewControllers/ItemsViewController.swift; sourceTree = "<group>"; };
-		9A7ACEF1287EC239001D47CB /* CatalogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogViewModel.swift; path = Catalog/ViewModels/CatalogViewModel.swift; sourceTree = "<group>"; };
+		9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogReactor.swift; path = Catalog/ViewModels/CatalogReactor.swift; sourceTree = "<group>"; };
 		9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemDetailViewModel.swift; path = Catalog/ViewModels/ItemDetailViewModel.swift; sourceTree = "<group>"; };
 		9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogCellViewModel.swift; path = Catalog/ViewModels/CatalogCellViewModel.swift; sourceTree = "<group>"; };
 		9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemsViewModel.swift; path = Catalog/ViewModels/ItemsViewModel.swift; sourceTree = "<group>"; };
@@ -603,7 +603,7 @@
 		9A6CB3FC2872A57100B368D4 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				9A7ACEF1287EC239001D47CB /* CatalogViewModel.swift */,
+				9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */,
 				9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */,
 				9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */,
 				9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */,
@@ -1176,7 +1176,7 @@
 				9A99AA6D2861945B00629C4A /* PreferencesReactor.swift in Sources */,
 				9AF042402856F4C000C51449 /* Hemisphere.swift in Sources */,
 				9A3CFB47288291C300B0FFCB /* CeilingDecorResponseDTO.swift in Sources */,
-				9A7ACEF5287EC239001D47CB /* CatalogViewModel.swift in Sources */,
+				9A7ACEF5287EC239001D47CB /* CatalogReactor.swift in Sources */,
 				9A7ACF07287EC26F001D47CB /* CategoryRow.swift in Sources */,
 				9A99AA4A285B04D900629C4A /* DashboardCoordinator.swift in Sources */,
 				9A7ACEEE287EC20B001D47CB /* ItemDetailViewController.swift in Sources */,

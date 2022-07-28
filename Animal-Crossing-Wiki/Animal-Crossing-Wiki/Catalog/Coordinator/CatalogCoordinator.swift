@@ -26,7 +26,7 @@ final class CatalogCoordinator: Coordinator {
     
     func start() {
         let catalogVC = CatalogViewController()
-        catalogVC.bind(to: CatalogViewModel(coordinator: self))
+        catalogVC.bind(to: CatalogReactor(coordinator: self))
         rootViewController.addChild(catalogVC)
     }
     
