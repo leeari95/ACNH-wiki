@@ -2,7 +2,7 @@
 
 # 너굴포털+
 
-<img src="https://i.imgur.com/XMixi1i.png" width="30%">
+<img src="https://i.imgur.com/iSzSS21.png" width="30%">
 
 &nbsp;
 
@@ -98,16 +98,6 @@
 > 🕙 생물의 경우 어디서 출현하는지, 몇시에 언제 출현하는지에 대한 정보를 확인해볼 수 있어요.
 
 <img src="https://i.imgur.com/myu8KXK.gif" width="30%"> <img src="https://i.imgur.com/w6vyhiw.gif" width="30%">
-
-#
-
-> 🔊 음악의 경우 뮤직 플레이어를 통해 감상을 해볼 수도 있습니다.
-> 
-> 재생 목록을 통해 음악을 바꿔볼 수도 있습니다. 
-> 
-> 백그라운드 상태에서도 음악이 멈추지 않고 이어서 재생됩니다.
-
-<img src="https://i.imgur.com/VepmkwR.gif" width="30%"> <img src="https://i.imgur.com/N2tydpC.gif" width="30%"> <img src="https://i.imgur.com/10gBxp2.jpg" width="30%">
 
 #
 

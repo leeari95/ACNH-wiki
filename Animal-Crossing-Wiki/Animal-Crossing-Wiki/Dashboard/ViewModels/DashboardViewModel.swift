@@ -26,7 +26,8 @@ final class DashboardViewModel {
                 self.coordinator?.rootViewController.visibleViewController?
                     .showSelectedItemAlert(
                         ["About".localized, "Setting".localized],
-                        currentItem: nil
+                        currentItem: nil,
+                        barButtonItem: self.coordinator?.rootViewController.visibleViewController?.navigationItem.rightBarButtonItem
                     ).subscribe(onNext: { selected in
                         if selected == "Setting".localized {
                             self.coordinator?.transition(for: .setting)
