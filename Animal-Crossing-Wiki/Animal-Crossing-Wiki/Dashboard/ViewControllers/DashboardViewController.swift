@@ -51,7 +51,7 @@ class DashboardViewController: UIViewController {
     func setUpViewModels(
         tasksVM: TodaysTasksSectionReactor,
         villagersVM: VillagersSectionReactor,
-        progressVM: CollectionProgressSectionViewModel
+        progressVM: CollectionProgressSectionReactor
     ) {
         let userInfoSection = SectionView(
             title: "My Island".localized,
