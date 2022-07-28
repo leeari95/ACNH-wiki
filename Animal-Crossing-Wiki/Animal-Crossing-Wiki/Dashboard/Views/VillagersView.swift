@@ -114,9 +114,11 @@ class VillagersView: UIView {
                     return indexPath
                 }
                 return nil
-            }.map { VillagersSectionReactor.Action.villagerLongPress(indexPath: $0)}
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+            }.compactMap { $0 }
+            .map { VillagersSectionReactor.Action.villagerLongPress(indexPath: $0)}
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
         reactor.state
             .map { $0.villagers }

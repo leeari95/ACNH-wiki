@@ -24,7 +24,7 @@ final class VillagersCoordinator: Coordinator {
     
     func start() {
         let villagersVC = VillagersViewController()
-        villagersVC.bind(to: VillagersViewModel(coordinator: self))
+        villagersVC.bind(to: VillagersReactor(coordinator: self))
         rootViewController.addChild(villagersVC)
     }
     
