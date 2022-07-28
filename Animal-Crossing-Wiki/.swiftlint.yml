@@ -8,14 +8,28 @@ type_body_length: # 타입 길이
     error: 250
 identifier_name:
     min_length:
-    - 2  # only min_length
+      - 2  # only min_length
     error: 4 # only error
     excluded: # 제외할 문자열 목록 사용
+      - a
+      - b
+function_body_length:
+  warning: 150
+  error: 300
+type_body_length:
+    - 300 # warning
+    - 400
+file_length:
+    warning: 500
+    error: 1200
+line_length:
+  warning: 140
 disabled_rules: # 실행에서 제외할 룰 식별자들
-  - colon
-  - control_statement
-  - trailing_whitespace
-  - vertical_parameter_alignment
+    - colon
+    - control_statement
+    - trailing_whitespace
+    - vertical_parameter_alignment
+    - cyclomatic_complexity
 opt_in_rules: # 일부 룰은 옵트 인 형태로 제공
-  - empty_count
-  - conditional_returns_on_newline
+    - empty_count
+    - conditional_returns_on_newline
