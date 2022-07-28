@@ -50,7 +50,7 @@ class PreferencesViewController: UIViewController {
         ])
     }
     
-    func bind(to reactor: PreferencesReactor) {
+    func bind(to reactor: PreferencesReactor, appSettingReactor: AppSettingReactor) {
         cancelButton.rx.tap
             .map { PreferencesReactor.Action.cancel }
             .bind(to: reactor.action)
@@ -100,11 +100,13 @@ class PreferencesViewController: UIViewController {
                 owner.currentHemisphere.accept(userInfo.hemisphere.rawValue.localized)
                 owner.currentFruit.accept(userInfo.islandFruit.rawValue.localized)
             }).disposed(by: disposeBag)
+        
+        setUpAppSettings(to: appSettingReactor)
     }
     
-    private func setUpAppSettings(to viewModel: AppSettingViewModel) {
+    private func setUpAppSettings(to reactor: AppSettingReactor) {
         sectionsScrollView.addSection(
-            SectionView(title: "App Settings".localized, iconName: "square.and.pencil", contentView: AppSettingView(viewModel: viewModel))
+            SectionView(title: "App Settings".localized, iconName: "square.and.pencil", contentView: AppSettingView(reactor: reactor))
         )
     }
 }

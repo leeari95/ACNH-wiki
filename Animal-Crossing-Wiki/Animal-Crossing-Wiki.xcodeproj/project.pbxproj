@@ -73,7 +73,7 @@
 		9A6CB3F328728B3100B368D4 /* String+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6CB3F228728B3100B368D4 /* String+extension.swift */; };
 		9A6DC205287C6199004EEC41 /* AboutReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC204287C6199004EEC41 /* AboutReactor.swift */; };
 		9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC208287C7B42004EEC41 /* AppSettingView.swift */; };
-		9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */; };
+		9A6DC20B287D0AC5004EEC41 /* AppSettingReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DC20A287D0AC5004EEC41 /* AppSettingReactor.swift */; };
 		9A6DE3532888E2E300EB2F3F /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3522888E2E300EB2F3F /* PlayerViewController.swift */; };
 		9A6DE3592889271200EB2F3F /* MinimizePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */; };
 		9A6DE35B2889327A00EB2F3F /* MaximizePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */; };
@@ -271,7 +271,7 @@
 		9A6CB3F228728B3100B368D4 /* String+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extension.swift"; sourceTree = "<group>"; };
 		9A6DC204287C6199004EEC41 /* AboutReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutReactor.swift; sourceTree = "<group>"; };
 		9A6DC208287C7B42004EEC41 /* AppSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingView.swift; sourceTree = "<group>"; };
-		9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewModel.swift; sourceTree = "<group>"; };
+		9A6DC20A287D0AC5004EEC41 /* AppSettingReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingReactor.swift; sourceTree = "<group>"; };
 		9A6DE3522888E2E300EB2F3F /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		9A6DE3582889271200EB2F3F /* MinimizePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimizePlayerView.swift; sourceTree = "<group>"; };
 		9A6DE35A2889327A00EB2F3F /* MaximizePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximizePlayerView.swift; sourceTree = "<group>"; };
@@ -709,7 +709,7 @@
 				9A99AA772865B82A00629C4A /* TasksEditReactor.swift */,
 				9A99AA792865CA9300629C4A /* CustomTaskReactor.swift */,
 				9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionReactor.swift */,
-				9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */,
+				9A6DC20A287D0AC5004EEC41 /* AppSettingReactor.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1160,7 +1160,7 @@
 				9A99AA3A2859F9A300629C4A /* CollectionProgressView.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
-				9A6DC20B287D0AC5004EEC41 /* AppSettingsViewModel.swift in Sources */,
+				9A6DC20B287D0AC5004EEC41 /* AppSettingReactor.swift in Sources */,
 				9A7ACEE7287EC194001D47CB /* VillagerDetailView.swift in Sources */,
 				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
 				9A99AA2C28597B7500629C4A /* TodaysTasksView.swift in Sources */,

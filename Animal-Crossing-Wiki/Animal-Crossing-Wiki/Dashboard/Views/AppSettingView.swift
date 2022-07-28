@@ -44,20 +44,23 @@ class AppSettingView: UIView {
         )
     }
     
-    func bind(to viewModel: AppSettingViewModel) {
-        let input = AppSettingViewModel.Input(didTapSwitch: hapticSwitch.rx.controlEvent(.valueChanged).asObservable())
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: AppSettingReactor) {
+        hapticSwitch.rx.controlEvent(.valueChanged)
+            .map { AppSettingReactor.Action.toggleSwitch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.currentHapticState
+        reactor.state.map { $0.currentHapticState }
             .bind(to: hapticSwitch.rx.isOn)
             .disposed(by: disposeBag)
     }
 }
 
 extension AppSettingView {
-    convenience init(viewModel: AppSettingViewModel) {
+    convenience init(reactor: AppSettingReactor) {
         self.init(frame: .zero)
-        bind(to: viewModel)
+        bind(to: reactor)
         configure()
     }
 }
