@@ -12,7 +12,7 @@ final class VillagersSectionReactor: Reactor {
     
     enum Action {
         case updateVillagers(villagers: [Villager])
-        case villagerLongPress(indexPath: IndexPath?)
+        case villagerLongPress(indexPath: IndexPath)
     }
     
     enum Mutation {
@@ -36,7 +36,7 @@ final class VillagersSectionReactor: Reactor {
         case .updateVillagers(let villagers):
             return Observable.just(Mutation.setVillagers(villagers: villagers))
         case .villagerLongPress(let indexPath):
-            guard let villager = self.initialState.villagers[safe: indexPath?.item ?? 0] else {
+            guard let villager = self.currentState.villagers[safe: indexPath.item] else {
                 return Observable.empty()
             }
             return Observable.just(Mutation.transition(route: .villagerDetail(villager: villager)))

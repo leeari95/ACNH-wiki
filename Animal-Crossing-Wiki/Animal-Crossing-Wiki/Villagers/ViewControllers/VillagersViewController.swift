@@ -91,17 +91,48 @@ class VillagersViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
     
-    func bind(to viewModel: VillagersViewModel) {
-        let input = VillagersViewModel.Input(
-            searchBarText: searchController.searchBar.rx.text.asObservable(),
-            selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
-                .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
-            didSelectedMenuKeyword: selectedKeyword.asObservable(),
-            villagerSelected: collectionView.rx.itemSelected.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: VillagersReactor) {
+        Items.shared.villagerList
+            .filter { $0.isEmpty == false }
+            .map { VillagersReactor.Action.setVillagers($0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            })
+            .disposed(by: disposeBag)
         
-        output.villagers
+        Items.shared.villagerLikeList
+            .map { VillagersReactor.Action.setLikeVillagers($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        Items.shared.villagerHouseList
+            .map { VillagersReactor.Action.setHouseVillagers($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .compactMap { $0 }
+            .map { VillagersReactor.Action.searchText($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] }
+            .map { VillagersReactor.Action.selectedScope($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { VillagersReactor.Action.selectedMenu(keywords: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .map { VillagersReactor.Action.selectedVillager(indexPath: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.villagers }
             .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
@@ -123,7 +154,7 @@ class VillagersViewController: UIViewController {
                 )
         }).disposed(by: disposeBag)
         
-        output.isLoading
+        Items.shared.isLoading
             .bind(to: self.activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
     }

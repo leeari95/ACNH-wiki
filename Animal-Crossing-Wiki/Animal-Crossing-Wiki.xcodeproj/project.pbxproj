@@ -87,7 +87,7 @@
 		9A7ACEDA287EC16E001D47CB /* VillagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */; };
 		9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */; };
 		9A7ACEE0287EC188001D47CB /* VillagersCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */; };
-		9A7ACEE1287EC188001D47CB /* VillagersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDE287EC188001D47CB /* VillagersViewModel.swift */; };
+		9A7ACEE1287EC188001D47CB /* VillagersReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */; };
 		9A7ACEE2287EC188001D47CB /* VillagerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */; };
 		9A7ACEE7287EC194001D47CB /* VillagerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEE3287EC194001D47CB /* VillagerDetailView.swift */; };
 		9A7ACEE8287EC194001D47CB /* VillagersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEE4287EC194001D47CB /* VillagersCell.swift */; };
@@ -285,7 +285,7 @@
 		9A7ACED8287EC16E001D47CB /* VillagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewController.swift; path = ViewControllers/VillagerDetailViewController.swift; sourceTree = "<group>"; };
 		9A7ACEDB287EC180001D47CB /* VillagersCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCoordinator.swift; path = Coordinator/VillagersCoordinator.swift; sourceTree = "<group>"; };
 		9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCellViewModel.swift; path = ViewModels/VillagersCellViewModel.swift; sourceTree = "<group>"; };
-		9A7ACEDE287EC188001D47CB /* VillagersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersViewModel.swift; path = ViewModels/VillagersViewModel.swift; sourceTree = "<group>"; };
+		9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersReactor.swift; path = ViewModels/VillagersReactor.swift; sourceTree = "<group>"; };
 		9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailViewModel.swift; path = ViewModels/VillagerDetailViewModel.swift; sourceTree = "<group>"; };
 		9A7ACEE3287EC194001D47CB /* VillagerDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagerDetailView.swift; path = Views/VillagerDetailView.swift; sourceTree = "<group>"; };
 		9A7ACEE4287EC194001D47CB /* VillagersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VillagersCell.swift; path = Views/VillagersCell.swift; sourceTree = "<group>"; };
@@ -755,7 +755,7 @@
 		9A99AA96286C1F7000629C4A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				9A7ACEDE287EC188001D47CB /* VillagersViewModel.swift */,
+				9A7ACEDE287EC188001D47CB /* VillagersReactor.swift */,
 				9A7ACEDD287EC188001D47CB /* VillagersCellViewModel.swift */,
 				9A7ACEDF287EC188001D47CB /* VillagerDetailViewModel.swift */,
 			);
@@ -1155,7 +1155,7 @@
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
 				9A3CFB3328806EDB00B0FFCB /* FloorsResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
-				9A7ACEE1287EC188001D47CB /* VillagersViewModel.swift in Sources */,
+				9A7ACEE1287EC188001D47CB /* VillagersReactor.swift in Sources */,
 				9A6CB3F1286EB57A00B368D4 /* UIMenu+extension.swift in Sources */,
 				9A99AA3A2859F9A300629C4A /* CollectionProgressView.swift in Sources */,
 				9AF0418C2850451100C51449 /* Category.swift in Sources */,
