@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RxSwift
 import ReactorKit
 
 final class AboutReactor: Reactor {

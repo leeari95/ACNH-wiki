@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import RxSwift
-import RxRelay
 import ReactorKit
 
 final class CustomTaskReactor: Reactor {

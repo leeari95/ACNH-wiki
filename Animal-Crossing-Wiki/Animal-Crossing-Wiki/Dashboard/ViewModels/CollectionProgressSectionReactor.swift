@@ -5,7 +5,7 @@
 //  Created by Ari on 2022/07/11.
 //
 
-import UIKit
+import Foundation
 import ReactorKit
 
 final class CollectionProgressSectionReactor: Reactor {
