@@ -4,6 +4,8 @@
 
 <img src="https://i.imgur.com/iSzSS21.png" width="30%">
 
+### [📱 앱 설치하러 가기!!!](https://apps.apple.com/kr/app/%EB%84%88%EA%B5%B4%ED%8F%AC%ED%84%B8/id1636229399?platform=iphone)
+
 &nbsp;
 
 카탈로그 수집 기록의 즐거움 🌱
