@@ -98,7 +98,7 @@
 		9A7ACEF0287EC20B001D47CB /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEED287EC20B001D47CB /* ItemsViewController.swift */; };
 		9A7ACEF5287EC239001D47CB /* CatalogReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */; };
 		9A7ACEF6287EC239001D47CB /* ItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */; };
-		9A7ACEF7287EC239001D47CB /* CatalogCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */; };
+		9A7ACEF7287EC239001D47CB /* CatalogCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF3287EC239001D47CB /* CatalogCellReactor.swift */; };
 		9A7ACEF8287EC239001D47CB /* ItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */; };
 		9A7ACEFA287EC25B001D47CB /* CatalogCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEF9287EC25B001D47CB /* CatalogCoordinator.swift */; };
 		9A7ACF04287EC26F001D47CB /* ItemDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACEFB287EC26F001D47CB /* ItemDetailInfoView.swift */; };
@@ -296,7 +296,7 @@
 		9A7ACEED287EC20B001D47CB /* ItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemsViewController.swift; path = Catalog/ViewControllers/ItemsViewController.swift; sourceTree = "<group>"; };
 		9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogReactor.swift; path = Catalog/ViewModels/CatalogReactor.swift; sourceTree = "<group>"; };
 		9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemDetailViewModel.swift; path = Catalog/ViewModels/ItemDetailViewModel.swift; sourceTree = "<group>"; };
-		9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogCellViewModel.swift; path = Catalog/ViewModels/CatalogCellViewModel.swift; sourceTree = "<group>"; };
+		9A7ACEF3287EC239001D47CB /* CatalogCellReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogCellReactor.swift; path = Catalog/ViewModels/CatalogCellReactor.swift; sourceTree = "<group>"; };
 		9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemsViewModel.swift; path = Catalog/ViewModels/ItemsViewModel.swift; sourceTree = "<group>"; };
 		9A7ACEF9287EC25B001D47CB /* CatalogCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CatalogCoordinator.swift; path = Catalog/Coordinator/CatalogCoordinator.swift; sourceTree = "<group>"; };
 		9A7ACEFB287EC26F001D47CB /* ItemDetailInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemDetailInfoView.swift; path = Catalog/Views/ItemDetailInfoView.swift; sourceTree = "<group>"; };
@@ -604,7 +604,7 @@
 			isa = PBXGroup;
 			children = (
 				9A7ACEF1287EC239001D47CB /* CatalogReactor.swift */,
-				9A7ACEF3287EC239001D47CB /* CatalogCellViewModel.swift */,
+				9A7ACEF3287EC239001D47CB /* CatalogCellReactor.swift */,
 				9A7ACEF4287EC239001D47CB /* ItemsViewModel.swift */,
 				9A7ACEF2287EC239001D47CB /* ItemDetailViewModel.swift */,
 			);
@@ -1124,7 +1124,7 @@
 				9A7ACEF0287EC20B001D47CB /* ItemsViewController.swift in Sources */,
 				9A3CFB3B2880790C00B0FFCB /* RugsRequest.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
-				9A7ACEF7287EC239001D47CB /* CatalogCellViewModel.swift in Sources */,
+				9A7ACEF7287EC239001D47CB /* CatalogCellReactor.swift in Sources */,
 				9A680EB32888219900F0E0C7 /* MusicRequest.swift in Sources */,
 				9A99AA362859C8BD00629C4A /* VillagersView.swift in Sources */,
 				9A7ACF30288000D7001D47CB /* KeywordCell.swift in Sources */,
