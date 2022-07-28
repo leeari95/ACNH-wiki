@@ -97,13 +97,21 @@ final class VillagersReactor: Reactor {
             newState.villagers = villagers
             
         case .setAllVillagers(let villagers):
-            newState.villagers = villagers
+            if currentState.currentScope == .all {
+                newState.villagers = villagers
+            }
             newState.allVillagers = villagers
             
         case .setLikeVillagers(let villagers):
+            if currentState.currentScope == .liked {
+                newState.villagers = villagers
+            }
             newState.likeVillagers = villagers
             
         case .setHouseVillagers(let villagers):
+            if currentState.currentScope == .residents {
+                newState.villagers = villagers
+            }
             newState.houseVillagers = villagers
             
         case .setScope(let scope):
