@@ -163,7 +163,7 @@
 		9A99AA7428656D1600629C4A /* VillagersSectionReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7328656D1600629C4A /* VillagersSectionReactor.swift */; };
 		9A99AA7628657A9900629C4A /* TodaysTasksSectionReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7528657A9900629C4A /* TodaysTasksSectionReactor.swift */; };
 		9A99AA782865B82A00629C4A /* TasksEditReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA772865B82A00629C4A /* TasksEditReactor.swift */; };
-		9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */; };
+		9A99AA7A2865CA9300629C4A /* CustomTaskReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA792865CA9300629C4A /* CustomTaskReactor.swift */; };
 		9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A99AA7D286AC4F900629C4A /* AboutViewController.swift */; };
 		9A99AA81286ACBBC00629C4A /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA80286ACBBC00629C4A /* Differentiator */; };
 		9A99AA83286ACBBC00629C4A /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 9A99AA82286ACBBC00629C4A /* RxDataSources */; };
@@ -361,7 +361,7 @@
 		9A99AA7328656D1600629C4A /* VillagersSectionReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillagersSectionReactor.swift; sourceTree = "<group>"; };
 		9A99AA7528657A9900629C4A /* TodaysTasksSectionReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksSectionReactor.swift; sourceTree = "<group>"; };
 		9A99AA772865B82A00629C4A /* TasksEditReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksEditReactor.swift; sourceTree = "<group>"; };
-		9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskViewModel.swift; sourceTree = "<group>"; };
+		9A99AA792865CA9300629C4A /* CustomTaskReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTaskReactor.swift; sourceTree = "<group>"; };
 		9A99AA7D286AC4F900629C4A /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		9A99AA84286AE22200629C4A /* AboutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutItem.swift; sourceTree = "<group>"; };
 		9AD343EB28746593008A3D6D /* Int+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extension.swift"; sourceTree = "<group>"; };
@@ -707,7 +707,7 @@
 				9AD343F628767649008A3D6D /* ProgressReactor.swift */,
 				9A99AA7528657A9900629C4A /* TodaysTasksSectionReactor.swift */,
 				9A99AA772865B82A00629C4A /* TasksEditReactor.swift */,
-				9A99AA792865CA9300629C4A /* CustomTaskViewModel.swift */,
+				9A99AA792865CA9300629C4A /* CustomTaskReactor.swift */,
 				9A6A2ED6287BE71A007D2EEA /* CollectionProgressSectionViewModel.swift */,
 				9A6DC20A287D0AC5004EEC41 /* AppSettingsViewModel.swift */,
 			);
@@ -1136,7 +1136,7 @@
 				9A6DE369288AE25400EB2F3F /* PlayerMode.swift in Sources */,
 				9AF041AC2851B20D00C51449 /* CoreDataStorage.swift in Sources */,
 				9A99AA6F28643CA700629C4A /* UIImage+extension.swift in Sources */,
-				9A99AA7A2865CA9300629C4A /* CustomTaskViewModel.swift in Sources */,
+				9A99AA7A2865CA9300629C4A /* CustomTaskReactor.swift in Sources */,
 				9A541B6D28220A72001B57FD /* DashboardViewController.swift in Sources */,
 				9A6A2ED9287BEB76007D2EEA /* DashboardReactor.swift in Sources */,
 				9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */,

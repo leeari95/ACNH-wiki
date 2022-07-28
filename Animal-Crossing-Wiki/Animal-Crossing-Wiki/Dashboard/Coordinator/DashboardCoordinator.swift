@@ -67,10 +67,10 @@ final class DashboardCoordinator: Coordinator {
             let viewController = CustomTaskViewController()
             delegate = viewController
             if task.icon == "plus" {
-                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: nil))
+                viewController.bind(to: CustomTaskReactor(coordinator: self, task: nil))
                 viewController.mode = .add
             } else {
-                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: task))
+                viewController.bind(to: CustomTaskReactor(coordinator: self, task: task))
                 viewController.mode = .edit
             }
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController

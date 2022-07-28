@@ -17,10 +17,10 @@ class CustomTaskViewController: UIViewController {
     }
     
     var mode: Mode?
-    var viewModel: CustomTaskViewModel?
 
-    private let iconText = BehaviorRelay<String?>(value: nil)
-    private let amount = BehaviorRelay<String?>(value: nil)
+    private let currentIconName = BehaviorRelay<String?>(value: nil)
+    private let currentAmount = BehaviorRelay<String?>(value: nil)
+    private let currentTask = BehaviorRelay<DailyTask?>(value: nil)
     private let disposeBag = DisposeBag()
     
     private lazy var customTaskSection = CustomTaskView()
@@ -58,31 +58,53 @@ class CustomTaskViewController: UIViewController {
         ])
     }
     
-    func bind(to viewModel: CustomTaskViewModel) {
-        let input = CustomTaskViewModel.Input(
-            didTapCheck: doneButton.rx.tap.asObservable(),
-            didTapIcon: customTaskSection.iconButtonObservable,
-            didTapAmount: customTaskSection.maxAmountButtonObservable,
-            taskNameText: customTaskSection.taskNameObservable,
-            iconNameText: iconText.asObservable(),
-            amountText: amount.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: CustomTaskReactor) {
+        doneButton.rx.tap
+            .map { CustomTaskReactor.Action.save }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        output.task
-            .compactMap { $0 }
+        customTaskSection.iconButtonObservable
+            .map { CustomTaskReactor.Action.iconList }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        currentIconName.compactMap { $0 }
+            .map { CustomTaskReactor.Action.iconName($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        customTaskSection.maxAmountButtonObservable
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.showSelectedItemAlert(
+                    Array(1...20).map { $0.description },
+                    currentItem: owner.currentAmount.value
+                ).map { CustomTaskReactor.Action.amount($0) }
+                    .bind(to: reactor.action)
+                    .disposed(by: owner.disposeBag)
+            }).disposed(by: disposeBag)
+        
+        customTaskSection.taskNameObservable
+            .map { CustomTaskReactor.Action.taskName($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .compactMap { $0.amount }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, amount in
+                owner.customTaskSection.updateAmount(amount.description)
+                owner.currentAmount.accept(amount.description)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.compactMap { $0.task }
+            .filter { self.currentTask.value != $0 }
             .withUnretained(self)
             .subscribe(onNext: { owner, task in
                 owner.customTaskSection.setUpViews(task)
-            }).disposed(by: disposeBag)
-        
-        output.didChangeAmount
-            .compactMap { $0 }
-            .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, text in
-                owner.customTaskSection.updateAmount(text)
-                owner.amount.accept(text)
+                owner.currentAmount.accept(task.amount.description)
+                owner.currentTask.accept(task)
             }).disposed(by: disposeBag)
     }
 
@@ -91,6 +113,6 @@ class CustomTaskViewController: UIViewController {
 extension CustomTaskViewController: CustomTaskViewControllerDelegate {
     func selectedIcon(_ icon: String) {
         customTaskSection.updateIcon(icon)
-        iconText.accept(icon)
+        currentIconName.accept(icon)
     }
 }
