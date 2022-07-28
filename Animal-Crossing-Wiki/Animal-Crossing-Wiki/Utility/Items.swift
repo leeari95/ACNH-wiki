@@ -54,14 +54,8 @@ final class Items {
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
-        
-        CoreDataVillagersLikeStorage().fetch()
-            .subscribe(onSuccess: { villagers in
-                self.villagersLike.accept(villagers)
-            }, onFailure: { error in
-                debugPrint(error)
-            }).disposed(by: disposeBag)
-        
+
+        self.villagersLike.accept(CoreDataVillagersLikeStorage().fetch())
         self.villagersHouse.accept(CoreDataVillagersHouseStorage().fetch())
         
         CoreDataItemsStorage().fetch()
@@ -84,6 +78,7 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 self.villagers.accept(items)
             case .failure(let error):
                 os_log(

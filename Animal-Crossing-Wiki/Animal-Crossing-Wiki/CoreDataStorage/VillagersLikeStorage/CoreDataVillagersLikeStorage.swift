@@ -16,19 +16,12 @@ final class CoreDataVillagersLikeStorage: VillagersLikeStorage {
         self.coreDataStorage = coreDataStorage
     }
     
-    func fetch() -> Single<[Villager]> {
-        return Single.create { single in
-            self.coreDataStorage.performBackgroundTask { context in
-                do {
-                    let object = try self.coreDataStorage.getUserCollection(context)
-                    let villagers = object.villagersLike?.allObjects as? [VillagersLikeEntity] ?? []
-                    single(.success(villagers.map { $0.toDomain() }))
-                } catch {
-                    single(.failure(CoreDataStorageError.readError(error)))
-                }
-            }
-            return Disposables.create()
-        }
+    func fetch() -> [Villager] {
+        let context = coreDataStorage.persistentContainer.viewContext
+        let object = try? self.coreDataStorage.getUserCollection(context)
+        let villagers = object?.villagersLike?.allObjects as? [VillagersLikeEntity] ?? []
+        return villagers.map { $0.toDomain() }
+            .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
     }
     
     func update(_ villager: Villager) {

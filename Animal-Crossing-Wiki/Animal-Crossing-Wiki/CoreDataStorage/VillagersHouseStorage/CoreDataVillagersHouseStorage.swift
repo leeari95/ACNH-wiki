@@ -21,6 +21,7 @@ final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
         let object = try? self.coreDataStorage.getUserCollection(context)
         let villagers = object?.villagersHouse?.allObjects as? [VillagersHouseEntity] ?? []
         return villagers.compactMap { $0.toDomain() }
+            .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
     }
     
     func update(_ villager: Villager) {
