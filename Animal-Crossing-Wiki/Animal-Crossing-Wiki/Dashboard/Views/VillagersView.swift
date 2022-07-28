@@ -134,6 +134,7 @@ class VillagersView: UIView {
         reactor.state
             .map { $0.villagers }
             .withUnretained(self)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { owner, villagers in
                 if villagers.isEmpty {
                     owner.emptyLabel.isHidden = false
