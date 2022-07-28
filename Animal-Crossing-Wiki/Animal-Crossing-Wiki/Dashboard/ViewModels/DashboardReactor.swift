@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RxSwift
 import ReactorKit
 
 final class DashboardReactor: Reactor {
@@ -17,8 +16,8 @@ final class DashboardReactor: Reactor {
         
         static func transform(localized: String) -> String? {
             switch localized {
-            case "About".localized: return Menu.about.rawValue
-            case "Setting".localized: return Menu.setting.rawValue
+            case Menu.about.rawValue.localized: return Menu.about.rawValue
+            case Menu.setting.rawValue.localized: return Menu.setting.rawValue
             default: return nil
             }
         }
