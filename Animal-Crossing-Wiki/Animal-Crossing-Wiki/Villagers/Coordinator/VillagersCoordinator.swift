@@ -32,7 +32,9 @@ final class VillagersCoordinator: Coordinator {
         switch route {
         case .detail(let villager):
             let viewController = VillagerDetailViewController()
-            viewController.bind(to: VillagerDetailViewModel(villager: villager))
+            viewController.bind(
+                to: VillagerDetailReactor(villager: villager, state: .init(villager: villager))
+            )
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

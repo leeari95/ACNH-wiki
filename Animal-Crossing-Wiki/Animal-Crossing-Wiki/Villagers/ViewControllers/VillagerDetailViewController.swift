@@ -63,15 +63,49 @@ class VillagerDetailViewController: UIViewController {
         navigationItem.rightBarButtonItems = [houseBarButton, likeBarButton]
     }
     
-    func bind(to viewModel: VillagerDetailViewModel) {
-        let input = VillagerDetailViewModel.Input(
-            didTapHeart: likeButton.rx.tap.asObservable(),
-            didTapHouse: houseButton.rx.tap.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-        let config = UIImage.SymbolConfiguration(scale: .large)
+    func bind(to reactor: VillagerDetailReactor) {
+        Items.shared.villagerHouseList
+            .take(1)
+            .map { VillagerDetailReactor.Action.setHouseState(villagers: $0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        output.villager
+        Items.shared.villagerLikeList
+            .take(1)
+            .map { VillagerDetailReactor.Action.setLikeState(villagers: $0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        likeButton.rx.tap
+            .map { VillagerDetailReactor.Action.like }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        houseButton.rx.tap
+            .map { VillagerDetailReactor.Action.home }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLiked }
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isLiked in
+                owner.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isResident }
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isResident in
+                owner.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.villager }
+            .take(1)
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, villager in
@@ -80,32 +114,12 @@ class VillagerDetailViewController: UIViewController {
                 owner.navigationItem.title = villager.translations.localizedName()
             }).disposed(by: disposeBag)
         
-        output.villager
-            .compactMap { $0.houseImage }
+        reactor.state.compactMap { $0.villager.houseImage }
+            .take(1)
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
             .subscribe(onNext: { owner, houseImage in
                 owner.addHouseSection(houseImage)
-            }).disposed(by: disposeBag)
-        
-        output.isLiked
-            .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isLiked in
-                owner.likeButton.setImage(
-                    UIImage(systemName: isLiked ? "heart.fill" : "heart", withConfiguration: config),
-                    for: .normal
-                )
-            }).disposed(by: disposeBag)
-        
-        output.isResident
-            .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isResident in
-                    owner.houseButton.setImage(
-                        UIImage(systemName: isResident ? "house.fill" : "house", withConfiguration: config),
-                        for: .normal
-                    )
             }).disposed(by: disposeBag)
     }
     

@@ -82,7 +82,9 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.visibleViewController?.present(navigationController, animated: true)
         case .villagerDetail(let villager):
             let viewController = VillagerDetailViewController()
-            viewController.bind(to: VillagerDetailViewModel(villager: villager))
+            viewController.bind(
+                to: VillagerDetailReactor(villager: villager, state: .init(villager: villager))
+            )
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
             HapticManager.shared.notification(type: .success)
