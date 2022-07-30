@@ -11,7 +11,7 @@ import ReactorKit
 final class CatalogCellReactor: Reactor {
     
     enum Action {
-        case setAcquired(_ items: [Category: [Item]])
+        case fetch
         case check
     }
     
@@ -45,11 +45,12 @@ final class CatalogCellReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setAcquired(let allItems):
-            guard let items = allItems[currentState.category] else {
-                return Observable.empty()
-            }
-            return .just(.setAcquired(items.contains(item)))
+        case .fetch:
+            let collectedState = Items.shared.itemList
+                .take(1)
+                .compactMap { $0[self.currentState.category]?.contains(self.item) }
+                .map { Mutation.setAcquired($0) }
+            return collectedState
             
         case .check:
             HapticManager.shared.impact(style: .medium)

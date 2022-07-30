@@ -62,9 +62,7 @@ class CatalogCell: UICollectionViewCell {
     }
     
     private func bind(reactor: CatalogCellReactor) {
-        Items.shared.itemList
-            .take(1)
-            .map { CatalogCellReactor.Action.setAcquired($0) }
+        Observable.just(CatalogCellReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
