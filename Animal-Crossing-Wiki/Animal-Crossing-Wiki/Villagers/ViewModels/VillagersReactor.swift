@@ -41,6 +41,7 @@ final class VillagersReactor: Reactor {
     var coordinator: VillagersCoordinator?
     
     private var currentKeywords: [VillagersViewController.Menu: String] = [:]
+    private var lastSearchKeyword: String = ""
     
     init(coordinator: VillagersCoordinator, state: State = State()) {
         self.coordinator = coordinator
@@ -59,13 +60,14 @@ final class VillagersReactor: Reactor {
             return Observable.just(Mutation.setHouseVillagers(villagers))
             
         case .searchText(let text):
+            lastSearchKeyword = text.lowercased()
             guard text != "" else {
                 return currentVillagers()
                     .map { self.filtered(villagers: $0, keywords: self.currentKeywords) }
                     .map { Mutation.setVillagers($0) }
             }
             return currentVillagers()
-                .map { self.search(villagers: $0, text: text) }
+                .map { self.search(villagers: $0, text: text.lowercased()) }
                 .map { self.filtered(villagers: $0, keywords: self.currentKeywords) }
                 .map { Mutation.setVillagers($0)}
             
@@ -80,6 +82,7 @@ final class VillagersReactor: Reactor {
             currentKeywords = keywords
             return currentVillagers()
                 .map { self.filtered(villagers: $0, keywords: keywords) }
+                .map { self.search(villagers: $0, text: self.lastSearchKeyword) }
                 .map { Mutation.setVillagers($0) }
             
         case .selectedVillager(let indexPath):
@@ -94,7 +97,7 @@ final class VillagersReactor: Reactor {
         var newState = state
         switch mutation {
         case .setVillagers(let villagers):
-            newState.villagers = villagers
+            newState.villagers = search(villagers: villagers, text: lastSearchKeyword)
             
         case .setAllVillagers(let villagers):
             if currentState.currentScope == .all {
@@ -104,13 +107,20 @@ final class VillagersReactor: Reactor {
             
         case .setLikeVillagers(let villagers):
             if currentState.currentScope == .liked {
-                newState.villagers = villagers
+                newState.villagers = filtered(
+                    villagers: search(villagers: villagers, text: lastSearchKeyword),
+                    keywords: self.currentKeywords
+                )
+                
             }
             newState.likeVillagers = villagers
             
         case .setHouseVillagers(let villagers):
             if currentState.currentScope == .residents {
-                newState.villagers = villagers
+                newState.villagers = filtered(
+                    villagers: search(villagers: villagers, text: lastSearchKeyword),
+                    keywords: self.currentKeywords
+                )
             }
             newState.houseVillagers = villagers
             
@@ -169,6 +179,9 @@ final class VillagersReactor: Reactor {
     }
     
     private func search(villagers: [Villager], text: String) -> [Villager] {
+        guard lastSearchKeyword != "" else {
+            return villagers
+        }
         return villagers
             .filter {
                 let villagerName = $0.translations.localizedName()

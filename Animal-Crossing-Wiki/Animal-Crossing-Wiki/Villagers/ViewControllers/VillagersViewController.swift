@@ -110,6 +110,11 @@ class VillagersViewController: UIViewController {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        searchController.searchBar.rx.cancelButtonClicked
+            .map { VillagersReactor.Action.searchText("") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
         searchController.searchBar.rx.text
             .compactMap { $0 }
             .map { VillagersReactor.Action.searchText($0) }
