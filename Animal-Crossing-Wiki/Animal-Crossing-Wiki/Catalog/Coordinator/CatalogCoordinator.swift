@@ -34,7 +34,7 @@ final class CatalogCoordinator: Coordinator {
         switch route {
         case .items(let category):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(category: category, coordinator: self))
+            viewController.bind(to: ItemsReactor(category: category, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
@@ -42,7 +42,7 @@ final class CatalogCoordinator: Coordinator {
             rootViewController.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

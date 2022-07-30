@@ -96,7 +96,7 @@ final class DashboardCoordinator: Coordinator {
             let viewController = ItemsViewController()
             let currentMonth = (Calendar.current.dateComponents([.month], from: Date()).month ?? 1).description
             viewController.bind(
-                to: ItemsViewModel(category: category, coordinator: self),
+                to: ItemsReactor(category: category, coordinator: self),
                 keyword: [.month: currentMonth]
             )
             rootViewController.pushViewController(viewController, animated: true)
@@ -106,7 +106,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)

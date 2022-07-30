@@ -13,7 +13,7 @@ class ItemsViewController: UIViewController {
     enum Mode: Equatable {
         case user
         case all
-        case keyword(title: String)
+        case keyword(title: String, keyword: Keyword)
     }
     
     enum Menu: Int {
@@ -64,10 +64,10 @@ class ItemsViewController: UIViewController {
     
     private var category: Category?
     private var mode: Mode = .all
-    private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.title]
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [:])
-
+    private let disposeBag = DisposeBag()
+    
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 105, height: 175)
@@ -115,42 +115,60 @@ class ItemsViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
     
-    func bind(to viewModel: ItemsViewModel, keyword: [Menu: String] = [:]) {
-        self.category = viewModel.category
-        switch viewModel.mode {
+    func bind(to reactor: ItemsReactor, keyword: [Menu: String] = [:]) {
+        self.category = reactor.category
+        switch reactor.mode {
         case .user: mode = .user
-        case .keyword(let title, _): mode = .keyword(title: title)
+        case .keyword(let title, let keyword): mode = .keyword(title: title, keyword: keyword)
         case .all: mode = .all
         }
         setUpFilterKeyword(keyword)
-        let input = ItemsViewModel.Input(
-            searchBarText: searchController.searchBar.rx.text.asObservable(),
-            didSelectedMenuKeyword: selectedKeyword.asObservable(),
-            itemSelected: collectionView.rx.itemSelected.asObservable(),
-            seletedScopeButton:
-                searchController.searchBar.rx.selectedScopeButtonIndex
-                .compactMap { [weak self] in
-                    return self?.searchController.searchBar.scopeButtonTitles?[$0]
-                }
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        setUpItems(reactor: reactor)
+        setUpUserItem(reactor: reactor)
+        
+        searchController.searchBar.rx.cancelButtonClicked
+            .map { ItemsReactor.Action.search(text: "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .compactMap { $0 }
+            .map { ItemsReactor.Action.search(text: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { ItemsReactor.Action.selectedMenu(keywords: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0]}
+            .map { ItemsReactor.Action.selectedScope($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .map { ItemsReactor.Action.selectedItem(indexPath: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        Items.shared.isLoading
+            .observe(on: MainScheduler.asyncInstance)
+            .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.items }
+            .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
+                cell.setUp(item)
+            }.disposed(by: disposeBag)
         
         if [Mode.all, Mode.user].contains(mode), navigationItem.title == nil {
-            output.category
+            reactor.state.map { $0.category }
                 .map { $0.rawValue.localized }
                 .bind(to: navigationItem.rx.title)
                 .disposed(by: disposeBag)
         }
-        
-        output.isLoading
-            .observe(on: MainScheduler.asyncInstance)
-            .bind(to: self.activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
-
-        output.items
-            .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
-                cell.setUp(item)
-            }.disposed(by: disposeBag)
         
         selectedKeyword
             .filter { $0.isEmpty == false }
@@ -161,7 +179,7 @@ class ItemsViewController: UIViewController {
                 owner.navigationItem.rightBarButtonItem?.image = UIImage(
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
-        }).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
         
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
@@ -186,6 +204,48 @@ class ItemsViewController: UIViewController {
         searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
     }
     
+    private func setUpItems(reactor: ItemsReactor) {
+        switch mode {
+        case .all:
+            Items.shared.categoryList
+                .compactMap { $0[reactor.category] }
+                .map { ItemsReactor.Action.setItems($0) }
+                .subscribe(onNext: { action in
+                    reactor.action.onNext(action)
+                }).disposed(by: disposeBag)
+        case .user:
+            Items.shared.itemList
+                .compactMap { $0[reactor.category] }
+                .map { ItemsReactor.Action.setItems($0) }
+                .subscribe(onNext: { action in
+                    reactor.action.onNext(action)
+                }).disposed(by: disposeBag)
+        case .keyword(let title, let category):
+            let filteredData = Items.shared.itemFilter(keyword: title, category: category)
+            reactor.action.onNext(ItemsReactor.Action.setItems(filteredData))
+        }
+    }
+    
+    private func setUpUserItem(reactor: ItemsReactor) {
+        switch mode {
+        case .all:
+            Items.shared.itemList
+                .map { $0[reactor.category] ?? [] }
+                .map { ItemsReactor.Action.setColletedItems($0)}
+                .subscribe(onNext: { action in
+                    reactor.action.onNext(action)
+                }).disposed(by: disposeBag)
+        case .keyword(let title, _):
+            Items.shared.itemList
+                .map { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
+                .map { ItemsReactor.Action.setColletedItems($0)}
+                .subscribe(onNext: { action in
+                    reactor.action.onNext(action)
+                }).disposed(by: disposeBag)
+        default: break
+        }
+    }
+    
     private func setUpViews() {
         view.backgroundColor = .acBackground
         view.addSubviews(collectionView, activityIndicator)
@@ -202,7 +262,7 @@ class ItemsViewController: UIViewController {
     
     private func setUpNavigationItem() {
         switch mode {
-        case .keyword(let title): navigationItem.title = title.localized
+        case .keyword(let title, _): navigationItem.title = title.localized
         default: break
         }
         let filterButton = UIBarButtonItem(
