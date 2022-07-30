@@ -55,19 +55,18 @@ class CatalogViewController: UIViewController {
     }
     
     func bind(to reactor: CatalogReactor) {
+        self.rx.viewDidLoad
+            .map { CatalogReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
         tableView.rx.modelSelected((title: Category, count: Int).self)
             .map { CatalogReactor.Action.selectedCategory(title: $0.0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        Items.shared.itemsCount
-            .map { itemsCount in Category.items().map { ($0, itemsCount[$0] ?? 0)} }
-            .map { CatalogReactor.Action.setCategories($0) }
-            .subscribe(onNext: { action in
-                reactor.action.onNext(action)
-            }).disposed(by: disposeBag)
-        
-        Items.shared.isLoading
+        reactor.state.map { $0.isLoading }
             .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
         
