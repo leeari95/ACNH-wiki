@@ -99,7 +99,7 @@ class CustomTaskViewController: UIViewController {
             }).disposed(by: disposeBag)
         
         reactor.state.compactMap { $0.task }
-            .filter { self.currentTask.value != $0 }
+            .filter { [weak self] in self?.currentTask.value != $0 }
             .withUnretained(self)
             .subscribe(onNext: { owner, task in
                 owner.customTaskSection.setUpViews(task)
