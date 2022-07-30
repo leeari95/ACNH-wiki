@@ -66,7 +66,7 @@ extension AppCoordinator {
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
         viewController.didMove(toParent: rootViewController)
-        let viewModel = PlayerViewModel(coordinator: self)
+        let viewModel = PlayerReactor(coordinator: self)
         viewController.bind(to: viewModel)
 
         let frame = rootViewController.view.frame

@@ -59,13 +59,27 @@ class PlayerViewController: UIViewController {
         visualEffectView.addGestureRecognizer(dragGesture)
     }
     
-    func bind(to viewModel: PlayerViewModel) {
-        let input = PlayerViewModel.Input(
-            didTapMiniPlayer: minimizeViewTap.rx.event.map { _ in }.asObservable(),
-            didTapFoldingButton: maximizeView.foldingButton.rx.tap.asObservable(),
-            dragGesture: dragGesture.rx.event
-                .withUnretained(self)
-                .map { owner, gestureRecognizer -> Bool? in
+    func bind(to reactor: PlayerReactor) {
+        Observable.just(PlayerReactor.Action.fetch)
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        minimizeViewTap.rx.event.map { _ in }
+            .map { PlayerReactor.Action.didTapMiniPlayer }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        maximizeView.foldingButton.rx.tap
+            .map { PlayerReactor.Action.folding }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        dragGesture.rx.event
+            .withUnretained(self)
+            .map { owner, gestureRecognizer -> Bool? in
                 let velocity = gestureRecognizer.velocity(in: owner.visualEffectView)
                 if gestureRecognizer.state == .ended {
                     if velocity.y < 0 {
@@ -75,26 +89,64 @@ class PlayerViewController: UIViewController {
                     }
                 }
                 return nil
-            }.asObservable(),
-            didTapCancel: minimizeView.cancelButton.rx.tap.asObservable(),
-            didTapPlayButton: [
-                minimizeView.playButton.rx.tap.asObservable(),
-                maximizeView.playButton.rx.tap.asObservable()
-            ],
-            didTapNextButton: [
-                minimizeView.nextButton.rx.tap.asObservable(),
-                maximizeView.nextButton.rx.tap.asObservable()
-            ],
-            didTapPrevButton: maximizeView.previousButton.rx.tap.asObservable(),
-            didTapPlayList: maximizeView.listButton.rx.tap.asObservable(),
-            seletedSong: tableView.rx.modelSelected(Item.self).asObservable(),
-            didTapShuffle: maximizeView.shuffleButton.rx.tap.asObservable(),
-            didTapRepeat: maximizeView.repeatButton.rx.tap.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+            }.map { PlayerReactor.Action.dragGesture($0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.playerMode
-            .compactMap { $0 }
+        minimizeView.cancelButton.rx.tap
+            .map { PlayerReactor.Action.cancel }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        Observable.merge(
+            minimizeView.playButton.rx.tap.asObservable(),
+            maximizeView.playButton.rx.tap.asObservable()
+        ).map { PlayerReactor.Action.play }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        Observable.merge(
+            minimizeView.nextButton.rx.tap.asObservable(),
+            maximizeView.nextButton.rx.tap.asObservable()
+        ).map { PlayerReactor.Action.next }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        maximizeView.previousButton.rx.tap
+            .map { PlayerReactor.Action.prev }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        maximizeView.listButton.rx.tap
+            .map { PlayerReactor.Action.playerList }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(Item.self)
+            .map { PlayerReactor.Action.selectedSong($0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        maximizeView.shuffleButton.rx.tap
+            .map { PlayerReactor.Action.shuffle }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        maximizeView.repeatButton.rx.tap
+            .map { PlayerReactor.Action.fullRepeat }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+
+        reactor.state.map { $0.playerMode }
             .withUnretained(self)
             .subscribe(onNext: { owner, playerMode in
                 switch playerMode {
@@ -131,17 +183,23 @@ class PlayerViewController: UIViewController {
                 }
             }).disposed(by: disposeBag)
         
-        output.songs
+        reactor.state.map { $0.songs }
             .bind(to: tableView.rx.items(cellIdentifier: SongRow.className, cellType: SongRow.self)) { _, item, cell in
                 cell.setUp(to: item)
             }.disposed(by: disposeBag)
         
-        MusicPlayerManager.shared.playingSongIndex
-            .compactMap { $0 }
-            .map { IndexPath(row: $0, section: .zero) }
+        reactor.state.map { $0.songs }
+            .filter { $0.isEmpty == false }
             .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
-                owner.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            .subscribe(onNext: { owner, _ in
+                MusicPlayerManager.shared.playingSongIndex
+                    .compactMap { $0 }
+                    .map { IndexPath(row: $0, section: .zero) }
+                    .withUnretained(self)
+                    .subscribe(onNext: { owner, indexPath in
+                        owner.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+                    }).disposed(by: owner.disposeBag)
             }).disposed(by: disposeBag)
+        
     }
 }
