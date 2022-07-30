@@ -31,6 +31,7 @@
 		9A3DE3CE2887B6F5006EECF7 /* RecipeResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */; };
 		9A3DE3D02887B7E6006EECF7 /* RecipesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */; };
 		9A3DE3D42887DD71006EECF7 /* ItemMaterialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3DE3D32887DD71006EECF7 /* ItemMaterialsView.swift */; };
+		9A455C3B28957569009A14A9 /* Reactor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A455C3A28957569009A14A9 /* Reactor+extension.swift */; };
 		9A4B4C33285033B300CC687C /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C32285033B300CC687C /* Fruit.swift */; };
 		9A4B4C35285034BA00CC687C /* Villager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C34285034BA00CC687C /* Villager.swift */; };
 		9A4B4C3728503A0400CC687C /* DailyTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B4C3628503A0400CC687C /* DailyTask.swift */; };
@@ -228,6 +229,7 @@
 		9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeResponseDTO.swift; sourceTree = "<group>"; };
 		9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesRequest.swift; sourceTree = "<group>"; };
 		9A3DE3D32887DD71006EECF7 /* ItemMaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMaterialsView.swift; sourceTree = "<group>"; };
+		9A455C3A28957569009A14A9 /* Reactor+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactor+extension.swift"; sourceTree = "<group>"; };
 		9A4B4C32285033B300CC687C /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		9A4B4C34285034BA00CC687C /* Villager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Villager.swift; sourceTree = "<group>"; };
 		9A4B4C3628503A0400CC687C /* DailyTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTask.swift; sourceTree = "<group>"; };
@@ -857,6 +859,7 @@
 				9A5D829F2873D87000EC8CE3 /* Collection+extension.swift */,
 				9AD343EB28746593008A3D6D /* Int+extension.swift */,
 				9A3CFB44288128CD00B0FFCB /* Array+extension.swift */,
+				9A455C3A28957569009A14A9 /* Reactor+extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1188,6 +1191,7 @@
 				9A99AA642860401400629C4A /* UICollectionView+extension.swift in Sources */,
 				9AF0420828530C2D00C51449 /* CoreDataVillagersHouseStorage.swift in Sources */,
 				9A99AA5C2860319100629C4A /* CustomTaskViewController.swift in Sources */,
+				9A455C3B28957569009A14A9 /* Reactor+extension.swift in Sources */,
 				9A3CFB392880787100B0FFCB /* RugsResponseDTO.swift in Sources */,
 				9A3CFB3D2880809100B0FFCB /* OtherResponseDTO.swift in Sources */,
 				9A99AA44285AF03D00629C4A /* PreferencesViewController.swift in Sources */,
