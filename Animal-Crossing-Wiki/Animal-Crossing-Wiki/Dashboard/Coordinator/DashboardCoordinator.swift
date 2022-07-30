@@ -90,7 +90,7 @@ final class DashboardCoordinator: Coordinator {
             HapticManager.shared.notification(type: .success)
         case .progress:
             let viewController = CollectionProgressViewController()
-            viewController.bind(to: CollectionProgressViewModel(coordinator: self))
+            viewController.bind(to: CollectionProgressReactor(coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .item(let category):
             let viewController = ItemsViewController()

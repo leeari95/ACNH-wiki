@@ -114,7 +114,7 @@
 		9A7ACF0F287EC2D3001D47CB /* CollectionProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF0D287EC2D3001D47CB /* CollectionProgressViewController.swift */; };
 		9A7ACF10287EC2D3001D47CB /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF0E287EC2D3001D47CB /* CollectionViewController.swift */; };
 		9A7ACF12287EC2DE001D47CB /* CollectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF11287EC2DE001D47CB /* CollectionCoordinator.swift */; };
-		9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */; };
+		9A7ACF15287EC2E9001D47CB /* CollectionProgressReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF13287EC2E9001D47CB /* CollectionProgressReactor.swift */; };
 		9A7ACF16287EC2E9001D47CB /* CollectionReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */; };
 		9A7ACF19287EC2F3001D47CB /* ItemProgressRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A7ACF17287EC2F3001D47CB /* ItemProgressRow.xib */; };
 		9A7ACF1A287EC2F3001D47CB /* ItemProgressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */; };
@@ -313,7 +313,7 @@
 		9A7ACF0D287EC2D3001D47CB /* CollectionProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionProgressViewController.swift; path = Collection/ViewControllers/CollectionProgressViewController.swift; sourceTree = "<group>"; };
 		9A7ACF0E287EC2D3001D47CB /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewController.swift; path = Collection/ViewControllers/CollectionViewController.swift; sourceTree = "<group>"; };
 		9A7ACF11287EC2DE001D47CB /* CollectionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCoordinator.swift; path = Collection/Coordinator/CollectionCoordinator.swift; sourceTree = "<group>"; };
-		9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionProgressViewModel.swift; path = Collection/ViewModels/CollectionProgressViewModel.swift; sourceTree = "<group>"; };
+		9A7ACF13287EC2E9001D47CB /* CollectionProgressReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionProgressReactor.swift; path = Collection/ViewModels/CollectionProgressReactor.swift; sourceTree = "<group>"; };
 		9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionReactor.swift; path = Collection/ViewModels/CollectionReactor.swift; sourceTree = "<group>"; };
 		9A7ACF17287EC2F3001D47CB /* ItemProgressRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ItemProgressRow.xib; path = Collection/Views/ItemProgressRow.xib; sourceTree = "<group>"; };
 		9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemProgressRow.swift; path = Collection/Views/ItemProgressRow.swift; sourceTree = "<group>"; };
@@ -572,7 +572,7 @@
 			isa = PBXGroup;
 			children = (
 				9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */,
-				9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */,
+				9A7ACF13287EC2E9001D47CB /* CollectionProgressReactor.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -1230,7 +1230,7 @@
 				9A680EB52888222200F0E0C7 /* MusicResponseDTO.swift in Sources */,
 				9A3CFB2D2880637100B0FFCB /* WallMountedResponseDTO.swift in Sources */,
 				9A5D82A02873D87000EC8CE3 /* Collection+extension.swift in Sources */,
-				9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */,
+				9A7ACF15287EC2E9001D47CB /* CollectionProgressReactor.swift in Sources */,
 				9A7ACF0A287EC26F001D47CB /* CalendarView.swift in Sources */,
 				9A3CFB35288073AE00B0FFCB /* WallpaperRequest.swift in Sources */,
 				9A7ACF09287EC26F001D47CB /* ItemOtherInfoView.swift in Sources */,

@@ -40,13 +40,14 @@ class CollectionProgressViewController: UIViewController {
         navigationItem.title = "Collection Progress".localized
     }
     
-    func bind(to viewModel: CollectionProgressViewModel) {
-        let input = CollectionProgressViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected(Category.self).asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: CollectionProgressReactor) {
+        tableView.rx.modelSelected(Category.self)
+            .map { CollectionProgressReactor.Action.selectedCategory($0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.items
+        reactor.state.map { $0.items }
             .bind(to: tableView.rx.items(cellIdentifier: ItemProgressRow.className, cellType: ItemProgressRow.self)) { _, category, cell in
                 cell.setUp(for: category)
             }.disposed(by: disposeBag)
