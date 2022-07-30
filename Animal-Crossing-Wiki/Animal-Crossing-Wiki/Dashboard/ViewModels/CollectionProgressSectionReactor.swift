@@ -11,14 +11,18 @@ import ReactorKit
 final class CollectionProgressSectionReactor: Reactor {
     
     enum Action {
+        case fetch
         case didTapSection
     }
     
     enum Mutation {
+        case setLoadingState(_ isLoading: Bool)
         case progress
     }
     
-    struct State {}
+    struct State {
+        var isLoading: Bool = true
+    }
     
     let initialState: State
     var coordinator: DashboardCoordinator
@@ -30,16 +34,23 @@ final class CollectionProgressSectionReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
+        case .fetch:
+            let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
+            return loadingState
+            
         case .didTapSection:
             return Observable.just(Mutation.progress)
         }
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
+        var newState = state
         switch mutation {
         case .progress:
             coordinator.transition(for: .progress)
+        case .setLoadingState(let isLoading):
+            newState.isLoading = isLoading
         }
-        return state
+        return newState
     }
 }

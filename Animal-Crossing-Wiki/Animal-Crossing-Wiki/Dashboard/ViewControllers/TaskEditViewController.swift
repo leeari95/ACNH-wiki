@@ -49,8 +49,8 @@ class TaskEditViewController: UIViewController {
     }
     
     func bind(to reactor: TasksEditReactor) {
-        Items.shared.dailyTasks
-            .map { TasksEditReactor.Action.updateDailyTasks($0) }
+        self.rx.viewDidLoad
+            .map { TasksEditReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)

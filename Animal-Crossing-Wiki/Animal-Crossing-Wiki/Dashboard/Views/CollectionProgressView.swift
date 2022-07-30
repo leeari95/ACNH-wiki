@@ -52,13 +52,17 @@ class CollectionProgressView: UIView {
         let tap = UITapGestureRecognizer()
         addGestureRecognizer(tap)
         
+        Observable.just(CollectionProgressSectionReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
         tap.rx.event
             .map { _ in CollectionProgressSectionReactor.Action.didTapSection }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
         
-        Items.shared.isLoading
+        reactor.state.map { $0.isLoading }
             .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
     }

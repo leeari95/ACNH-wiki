@@ -48,17 +48,15 @@ class ProgressView: UIStackView {
     }
     
     private func bind(to reactor: ProgressReactor) {
-        Observable.combineLatest(Items.shared.itemList, Items.shared.itemsCount)
-            .map { ProgressReactor.Action.updateItemsList($0.0, $0.1) }
-            .subscribe(onNext: { action in
-                reactor.action.onNext(action)
-            }).disposed(by: disposeBag)
+        Observable.just(ProgressReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
         reactor.state.map { $0.itemInfo }
             .withUnretained(self)
             .subscribe(onNext: { owner, items in
                 owner.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
-                owner.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: true)
+                owner.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: false)
             }).disposed(by: disposeBag)
     }
 }

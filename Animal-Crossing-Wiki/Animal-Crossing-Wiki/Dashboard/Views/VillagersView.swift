@@ -97,8 +97,7 @@ class VillagersView: UIView {
     }
     
     private func bind(to reactor: VillagersSectionReactor) {
-        Items.shared.villagerHouseList
-            .map { VillagersSectionReactor.Action.updateVillagers(villagers: $0)}
+        Observable.just(VillagersSectionReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         

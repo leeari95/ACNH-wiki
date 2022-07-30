@@ -11,7 +11,7 @@ import ReactorKit
 final class ProgressReactor: Reactor {
     
     enum Action {
-        case updateItemsList([Category: [Item]], [Category: Int])
+        case fetch
     }
     
     enum Mutation {
@@ -32,12 +32,14 @@ final class ProgressReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .updateItemsList(let userItemList, let itemsMaxCount):
-            guard let maxCount = itemsMaxCount[self.category] else {
-                return Observable.empty()
-            }
-            let itemCount = userItemList[self.category]?.count ?? 0
-            return Observable.just(Mutation.setItemInfo(itemCount: itemCount, maxCount: maxCount))
+        case .fetch:
+            let itemsInfo = Observable.combineLatest(Items.shared.itemList, Items.shared.itemsCount)
+                .map { info -> (itemCount: Int, maxCount: Int) in
+                    let itemsCount = info.0[self.category]?.count ?? 0
+                    let maxCount = info.1[self.category] ?? itemsCount
+                    return (itemsCount, maxCount)
+                }.map { Mutation.setItemInfo(itemCount: $0.itemCount, maxCount: $0.maxCount) }
+            return itemsInfo
         }
     }
     

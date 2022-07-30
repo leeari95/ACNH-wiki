@@ -83,9 +83,7 @@ class TodaysTasksView: UIView {
     }
     
     func bind(to reactor: TodaysTasksSectionReactor) {
-        
-        Items.shared.dailyTasks
-            .map { TodaysTasksSectionReactor.Action.updateTasks($0) }
+        Observable.just(TodaysTasksSectionReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         

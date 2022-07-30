@@ -11,7 +11,7 @@ import ReactorKit
 final class TasksEditReactor: Reactor {
     
     enum Action {
-        case updateDailyTasks(_ tasks: [DailyTask])
+        case fetch
         case selectedTask(_ task: DailyTask)
         case cancel
         case deleted(index: IndexPath)
@@ -44,21 +44,28 @@ final class TasksEditReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .updateDailyTasks(var tasks):
-            tasks.append(
-                DailyTask(
-                    name: "Add a custom task",
-                    icon: "plus",
-                    isCompleted: false,
-                    amount: 1,
-                    createdDate: Date()
+        case .fetch:
+            let tasks = Items.shared.dailyTasks.map { tasks -> Mutation in
+                var tasks = tasks
+                tasks.append(
+                    DailyTask(
+                        name: "Add a custom task",
+                        icon: "plus",
+                        isCompleted: false,
+                        amount: 1,
+                        createdDate: Date()
+                    )
                 )
-            )
-            return Observable.just(Mutation.setTasks(tasks))
+                return Mutation.setTasks(tasks)
+            }
+            return tasks
+            
         case .selectedTask(let task):
             return Observable.just(Mutation.transition(.customTask(task: task)))
+            
         case .deleted(let indexPath):
             return Observable.just(Mutation.deleteTask(indexPath.item))
+            
         case .cancel:
             return Observable.just(Mutation.transition(.dismiss))
         }

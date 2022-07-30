@@ -11,13 +11,13 @@ import ReactorKit
 final class VillagersSectionReactor: Reactor {
     
     enum Action {
-        case updateVillagers(villagers: [Villager])
+        case fetch
         case villagerLongPress(indexPath: IndexPath)
     }
     
     enum Mutation {
         case transition(route: DashboardCoordinator.Route)
-        case setVillagers(villagers: [Villager])
+        case setVillagers(_ villagers: [Villager])
     }
     
     struct State {
@@ -33,8 +33,11 @@ final class VillagersSectionReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .updateVillagers(let villagers):
-            return Observable.just(Mutation.setVillagers(villagers: villagers))
+        case .fetch:
+            let villagers = Items.shared.villagerHouseList
+                .map { Mutation.setVillagers($0)}
+            return villagers
+            
         case .villagerLongPress(let indexPath):
             guard let villager = self.currentState.villagers[safe: indexPath.item] else {
                 return Observable.empty()

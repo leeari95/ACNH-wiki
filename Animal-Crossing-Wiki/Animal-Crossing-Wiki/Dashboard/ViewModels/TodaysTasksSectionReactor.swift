@@ -11,7 +11,7 @@ import ReactorKit
 final class TodaysTasksSectionReactor: Reactor {
     
     enum Action {
-        case updateTasks(_ tasks: [DailyTask])
+        case fetch
         case selectedItem(indexPath: IndexPath)
         case reset
         case edit
@@ -40,8 +40,9 @@ final class TodaysTasksSectionReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .updateTasks(let tasks):
-            return Observable.just(Mutation.setTasks(tasks))
+        case .fetch:
+            let tasks = Items.shared.dailyTasks.map { Mutation.setTasks($0) }
+            return tasks
         case .selectedItem(let indexPath):
             return Observable.just(Mutation.toggleCompleted(index: indexPath.item))
         case .reset:
