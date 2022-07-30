@@ -11,7 +11,6 @@ import RxCocoa
 
 class VillagersCell: UICollectionViewCell {
     
-    private var viewModel: VillagersCellViewModel!
     private var disposeBag = DisposeBag()
     
     @IBOutlet weak var iconImage: UIImageView!
@@ -24,6 +23,8 @@ class VillagersCell: UICollectionViewCell {
         contentView.backgroundColor = .acSecondaryBackground
         contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .semibold)
+        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        houseButton.setImage(UIImage(systemName: "house"), for: .normal)
     }
     
     override func prepareForReuse() {
@@ -31,43 +32,46 @@ class VillagersCell: UICollectionViewCell {
         iconImage.kf.cancelDownloadTask()
         likeButton.setImage(nil, for: .normal)
         houseButton.setImage(nil, for: .normal)
-        viewModel = nil
         disposeBag = DisposeBag()
     }
     
     func setUp(_ villager: Villager) {
         iconImage.setImage(with: villager.iconImage)
         nameLabel.text = villager.translations.localizedName()
-        viewModel = VillagersCellViewModel(villager: villager)
-        bind()
+        bind(reactor: VillagersCellReactor(villager: villager))
     }
     
-    private func bind() {
-        let input = VillagersCellViewModel.Input(
-            didTapHeart: likeButton.rx.tap.asObservable(),
-            didTapHouse: houseButton.rx.tap.asObservable()
-        )
+    private func bind(reactor: VillagersCellReactor) {
+        Observable.just(VillagersCellReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-        
-        output.isLiked
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { isLiked in
-                if isLiked {
-                    self.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-                } else {
-                    self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                }
+        likeButton.rx.tap
+            .map { VillagersCellReactor.Action.like }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
             }).disposed(by: disposeBag)
         
-        output.isResident
+        houseButton.rx.tap
+            .map { VillagersCellReactor.Action.home }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLiked }
+            .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { isResident in
-                if isResident {
-                    self.houseButton.setImage(UIImage(systemName: "house.fill"), for: .normal)
-                } else {
-                    self.houseButton.setImage(UIImage(systemName: "house"), for: .normal)
-                }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isLiked in
+                owner.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isResident }
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isResident in
+                owner.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
             }).disposed(by: disposeBag)
     }
 

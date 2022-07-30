@@ -75,15 +75,15 @@ class VillagersView: UIView {
     }()
     
     private func updateCollectionViewHeight() {
-        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height
-        self.heightConstraint.constant = contentHeight == .zero ? 60 : contentHeight
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        heightConstraint.constant = contentHeight == .zero ? 60 : contentHeight
     }
     
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(collectionView, descriptionLabel, resetButton)
 
-        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 60)
+        heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 60)
         heightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
@@ -96,28 +96,44 @@ class VillagersView: UIView {
         ])
     }
     
-    private func bind(to viewModel: VillagersSectionViewModel) {
-        let input = VillagersSectionViewModel.Input(
-            didSelectItem: collectionView.rx.itemSelected.asObservable(),
-            didTapVillagerLongPress: longPressGesture.rx.event
-                .map { (longPressGesture: UIGestureRecognizer) -> IndexPath? in
-                    guard let collectionView = longPressGesture.view as? UICollectionView else {
-                        return nil
-                    }
-                    if longPressGesture.state == .began,
-                       let indexPath = collectionView.indexPathForItem(
-                        at: longPressGesture.location(in: collectionView)
-                       ) {
-                        return indexPath
-                    }
+    private func bind(to reactor: VillagersSectionReactor) {
+        Observable.just(VillagersSectionReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        longPressGesture.rx.event
+            .map { (longPressGesture: UIGestureRecognizer) -> IndexPath? in
+                guard let collectionView = longPressGesture.view as? UICollectionView else {
                     return nil
-                }.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-
-        output.villagers
-            .observe(on: MainScheduler.asyncInstance)
+                }
+                if longPressGesture.state == .began,
+                   let indexPath = collectionView.indexPathForItem(
+                    at: longPressGesture.location(in: collectionView)
+                   ) {
+                    return indexPath
+                }
+                return nil
+            }.compactMap { $0 }
+            .map { VillagersSectionReactor.Action.villagerLongPress(indexPath: $0)}
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.villagers }
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: IconCell.className,
+                    cellType: IconCell.self
+                )
+            ) { _, villager, cell in
+                cell.setImage(url: villager.iconImage)
+            }.disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.villagers }
             .withUnretained(self)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { owner, villagers in
                 if villagers.isEmpty {
                     owner.emptyLabel.isHidden = false
@@ -130,34 +146,26 @@ class VillagersView: UIView {
                 owner.updateCollectionViewHeight()
                 owner.layoutIfNeeded()
             }).disposed(by: disposeBag)
-        
-        output.villagers
-            .bind(
-                to: collectionView.rx.items(
-                    cellIdentifier: IconCell.className,
-                    cellType: IconCell.self
-                )
-            ) { _, villager, cell in
-                cell.setImage(url: villager.iconImage)
-            }.disposed(by: disposeBag)
-        
+
         collectionView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
                 HapticManager.shared.selection()
-                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
+                let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
             }).disposed(by: disposeBag)
         
         resetButton.rx.tap
-            .subscribe(onNext: { _ in
-                let cells = self.collectionView.visibleCells as? [IconCell]
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let cells = owner.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
             }).disposed(by: disposeBag)
     }
 }
 
 extension VillagersView {
-    convenience init(_ viewModel: VillagersSectionViewModel) {
+    convenience init(_ viewModel: VillagersSectionReactor) {
         self.init(frame: .zero)
         configure()
         bind(to: viewModel)

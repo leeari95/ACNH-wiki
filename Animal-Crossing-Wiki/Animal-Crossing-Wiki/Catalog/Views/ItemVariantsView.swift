@@ -42,7 +42,7 @@ class ItemVariantsView: UIView {
     private func configure() {
         addSubviews(collectionView)
         
-        let heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 110)
+        let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 110)
         heightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
@@ -57,8 +57,9 @@ class ItemVariantsView: UIView {
     
     private func setUpItems(by variations: [Variant]) {
         Observable.just(variations)
-            .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)) { _, item, cell in
-                let name = self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName()
+            .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
+            ) { [weak self] _, item, cell in
+                let name = self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName()
                 cell.setUp(imageURL: item.image, name: name)
             }.disposed(by: disposeBag)
         

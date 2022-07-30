@@ -24,7 +24,7 @@ final class VillagersCoordinator: Coordinator {
     
     func start() {
         let villagersVC = VillagersViewController()
-        villagersVC.bind(to: VillagersViewModel(coordinator: self))
+        villagersVC.bind(to: VillagersReactor(coordinator: self))
         rootViewController.addChild(villagersVC)
     }
     
@@ -32,7 +32,9 @@ final class VillagersCoordinator: Coordinator {
         switch route {
         case .detail(let villager):
             let viewController = VillagerDetailViewController()
-            viewController.bind(to: VillagerDetailViewModel(villager: villager))
+            viewController.bind(
+                to: VillagerDetailReactor(villager: villager, state: .init(villager: villager))
+            )
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

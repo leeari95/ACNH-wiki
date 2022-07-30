@@ -37,12 +37,11 @@ final class DashboardCoordinator: Coordinator {
     
     func start() {
         let viewController = DashboardViewController()
-        viewController.bind(to: DashboardViewModel(coordinator: self))
+        viewController.bind(to: DashboardReactor(coordinator: self))
         viewController.setUpViewModels(
-            userInfoVM: UserInfoSectionViewModel(),
-            tasksVM: TodaysTasksSectionViewModel(coordinator: self),
-            villagersVM: VillagersSectionViewModel(coordinator: self),
-            progressVM: CollectionProgressSectionViewModel(coordinator: self)
+            tasksVM: TodaysTasksSectionReactor(coordinator: self),
+            villagersVM: VillagersSectionReactor(coordinator: self),
+            progressVM: CollectionProgressSectionReactor(coordinator: self)
         )
         rootViewController.addChild(viewController)
     }
@@ -51,27 +50,27 @@ final class DashboardCoordinator: Coordinator {
         switch route {
         case .setting:
             let viewController = PreferencesViewController()
-            viewController.bind(to: PreferencesViewModel(coordinator: self))
+            viewController.bind(to: PreferencesReactor(coordinator: self), appSettingReactor: AppSettingReactor())
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .about:
             let viewController = AboutViewController()
-            viewController.bind(to: AboutViewModel(coordinator: self))
+            viewController.bind(to: AboutReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .taskEdit:
             let viewController = TaskEditViewController()
-            viewController.bind(to: TasksEditViewModel(coordinator: self))
+            viewController.bind(to: TasksEditReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .customTask(let task):
             let viewController = CustomTaskViewController()
             delegate = viewController
             if task.icon == "plus" {
-                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: nil))
+                viewController.bind(to: CustomTaskReactor(coordinator: self, task: nil))
                 viewController.mode = .add
             } else {
-                viewController.bind(to: CustomTaskViewModel(coordinator: self, task: task))
+                viewController.bind(to: CustomTaskReactor(coordinator: self, task: task))
                 viewController.mode = .edit
             }
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
@@ -83,29 +82,31 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.visibleViewController?.present(navigationController, animated: true)
         case .villagerDetail(let villager):
             let viewController = VillagerDetailViewController()
-            viewController.bind(to: VillagerDetailViewModel(villager: villager))
+            viewController.bind(
+                to: VillagerDetailReactor(villager: villager, state: .init(villager: villager))
+            )
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
             HapticManager.shared.notification(type: .success)
         case .progress:
             let viewController = CollectionProgressViewController()
-            viewController.bind(to: CollectionProgressViewModel(coordinator: self))
+            viewController.bind(to: CollectionProgressReactor(coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .item(let category):
             let viewController = ItemsViewController()
             let currentMonth = (Calendar.current.dateComponents([.month], from: Date()).month ?? 1).description
             viewController.bind(
-                to: ItemsViewModel(category: category, coordinator: self),
+                to: ItemsReactor(category: category, coordinator: self),
                 keyword: [.month: currentMonth]
             )
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)

@@ -48,19 +48,28 @@ class CollectionProgressView: UIView {
         ])
     }
     
-    private func bind(to viewModel: CollectionProgressSectionViewModel) {
+    private func bind(to reactor: CollectionProgressSectionReactor) {
         let tap = UITapGestureRecognizer()
         addGestureRecognizer(tap)
-        let input = CollectionProgressSectionViewModel.Input(didTapSection: tap.rx.event.asObservable())
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
-        output.isLoading
-            .bind(to: self.activityIndicator.rx.isAnimating)
+        
+        Observable.just(CollectionProgressSectionReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tap.rx.event
+            .map { _ in CollectionProgressSectionReactor.Action.didTapSection }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLoading }
+            .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
     }
 }
 
 extension CollectionProgressView {
-    convenience init(viewModel: CollectionProgressSectionViewModel) {
+    convenience init(viewModel: CollectionProgressSectionReactor) {
         self.init(frame: .zero)
         bind(to: viewModel)
         configure()

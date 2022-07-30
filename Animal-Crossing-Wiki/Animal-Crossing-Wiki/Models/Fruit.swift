@@ -18,7 +18,7 @@ enum Fruit: String, CaseIterable {
         return self.rawValue.capitalized
     }
     
-    static func title(_ string: String) -> String? {
+    static func transform(_ string: String) -> String? {
         switch string {
         case Fruit.apple.imageName.localized: return Fruit.apple.rawValue
         case Fruit.orange.imageName.localized: return Fruit.orange.rawValue

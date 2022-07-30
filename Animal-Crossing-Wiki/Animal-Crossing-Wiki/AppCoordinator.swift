@@ -66,13 +66,13 @@ extension AppCoordinator {
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
         viewController.didMove(toParent: rootViewController)
-        let viewModel = PlayerViewModel(coordinator: self)
+        let viewModel = PlayerReactor(coordinator: self)
         viewController.bind(to: viewModel)
 
         let frame = rootViewController.view.frame
         let tabBarHeight = rootViewController.tabBar.frame.height
         viewController.configure(tabBarHeight: tabBarHeight)
-        self.topAnchorConstraint = viewController.view.topAnchor.constraint(
+        topAnchorConstraint = viewController.view.topAnchor.constraint(
             equalTo: rootViewController.view.topAnchor,
             constant: frame.height - rootViewController.tabBar.frame.height - 60
         )

@@ -54,13 +54,23 @@ class CatalogViewController: UIViewController {
         ])
     }
     
-    func bind(to viewModel: CatalogViewModel) {
-        let input = CatalogViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: CatalogReactor) {
+        self.rx.viewDidLoad
+            .map { CatalogReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.catagories
+        tableView.rx.modelSelected((title: Category, count: Int).self)
+            .map { CatalogReactor.Action.selectedCategory(title: $0.0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLoading }
+            .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.categories }
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
@@ -68,15 +78,5 @@ class CatalogViewController: UIViewController {
                     itemCount: item.count
                 )
             }.disposed(by: disposeBag)
-        
-        tableView.rx.itemSelected
-            .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
-                owner.tableView.deselectRow(at: indexPath, animated: true)
-            }).disposed(by: disposeBag)
-        
-        output.isLoading
-            .bind(to: self.activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
     }
 }

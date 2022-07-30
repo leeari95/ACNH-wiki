@@ -81,8 +81,10 @@ class CustomTaskView: UIView {
 }
 extension CustomTaskView {
     
-    var taskNameObservable: Observable<String?> {
-        taskNameTextField.rx.text.asObservable()
+    var taskNameObservable: Observable<String> {
+        taskNameTextField.rx.controlEvent(.editingChanged).compactMap {  [weak self] in
+            self?.taskNameTextField.text
+        }.asObservable()
     }
     
     var iconButtonObservable: Observable<Void> {

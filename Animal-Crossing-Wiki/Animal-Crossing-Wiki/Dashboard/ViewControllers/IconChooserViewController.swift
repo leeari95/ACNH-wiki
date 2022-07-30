@@ -34,7 +34,7 @@ class IconChooserViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Icon"
+        navigationItem.title = "Icon"
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "xmark.app.fill"),
@@ -78,8 +78,8 @@ extension IconChooserViewController: UICollectionViewDataSource {
 
 extension IconChooserViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dismiss(animated: true) {
-            self.coordinator?.selectedIcon("Inv\(indexPath.row)")
+        dismiss(animated: true) { [weak self] in
+            self?.coordinator?.selectedIcon("Inv\(indexPath.row)")
         }
     }
 }

@@ -34,7 +34,7 @@ class TaskEditViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Today's Tasks".localized
+        navigationItem.title = "Today's Tasks".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -48,15 +48,29 @@ class TaskEditViewController: UIViewController {
         ])
     }
     
-    func bind(to viewModel: TasksEditViewModel) {
-        let input = TasksEditViewModel.Input(
-            didSelectedTask: tableView.rx.modelSelected(DailyTask.self).asObservable(),
-            didTapCancel: cancelButton.rx.tap.asObservable(),
-            didDeleted: tableView.rx.itemDeleted.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: TasksEditReactor) {
+        self.rx.viewDidLoad
+            .map { TasksEditReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.tasks
+        tableView.rx.modelSelected(DailyTask.self)
+            .map { TasksEditReactor.Action.selectedTask($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        cancelButton.rx.tap
+            .map { TasksEditReactor.Action.cancel }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemDeleted
+            .map { TasksEditReactor.Action.deleted(index: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.tasks }
             .bind(to: tableView.rx.items) { _, _, task in
                 let cell = UITableViewCell()
                 var content = cell.defaultContentConfiguration()

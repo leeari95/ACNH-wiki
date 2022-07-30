@@ -99,12 +99,16 @@ extension PreferencesView: UITextFieldDelegate {
 
 extension PreferencesView {
     
-    var islandNameObservable: Observable<String?> {
-        return islandNameTextField.rx.text.asObservable()
+    var islandNameObservable: Observable<String> {
+        return islandNameTextField.rx.controlEvent(.editingChanged).compactMap { [weak self] in
+            self?.islandNameTextField.text
+        }.asObservable()
     }
     
-    var userNameObservable: Observable<String?> {
-        return userNameTextField.rx.text.asObservable()
+    var userNameObservable: Observable<String> {
+        return userNameTextField.rx.controlEvent(.editingChanged).compactMap { [weak self] in
+            self?.userNameTextField.text
+        }.asObservable()
     }
     
     var hemisphereButtonObservable: Observable<Void> {

@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class CoreDataUserInfoStorage {
+final class CoreDataUserInfoStorage: UserInfoStorage {
     
     private let coreDataStorage: CoreDataStorage
     
@@ -16,20 +16,11 @@ final class CoreDataUserInfoStorage {
         self.coreDataStorage = coreDataStorage
     }
     
-    func fetchUserInfo() -> Single<UserInfo> {
-        return Single.create {  single in
-            self.coreDataStorage.performBackgroundTask { context in
-                do {
-                    let object = try self.coreDataStorage.getUserCollection(context)
-                    let userInfo = object.toDomain()
-                    single(.success(userInfo))
-                } catch {
-                    single(.failure(CoreDataStorageError.readError(error)))
-                }
-            }
-            return Disposables.create()
-        }
-        
+    func fetchUserInfo() -> UserInfo? {
+        let context = coreDataStorage.persistentContainer.viewContext
+        let object = try? self.coreDataStorage.getUserCollection(context)
+        let userInfo = object?.toDomain()
+        return userInfo
     }
     
     func updateUserInfo(_ userInfo: UserInfo) {

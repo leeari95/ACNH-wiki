@@ -45,30 +45,21 @@ class TodaysTasksView: UIView {
         return button
     }()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height + 40
-        self.heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height + 40
+        heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
     }
     
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        self.heightConstraint.constant = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+        heightConstraint.constant = collectionView.collectionViewLayout.collectionViewContentSize.height
     }
     
     private func configure() {
         addSubviews(collectionView, buttonStackView)
         
-        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 40)
+        heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 40)
         heightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -91,15 +82,29 @@ class TodaysTasksView: UIView {
         buttonStackView.addArrangedSubviews(editButton, resetButton)
     }
     
-    func bind(to viewModel: TodaysTasksSectionViewModel) {
-        let input = TodaysTasksSectionViewModel.Input(
-            didSelectItem: collectionView.rx.itemSelected.asObservable(),
-            didTapReset: resetButton.rx.tap.asObservable(),
-            didTapEdit: editButton.rx.tap.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: TodaysTasksSectionReactor) {
+        Observable.just(TodaysTasksSectionReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        output.tasks
+        collectionView.rx.itemSelected
+            .map { TodaysTasksSectionReactor.Action.selectedItem(indexPath: $0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            })
+            .disposed(by: disposeBag)
+        
+        resetButton.rx.tap
+            .map { TodaysTasksSectionReactor.Action.reset }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        editButton.rx.tap
+            .map { TodaysTasksSectionReactor.Action.edit }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.tasks }
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
@@ -109,18 +114,19 @@ class TodaysTasksView: UIView {
                 cell.setImage(icon: item.task.icon)
                 item.task.progressList[item.progressIndex] ? cell.setAlpha(1) : cell.setAlpha(0.5)
             }.disposed(by: disposeBag)
-        
-        output.tasks
+
+        reactor.state.map { $0.tasks }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    self.layoutIfNeeded()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.layoutIfNeeded()
                 }
             }).disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.toggle()
                 HapticManager.shared.selection()
             }).disposed(by: disposeBag)
@@ -129,8 +135,9 @@ class TodaysTasksView: UIView {
 
 extension TodaysTasksView {
     
-    convenience init(_ viewModel: TodaysTasksSectionViewModel) {
+    convenience init(_ viewModel: TodaysTasksSectionReactor) {
         self.init(frame: .zero)
         bind(to: viewModel)
+        configure()
     }
 }

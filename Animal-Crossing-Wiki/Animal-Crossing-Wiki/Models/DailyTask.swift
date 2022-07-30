@@ -115,3 +115,5 @@ extension DailyTask {
         ]
     }
 }
+
+extension DailyTask: Equatable {}

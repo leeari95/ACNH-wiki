@@ -10,7 +10,6 @@ import RxSwift
 
 class CatalogCell: UICollectionViewCell {
     
-    private var viewModel: CatalogCellViewModel!
     private var disposeBag = DisposeBag()
     
     @IBOutlet private weak var backgroundStackView: UIStackView!
@@ -62,20 +61,30 @@ class CatalogCell: UICollectionViewCell {
         }
     }
     
-    private func bind() {
-        let input = CatalogCellViewModel.Input(didTapCheck: checkButton.rx.tap.asObservable())
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    private func bind(reactor: CatalogCellReactor) {
+        Observable.just(CatalogCellReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
-        output.isAcquired
+        checkButton.rx.tap
+            .map { CatalogCellReactor.Action.check }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isAcquired }
+            .compactMap { $0 }
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in
                 let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
-                if isAcquired {
-                    owner.checkButton.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config), for: .normal)
-                } else {
-                    owner.checkButton.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
-                }
+                owner.checkButton.setImage(
+                    UIImage(
+                        systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal",
+                        withConfiguration: config
+                    ),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
     }
 }
@@ -83,10 +92,9 @@ class CatalogCell: UICollectionViewCell {
 extension CatalogCell {
     
     func setUp(_ item: Item) {
-        viewModel = CatalogCellViewModel(item: item, category: item.category)
         setUpIconImage(item)
         nameLabel.text = item.translations.localizedName()
-        bind()
+        bind(reactor: CatalogCellReactor(item: item, category: item.category, state: .init(item: item, category: item.category)))
         var priceView: ItemBellsView
         switch item.category {
         case .bugs, .fishes, .seaCreatures:

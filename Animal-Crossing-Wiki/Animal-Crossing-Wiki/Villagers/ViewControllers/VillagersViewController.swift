@@ -91,26 +91,55 @@ class VillagersViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
     
-    func bind(to viewModel: VillagersViewModel) {
-        let input = VillagersViewModel.Input(
-            searchBarText: searchController.searchBar.rx.text.asObservable(),
-            selectedScopeButton: searchController.searchBar.rx.selectedScopeButtonIndex
-                .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] },
-            didSelectedMenuKeyword: selectedKeyword.asObservable(),
-            villagerSelected: collectionView.rx.itemSelected.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+    func bind(to reactor: VillagersReactor) {
+        self.rx.viewDidLoad
+            .map { VillagersReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.villagers
+        searchController.searchBar.rx.cancelButtonClicked
+            .map { VillagersReactor.Action.searchText("") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .compactMap { $0 }
+            .map { VillagersReactor.Action.searchText($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0] }
+            .map { VillagersReactor.Action.selectedScope($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { VillagersReactor.Action.selectedMenu(keywords: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .map { VillagersReactor.Action.selectedVillager(indexPath: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.villagers }
             .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
         
+        reactor.state.map { $0.isLoading }
+            .bind(to: self.activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { _ in
-                self.searchController.searchBar.endEditing(true)
-                self.selectedKeyword.accept(self.currentSelected)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.searchController.searchBar.endEditing(true)
+                owner.selectedKeyword.accept(owner.currentSelected)
             }).disposed(by: disposeBag)
         
         selectedKeyword
@@ -122,10 +151,6 @@ class VillagersViewController: UIViewController {
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
         }).disposed(by: disposeBag)
-        
-        output.isLoading
-            .bind(to: self.activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
     }
     
     private func setUpViews() {
@@ -142,7 +167,7 @@ class VillagersViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        self.navigationItem.title = "Villagers".localized
+        navigationItem.title = "Villagers".localized
         let moreButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -150,8 +175,8 @@ class VillagersViewController: UIViewController {
             action: nil
         )
         moreButton.tintColor = .acNavigationBarTint
-        self.navigationItem.rightBarButtonItem = moreButton
-        self.navigationItem.rightBarButtonItem?.menu = createFilterMenu()
+        navigationItem.rightBarButtonItem = moreButton
+        navigationItem.rightBarButtonItem?.menu = createFilterMenu()
     }
 
     private func setUpSearchController() {
@@ -167,13 +192,13 @@ class VillagersViewController: UIViewController {
             (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.localized })
         ]
         
-        let actionHandler: (UIAction) -> Void = { action in
+        let actionHandler: (UIAction) -> Void = { [weak self] action in
             for menuItem in menuItems where menuItem.subTitle.contains(action.title) {
                 let menu = Menu(rawValue: Menu.transform(menuItem.title) ?? "") ?? .all
-                self.currentSelected[menu] = action.title
+                self?.currentSelected[menu] = action.title
             }
-            self.currentSelected[Menu.all] = nil
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+            self?.currentSelected[Menu.all] = nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         }
         let items: [UIMenu] = menuItems
             .map { UIMenu(title: $0.title, subTitles: $0.subTitle, actionHandler: actionHandler) }
@@ -188,9 +213,9 @@ class VillagersViewController: UIViewController {
             }
         }
         
-        let all = UIAction(title: Menu.all.rawValue.localized, handler: { _ in
-            self.currentSelected = [Menu.all: Menu.all.rawValue]
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        let all = UIAction(title: Menu.all.rawValue.localized, handler: { [weak self] _ in
+            self?.currentSelected = [Menu.all: Menu.all.rawValue]
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         })
         if currentSelected[Menu.all] != nil {
             all.state = .on
