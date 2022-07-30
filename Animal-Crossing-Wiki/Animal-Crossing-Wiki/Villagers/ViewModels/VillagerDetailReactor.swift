@@ -11,8 +11,7 @@ import ReactorKit
 final class VillagerDetailReactor: Reactor {
     
     enum Action {
-        case setLikeState(villagers: [Villager])
-        case setHouseState(villagers: [Villager])
+        case fetch
         case like
         case home
     }
@@ -49,11 +48,19 @@ final class VillagerDetailReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setLikeState(let villagers):
-            return .just(.setLike(villagers.contains(where: { $0.name == self.villager.name })))
-            
-        case .setHouseState(let villagers):
-            return .just(.setHouse(villagers.contains(where: { $0.name == self.villager.name })))
+        case .fetch:
+            let houseState = Items.shared.villagerHouseList
+                .take(1)
+                .map { $0.contains(where: { $0.name == self.villager.name })}
+                .map { Mutation.setHouse($0) }
+            let likeState = Items.shared.villagerLikeList
+                .take(1)
+                .map { $0.contains(where: { $0.name == self.villager.name })}
+                .map { Mutation.setLike($0) }
+            return .merge([
+                houseState,
+                likeState
+            ])
             
         case .like:
             HapticManager.shared.impact(style: .medium)

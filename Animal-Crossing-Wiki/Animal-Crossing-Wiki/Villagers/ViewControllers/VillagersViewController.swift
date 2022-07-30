@@ -92,23 +92,11 @@ class VillagersViewController: UIViewController {
     }
     
     func bind(to reactor: VillagersReactor) {
-        Items.shared.villagerList
-            .filter { $0.isEmpty == false }
-            .map { VillagersReactor.Action.setVillagers($0) }
+        self.rx.viewDidLoad
+            .map { VillagersReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
-            })
-            .disposed(by: disposeBag)
-        
-        Items.shared.villagerLikeList
-            .map { VillagersReactor.Action.setLikeVillagers($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        Items.shared.villagerHouseList
-            .map { VillagersReactor.Action.setHouseVillagers($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
         
         searchController.searchBar.rx.cancelButtonClicked
             .map { VillagersReactor.Action.searchText("") }
@@ -142,6 +130,10 @@ class VillagersViewController: UIViewController {
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
         
+        reactor.state.map { $0.isLoading }
+            .bind(to: self.activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { _ in
@@ -158,10 +150,6 @@ class VillagersViewController: UIViewController {
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
         }).disposed(by: disposeBag)
-        
-        Items.shared.isLoading
-            .bind(to: self.activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
     }
     
     private func setUpViews() {

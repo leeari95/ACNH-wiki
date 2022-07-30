@@ -42,15 +42,7 @@ class VillagersCell: UICollectionViewCell {
     }
     
     private func bind(reactor: VillagersCellReactor) {
-        Items.shared.villagerHouseList
-            .take(1)
-            .map { VillagersCellReactor.Action.setHouseState(villagers: $0)}
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        Items.shared.villagerLikeList
-            .take(1)
-            .map { VillagersCellReactor.Action.setLikeState(villagers: $0)}
+        Observable.just(VillagersCellReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         

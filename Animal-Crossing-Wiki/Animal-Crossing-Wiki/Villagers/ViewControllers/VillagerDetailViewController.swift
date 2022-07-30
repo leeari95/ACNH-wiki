@@ -64,17 +64,11 @@ class VillagerDetailViewController: UIViewController {
     }
     
     func bind(to reactor: VillagerDetailReactor) {
-        Items.shared.villagerHouseList
-            .take(1)
-            .map { VillagerDetailReactor.Action.setHouseState(villagers: $0)}
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        Items.shared.villagerLikeList
-            .take(1)
-            .map { VillagerDetailReactor.Action.setLikeState(villagers: $0)}
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+        self.rx.viewDidLoad
+            .map { VillagerDetailReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
         likeButton.rx.tap
             .map { VillagerDetailReactor.Action.like }

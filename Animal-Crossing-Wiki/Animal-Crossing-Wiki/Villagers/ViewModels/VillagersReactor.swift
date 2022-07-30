@@ -11,9 +11,7 @@ import ReactorKit
 final class VillagersReactor: Reactor {
     
     enum Action {
-        case setVillagers(_ villagers: [Villager])
-        case setLikeVillagers(_ villagers: [Villager])
-        case setHouseVillagers(_ villagers: [Villager])
+        case fetch
         case searchText(_ text: String)
         case selectedScope(_ title: String)
         case selectedMenu(keywords: [VillagersViewController.Menu: String])
@@ -25,21 +23,23 @@ final class VillagersReactor: Reactor {
         case setAllVillagers(_ villagers: [Villager])
         case setLikeVillagers(_ villagers: [Villager])
         case setHouseVillagers(_ villagers: [Villager])
+        case setLoadingState(_ isLoading: Bool)
         case setScope(_ scope: VillagersViewController.SearchScope)
         case transition(route: VillagersCoordinator.Route)
     }
     
     struct State {
         var villagers: [Villager] = []
-        var allVillagers: [Villager] = []
-        var likeVillagers: [Villager] = []
-        var houseVillagers: [Villager] = []
-        var currentScope: VillagersViewController.SearchScope = .all
+        var isLoading: Bool = true
     }
     
     let initialState: State
     var coordinator: VillagersCoordinator?
     
+    private var allVillagers: [Villager] = []
+    private var likeVillagers: [Villager] = []
+    private var houseVillagers: [Villager] = []
+    private var currentScope: VillagersViewController.SearchScope = .all
     private var currentKeywords: [VillagersViewController.Menu: String] = [:]
     private var lastSearchKeyword: String = ""
     
@@ -50,14 +50,19 @@ final class VillagersReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setVillagers(let villagers):
-            return Observable.just(Mutation.setAllVillagers(villagers))
-            
-        case .setLikeVillagers(let villagers):
-            return Observable.just(Mutation.setLikeVillagers(villagers))
-            
-        case .setHouseVillagers(let villagers):
-            return Observable.just(Mutation.setHouseVillagers(villagers))
+        case .fetch:
+            let allVillagers = Items.shared.villagerList
+                .filter { $0.isEmpty == false }
+                .map { Mutation.setAllVillagers($0) }
+            let likeVillagers = Items.shared.villagerLikeList.map { Mutation.setLikeVillagers($0) }
+            let houseVillagers = Items.shared.villagerHouseList.map { Mutation.setHouseVillagers($0) }
+            let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
+            return .merge([
+                loadingState,
+                allVillagers,
+                likeVillagers,
+                houseVillagers
+            ])
             
         case .searchText(let text):
             lastSearchKeyword = text.lowercased()
@@ -96,36 +101,38 @@ final class VillagersReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
+        case .setLoadingState(let isLoading):
+            newState.isLoading = isLoading
+            
         case .setVillagers(let villagers):
             newState.villagers = search(villagers: villagers, text: lastSearchKeyword)
             
         case .setAllVillagers(let villagers):
-            if currentState.currentScope == .all {
+            if currentScope == .all {
                 newState.villagers = villagers
             }
-            newState.allVillagers = villagers
+            allVillagers = villagers
             
         case .setLikeVillagers(let villagers):
-            if currentState.currentScope == .liked {
+            if currentScope == .liked {
                 newState.villagers = filtered(
                     villagers: search(villagers: villagers, text: lastSearchKeyword),
                     keywords: self.currentKeywords
                 )
-                
             }
-            newState.likeVillagers = villagers
+            likeVillagers = villagers
             
         case .setHouseVillagers(let villagers):
-            if currentState.currentScope == .residents {
+            if currentScope == .residents {
                 newState.villagers = filtered(
                     villagers: search(villagers: villagers, text: lastSearchKeyword),
                     keywords: self.currentKeywords
                 )
             }
-            newState.houseVillagers = villagers
+            houseVillagers = villagers
             
         case .setScope(let scope):
-            newState.currentScope = scope
+            currentScope = scope
             
         case .transition(let route):
             coordinator?.transition(for: route)
@@ -134,10 +141,10 @@ final class VillagersReactor: Reactor {
     }
     
     private func currentVillagers() -> Observable<[Villager]> {
-        switch currentState.currentScope {
-        case .all: return .just(currentState.allVillagers)
-        case .liked: return .just(currentState.likeVillagers)
-        case .residents: return .just(currentState.houseVillagers)
+        switch currentScope {
+        case .all: return .just(allVillagers)
+        case .liked: return .just(likeVillagers)
+        case .residents: return .just(houseVillagers)
         }
     }
     
