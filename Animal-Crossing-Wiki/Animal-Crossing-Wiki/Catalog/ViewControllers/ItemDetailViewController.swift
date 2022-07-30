@@ -66,9 +66,8 @@ class ItemDetailViewController: UIViewController {
         navigationItem.title = reactor.currentState.item.translations.localizedName()
         setUpSection(in: reactor.currentState.item)
         
-        Items.shared.itemList
-            .compactMap { $0[reactor.currentState.item.category] }
-            .map { ItemDetailReactor.Action.setCollectedState(items: $0) }
+        self.rx.viewDidLoad
+            .map { ItemDetailReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)

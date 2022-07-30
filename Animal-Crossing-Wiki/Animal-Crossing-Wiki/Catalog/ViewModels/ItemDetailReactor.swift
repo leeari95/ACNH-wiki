@@ -11,7 +11,7 @@ import ReactorKit
 final class ItemDetailReactor: Reactor {
     
     enum Action {
-        case setCollectedState(items: [Item])
+        case fetch
         case check
         case didTapKeyword(_ keyword: String)
         case play
@@ -41,9 +41,12 @@ final class ItemDetailReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setCollectedState(let items):
-            return .just(.setAcquired(items.contains(currentState.item)))
-            
+        case .fetch:
+            let collectedState = Items.shared.itemList
+                .compactMap { $0[self.currentState.item.category] }
+                .map { ItemDetailReactor.Mutation.setAcquired($0.contains(self.currentState.item)) }
+            return collectedState
+
         case .check:
             HapticManager.shared.impact(style: .medium)
             Items.shared.updateItem(currentState.item)
