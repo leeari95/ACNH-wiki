@@ -115,7 +115,7 @@
 		9A7ACF10287EC2D3001D47CB /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF0E287EC2D3001D47CB /* CollectionViewController.swift */; };
 		9A7ACF12287EC2DE001D47CB /* CollectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF11287EC2DE001D47CB /* CollectionCoordinator.swift */; };
 		9A7ACF15287EC2E9001D47CB /* CollectionProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */; };
-		9A7ACF16287EC2E9001D47CB /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF14287EC2E9001D47CB /* CollectionViewModel.swift */; };
+		9A7ACF16287EC2E9001D47CB /* CollectionReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */; };
 		9A7ACF19287EC2F3001D47CB /* ItemProgressRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A7ACF17287EC2F3001D47CB /* ItemProgressRow.xib */; };
 		9A7ACF1A287EC2F3001D47CB /* ItemProgressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */; };
 		9A7ACF22287EC459001D47CB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7ACF20287EC459001D47CB /* HapticManager.swift */; };
@@ -314,7 +314,7 @@
 		9A7ACF0E287EC2D3001D47CB /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewController.swift; path = Collection/ViewControllers/CollectionViewController.swift; sourceTree = "<group>"; };
 		9A7ACF11287EC2DE001D47CB /* CollectionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCoordinator.swift; path = Collection/Coordinator/CollectionCoordinator.swift; sourceTree = "<group>"; };
 		9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionProgressViewModel.swift; path = Collection/ViewModels/CollectionProgressViewModel.swift; sourceTree = "<group>"; };
-		9A7ACF14287EC2E9001D47CB /* CollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewModel.swift; path = Collection/ViewModels/CollectionViewModel.swift; sourceTree = "<group>"; };
+		9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionReactor.swift; path = Collection/ViewModels/CollectionReactor.swift; sourceTree = "<group>"; };
 		9A7ACF17287EC2F3001D47CB /* ItemProgressRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ItemProgressRow.xib; path = Collection/Views/ItemProgressRow.xib; sourceTree = "<group>"; };
 		9A7ACF18287EC2F3001D47CB /* ItemProgressRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemProgressRow.swift; path = Collection/Views/ItemProgressRow.swift; sourceTree = "<group>"; };
 		9A7ACF20287EC459001D47CB /* HapticManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -571,7 +571,7 @@
 		9A6A2ECB287A7EF8007D2EEA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				9A7ACF14287EC2E9001D47CB /* CollectionViewModel.swift */,
+				9A7ACF14287EC2E9001D47CB /* CollectionReactor.swift */,
 				9A7ACF13287EC2E9001D47CB /* CollectionProgressViewModel.swift */,
 			);
 			name = ViewModel;
@@ -1242,7 +1242,7 @@
 				9A99AA382859F74900629C4A /* ProgressView.swift in Sources */,
 				9A6DE35D2889AF1000EB2F3F /* PlayerViewModel.swift in Sources */,
 				9A6891B7283377010061AAF1 /* BugResponseDTO.swift in Sources */,
-				9A7ACF16287EC2E9001D47CB /* CollectionViewModel.swift in Sources */,
+				9A7ACF16287EC2E9001D47CB /* CollectionReactor.swift in Sources */,
 				9A99AA262858827900629C4A /* UserInfoView.swift in Sources */,
 				9A7ACEF6287EC239001D47CB /* ItemDetailReactor.swift in Sources */,
 				9A7ACF0B287EC26F001D47CB /* ItemSeasonView.swift in Sources */,

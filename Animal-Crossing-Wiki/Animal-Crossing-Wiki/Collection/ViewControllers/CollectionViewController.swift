@@ -57,14 +57,21 @@ class CollectionViewController: UIViewController {
         navigationItem.title = "Collection".localized
     }
     
-    func bind(to viewModel: CollectionViewModel) {
+    func bind(to reactor: CollectionReactor) {
         setUpNavigationItem()
-        let input = CollectionViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output.catagories
+        self.rx.viewDidLoad
+            .map { CollectionReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected((title: Category, count: Int).self)
+            .map { CollectionReactor.Action.selectedCategory(title: $0.title) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.catagories }
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
@@ -72,15 +79,16 @@ class CollectionViewController: UIViewController {
                     itemCount: item.count
                 )
             }.disposed(by: disposeBag)
-        
-        output.catagories
+
+        reactor.state.map { $0.catagories }
             .map { !$0.isEmpty }
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
 
         tableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                self.tableView.deselectRow(at: indexPath, animated: true)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
     }
 }

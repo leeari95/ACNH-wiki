@@ -27,7 +27,7 @@ final class CollectionCoordinator: Coordinator {
     
     func start() {
         let collectionVC = CollectionViewController()
-        collectionVC.bind(to: CollectionViewModel(coordinator: self))
+        collectionVC.bind(to: CollectionReactor(coordinator: self))
         rootViewController.addChild(collectionVC)
     }
 
