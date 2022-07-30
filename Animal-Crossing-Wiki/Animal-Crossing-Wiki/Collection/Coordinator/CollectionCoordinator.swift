@@ -40,7 +40,7 @@ final class CollectionCoordinator: Coordinator {
             navigationController?.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):

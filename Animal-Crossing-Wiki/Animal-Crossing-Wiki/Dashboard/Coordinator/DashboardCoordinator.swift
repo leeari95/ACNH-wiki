@@ -102,7 +102,7 @@ final class DashboardCoordinator: Coordinator {
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
