@@ -67,29 +67,25 @@ class PreferencesViewController: UIViewController {
             .disposed(by: disposeBag)
         
         settingSection.hemisphereButtonObservable
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else {
-                    return
-                }
-                self.showSelectedItemAlert(
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.showSelectedItemAlert(
                     Hemisphere.allCases.map { $0.rawValue.localized },
-                    currentItem: self.currentHemisphere.value
+                    currentItem: owner.currentHemisphere.value
                 ).map { PreferencesReactor.Action.hemishphere(title: $0) }
                     .bind(to: reactor.action)
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: owner.disposeBag)
             }).disposed(by: disposeBag)
         
         settingSection.startingFruitButtonObservable
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else {
-                    return
-                }
-                self.showSelectedItemAlert(
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.showSelectedItemAlert(
                     Fruit.allCases.map { $0.rawValue.localized },
-                    currentItem: self.currentFruit.value
+                    currentItem: owner.currentFruit.value
                 ).map { PreferencesReactor.Action.fruit(title: $0)}
                     .bind(to: reactor.action)
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: owner.disposeBag)
             }).disposed(by: disposeBag)
         
         reactor.state
