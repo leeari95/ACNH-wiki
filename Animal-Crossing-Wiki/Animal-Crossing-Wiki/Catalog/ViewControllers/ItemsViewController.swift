@@ -123,8 +123,12 @@ class ItemsViewController: UIViewController {
         case .all: mode = .all
         }
         setUpFilterKeyword(keyword)
-        setUpItems(reactor: reactor)
-        setUpUserItem(reactor: reactor)
+        
+        self.rx.viewDidLoad
+            .map { ItemsReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
         searchController.searchBar.rx.cancelButtonClicked
             .map { ItemsReactor.Action.search(text: "") }
@@ -153,7 +157,7 @@ class ItemsViewController: UIViewController {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        Items.shared.isLoading
+        reactor.state.map { $0.isLoading }
             .observe(on: MainScheduler.asyncInstance)
             .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
@@ -202,48 +206,6 @@ class ItemsViewController: UIViewController {
             navigationItem.title = "Currently Available".localized
         }
         searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
-    }
-    
-    private func setUpItems(reactor: ItemsReactor) {
-        switch mode {
-        case .all:
-            Items.shared.categoryList
-                .compactMap { $0[reactor.category] }
-                .map { ItemsReactor.Action.setItems($0) }
-                .subscribe(onNext: { action in
-                    reactor.action.onNext(action)
-                }).disposed(by: disposeBag)
-        case .user:
-            Items.shared.itemList
-                .compactMap { $0[reactor.category] }
-                .map { ItemsReactor.Action.setItems($0) }
-                .subscribe(onNext: { action in
-                    reactor.action.onNext(action)
-                }).disposed(by: disposeBag)
-        case .keyword(let title, let category):
-            let filteredData = Items.shared.itemFilter(keyword: title, category: category)
-            reactor.action.onNext(ItemsReactor.Action.setItems(filteredData))
-        }
-    }
-    
-    private func setUpUserItem(reactor: ItemsReactor) {
-        switch mode {
-        case .all:
-            Items.shared.itemList
-                .map { $0[reactor.category] ?? [] }
-                .map { ItemsReactor.Action.setColletedItems($0)}
-                .subscribe(onNext: { action in
-                    reactor.action.onNext(action)
-                }).disposed(by: disposeBag)
-        case .keyword(let title, _):
-            Items.shared.itemList
-                .map { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
-                .map { ItemsReactor.Action.setColletedItems($0)}
-                .subscribe(onNext: { action in
-                    reactor.action.onNext(action)
-                }).disposed(by: disposeBag)
-        default: break
-        }
     }
     
     private func setUpViews() {

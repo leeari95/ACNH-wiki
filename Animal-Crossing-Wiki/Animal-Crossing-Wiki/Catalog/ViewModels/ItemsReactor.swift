@@ -17,9 +17,7 @@ final class ItemsReactor: Reactor {
     }
     
     enum Action {
-        case setHemisphere(_ hemisphere: Hemisphere)
-        case setItems(_ items: [Item])
-        case setColletedItems(_ items: [Item])
+        case fetch
         case search(text: String)
         case selectedScope(_ title: String)
         case selectedMenu(keywords: [ItemsViewController.Menu: String])
@@ -30,6 +28,7 @@ final class ItemsReactor: Reactor {
         case setHemisphere(_ hemisphere: Hemisphere)
         case setAllItems(_ items: [Item])
         case setItems(_ items: [Item])
+        case setLoadingState(_ isLoading: Bool)
         case setUserItems(collected: [Item], notCollected: [Item])
         case setScope(_ scope: ItemsViewController.SearchScope)
         case showDetail(_ item: Item)
@@ -37,12 +36,8 @@ final class ItemsReactor: Reactor {
     
     struct State {
         let category: Category
-        var currentScope: ItemsViewController.SearchScope = .all
-        var currentHemisphere: Hemisphere = .north
         var items: [Item] = []
-        var allItems: [Item] = []
-        var collectedItem: [Item] = []
-        var notCollectedItem: [Item] = []
+        var isLoading: Bool = true
     }
     
     let category: Category
@@ -52,6 +47,11 @@ final class ItemsReactor: Reactor {
     
     private var currentKeywords: [ItemsViewController.Menu: String] = [:]
     private var lastSearchKeyword: String = ""
+    private var currentScope: ItemsViewController.SearchScope = .all
+    private var currentHemisphere: Hemisphere = .north
+    private var allItems: [Item] = []
+    private var collectedItem: [Item] = []
+    private var notCollectedItem: [Item] = []
     
     init(category: Category, coordinator: Coordinator?, mode: Mode = .all) {
         self.category = category
@@ -69,11 +69,19 @@ final class ItemsReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .setItems(let items):
-            return .just(.setAllItems(items))
+        case .fetch:
+            let newAllItems = setUpItems().map { Mutation.setAllItems($0) }
+            let collectedItems = setUpUserItem()
+            let notCollectedIems = setUpUserItem().map { self.setUpNotCollected($0) }
+            let userItems = Observable.combineLatest(collectedItems, notCollectedIems)
+                .map { Mutation.setUserItems(collected: $0.0, notCollected: $0.1) }
+            let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
+            let hemisphere = Items.shared.userInfo.compactMap { $0?.hemisphere }
+                .map { Mutation.setHemisphere($0)}
             
-        case .setHemisphere(let hemisphere):
-            return .just(.setHemisphere(hemisphere))
+            return .merge([
+                loadingState, hemisphere, newAllItems, userItems
+            ])
             
         case .search(let text):
             lastSearchKeyword = text.lowercased()
@@ -106,21 +114,6 @@ final class ItemsReactor: Reactor {
                 return .empty()
             }
             return .just(.showDetail(item))
-            
-        case .setColletedItems(let collected):
-            guard currentState.allItems.isEmpty == false else {
-                return .empty()
-            }
-            let collectedItems = collected
-            var notCollectedItems = [Item]()
-            if collected.isEmpty {
-                notCollectedItems = currentState.allItems
-            } else {
-                notCollectedItems = Array(
-                    Set(currentState.allItems).symmetricDifference(Set(collectedItems))
-                ).sorted(by: { $0.name < $1.name })
-            }
-            return .just(.setUserItems(collected: collectedItems, notCollected: notCollectedItems))
         }
     }
     
@@ -131,33 +124,32 @@ final class ItemsReactor: Reactor {
             newState.items = items
         
         case .setHemisphere(let hemisphere):
-            newState.currentHemisphere = hemisphere
+            currentHemisphere = hemisphere
             
         case .setAllItems(let items):
-            if currentState.currentScope == .all {
+            if currentScope == .all {
                 newState.items = items
             }
-            newState.allItems = items
+            allItems = items
             
-        case .setUserItems(let collected, let notCollected):
-            if currentState.currentScope == .collected {
+        case .setUserItems(let collectedItems, let notCollectedItems):
+            if currentScope == .collected {
                 newState.items = filtered(
-                    items: search(items: collected, text: lastSearchKeyword),
-                    keywords: self.currentKeywords
-                )
-                
-            }
-            if currentState.currentScope == .notCollected {
-                newState.items = filtered(
-                    items: search(items: notCollected, text: lastSearchKeyword),
+                    items: search(items: collectedItems, text: lastSearchKeyword),
                     keywords: self.currentKeywords
                 )
             }
-            newState.collectedItem = collected
-            newState.notCollectedItem = notCollected
+            if currentScope == .notCollected {
+                newState.items = filtered(
+                    items: search(items: notCollectedItems, text: lastSearchKeyword),
+                    keywords: self.currentKeywords
+                )
+            }
+            collectedItem = collectedItems
+            notCollectedItem = notCollectedItems
             
         case .setScope(let scope):
-            newState.currentScope = scope
+            currentScope = scope
             
         case .showDetail(let item):
             if let coordinator = self.coordinator as? CatalogCoordinator {
@@ -167,18 +159,21 @@ final class ItemsReactor: Reactor {
             } else if let coordinator = self.coordinator as? DashboardCoordinator {
                 coordinator.transition(for: .itemDetail(item: item))
             }
+        case .setLoadingState(let isLoading):
+            newState.isLoading = isLoading
+            
         }
         return newState
     }
     
     private func currentItems() -> Observable<[Item]> {
-        guard currentState.allItems.isEmpty == false else {
+        guard allItems.isEmpty == false else {
             return Observable.empty()
         }
-        switch currentState.currentScope {
-        case .all: return .just(currentState.allItems)
-        case .collected: return .just(currentState.collectedItem)
-        case .notCollected: return .just(currentState.notCollectedItem)
+        switch currentScope {
+        case .all: return .just(allItems)
+        case .collected: return .just(collectedItem)
+        case .notCollected: return .just(notCollectedItem)
         }
     }
     
@@ -199,7 +194,7 @@ final class ItemsReactor: Reactor {
             case .month:
                 let month = Int(value) ?? 1
                 filteredItems = items.filter {
-                    currentState.currentHemisphere == .north ?
+                    currentHemisphere == .north ?
                     ($0.hemispheres?.north.monthsArray ?? []).contains(month) :
                     ($0.hemispheres?.south.monthsArray ?? []).contains(month)
                 }
@@ -233,5 +228,44 @@ final class ItemsReactor: Reactor {
                     return villagerName.contains(text)
                 }
             }
+    }
+    
+    private func setUpItems() -> Observable<[Item]> {
+        switch mode {
+        case .all, .user:
+            return Items.shared.categoryList
+                .compactMap { $0[self.currentState.category] }
+            
+        case .keyword(let title, let category):
+            let filteredData = Items.shared.itemFilter(keyword: title, category: category)
+            return .just(filteredData)
+        }
+    }
+    
+    private func setUpUserItem() ->  Observable<[Item]> {
+        switch mode {
+        case .all:
+            return Items.shared.itemList
+                .map { $0[self.currentState.category] ?? [] }
+            
+        case .keyword(let title, _):
+            return Items.shared.itemList
+                .map { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
+            
+        default:
+            return .empty()
+        }
+    }
+    
+    private func setUpNotCollected(_ items: [Item]) -> [Item] {
+        var notCollectedItems = [Item]()
+        if items.isEmpty {
+            notCollectedItems = allItems
+        } else {
+            notCollectedItems = Array(
+                Set(allItems).symmetricDifference(Set(items))
+            ).sorted(by: { $0.name < $1.name })
+        }
+        return notCollectedItems
     }
 }
