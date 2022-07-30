@@ -47,19 +47,19 @@ class TodaysTasksView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height + 40
-        self.heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height + 40
+        heightConstraint.constant = contentHeight == .zero ? 40 : contentHeight
     }
     
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        self.heightConstraint.constant = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+        heightConstraint.constant = collectionView.collectionViewLayout.collectionViewContentSize.height
     }
     
     private func configure() {
         addSubviews(collectionView, buttonStackView)
         
-        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 40)
+        heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 40)
         heightConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -118,14 +118,15 @@ class TodaysTasksView: UIView {
         reactor.state.map { $0.tasks }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.layoutIfNeeded()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.layoutIfNeeded()
                 }
             }).disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.toggle()
                 HapticManager.shared.selection()
             }).disposed(by: disposeBag)

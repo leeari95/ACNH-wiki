@@ -42,7 +42,7 @@ class CustomTaskViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = mode?.rawValue.localized
+        navigationItem.title = mode?.rawValue.localized
         navigationItem.largeTitleDisplayMode = .never
         
         navigationItem.rightBarButtonItem = doneButton

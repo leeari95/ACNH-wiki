@@ -36,7 +36,7 @@ class PreferencesViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        self.navigationItem.title = "Preferences".localized
+        navigationItem.title = "Preferences".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
         

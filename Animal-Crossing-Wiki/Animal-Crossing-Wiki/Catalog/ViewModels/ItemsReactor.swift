@@ -72,7 +72,9 @@ final class ItemsReactor: Reactor {
         case .fetch:
             let newAllItems = setUpItems().map { Mutation.setAllItems($0) }
             let collectedItems = setUpUserItem()
-            let notCollectedIems = setUpUserItem().map { self.setUpNotCollected($0) }
+            let notCollectedIems = setUpUserItem()
+                .withUnretained(self)
+                .map { owner, items in owner.setUpNotCollected(items) }
             let userItems = Observable.combineLatest(collectedItems, notCollectedIems)
                 .map { Mutation.setUserItems(collected: $0.0, notCollected: $0.1) }
             let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
@@ -87,13 +89,18 @@ final class ItemsReactor: Reactor {
             lastSearchKeyword = text.lowercased()
             guard text != "" else {
                 return currentItems()
-                    .map { self.filtered(items: $0, keywords: self.currentKeywords) }
+                    .withUnretained(self)
+                    .map { owner, items in owner.filtered(items: items, keywords: owner.currentKeywords) }
                     .map { .setItems($0) }
             }
             return currentItems()
-                .map { self.search(items: $0, text: text.lowercased()) }
-                .map { self.filtered(items: $0, keywords: self.currentKeywords) }
-                .map { .setItems($0)}
+                .withUnretained(self)
+                .map { owner, items -> [Item] in
+                    owner.filtered(
+                        items: owner.search(items: items, text: text.lowercased()),
+                        keywords: owner.currentKeywords
+                    )
+                }.map { .setItems($0)}
             
         case .selectedScope(let title):
             guard let currentScope = ItemsViewController.SearchScope.transform(title)
@@ -105,9 +112,13 @@ final class ItemsReactor: Reactor {
         case .selectedMenu(let keywords):
             currentKeywords = keywords
             return currentItems()
-                .map { self.filtered(items: $0, keywords: keywords) }
-                .map { self.search(items: $0, text: self.lastSearchKeyword) }
-                .map { .setItems($0) }
+                .withUnretained(self)
+                .map { owner, items -> [Item] in
+                    owner.filtered(
+                        items: owner.search(items: items, text: owner.lastSearchKeyword),
+                        keywords: keywords
+                    )
+                }.map { .setItems($0)}
             
         case .selectedItem(let indexPath):
             guard let item = currentState.items[safe: indexPath.item] else {
@@ -131,18 +142,23 @@ final class ItemsReactor: Reactor {
                 newState.items = items
             }
             allItems = items
+            if mode == .user && allItems.isEmpty {
+                let coordinator = coordinator as? CollectionCoordinator
+                coordinator?.transition(for: .pop)
+                break
+            }
             
         case .setUserItems(let collectedItems, let notCollectedItems):
             if currentScope == .collected {
                 newState.items = filtered(
                     items: search(items: collectedItems, text: lastSearchKeyword),
-                    keywords: self.currentKeywords
+                    keywords: currentKeywords
                 )
             }
             if currentScope == .notCollected {
                 newState.items = filtered(
                     items: search(items: notCollectedItems, text: lastSearchKeyword),
-                    keywords: self.currentKeywords
+                    keywords: currentKeywords
                 )
             }
             collectedItem = collectedItems
@@ -152,11 +168,11 @@ final class ItemsReactor: Reactor {
             currentScope = scope
             
         case .showDetail(let item):
-            if let coordinator = self.coordinator as? CatalogCoordinator {
+            if let coordinator = coordinator as? CatalogCoordinator {
                 coordinator.transition(for: .itemDetail(item))
-            } else if let coordinator = self.coordinator as? CollectionCoordinator {
+            } else if let coordinator = coordinator as? CollectionCoordinator {
                 coordinator.transition(for: .itemDetail(item: item))
-            } else if let coordinator = self.coordinator as? DashboardCoordinator {
+            } else if let coordinator = coordinator as? DashboardCoordinator {
                 coordinator.transition(for: .itemDetail(item: item))
             }
         case .setLoadingState(let isLoading):
@@ -232,9 +248,19 @@ final class ItemsReactor: Reactor {
     
     private func setUpItems() -> Observable<[Item]> {
         switch mode {
-        case .all, .user:
+        case .all:
             return Items.shared.categoryList
-                .compactMap { $0[self.currentState.category] }
+                .withUnretained(self)
+                .compactMap { owner, items in
+                    items[owner.currentState.category]
+                }
+            
+        case .user:
+            return Items.shared.itemList
+                .withUnretained(self)
+                .map { owenr, items in
+                    items[owenr.currentState.category] ?? []
+                }
             
         case .keyword(let title, let category):
             let filteredData = Items.shared.itemFilter(keyword: title, category: category)
@@ -246,7 +272,10 @@ final class ItemsReactor: Reactor {
         switch mode {
         case .all:
             return Items.shared.itemList
-                .map { $0[self.currentState.category] ?? [] }
+                .withUnretained(self)
+                .map { owenr, items in
+                    items[owenr.currentState.category] ?? []
+                }
             
         case .keyword(let title, _):
             return Items.shared.itemList

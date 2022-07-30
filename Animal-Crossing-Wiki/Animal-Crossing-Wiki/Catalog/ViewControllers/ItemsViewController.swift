@@ -116,7 +116,7 @@ class ItemsViewController: UIViewController {
     }
     
     func bind(to reactor: ItemsReactor, keyword: [Menu: String] = [:]) {
-        self.category = reactor.category
+        category = reactor.category
         switch reactor.mode {
         case .user: mode = .user
         case .keyword(let title, let keyword): mode = .keyword(title: title, keyword: keyword)
@@ -234,7 +234,7 @@ class ItemsViewController: UIViewController {
             action: nil
         )
         filterButton.tintColor = .acNavigationBarTint
-        self.navigationItem.rightBarButtonItem = filterButton
+        navigationItem.rightBarButtonItem = filterButton
         filterButton.menu = createFilterAndSortMenu()
     }
     
@@ -242,7 +242,7 @@ class ItemsViewController: UIViewController {
         let menu = UIMenu(title: "", options: .displayInline, children: createFilteringMenuChildren())
         menu.children.forEach { action in
             let currentMenu = Menu.transform(localized: action.title)
-            if self.currentSelected.keys.contains(currentMenu) {
+            if currentSelected.keys.contains(currentMenu) {
                 let action = action as? UIAction
                 action?.state = .on
                 action?.attributes = .disabled

@@ -53,9 +53,9 @@ final class DashboardReactor: Reactor {
         case .selected(let menu):
             switch menu {
             case .about:
-                self.coordinator?.transition(for: .about)
+                coordinator?.transition(for: .about)
             case .setting:
-                self.coordinator?.transition(for: .setting)
+                coordinator?.transition(for: .setting)
             default: break
             }
         }

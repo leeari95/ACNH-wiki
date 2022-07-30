@@ -27,8 +27,7 @@ final class AboutReactor: Reactor {
     }
     
     let initialState: State = State()
-    
-    var coordinator: DashboardCoordinator?
+    let coordinator: DashboardCoordinator
     
     init(coordinator: DashboardCoordinator) {
         self.coordinator = coordinator
@@ -44,7 +43,7 @@ final class AboutReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         switch mutation {
         case .transition(let route):
-            self.coordinator?.transition(for: route)
+            coordinator.transition(for: route)
         }
         return state
     }

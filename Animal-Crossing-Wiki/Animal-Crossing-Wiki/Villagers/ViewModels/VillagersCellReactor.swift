@@ -50,12 +50,16 @@ final class VillagersCellReactor: Reactor {
         case .fetch:
             let houseState = Items.shared.villagerHouseList
                 .take(1)
-                .map { $0.contains(where: { $0.name == self.villager.name })}
-                .map { Mutation.setHouse($0) }
+                .withUnretained(self)
+                .map { owner, villagers in
+                    villagers.contains(where: { $0.name == owner.villager.name })
+                }.map { Mutation.setHouse($0) }
             let likeState = Items.shared.villagerLikeList
                 .take(1)
-                .map { $0.contains(where: { $0.name == self.villager.name })}
-                .map { Mutation.setLike($0) }
+                .withUnretained(self)
+                .map { owner, villagers in
+                    villagers.contains(where: { $0.name == owner.villager.name })
+                }.map { Mutation.setLike($0) }
             return .merge([
                 houseState,
                 likeState

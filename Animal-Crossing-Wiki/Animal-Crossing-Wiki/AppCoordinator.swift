@@ -72,7 +72,7 @@ extension AppCoordinator {
         let frame = rootViewController.view.frame
         let tabBarHeight = rootViewController.tabBar.frame.height
         viewController.configure(tabBarHeight: tabBarHeight)
-        self.topAnchorConstraint = viewController.view.topAnchor.constraint(
+        topAnchorConstraint = viewController.view.topAnchor.constraint(
             equalTo: rootViewController.view.topAnchor,
             constant: frame.height - rootViewController.tabBar.frame.height - 60
         )

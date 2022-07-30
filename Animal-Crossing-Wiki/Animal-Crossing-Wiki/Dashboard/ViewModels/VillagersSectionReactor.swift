@@ -39,7 +39,7 @@ final class VillagersSectionReactor: Reactor {
             return villagers
             
         case .villagerLongPress(let indexPath):
-            guard let villager = self.currentState.villagers[safe: indexPath.item] else {
+            guard let villager = currentState.villagers[safe: indexPath.item] else {
                 return Observable.empty()
             }
             return Observable.just(Mutation.transition(route: .villagerDetail(villager: villager)))

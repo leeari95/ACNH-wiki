@@ -68,13 +68,19 @@ final class VillagersReactor: Reactor {
             lastSearchKeyword = text.lowercased()
             guard text != "" else {
                 return currentVillagers()
-                    .map { self.filtered(villagers: $0, keywords: self.currentKeywords) }
-                    .map { Mutation.setVillagers($0) }
+                    .withUnretained(self)
+                    .map { owner, villagers in
+                        owner.filtered(villagers: villagers, keywords: owner.currentKeywords)
+                    }.map { Mutation.setVillagers($0) }
             }
             return currentVillagers()
-                .map { self.search(villagers: $0, text: text.lowercased()) }
-                .map { self.filtered(villagers: $0, keywords: self.currentKeywords) }
-                .map { Mutation.setVillagers($0)}
+                .withUnretained(self)
+                .map { owner, villagers in
+                    owner.filtered(
+                        villagers: owner.search(villagers: villagers, text: text.lowercased()),
+                        keywords: owner.currentKeywords
+                    )
+                }.map { Mutation.setVillagers($0)}
             
         case .selectedScope(let title):
             guard let currentScope = VillagersViewController.SearchScope.transform(title)
@@ -86,9 +92,13 @@ final class VillagersReactor: Reactor {
         case .selectedMenu(let keywords):
             currentKeywords = keywords
             return currentVillagers()
-                .map { self.filtered(villagers: $0, keywords: keywords) }
-                .map { self.search(villagers: $0, text: self.lastSearchKeyword) }
-                .map { Mutation.setVillagers($0) }
+                .withUnretained(self)
+                .map { owner, villagers in
+                    owner.filtered(
+                        villagers: owner.search(villagers: villagers, text: owner.lastSearchKeyword),
+                        keywords: keywords
+                    )
+                }.map { Mutation.setVillagers($0) }
             
         case .selectedVillager(let indexPath):
             guard let villager = currentState.villagers[safe: indexPath.item] else {
@@ -117,7 +127,7 @@ final class VillagersReactor: Reactor {
             if currentScope == .liked {
                 newState.villagers = filtered(
                     villagers: search(villagers: villagers, text: lastSearchKeyword),
-                    keywords: self.currentKeywords
+                    keywords: currentKeywords
                 )
             }
             likeVillagers = villagers
@@ -126,7 +136,7 @@ final class VillagersReactor: Reactor {
             if currentScope == .residents {
                 newState.villagers = filtered(
                     villagers: search(villagers: villagers, text: lastSearchKeyword),
-                    keywords: self.currentKeywords
+                    keywords: currentKeywords
                 )
             }
             houseVillagers = villagers

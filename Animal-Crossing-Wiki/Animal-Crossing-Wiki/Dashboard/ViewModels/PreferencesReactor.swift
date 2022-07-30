@@ -69,7 +69,7 @@ final class PreferencesReactor: Reactor {
         case .setHemishphere(let hemishphere):
             hemishphere.flatMap { newState.userInfo?.updateHemisphere($0) }
         case .transition(let route):
-            self.coordinator.transition(for: route)
+            coordinator.transition(for: route)
         }
         if newState.userInfo != state.userInfo {
             newState.userInfo.flatMap {

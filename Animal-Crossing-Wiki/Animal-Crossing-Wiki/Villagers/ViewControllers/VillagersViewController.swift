@@ -110,7 +110,7 @@ class VillagersViewController: UIViewController {
             .disposed(by: disposeBag)
         
         searchController.searchBar.rx.selectedScopeButtonIndex
-            .compactMap { self.searchController.searchBar.scopeButtonTitles?[$0] }
+            .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0] }
             .map { VillagersReactor.Action.selectedScope($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -136,9 +136,10 @@ class VillagersViewController: UIViewController {
         
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { _ in
-                self.searchController.searchBar.endEditing(true)
-                self.selectedKeyword.accept(self.currentSelected)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.searchController.searchBar.endEditing(true)
+                owner.selectedKeyword.accept(owner.currentSelected)
             }).disposed(by: disposeBag)
         
         selectedKeyword
@@ -166,7 +167,7 @@ class VillagersViewController: UIViewController {
     }
     
     private func setUpNavigationItem() {
-        self.navigationItem.title = "Villagers".localized
+        navigationItem.title = "Villagers".localized
         let moreButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -174,8 +175,8 @@ class VillagersViewController: UIViewController {
             action: nil
         )
         moreButton.tintColor = .acNavigationBarTint
-        self.navigationItem.rightBarButtonItem = moreButton
-        self.navigationItem.rightBarButtonItem?.menu = createFilterMenu()
+        navigationItem.rightBarButtonItem = moreButton
+        navigationItem.rightBarButtonItem?.menu = createFilterMenu()
     }
 
     private func setUpSearchController() {
@@ -191,13 +192,13 @@ class VillagersViewController: UIViewController {
             (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.localized })
         ]
         
-        let actionHandler: (UIAction) -> Void = { action in
+        let actionHandler: (UIAction) -> Void = { [weak self] action in
             for menuItem in menuItems where menuItem.subTitle.contains(action.title) {
                 let menu = Menu(rawValue: Menu.transform(menuItem.title) ?? "") ?? .all
-                self.currentSelected[menu] = action.title
+                self?.currentSelected[menu] = action.title
             }
-            self.currentSelected[Menu.all] = nil
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+            self?.currentSelected[Menu.all] = nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         }
         let items: [UIMenu] = menuItems
             .map { UIMenu(title: $0.title, subTitles: $0.subTitle, actionHandler: actionHandler) }
@@ -212,9 +213,9 @@ class VillagersViewController: UIViewController {
             }
         }
         
-        let all = UIAction(title: Menu.all.rawValue.localized, handler: { _ in
-            self.currentSelected = [Menu.all: Menu.all.rawValue]
-            self.navigationItem.rightBarButtonItem?.menu = self.createFilterMenu()
+        let all = UIAction(title: Menu.all.rawValue.localized, handler: { [weak self] _ in
+            self?.currentSelected = [Menu.all: Menu.all.rawValue]
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterMenu()
         })
         if currentSelected[Menu.all] != nil {
             all.state = .on

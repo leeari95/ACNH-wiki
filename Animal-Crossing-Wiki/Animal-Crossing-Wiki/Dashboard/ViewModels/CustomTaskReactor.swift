@@ -86,12 +86,12 @@ final class CustomTaskReactor: Reactor {
                     createdDate: Date()
                 )
             }
-            self.storage.updateTask(newTask)
+            storage.updateTask(newTask)
             Items.shared.updateTasks(newTask)
             newState.task = newTask
-            self.coordinator.transition(for: .pop)
+            coordinator.transition(for: .pop)
         case .chooseIcon:
-            self.coordinator.transition(for: .iconChooser)
+            coordinator.transition(for: .iconChooser)
         }
         return newState
     }

@@ -43,8 +43,12 @@ final class ItemDetailReactor: Reactor {
         switch action {
         case .fetch:
             let collectedState = Items.shared.itemList
-                .compactMap { $0[self.currentState.item.category] }
-                .map { ItemDetailReactor.Mutation.setAcquired($0.contains(self.currentState.item)) }
+                .take(1)
+                .withUnretained(self)
+                .compactMap { owner, items in
+                    items[owner.currentState.item.category]
+                }.withUnretained(self).map { owner, items -> Mutation in Mutation.setAcquired(items.contains(owner.currentState.item))
+                }
             return collectedState
 
         case .check:
@@ -79,11 +83,11 @@ final class ItemDetailReactor: Reactor {
             newState.isAcquired = newState.isAcquired == true ? false : true
             
         case .showKeywordList(let title, let keyword):
-            if let coordinator = self.coordinator as? CatalogCoordinator {
+            if let coordinator = coordinator as? CatalogCoordinator {
                 coordinator.transition(for: .keyword(title: title, keyword: keyword))
-            } else if let coordinator = self.coordinator as? DashboardCoordinator {
+            } else if let coordinator = coordinator as? DashboardCoordinator {
                 coordinator.transition(for: .keyword(title: title, keyword: keyword))
-            } else if let coordinator = self.coordinator as? CollectionCoordinator {
+            } else if let coordinator = coordinator as? CollectionCoordinator {
                 coordinator.transition(for: .keyword(title: title, keyword: keyword))
             }
             

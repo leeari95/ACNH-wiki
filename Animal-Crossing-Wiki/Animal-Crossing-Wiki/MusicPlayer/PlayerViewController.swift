@@ -63,8 +63,10 @@ class PlayerViewController: UIViewController {
         let input = PlayerViewModel.Input(
             didTapMiniPlayer: minimizeViewTap.rx.event.map { _ in }.asObservable(),
             didTapFoldingButton: maximizeView.foldingButton.rx.tap.asObservable(),
-            dragGesture: dragGesture.rx.event.map { gestureRecognizer -> Bool? in
-                let velocity = gestureRecognizer.velocity(in: self.visualEffectView)
+            dragGesture: dragGesture.rx.event
+                .withUnretained(self)
+                .map { owner, gestureRecognizer -> Bool? in
+                let velocity = gestureRecognizer.velocity(in: owner.visualEffectView)
                 if gestureRecognizer.state == .ended {
                     if velocity.y < 0 {
                         return true

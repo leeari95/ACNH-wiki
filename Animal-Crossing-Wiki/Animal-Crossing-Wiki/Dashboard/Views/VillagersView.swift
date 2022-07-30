@@ -75,15 +75,15 @@ class VillagersView: UIView {
     }()
     
     private func updateCollectionViewHeight() {
-        let contentHeight = self.collectionView.collectionViewLayout.collectionViewContentSize.height
-        self.heightConstraint.constant = contentHeight == .zero ? 60 : contentHeight
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        heightConstraint.constant = contentHeight == .zero ? 60 : contentHeight
     }
     
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(collectionView, descriptionLabel, resetButton)
 
-        self.heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 60)
+        heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 60)
         heightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
@@ -148,15 +148,17 @@ class VillagersView: UIView {
             }).disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
                 HapticManager.shared.selection()
-                let cell = self.collectionView.cellForItem(at: indexPath) as? IconCell
+                let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
             }).disposed(by: disposeBag)
         
         resetButton.rx.tap
-            .subscribe(onNext: { _ in
-                let cells = self.collectionView.visibleCells as? [IconCell]
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let cells = owner.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
             }).disposed(by: disposeBag)
     }

@@ -124,6 +124,6 @@ class VillagerDetailViewController: UIViewController {
             iconName: "house.circle.fill",
             contentView: houseSection
         )
-        self.sectionsScrollView.addSection(sectionView)
+        sectionsScrollView.addSection(sectionView)
     }
 }
