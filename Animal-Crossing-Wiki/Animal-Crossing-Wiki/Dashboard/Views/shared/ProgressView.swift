@@ -54,6 +54,7 @@ class ProgressView: UIStackView {
         
         reactor.state.map { $0.itemInfo }
             .withUnretained(self)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, items in
                 owner.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
                 owner.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: false)

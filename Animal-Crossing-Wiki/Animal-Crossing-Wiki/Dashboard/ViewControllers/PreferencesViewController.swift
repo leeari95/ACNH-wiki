@@ -102,6 +102,7 @@ class PreferencesViewController: UIViewController {
         
         reactor.state
             .compactMap { $0.userInfo }
+            .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, userInfo in
                 owner.settingSection.setUpViews(userInfo)
