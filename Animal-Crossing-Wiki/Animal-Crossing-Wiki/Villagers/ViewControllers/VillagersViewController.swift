@@ -147,12 +147,10 @@ class VillagersViewController: UIViewController {
             .subscribe(onNext: { owner, currentScope in
                 switch currentScope {
                 case .all:
-                    if reactor.currentState.villagers.isEmpty {
-                        owner.emptyView.editLabel(
-                            title: "There are no villagers.".localized,
-                            description: "Please check the network status.".localized
-                        )
-                    }
+                    owner.emptyView.editLabel(
+                        title: "There are no villagers.".localized,
+                        description: "Please check the network status.".localized
+                    )
                 case .liked:
                     owner.emptyView.editLabel(
                         title: "There are no villagers.".localized,
