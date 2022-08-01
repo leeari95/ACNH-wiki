@@ -26,11 +26,17 @@ class CollectionProgressView: UIView {
         return activityIndicator
     }()
     
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "Please check the network status.".localized,
+        description: ""
+    )
+    
     private func configure() {
         let config = UIImage.SymbolConfiguration(scale: .small)
         let image = UIImageView(image: UIImage(systemName: "chevron.forward", withConfiguration: config))
         image.tintColor = .systemGray
-        addSubviews(backgroundStackView, image, activityIndicator)
+        emptyView.backgroundColor = .acSecondaryBackground
+        addSubviews(backgroundStackView, image, activityIndicator, emptyView)
         backgroundStackView.addArrangedSubviews(Category.progress().map { ProgressView(category: $0) })
         
         let heightAnchor = backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
@@ -44,7 +50,11 @@ class CollectionProgressView: UIView {
             heightAnchor,
             activityIndicator.widthAnchor.constraint(equalTo: widthAnchor),
             activityIndicator.topAnchor.constraint(equalTo: backgroundStackView.topAnchor),
-            activityIndicator.bottomAnchor.constraint(equalTo: backgroundStackView.bottomAnchor)
+            activityIndicator.bottomAnchor.constraint(equalTo: backgroundStackView.bottomAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyView.widthAnchor.constraint(equalTo: widthAnchor),
+            emptyView.heightAnchor.constraint(equalTo: self.heightAnchor)
         ])
     }
     
@@ -64,6 +74,17 @@ class CollectionProgressView: UIView {
         
         reactor.state.map { $0.isLoading }
             .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
+        Items.shared.itemsCount
+            .map { $0.isEmpty }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isEmpty in
+                owner.emptyView.isHidden = !isEmpty
+                if isEmpty {
+                    owner.removeGestureRecognizer(tap)
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
