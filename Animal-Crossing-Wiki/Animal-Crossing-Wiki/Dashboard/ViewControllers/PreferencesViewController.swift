@@ -13,6 +13,7 @@ class PreferencesViewController: UIViewController {
     
     private let currentHemisphere = BehaviorRelay<String?>(value: nil)
     private let currentFruit = BehaviorRelay<String?>(value: nil)
+    private let currentReputation = BehaviorRelay<String?>(value: nil)
     let disposeBag = DisposeBag()
     
     private lazy var settingSection = PreferencesView()
@@ -77,6 +78,17 @@ class PreferencesViewController: UIViewController {
                     .disposed(by: owner.disposeBag)
             }).disposed(by: disposeBag)
         
+        settingSection.reputationButtonObservable
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.showSelectedItemAlert(
+                    ["⭐️", "⭐️⭐️", "⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️⭐️"],
+                    currentItem: owner.currentReputation.value
+                ).map { PreferencesReactor.Action.reputation($0) }
+                    .bind(to: reactor.action)
+                    .disposed(by: owner.disposeBag)
+            }).disposed(by: disposeBag)
+        
         settingSection.startingFruitButtonObservable
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
@@ -95,6 +107,7 @@ class PreferencesViewController: UIViewController {
                 owner.settingSection.setUpViews(userInfo)
                 owner.currentHemisphere.accept(userInfo.hemisphere.rawValue.localized)
                 owner.currentFruit.accept(userInfo.islandFruit.rawValue.localized)
+                owner.currentReputation.accept(String(repeating: "⭐️", count: userInfo.islandReputation + 1))
             }).disposed(by: disposeBag)
         
         setUpAppSettings(to: appSettingReactor)

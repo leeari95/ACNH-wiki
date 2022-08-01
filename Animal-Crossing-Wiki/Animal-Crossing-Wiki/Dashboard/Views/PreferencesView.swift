@@ -37,6 +37,12 @@ class PreferencesView: UIView {
         return button
     }()
     
+    private lazy var reputationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("⭐️", for: .normal)
+        return button
+    }()
+    
     private lazy var startingFruitButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: Fruit.apple.imageName)?
@@ -76,7 +82,7 @@ class PreferencesView: UIView {
             $0.delegate = self
         }
         
-        [hemisphereButton, startingFruitButton].forEach {
+        [hemisphereButton, startingFruitButton, reputationButton].forEach {
             $0.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
             $0.contentHorizontalAlignment = .right
             $0.setTitleColor(.acText.withAlphaComponent(0.8), for: .normal)
@@ -84,6 +90,7 @@ class PreferencesView: UIView {
         
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "Island name".localized, contentView: islandNameTextField),
+            InfoContentView(title: "Island Reputation".localized, contentView: reputationButton),
             InfoContentView(title: "User name".localized, contentView: userNameTextField),
             InfoContentView(title: "Hemisphere".localized, contentView: hemisphereButton),
             InfoContentView(title: "Starting fruit".localized, contentView: startingFruitButton)
@@ -115,6 +122,10 @@ extension PreferencesView {
         return hemisphereButton.rx.tap.asObservable()
     }
     
+    var reputationButtonObservable: Observable<Void> {
+        return reputationButton.rx.tap.asObservable()
+    }
+    
     var startingFruitButtonObservable: Observable<Void> {
         return startingFruitButton.rx.tap.asObservable()
     }
@@ -124,6 +135,7 @@ extension PreferencesView {
         islandNameTextField.text = userInfo.islandName
         updateHemisphere(userInfo.hemisphere)
         updateFruit(userInfo.islandFruit)
+        updateReputation(userInfo.islandReputation + 1)
     }
     
     func updateHemisphere(_ hemisphere: Hemisphere) {
@@ -135,5 +147,9 @@ extension PreferencesView {
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
+    }
+    
+    func updateReputation(_ reputation: Int) {
+        reputationButton.setTitle(String(repeating: "⭐️", count: reputation), for: .normal)
     }
 }

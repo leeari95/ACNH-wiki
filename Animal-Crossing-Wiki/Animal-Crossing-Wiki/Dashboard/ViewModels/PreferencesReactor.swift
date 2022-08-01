@@ -15,6 +15,7 @@ final class PreferencesReactor: Reactor {
         case userName(_ text: String?)
         case hemishphere(title: String)
         case fruit(title: String)
+        case reputation(_ score: String?)
         case cancel
     }
     
@@ -24,6 +25,7 @@ final class PreferencesReactor: Reactor {
         case setIslandName(_ name: String?)
         case setHemishphere(_ hemishphere: Hemisphere?)
         case setFruit(_ fruit: Fruit?)
+        case setReputation(_ reputation: Int)
     }
     
     struct State {
@@ -43,17 +45,19 @@ final class PreferencesReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .islandName(let text):
-            return Observable.just(Mutation.setIslandName(text))
+            return .just(.setIslandName(text))
         case .userName(let text):
-            return Observable.just(Mutation.setUserName(text))
+            return .just(.setUserName(text))
         case .hemishphere(let title):
             let hemishphere = Hemisphere.transform(title) ?? ""
-            return Observable.just(Mutation.setHemishphere(Hemisphere(rawValue: hemishphere)))
+            return .just(.setHemishphere(Hemisphere(rawValue: hemishphere)))
         case .fruit(let title):
             let fruit = Fruit.transform(title) ?? ""
-            return Observable.just(Mutation.setFruit(Fruit(rawValue: fruit)))
+            return .just(.setFruit(Fruit(rawValue: fruit)))
+        case .reputation(let score):
+            return .just(.setReputation((score?.count ?? 1) - 1))
         case .cancel:
-            return Observable.just(Mutation.transition(for: .dismiss))
+            return .just(.transition(for: .dismiss))
         }
     }
     
@@ -68,6 +72,8 @@ final class PreferencesReactor: Reactor {
             fruit.flatMap { newState.userInfo?.updateFruit($0) }
         case .setHemishphere(let hemishphere):
             hemishphere.flatMap { newState.userInfo?.updateHemisphere($0) }
+        case .setReputation(let reputation):
+            newState.userInfo?.updateIslandReputation(reputation)
         case .transition(let route):
             coordinator.transition(for: route)
         }
