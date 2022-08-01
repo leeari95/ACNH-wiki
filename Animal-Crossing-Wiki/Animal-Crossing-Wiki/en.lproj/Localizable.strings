@@ -255,6 +255,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Residents" = "Residents";
 "Search a villager" = "Search a villager";
 "Villagers" = "Villagers";
+"There are no villagers." = "There are no villagers.";
+"Please check the network status." = "Please check the network status.";
+"Tap the villager's heart button and it will appear here." = "Tap the villager's heart button and it will appear here.";
+"Tap the villager's home button and it will appear here." = "Tap the villager's home button and it will appear here." ;
 
 // MARK: - Personality
 "Big Sister" = "Big Sister";

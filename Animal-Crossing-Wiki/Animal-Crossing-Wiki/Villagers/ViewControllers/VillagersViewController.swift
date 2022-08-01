@@ -29,7 +29,7 @@ class VillagersViewController: UIViewController {
         }
     }
     
-    enum SearchScope: String {
+    enum SearchScope: String, CaseIterable {
         case all = "All"
         case liked = "Liked"
         case residents = "Residents"
@@ -65,11 +65,7 @@ class VillagersViewController: UIViewController {
         searchController.searchBar.showsScopeBar = true
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search a villager".localized
-        searchController.searchBar.scopeButtonTitles = [
-            SearchScope.all.rawValue.localized,
-            SearchScope.liked.rawValue.localized,
-            SearchScope.residents.rawValue.localized
-        ]
+        searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
         return searchController
     }()
     
@@ -80,6 +76,11 @@ class VillagersViewController: UIViewController {
         activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return activityIndicator
     }()
+    
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "There are no villagers.".localized,
+        description: "They appear here when you press the villager's heart button or home button.".localized
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,14 +131,39 @@ class VillagersViewController: UIViewController {
                 cell.setUp(villager)
             }.disposed(by: disposeBag)
         
+        reactor.state.map { $0.villagers }
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
         reactor.state.map { $0.isLoading }
             .bind(to: self.activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
         
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
+            .compactMap { SearchScope.allCases[safe: $0] }
             .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(onNext: { owner, currentScope in
+                switch currentScope {
+                case .all:
+                    if reactor.currentState.villagers.isEmpty {
+                        owner.emptyView.editLabel(
+                            title: "There are no villagers.".localized,
+                            description: "Please check the network status.".localized
+                        )
+                    }
+                case .liked:
+                    owner.emptyView.editLabel(
+                        title: "There are no villagers.".localized,
+                        description: "Tap the villager's heart button and it will appear here.".localized
+                    )
+                case .residents:
+                    owner.emptyView.editLabel(
+                        title: "There are no villagers.".localized,
+                        description: "Tap the villager's home button and it will appear here.".localized
+                    )
+                }
                 owner.searchController.searchBar.endEditing(true)
                 owner.selectedKeyword.accept(owner.currentSelected)
             }).disposed(by: disposeBag)
@@ -157,12 +183,15 @@ class VillagersViewController: UIViewController {
         view.backgroundColor = .acBackground
         setUpNavigationItem()
         setUpSearchController()
-        view.addSubviews(collectionView)
+        view.addSubviews(collectionView, emptyView)
         NSLayoutConstraint.activate([
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -40)
         ])
     }
     
