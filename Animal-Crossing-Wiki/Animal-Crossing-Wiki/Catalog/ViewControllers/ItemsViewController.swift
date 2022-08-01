@@ -191,6 +191,18 @@ class ItemsViewController: UIViewController {
                 )
             }).disposed(by: disposeBag)
         
+        searchController.searchBar.rx.text
+            .map { $0 != "" }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isSearching in
+                if isSearching {
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "There are no results for your search.".localized
+                    )
+                }
+            }).disposed(by: disposeBag)
+        
         searchController.searchBar.rx.selectedScopeButtonIndex
             .compactMap { SearchScope.allCases[safe: $0] }
             .observe(on: MainScheduler.asyncInstance)

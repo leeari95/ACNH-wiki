@@ -149,6 +149,7 @@
 "ascending" = "ascending";
 "Item is empty." = "아이템이 비어있습니다.";
 "There are no more items to collect." = "더 이상 수집할 아이템이 없습니다.";
+"There are no results for your search." = "검색에 대한 결과가 없습니다.";
 
 // MARK: - CatalogViewController
 "Catalog" = "카탈로그";

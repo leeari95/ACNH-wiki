@@ -110,6 +110,18 @@ class VillagersViewController: UIViewController {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        searchController.searchBar.rx.text
+            .map { $0 != "" }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isSearching in
+                if isSearching {
+                    owner.emptyView.editLabel(
+                        title: "There are no villagers.".localized,
+                        description: "There are no results for your search.".localized
+                    )
+                }
+            }).disposed(by: disposeBag)
+        
         searchController.searchBar.rx.selectedScopeButtonIndex
             .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0] }
             .map { VillagersReactor.Action.selectedScope($0) }
