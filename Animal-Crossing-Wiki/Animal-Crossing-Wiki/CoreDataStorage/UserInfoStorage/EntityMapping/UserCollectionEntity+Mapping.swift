@@ -15,6 +15,7 @@ extension UserCollectionEntity {
         self.islandName = userInfo.islandName
         self.islandFruit = userInfo.islandFruit.imageName
         self.hemisphere = userInfo.hemisphere.rawValue.capitalized
+        self.islandReputation = Int16(userInfo.islandReputation)
     }
     
     func toDomain() -> UserInfo {
@@ -22,7 +23,8 @@ extension UserCollectionEntity {
             name: self.name ?? "",
             islandName: self.islandName ?? "",
             islandFruit: Fruit(rawValue: self.islandFruit ?? "") ?? .apple,
-            hemisphere: Hemisphere(rawValue: self.hemisphere ?? "") ?? .north
+            hemisphere: Hemisphere(rawValue: self.hemisphere ?? "") ?? .north,
+            islandReputation: Int(self.islandReputation)
         )
     }
 }
