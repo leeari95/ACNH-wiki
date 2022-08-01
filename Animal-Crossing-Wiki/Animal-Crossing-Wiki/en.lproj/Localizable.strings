@@ -145,6 +145,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Not collected" = "Not collected";
 "descending" = "descending";
 "ascending" = "ascending";
+"Item is empty." = "Item is empty.";
+"There are no more items to collect." = "There are no more items to collect.";
 
 // MARK: - CatalogViewController
 "Catalog" = "Catalog";
