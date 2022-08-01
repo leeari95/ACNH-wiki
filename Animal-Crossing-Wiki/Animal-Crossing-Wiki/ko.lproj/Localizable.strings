@@ -30,6 +30,7 @@
 "USER" = "주민 대표";
 "HEMISPHERE" = "반구";
 "FRUIT" = "과일";
+"REPUTATION" = "섬 평판";
 
 // MARK: - TodaysTasksView
 "Edit" = "편집";
@@ -55,6 +56,7 @@
 "User name" = "주민 대표 이름";
 "Hemisphere" = "반구";
 "Starting fruit" = "과일";
+"Island Reputation" = "섬 평판";
 
 // MARK: - AppSettingView
 "System haptic" = "시스템 햅틱";

@@ -31,6 +31,7 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
                 object.islandName = userInfo.islandName
                 object.islandFruit = userInfo.islandFruit.rawValue
                 object.hemisphere = userInfo.hemisphere.rawValue
+                object.islandReputation = Int16(userInfo.islandReputation)
                 context.saveContext()
             } catch {
                 debugPrint(error)

@@ -116,7 +116,6 @@ class TodaysTasksView: UIView {
             }.disposed(by: disposeBag)
 
         reactor.state.map { $0.tasks }
-            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                     self?.layoutIfNeeded()

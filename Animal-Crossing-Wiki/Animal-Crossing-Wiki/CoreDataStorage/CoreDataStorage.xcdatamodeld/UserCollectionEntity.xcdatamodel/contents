@@ -70,6 +70,7 @@
         <attribute name="hemisphere" optional="YES" attributeType="String"/>
         <attribute name="islandFruit" optional="YES" attributeType="String"/>
         <attribute name="islandName" optional="YES" attributeType="String"/>
+        <attribute name="islandReputation" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="critters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="userColletion" inverseEntity="ItemEntity"/>
         <relationship name="dailyTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyTaskEntity" inverseName="userCollection" inverseEntity="DailyTaskEntity"/>
@@ -125,8 +126,8 @@
     <elements>
         <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
         <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="854"/>
-        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="149"/>
-        <element name="VillagersHouseEntity" positionX="162" positionY="252" width="128" height="344"/>
-        <element name="VillagersLikeEntity" positionX="153" positionY="234" width="128" height="344"/>
+        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="178"/>
+        <element name="VillagersHouseEntity" positionX="139.7109375" positionY="445.0390625" width="128" height="344"/>
+        <element name="VillagersLikeEntity" positionX="-0.90234375" positionY="441.87109375" width="128" height="344"/>
     </elements>
 </model>
