@@ -19,21 +19,10 @@ class CollectionViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var emptyView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 8)
-        let titleLabel = UILabel(
-            text: "There are no collectibles.".localized,
-            font: .preferredFont(for: .body, weight: .semibold),
-            color: .acText.withAlphaComponent(0.7)
-        )
-        let subTitleLabel = UILabel(
-            text: "when you check some items, they'll be displayed here.".localized,
-            font: .preferredFont(forTextStyle: .footnote),
-            color: .acText.withAlphaComponent(0.7)
-        )
-        stackView.addArrangedSubviews(titleLabel, subTitleLabel)
-        return stackView
-    }()
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "There are no collectibles.".localized,
+        description: "when you check some items, they'll be displayed here.".localized
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
