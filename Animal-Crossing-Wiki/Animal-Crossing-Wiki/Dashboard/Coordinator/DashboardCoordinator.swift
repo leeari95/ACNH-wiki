@@ -39,6 +39,7 @@ final class DashboardCoordinator: Coordinator {
         let viewController = DashboardViewController()
         viewController.bind(to: DashboardReactor(coordinator: self))
         viewController.setUpViewModels(
+            userInfoVM: UserInfoReactor(coordinator: self),
             tasksVM: TodaysTasksSectionReactor(coordinator: self),
             villagersVM: VillagersSectionReactor(coordinator: self),
             progressVM: CollectionProgressSectionReactor(coordinator: self)

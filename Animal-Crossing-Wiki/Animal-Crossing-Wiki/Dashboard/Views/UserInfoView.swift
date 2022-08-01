@@ -73,8 +73,21 @@ class UserInfoView: UIView {
         ])
     }
     
-    private func bind() {
-        Items.shared.userInfo
+    private func bind(to reactor: UserInfoReactor) {
+        let tap = UITapGestureRecognizer()
+        addGestureRecognizer(tap)
+        
+        Observable.just(UserInfoReactor.Action.fetch)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tap.rx.event
+            .map { _ in UserInfoReactor.Action.tap }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.userInfo }
             .compactMap { $0 }
             .withUnretained(self)
             .subscribe(onNext: { owner, userInfo in
@@ -96,9 +109,9 @@ class UserInfoView: UIView {
 }
 
 extension UserInfoView {
-    convenience init() {
+    convenience init(_ viewModel: UserInfoReactor) {
         self.init(frame: .zero)
-        bind()
+        bind(to: viewModel)
         configure()
     }
 }

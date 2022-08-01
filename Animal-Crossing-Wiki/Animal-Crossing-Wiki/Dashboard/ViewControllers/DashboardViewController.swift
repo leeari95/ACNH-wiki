@@ -49,6 +49,7 @@ class DashboardViewController: UIViewController {
     }
     
     func setUpViewModels(
+        userInfoVM: UserInfoReactor,
         tasksVM: TodaysTasksSectionReactor,
         villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionReactor
@@ -56,7 +57,7 @@ class DashboardViewController: UIViewController {
         let userInfoSection = SectionView(
             title: "My Island".localized,
             iconName: "leaf.fill",
-            contentView: UserInfoView()
+            contentView: UserInfoView(userInfoVM)
         )
         let tasksSection = SectionView(
             title: "Today's Tasks".localized,
