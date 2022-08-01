@@ -46,17 +46,24 @@ class UserInfoView: UIView {
         return label
     }()
     
+    private lazy var reputationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "⭐️"
+        return label
+    }()
+    
     private func configure() {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "ISLAND".localized, contentView: islandNameLabel),
+            InfoContentView(title: "REPUTATION".localized, contentView: reputationLabel),
             InfoContentView(title: "USER".localized, contentView: userNameLabel),
             InfoContentView(title: "HEMISPHERE".localized, contentView: hemisphereLabel),
             InfoContentView(title: "FRUIT".localized, contentView: fruitImageView)
             
         )
         
-        [islandNameLabel, userNameLabel, hemisphereLabel].forEach { label in
+        [islandNameLabel, userNameLabel, hemisphereLabel, reputationLabel].forEach { label in
             label.textColor = .acSecondaryText
             label.font = .preferredFont(forTextStyle: .footnote)
             label.textAlignment = .right
@@ -105,6 +112,7 @@ class UserInfoView: UIView {
         islandNameLabel.text = userInfo.islandName  == "" ? "Please set a Island Name.".localized : userInfo.islandName
         fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
         hemisphereLabel.text = userInfo.hemisphere.rawValue.localized.capitalized
+        reputationLabel.text = String(repeating: "⭐️", count: userInfo.islandReputation + 1)
     }
 }
 

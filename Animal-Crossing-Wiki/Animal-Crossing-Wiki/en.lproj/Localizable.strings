@@ -30,6 +30,7 @@
 "USER" = "USER";
 "HEMISPHERE" = "HEMISPHERE";
 "FRUIT" = "FRUIT";
+"REPUTATION" = "REPUTATION";
 
 // MARK: - TodaysTasksView
 "Edit" = "Edit";

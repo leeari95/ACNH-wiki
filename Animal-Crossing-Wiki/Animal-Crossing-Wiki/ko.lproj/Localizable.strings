@@ -30,6 +30,7 @@
 "USER" = "주민 대표";
 "HEMISPHERE" = "반구";
 "FRUIT" = "과일";
+"REPUTATION" = "섬 평판";
 
 // MARK: - TodaysTasksView
 "Edit" = "편집";
