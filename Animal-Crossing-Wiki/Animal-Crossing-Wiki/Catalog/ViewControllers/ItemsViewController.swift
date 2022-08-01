@@ -47,10 +47,10 @@ class ItemsViewController: UIViewController {
         }
     }
     
-    enum SearchScope: String {
+    enum SearchScope: String, CaseIterable {
         case all = "All"
-        case collected = "Collected"
         case notCollected = "Not collected"
+        case collected = "Collected"
         
         static func transform(_ localizedString: String) -> String? {
             switch localizedString {
@@ -93,17 +93,18 @@ class ItemsViewController: UIViewController {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search...".localized
         if mode != .user {
-            searchController.searchBar.scopeButtonTitles = [
-                SearchScope.all.rawValue.localized,
-                SearchScope.notCollected.rawValue.localized,
-                SearchScope.collected.rawValue.localized
-            ]
+            searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
             searchController.searchBar.showsScopeBar = true
         }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         return searchController
     }()
+    
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "There are no villagers.".localized,
+        description: "They appear here when you press the villager's heart button or home button.".localized
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,6 +168,11 @@ class ItemsViewController: UIViewController {
                 cell.setUp(item)
             }.disposed(by: disposeBag)
         
+        reactor.state.map { $0.items }
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
         if [Mode.all, Mode.user].contains(mode), navigationItem.title == nil {
             reactor.state.map { $0.category }
                 .map { $0.rawValue.localized }
@@ -185,10 +191,40 @@ class ItemsViewController: UIViewController {
                 )
             }).disposed(by: disposeBag)
         
+        searchController.searchBar.rx.text
+            .map { $0 != "" }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isSearching in
+                if isSearching {
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "There are no results for your search.".localized
+                    )
+                }
+            }).disposed(by: disposeBag)
+        
         searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { SearchScope.allCases[safe: $0] }
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(onNext: { owner, currentScope in
+                switch currentScope {
+                case .all:
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "Please check the network status.".localized
+                    )
+                case .notCollected:
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "There are no more items to collect.".localized
+                    )
+                case .collected:
+                    owner.emptyView.editLabel(
+                        title: "There are no collectibles.".localized,
+                        description: "when you check some items, they'll be displayed here.".localized
+                    )
+                }
                 owner.searchController.searchBar.endEditing(true)
                 owner.selectedKeyword.accept(owner.currentSelected)
             }).disposed(by: disposeBag)
@@ -210,14 +246,17 @@ class ItemsViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        view.addSubviews(collectionView, activityIndicator)
+        view.addSubviews(collectionView, activityIndicator, emptyView)
         NSLayoutConstraint.activate([
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor),
-            activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor)
+            activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -40)
         ])
         setUpNavigationItem()
     }
