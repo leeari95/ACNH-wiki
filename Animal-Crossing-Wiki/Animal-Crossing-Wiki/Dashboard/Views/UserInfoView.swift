@@ -104,11 +104,6 @@ class UserInfoView: UIView {
     }
     
     private func updateInfo(_ userInfo: UserInfo) {
-        guard userInfo != UserInfo() else {
-            userNameLabel.text = "Please set a name.".localized
-            islandNameLabel.text = "Please set a Island Name.".localized
-            return
-        }
         userNameLabel.text = userInfo.name == "" ? "Please set a name.".localized : userInfo.name
         islandNameLabel.text = userInfo.islandName  == "" ? "Please set a Island Name.".localized : userInfo.islandName
         fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
