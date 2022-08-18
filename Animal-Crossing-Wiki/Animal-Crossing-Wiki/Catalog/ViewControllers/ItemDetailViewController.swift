@@ -122,6 +122,7 @@ class ItemDetailViewController: UIViewController {
         setUpSaeson(item)
         setUpKeyword(item)
         setUpMaterials(item)
+        setUpPlayer(item)
     }
     
     private func setUpDetail(_ item: Item) {

@@ -15,7 +15,7 @@ class InfoContentView: UIStackView {
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.textColor = .acText
-        label.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        label.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
         return label
     }()
     
