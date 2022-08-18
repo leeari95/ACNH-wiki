@@ -29,6 +29,7 @@ final class Items {
     private let currentUserInfo = BehaviorRelay<UserInfo?>(value: nil)
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     private let userItems = BehaviorRelay<[Category: [Item]]>(value: [:])
+    private let songs = BehaviorRelay<[Item]>(value: [])
     
     private(set) var materialsItemList: [String: Item] = [:]
     
@@ -320,10 +321,10 @@ final class Items {
             group.leave()
         }
         group.enter()
-        network.request(MusicRequest()) { result in
+        network.request(SongsRequest()) { result in
             switch result {
             case .success(let response):
-                let items = response.map { $0.value.toDomain() }
+                let items = response.map { $0.toDomain() }
                     .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.songs] = items
             case .failure(let error):

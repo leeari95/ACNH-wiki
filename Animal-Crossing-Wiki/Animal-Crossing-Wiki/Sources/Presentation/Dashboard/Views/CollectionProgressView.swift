@@ -83,6 +83,8 @@ class CollectionProgressView: UIView {
                 owner.emptyView.isHidden = !isEmpty
                 if isEmpty {
                     owner.removeGestureRecognizer(tap)
+                } else {
+                    owner.addGestureRecognizer(tap)
                 }
             })
             .disposed(by: disposeBag)

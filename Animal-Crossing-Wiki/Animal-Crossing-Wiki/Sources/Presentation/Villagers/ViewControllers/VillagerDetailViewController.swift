@@ -64,6 +64,7 @@ class VillagerDetailViewController: UIViewController {
     }
     
     func bind(to reactor: VillagerDetailReactor) {
+        let buttonConfigure = UIImage.SymbolConfiguration(textStyle: .callout, scale: .large)
         self.rx.viewDidLoad
             .map { VillagerDetailReactor.Action.fetch }
             .subscribe(onNext: { action in
@@ -87,7 +88,10 @@ class VillagerDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isLiked in
-                owner.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+                owner.likeButton.setImage(
+                    UIImage(systemName: isLiked ? "heart.fill" : "heart")?.withConfiguration(buttonConfigure),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
         
         reactor.state.map { $0.isResident }
@@ -95,7 +99,10 @@ class VillagerDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isResident in
-                owner.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
+                owner.houseButton.setImage(
+                    UIImage(systemName: isResident ? "house.fill" : "house")?.withConfiguration(buttonConfigure),
+                    for: .normal
+                )
             }).disposed(by: disposeBag)
         
         reactor.state.map { $0.villager }
