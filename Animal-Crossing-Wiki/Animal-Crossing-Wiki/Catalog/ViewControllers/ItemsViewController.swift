@@ -112,26 +112,6 @@ class ItemsViewController: UIViewController {
         description: "They appear here when you press the villager's heart button or home button.".localized
     )
     
-    private lazy var filterButton: UIButton = {
-        let button = UIButton()
-        button.menu = createFilterAndSortMenu()
-        button.showsMenuAsPrimaryAction = true
-        button.tintColor = .acNavigationBarTint
-        let buttonConfigure = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
-        button.setImage(UIImage(systemName: "arrow.up.arrow.down.circle")?.withConfiguration(buttonConfigure), for: .normal)
-        return button
-    }()
-    
-    private lazy var checkButton: UIButton = {
-        let button = UIButton()
-        button.menu = createCheckMenu()
-        button.showsMenuAsPrimaryAction = true
-        button.tintColor = .acNavigationBarTint
-        let buttonConfigure = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
-        button.setImage(UIImage(systemName: "checkmark.circle")?.withConfiguration(buttonConfigure), for: .normal)
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -144,7 +124,6 @@ class ItemsViewController: UIViewController {
     
     func bind(to reactor: ItemsReactor, keyword: [Menu: String] = [:]) {
         self.reactor = reactor
-        let buttonConfigure = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
         
         category = reactor.category
         switch reactor.mode {
@@ -202,15 +181,6 @@ class ItemsViewController: UIViewController {
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.isCompletedCollection }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, completed in
-                owner.checkButton.setImage(UIImage(
-                    systemName: completed ? "checkmark.circle.fill" : "checkmark.circle",
-                    withConfiguration: buttonConfigure
-                ), for: .normal)
-            }).disposed(by: disposeBag)
-        
         if [Mode.all, Mode.user].contains(mode), navigationItem.title == nil {
             reactor.state.map { $0.category }
                 .map { $0.rawValue.localized }
@@ -224,10 +194,9 @@ class ItemsViewController: UIViewController {
             .withUnretained(self)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, isFiltering in
-                owner.filterButton.setImage(UIImage(
-                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle",
-                    withConfiguration: buttonConfigure
-                ), for: .normal)
+                owner.navigationItem.rightBarButtonItem?.image = UIImage(
+                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "ellipsis.circle"
+                )
             }).disposed(by: disposeBag)
         
         searchController.searchBar.rx.text
@@ -305,9 +274,15 @@ class ItemsViewController: UIViewController {
         case .keyword(let title, _): navigationItem.title = title.localized
         default: break
         }
-        let filterBarButton = UIBarButtonItem(customView: filterButton)
-        let checkBarButton = UIBarButtonItem(customView: checkButton)
-        navigationItem.rightBarButtonItems = [filterBarButton, checkBarButton]
+        let moreButton = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis.circle"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        moreButton.tintColor = .acNavigationBarTint
+        navigationItem.rightBarButtonItem = moreButton
+        moreButton.menu = createMoreMenu()
     }
     
 }
@@ -315,46 +290,8 @@ class ItemsViewController: UIViewController {
 // MARK: - Menus
 extension ItemsViewController {
     
-    private func createCheckMenu() -> UIMenu {
-        let allSelectAction = UIAction(title: Menu.allSelect.title) { [weak self] action in
-            guard let self = self else {
-                return
-            }
-            self.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
-                .filter { $0 == true }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, completed in
-                    owner.reactor.action.onNext(.selectedMenu(keywords: [.allSelect: ""]))
-                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
-                }).disposed(by: self.disposeBag)
-            self.checkButton.menu = self.createCheckMenu()
-        }
-        let resetAction = UIAction(title: Menu.reset.title) { [weak self] action in
-            guard let self = self else {
-                return
-            }
-            self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
-                .filter { $0 == true }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, completed in
-                    owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))
-                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
-                }).disposed(by: self.disposeBag)
-            self.checkButton.menu = self.createCheckMenu()
-        }
-        let menu = UIMenu(title: "", options: .displayInline, children: [allSelectAction, resetAction])
-        menu.children.forEach { action in
-            let currentMenu = Menu.transform(localized: action.title)
-            if currentSelected.keys.contains(currentMenu) {
-                let action = action as? UIAction
-                action?.state = .on
-            }
-        }
-        return menu
-    }
-    
-    private func createFilterAndSortMenu() -> UIMenu {
-        let menu = UIMenu(title: "", options: .displayInline, children: createFilteringMenuChildren())
+    private func createMoreMenu() -> UIMenu {
+        let menu = UIMenu(title: "", options: .displayInline, children: createMoreMenuChildren())
         menu.children.forEach { action in
             let currentMenu = Menu.transform(localized: action.title)
             if currentSelected.keys.contains(currentMenu) {
@@ -366,16 +303,16 @@ extension ItemsViewController {
         return menu
     }
     
-    private func createFilteringMenuChildren() -> [UIMenuElement] {
+    private func createMoreMenuChildren() -> [UIMenuElement] {
         let allAction = UIAction(title: Menu.all.title, handler: { [weak self] _ in
             self?.currentSelected = [Menu.all: Menu.all.title]
-            self?.filterButton.menu = self?.createFilterAndSortMenu()
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
         })
         if currentSelected[.all] != nil {
             allAction.state = .on
             allAction.attributes = .disabled
         }
-        let menuItems: [UIMenuElement] = [allAction] + [createSortMenu()] + createFilterMenu()
+        let menuItems: [UIMenuElement] = [allAction] + [createSortMenu()] + createFilterMenu() + [createCheckMenu()]
         selectedKeyword.accept(currentSelected)
         return menuItems
     }
@@ -397,7 +334,7 @@ extension ItemsViewController {
             } else {
                 self?.currentSelected[.name] = nil
             }
-            self?.filterButton.menu = self?.createFilterAndSortMenu()
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
         }
         let name = UIAction(title: Menu.name.title, handler: handler)
         let sell = UIAction(title: Menu.sell.title, handler: handler)
@@ -427,7 +364,7 @@ extension ItemsViewController {
                 let menu = Menu.month
                 self?.currentSelected[menu] = action.title
                 self?.currentSelected[Menu.all] = nil
-                self?.filterButton.menu = self?.createFilterAndSortMenu()
+                self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
             }
             let monthActions = Array(1...12)
                 .map { $0.description }
@@ -447,4 +384,41 @@ extension ItemsViewController {
         }
         return filterMenuList
     }
+    
+    private func createCheckMenu() -> UIMenu {
+        let allSelectAction = UIAction(
+            title: Menu.allSelect.title,
+            image: UIImage(systemName: "text.badge.checkmark")
+        ) { [weak self] action in
+            guard let self = self else {
+                return
+            }
+            self.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
+                .filter { $0 == true }
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.reactor.action.onNext(.selectedMenu(keywords: [.allSelect: ""]))
+                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
+                }).disposed(by: self.disposeBag)
+            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+        }
+        let resetAction = UIAction(
+            title: Menu.reset.title,
+            image: UIImage(systemName: "arrow.counterclockwise")
+        ) { [weak self] action in
+            guard let self = self else {
+                return
+            }
+            self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
+                .filter { $0 == true }
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))
+                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
+                }).disposed(by: self.disposeBag)
+            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+        }
+        return UIMenu(title: "", options: .displayInline, children: [allSelectAction, resetAction])
+    }
+    
 }

@@ -38,7 +38,6 @@ final class ItemsReactor: Reactor {
         let category: Category
         var items: [Item] = []
         var isLoading: Bool = true
-        var isCompletedCollection = false
     }
     
     let category: Category
@@ -166,7 +165,6 @@ final class ItemsReactor: Reactor {
             }
             collectedItem = collectedItems
             notCollectedItem = notCollectedItems
-            newState.isCompletedCollection = notCollectedItems.isEmpty ? true : false
             
         case .setScope(let scope):
             currentScope = scope
