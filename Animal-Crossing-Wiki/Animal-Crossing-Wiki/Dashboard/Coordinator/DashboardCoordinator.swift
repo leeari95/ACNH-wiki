@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class DashboardCoordinator: Coordinator {
     
@@ -51,7 +52,10 @@ final class DashboardCoordinator: Coordinator {
         switch route {
         case .setting:
             let viewController = PreferencesViewController()
-            viewController.bind(to: PreferencesReactor(coordinator: self), appSettingReactor: AppSettingReactor())
+            viewController.bind(
+                to: PreferencesReactor(coordinator: self),
+                appSettingReactor: AppSettingReactor(coordinator: self)
+            )
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
         case .about:
@@ -122,6 +126,13 @@ final class DashboardCoordinator: Coordinator {
     
     func setUpParent(to coordinator: Coordinator) {
         parentCoordinator = coordinator
+    }
+    
+    func showAlert(title: String, message: String) -> Observable<Bool> {
+        guard let currentVC = rootViewController.visibleViewController else {
+            return .empty()
+        }
+        return currentVC.showAlert(title: title, message: message)
     }
 }
 

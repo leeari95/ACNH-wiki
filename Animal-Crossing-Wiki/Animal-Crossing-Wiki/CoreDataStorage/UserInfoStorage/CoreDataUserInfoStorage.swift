@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import CoreData
 
 final class CoreDataUserInfoStorage: UserInfoStorage {
     
@@ -41,11 +42,8 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
     
     func resetUserInfo() {
         coreDataStorage.performBackgroundTask { [weak self] context in
-            let object = try? self?.coreDataStorage.getUserCollection(context)
-            object?.name = nil
-            object?.islandName = nil
-            object?.islandFruit = nil
-            object?.hemisphere = nil
+            let object = try? self?.coreDataStorage.getUserCollection(context) as? NSManagedObject
+            object.flatMap { context.delete($0) }
             context.saveContext()
         }
     }

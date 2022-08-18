@@ -60,6 +60,9 @@
 
 // MARK: - AppSettingView
 "System haptic" = "시스템 햅틱";
+"Data reset" = "수집 및 섬 데이터 초기화";
+"Notice" = "알림";
+"Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "오늘의 할일";

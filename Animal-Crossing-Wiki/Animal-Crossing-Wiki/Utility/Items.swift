@@ -460,4 +460,17 @@ extension Items {
             .filter { $0.keyword.contains(keyword) }
             .sorted(by: {$0.category.rawValue < $1.category.rawValue })
     }
+    
+    func reset() {
+        villagersLike.accept([])
+        villagersHouse.accept([])
+        let currentItems = userItems.value.map { $0.key }
+        var resetItem = userItems.value
+        currentItems.forEach { category in
+            resetItem[category] = []
+        }
+        userItems.accept(resetItem)
+        currentUserInfo.accept(UserInfo())
+        currentDailyTasks.accept(DailyTask.tasks)
+    }
 }

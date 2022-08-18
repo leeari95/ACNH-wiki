@@ -49,4 +49,26 @@ extension UIViewController {
             return Disposables.create { alert.dismiss(animated: true, completion: nil) }
         }
     }
+    
+    func showAlert(title: String?, message: String?) -> Observable<Bool> {
+        return Observable.create { observer in
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(
+                UIAlertAction(title: "Cancel".localized, style: .destructive) { _ in
+                    alert.dismiss(animated: true)
+                    observer.onNext(false)
+                    observer.onCompleted()
+                }
+            )
+            alert.addAction(
+                UIAlertAction(title: "OK".localized, style: .default) { _ in
+                    alert.dismiss(animated: true)
+                    observer.onNext(true)
+                    observer.onCompleted()
+                }
+            )
+            self.present(alert, animated: true, completion: nil)
+            return Disposables.create { alert.dismiss(animated: true) }
+        }
+    }
 }
