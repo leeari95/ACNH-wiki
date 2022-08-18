@@ -38,12 +38,14 @@ final class ItemsReactor: Reactor {
         let category: Category
         var items: [Item] = []
         var isLoading: Bool = true
+        var isCompletedCollection = false
     }
     
     let category: Category
     let mode: Mode
     let initialState: State
     private let coordinator: Coordinator?
+    private let storage: ItemsStorage
     
     private var currentKeywords: [ItemsViewController.Menu: String] = [:]
     private var lastSearchKeyword: String = ""
@@ -53,11 +55,12 @@ final class ItemsReactor: Reactor {
     private var collectedItem: [Item] = []
     private var notCollectedItem: [Item] = []
     
-    init(category: Category, coordinator: Coordinator?, mode: Mode = .all) {
+    init(category: Category, coordinator: Coordinator?, mode: Mode = .all, storage: ItemsStorage = CoreDataItemsStorage()) {
         self.category = category
         self.initialState = State(category: category)
         self.coordinator = coordinator
         self.mode = mode
+        self.storage = storage
     }
     
     convenience init (coordinator: Coordinator?, mode: Mode) {
@@ -163,6 +166,7 @@ final class ItemsReactor: Reactor {
             }
             collectedItem = collectedItems
             notCollectedItem = notCollectedItems
+            newState.isCompletedCollection = notCollectedItems.isEmpty ? true : false
             
         case .setScope(let scope):
             currentScope = scope
@@ -225,6 +229,12 @@ final class ItemsReactor: Reactor {
                         value == ItemsViewController.Menu.ascending ?
                         $0.sell < $1.sell : $0.sell > $1.sell
                     }
+            case .allSelect:
+                Items.shared.allCheckItem(category: self.category)
+                storage.updates(self.notCollectedItem.isEmpty ? currentState.items : self.notCollectedItem)
+            case .reset:
+                Items.shared.resetCheckItem(category: self.category)
+                storage.reset(category: self.category)
             }
         }
         return filteredItems

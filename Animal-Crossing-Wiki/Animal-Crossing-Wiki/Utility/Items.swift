@@ -473,4 +473,24 @@ extension Items {
         currentUserInfo.accept(UserInfo())
         currentDailyTasks.accept(DailyTask.tasks)
     }
+    
+    func allCheckItem(category: Category) {
+        var items = userItems.value
+        let allItems = categories.value[category]
+        var newItems: [Item]
+        if let currentItems = items[category] {
+            newItems = allItems?.filter { currentItems.contains($0) == false } ?? []
+        } else {
+            newItems = allItems ?? []
+        }
+        items[category, default: []].append(contentsOf: newItems)
+        userItems.accept(items)
+    }
+    
+    func resetCheckItem(category: Category) {
+        var items = userItems.value
+        items[category, default: []] = []
+        userItems.accept(items)
+    }
+    
 }
