@@ -9,6 +9,9 @@ import Foundation
 import RxSwift
 
 protocol ItemsStorage {
+    
     func fetch() -> Single<[Item]>
     func update(_ item: Item)
+    func updates(_ items: [Item])
+    func reset(category: Category)
 }

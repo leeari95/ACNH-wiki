@@ -11,6 +11,7 @@ import RxSwift
 class AppSettingView: UIView {
     
     private let disposeBag = DisposeBag()
+    private let resetTapGesture = UITapGestureRecognizer()
     
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
@@ -38,10 +39,12 @@ class AppSettingView: UIView {
             backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
             backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
-        
+        let resetView = InfoContentView(title: "Data reset".localized)
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "System haptic".localized, contentView: hapticSwitch)
+            InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            resetView
         )
+        resetView.addGestureRecognizer(resetTapGesture)
     }
     
     func bind(to reactor: AppSettingReactor) {
@@ -50,6 +53,11 @@ class AppSettingView: UIView {
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
+        
+        resetTapGesture.rx.event
+            .map { _ in AppSettingReactor.Action.reset }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
         reactor.state.map { $0.currentHapticState }
             .bind(to: hapticSwitch.rx.isOn)

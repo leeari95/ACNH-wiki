@@ -49,4 +49,30 @@ final class CoreDataItemsStorage: ItemsStorage {
             }
         }
     }
+    
+    func updates(_ items: [Item]) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let newItems = items.map { ItemEntity($0, context: context) }
+                object.addToCritters(NSSet(array: newItems))
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+    
+    func reset(category: Category) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                object.removeFromCritters(NSSet(array: items.filter { $0.category == category.rawValue }))
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
 }

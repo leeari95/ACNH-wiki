@@ -60,6 +60,9 @@
 
 // MARK: - AppSettingView
 "System haptic" = "시스템 햅틱";
+"Data reset" = "수집 및 섬 데이터 초기화";
+"Notice" = "알림";
+"Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "오늘의 할일";
@@ -145,6 +148,7 @@
 "Month" = "월별";
 "Name" = "이름";
 "Sell" = "판매가격";
+"All Select" = "모두 선택";
 "Collected" = "획득";
 "Not collected" = "미획득";
 "descending" = "descending";
@@ -152,6 +156,8 @@
 "Item is empty." = "아이템이 비어있습니다.";
 "There are no more items to collect." = "더 이상 수집할 아이템이 없습니다.";
 "There are no results for your search." = "검색에 대한 결과가 없습니다.";
+"Are you sure you want to check them all?" = "정말 모두 체크하시겠습니까?";
+"Are you sure you want to uncheck them all?" = "정말 모두 체크 해제 하시겠습니까?";
 
 // MARK: - CatalogViewController
 "Catalog" = "카탈로그";

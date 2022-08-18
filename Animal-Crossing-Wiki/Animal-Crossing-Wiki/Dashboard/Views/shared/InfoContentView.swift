@@ -15,6 +15,7 @@ class InfoContentView: UIStackView {
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.textColor = .acText
+        label.heightAnchor.constraint(equalToConstant: 30).isActive = true
         return label
     }()
     
@@ -27,6 +28,13 @@ class InfoContentView: UIStackView {
 }
 
 extension InfoContentView {
+    convenience init(title: String) {
+        self.init(frame: .zero)
+        configure()
+        self.titleLabel.text = title
+        addArrangedSubviews(titleLabel)
+    }
+    
     convenience init(title: String, contentView: UIView...) {
         self.init(frame: .zero)
         configure()
