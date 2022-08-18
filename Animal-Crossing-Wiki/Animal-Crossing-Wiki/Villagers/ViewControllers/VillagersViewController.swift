@@ -63,7 +63,6 @@ class VillagersViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.showsScopeBar = true
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search a villager".localized
         searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
         return searchController
@@ -195,7 +194,7 @@ class VillagersViewController: UIViewController {
         setUpSearchController()
         view.addSubviews(collectionView, emptyView)
         NSLayoutConstraint.activate([
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
