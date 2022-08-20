@@ -26,7 +26,7 @@ final class CatalogCoordinator: Coordinator {
     
     func start() {
         let catalogVC = CatalogViewController()
-        catalogVC.bind(to: CatalogViewModel(coordinator: self))
+        catalogVC.bind(to: CatalogReactor(coordinator: self))
         rootViewController.addChild(catalogVC)
     }
     
@@ -34,15 +34,15 @@ final class CatalogCoordinator: Coordinator {
         switch route {
         case .items(let category):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(category: category, coordinator: self))
+            viewController.bind(to: ItemsReactor(category: category, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

@@ -30,6 +30,7 @@
 "USER" = "주민 대표";
 "HEMISPHERE" = "반구";
 "FRUIT" = "과일";
+"REPUTATION" = "섬 평판";
 
 // MARK: - TodaysTasksView
 "Edit" = "편집";
@@ -55,9 +56,13 @@
 "User name" = "주민 대표 이름";
 "Hemisphere" = "반구";
 "Starting fruit" = "과일";
+"Island Reputation" = "섬 평판";
 
 // MARK: - AppSettingView
 "System haptic" = "시스템 햅틱";
+"Data reset" = "수집 및 섬 데이터 초기화";
+"Notice" = "알림";
+"Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "오늘의 할일";
@@ -143,10 +148,16 @@
 "Month" = "월별";
 "Name" = "이름";
 "Sell" = "판매가격";
+"All Select" = "모두 선택";
 "Collected" = "획득";
 "Not collected" = "미획득";
 "descending" = "descending";
 "ascending" = "ascending";
+"Item is empty." = "아이템이 비어있습니다.";
+"There are no more items to collect." = "더 이상 수집할 아이템이 없습니다.";
+"There are no results for your search." = "검색에 대한 결과가 없습니다.";
+"Are you sure you want to check them all?" = "정말 모두 체크하시겠습니까?";
+"Are you sure you want to uncheck them all?" = "정말 모두 체크 해제 하시겠습니까?";
 
 // MARK: - CatalogViewController
 "Catalog" = "카탈로그";
@@ -259,6 +270,10 @@
 "Residents" = "내 섬 주민";
 "Search a villager" = "주민을 검색해주세요. (초성도 가능)";
 "Villagers" = "마을 주민";
+"There are no villagers." = "마을 주민이 없습니다.";
+"Please check the network status." = "네트워크 상태를 확인해주세요.";
+"Tap the villager's heart button and it will appear here." = "마을 주민의 하트 모양 버튼을 누르면 여기에 표시됩니다.";
+"Tap the villager's home button and it will appear here." = "마을 주민의 집 모양 버튼을 누르면 여기에 표시됩니다." ;
 
 // MARK: - Personality
 "Big Sister" = "단순활발";

@@ -38,7 +38,7 @@ class ItemKeywordView: UIView {
     
     private func configure(in item: Item) {
         addSubviews(collectionView)
-        let heightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 50)
+        let heightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 50)
         heightConstraint.priority = .defaultHigh
 
         NSLayoutConstraint.activate([

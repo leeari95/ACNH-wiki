@@ -9,7 +9,7 @@ import UIKit
 
 final class CollectionCoordinator: Coordinator {
     enum Route {
-        case items(category: Category, mode: ItemsViewModel.Mode)
+        case items(category: Category, mode: ItemsReactor.Mode)
         case itemDetail(item: Item)
         case keyword(title: String, keyword: Keyword)
         case pop
@@ -27,7 +27,7 @@ final class CollectionCoordinator: Coordinator {
     
     func start() {
         let collectionVC = CollectionViewController()
-        collectionVC.bind(to: CollectionViewModel(coordinator: self))
+        collectionVC.bind(to: CollectionReactor(coordinator: self))
         rootViewController.addChild(collectionVC)
     }
 
@@ -35,17 +35,17 @@ final class CollectionCoordinator: Coordinator {
         switch route {
         case .items(let category, let mode):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(category: category, coordinator: self, mode: mode))
+            viewController.bind(to: ItemsReactor(category: category, coordinator: self, mode: mode))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
-            viewController.bind(to: ItemDetailViewModel(item: item, coordinator: self))
+            viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
-            viewController.bind(to: ItemsViewModel(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
         case .pop:
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController

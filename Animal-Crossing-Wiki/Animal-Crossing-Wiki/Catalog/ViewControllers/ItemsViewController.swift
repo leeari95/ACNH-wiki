@@ -10,10 +10,11 @@ import RxSwift
 import RxRelay
 
 class ItemsViewController: UIViewController {
+    
     enum Mode: Equatable {
         case user
         case all
-        case keyword(title: String)
+        case keyword(title: String, keyword: Keyword)
     }
     
     enum Menu: Int {
@@ -21,6 +22,8 @@ class ItemsViewController: UIViewController {
         case month
         case name
         case sell
+        case allSelect
+        case reset
         
         var title: String {
             switch self {
@@ -28,6 +31,8 @@ class ItemsViewController: UIViewController {
             case .month: return "Month".localized
             case .name: return "Name".localized
             case .sell: return "Sell".localized
+            case .allSelect: return "All Select".localized
+            case .reset: return "Reset".localized
             }
         }
         
@@ -42,15 +47,17 @@ class ItemsViewController: UIViewController {
             case "Month".localized: return .month
             case "Name".localized: return .name
             case "Sell".localized: return .sell
+            case "All Select".localized: return .allSelect
+            case "Reset".localized: return .reset
             default: return .all
             }
         }
     }
     
-    enum SearchScope: String {
+    enum SearchScope: String, CaseIterable {
         case all = "All"
-        case collected = "Collected"
         case notCollected = "Not collected"
+        case collected = "Collected"
         
         static func transform(_ localizedString: String) -> String? {
             switch localizedString {
@@ -61,13 +68,13 @@ class ItemsViewController: UIViewController {
             }
         }
     }
-    
+    private var reactor: ItemsReactor!
     private var category: Category?
     private var mode: Mode = .all
-    private let disposeBag = DisposeBag()
     private var currentSelected: [Menu: String] = [.all: Menu.all.title]
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [:])
-
+    private let disposeBag = DisposeBag()
+    
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 105, height: 175)
@@ -90,20 +97,20 @@ class ItemsViewController: UIViewController {
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search...".localized
         if mode != .user {
-            searchController.searchBar.scopeButtonTitles = [
-                SearchScope.all.rawValue.localized,
-                SearchScope.notCollected.rawValue.localized,
-                SearchScope.collected.rawValue.localized
-            ]
+            searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
             searchController.searchBar.showsScopeBar = true
         }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         return searchController
     }()
+    
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "There are no villagers.".localized,
+        description: "They appear here when you press the villager's heart button or home button.".localized
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,42 +122,71 @@ class ItemsViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
     
-    func bind(to viewModel: ItemsViewModel, keyword: [Menu: String] = [:]) {
-        self.category = viewModel.category
-        switch viewModel.mode {
+    func bind(to reactor: ItemsReactor, keyword: [Menu: String] = [:]) {
+        self.reactor = reactor
+        
+        category = reactor.category
+        switch reactor.mode {
         case .user: mode = .user
-        case .keyword(let title, _): mode = .keyword(title: title)
+        case .keyword(let title, let keyword): mode = .keyword(title: title, keyword: keyword)
         case .all: mode = .all
         }
         setUpFilterKeyword(keyword)
-        let input = ItemsViewModel.Input(
-            searchBarText: searchController.searchBar.rx.text.asObservable(),
-            didSelectedMenuKeyword: selectedKeyword.asObservable(),
-            itemSelected: collectionView.rx.itemSelected.asObservable(),
-            seletedScopeButton:
-                searchController.searchBar.rx.selectedScopeButtonIndex
-                .compactMap { [weak self] in
-                    return self?.searchController.searchBar.scopeButtonTitles?[$0]
-                }
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        
+        self.rx.viewDidLoad
+            .map { ItemsReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.cancelButtonClicked
+            .map { ItemsReactor.Action.search(text: "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .compactMap { $0 }
+            .map { ItemsReactor.Action.search(text: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        selectedKeyword
+            .map { ItemsReactor.Action.selectedMenu(keywords: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0]}
+            .map { ItemsReactor.Action.selectedScope($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .map { ItemsReactor.Action.selectedItem(indexPath: $0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLoading }
+            .observe(on: MainScheduler.asyncInstance)
+            .bind(to: activityIndicator.rx.isAnimating)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.items }
+            .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
+                cell.setUp(item)
+            }.disposed(by: disposeBag)
+        
+        reactor.state.map { $0.items }
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
+            .disposed(by: disposeBag)
         
         if [Mode.all, Mode.user].contains(mode), navigationItem.title == nil {
-            output.category
+            reactor.state.map { $0.category }
                 .map { $0.rawValue.localized }
                 .bind(to: navigationItem.rx.title)
                 .disposed(by: disposeBag)
         }
-        
-        output.isLoading
-            .observe(on: MainScheduler.asyncInstance)
-            .bind(to: self.activityIndicator.rx.isAnimating)
-            .disposed(by: disposeBag)
-
-        output.items
-            .bind(to: collectionView.rx.items(cellIdentifier: CatalogCell.className, cellType: CatalogCell.self)) { _, item, cell in
-                cell.setUp(item)
-            }.disposed(by: disposeBag)
         
         selectedKeyword
             .filter { $0.isEmpty == false }
@@ -159,14 +195,44 @@ class ItemsViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { owner, isFiltering in
                 owner.navigationItem.rightBarButtonItem?.image = UIImage(
-                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
+                    systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "ellipsis.circle"
                 )
-        }).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .map { $0 != "" }
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isSearching in
+                if isSearching {
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "There are no results for your search.".localized
+                    )
+                }
+            }).disposed(by: disposeBag)
         
         searchController.searchBar.rx.selectedScopeButtonIndex
+            .compactMap { SearchScope.allCases[safe: $0] }
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(onNext: { owner, currentScope in
+                switch currentScope {
+                case .all:
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "Please check the network status.".localized
+                    )
+                case .notCollected:
+                    owner.emptyView.editLabel(
+                        title: "Item is empty.".localized,
+                        description: "There are no more items to collect.".localized
+                    )
+                case .collected:
+                    owner.emptyView.editLabel(
+                        title: "There are no collectibles.".localized,
+                        description: "when you check some items, they'll be displayed here.".localized
+                    )
+                }
                 owner.searchController.searchBar.endEditing(true)
                 owner.selectedKeyword.accept(owner.currentSelected)
             }).disposed(by: disposeBag)
@@ -188,39 +254,47 @@ class ItemsViewController: UIViewController {
     
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        view.addSubviews(collectionView, activityIndicator)
+        view.addSubviews(collectionView, activityIndicator, emptyView)
         NSLayoutConstraint.activate([
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor),
-            activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor)
+            activityIndicator.heightAnchor.constraint(equalTo: view.heightAnchor),
+            emptyView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -40)
         ])
         setUpNavigationItem()
     }
     
     private func setUpNavigationItem() {
         switch mode {
-        case .keyword(let title): navigationItem.title = title.localized
+        case .keyword(let title, _): navigationItem.title = title.localized
         default: break
         }
-        let filterButton = UIBarButtonItem(
-            image: UIImage(systemName: "arrow.up.arrow.down.circle"),
+        let moreButton = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis.circle"),
             style: .plain,
             target: self,
             action: nil
         )
-        filterButton.tintColor = .acNavigationBarTint
-        self.navigationItem.rightBarButtonItem = filterButton
-        filterButton.menu = createFilterAndSortMenu()
+        moreButton.tintColor = .acNavigationBarTint
+        navigationItem.rightBarButtonItem = moreButton
+        moreButton.menu = createMoreMenu()
     }
     
-    private func createFilterAndSortMenu() -> UIMenu {
-        let menu = UIMenu(title: "", options: .displayInline, children: createFilteringMenuChildren())
+}
+
+// MARK: - Menus
+extension ItemsViewController {
+    
+    private func createMoreMenu() -> UIMenu {
+        let menu = UIMenu(title: "", options: .displayInline, children: createMoreMenuChildren())
         menu.children.forEach { action in
             let currentMenu = Menu.transform(localized: action.title)
-            if self.currentSelected.keys.contains(currentMenu) {
+            if currentSelected.keys.contains(currentMenu) {
                 let action = action as? UIAction
                 action?.state = .on
                 action?.attributes = .disabled
@@ -229,16 +303,16 @@ class ItemsViewController: UIViewController {
         return menu
     }
     
-    private func createFilteringMenuChildren() -> [UIMenuElement] {
+    private func createMoreMenuChildren() -> [UIMenuElement] {
         let allAction = UIAction(title: Menu.all.title, handler: { [weak self] _ in
             self?.currentSelected = [Menu.all: Menu.all.title]
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
         })
         if currentSelected[.all] != nil {
             allAction.state = .on
             allAction.attributes = .disabled
         }
-        let menuItems: [UIMenuElement] = [allAction] + [createSortMenu()] + createFilterMenu()
+        let menuItems: [UIMenuElement] = [allAction] + [createSortMenu()] + createFilterMenu() + [createCheckMenu()]
         selectedKeyword.accept(currentSelected)
         return menuItems
     }
@@ -260,7 +334,7 @@ class ItemsViewController: UIViewController {
             } else {
                 self?.currentSelected[.name] = nil
             }
-            self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
         }
         let name = UIAction(title: Menu.name.title, handler: handler)
         let sell = UIAction(title: Menu.sell.title, handler: handler)
@@ -290,7 +364,7 @@ class ItemsViewController: UIViewController {
                 let menu = Menu.month
                 self?.currentSelected[menu] = action.title
                 self?.currentSelected[Menu.all] = nil
-                self?.navigationItem.rightBarButtonItem?.menu = self?.createFilterAndSortMenu()
+                self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
             }
             let monthActions = Array(1...12)
                 .map { $0.description }
@@ -310,4 +384,41 @@ class ItemsViewController: UIViewController {
         }
         return filterMenuList
     }
+    
+    private func createCheckMenu() -> UIMenu {
+        let allSelectAction = UIAction(
+            title: Menu.allSelect.title,
+            image: UIImage(systemName: "text.badge.checkmark")
+        ) { [weak self] action in
+            guard let self = self else {
+                return
+            }
+            self.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
+                .filter { $0 == true }
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.reactor.action.onNext(.selectedMenu(keywords: [.allSelect: ""]))
+                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
+                }).disposed(by: self.disposeBag)
+            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+        }
+        let resetAction = UIAction(
+            title: Menu.reset.title,
+            image: UIImage(systemName: "arrow.counterclockwise")
+        ) { [weak self] action in
+            guard let self = self else {
+                return
+            }
+            self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
+                .filter { $0 == true }
+                .withUnretained(self)
+                .subscribe(onNext: { owner, _ in
+                    owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))
+                    owner.selectedKeyword.accept(owner.selectedKeyword.value)
+                }).disposed(by: self.disposeBag)
+            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+        }
+        return UIMenu(title: "", options: .displayInline, children: [allSelectAction, resetAction])
+    }
+    
 }

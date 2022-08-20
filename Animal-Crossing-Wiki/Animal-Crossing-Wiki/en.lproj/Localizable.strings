@@ -30,6 +30,7 @@
 "USER" = "USER";
 "HEMISPHERE" = "HEMISPHERE";
 "FRUIT" = "FRUIT";
+"REPUTATION" = "REPUTATION";
 
 // MARK: - TodaysTasksView
 "Edit" = "Edit";
@@ -53,9 +54,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "User name" = "User name";
 "Hemisphere" = "Hemisphere";
 "Starting fruit" = "Starting fruit";
+"Island Reputation" = "Island Reputation";
 
 // MARK: - AppSettingView
 "System haptic" = "System haptic";
+"Data reset" = "Data reset";
+"Notice" = "Notice";
+"Are you sure you want to reset it?" = "Are you sure you want to reset it";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "Today's Tasks";
@@ -141,10 +146,16 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Month" = "Month";
 "Name" = "Name";
 "Sell" = "Sell";
+"All Select" = "All Select";
 "Collected" = "Collected";
 "Not collected" = "Not collected";
 "descending" = "descending";
 "ascending" = "ascending";
+"Item is empty." = "Item is empty.";
+"There are no more items to collect." = "There are no more items to collect.";
+"There are no results for your search." = "There are no results for your search.";
+"Are you sure you want to check them all?" = "Are you sure you want to check them all?";
+"Are you sure you want to uncheck them all?" = "Are you sure you want to uncheck them all?";
 
 // MARK: - CatalogViewController
 "Catalog" = "Catalog";
@@ -255,6 +266,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Residents" = "Residents";
 "Search a villager" = "Search a villager";
 "Villagers" = "Villagers";
+"There are no villagers." = "There are no villagers.";
+"Please check the network status." = "Please check the network status.";
+"Tap the villager's heart button and it will appear here." = "Tap the villager's heart button and it will appear here.";
+"Tap the villager's home button and it will appear here." = "Tap the villager's home button and it will appear here." ;
 
 // MARK: - Personality
 "Big Sister" = "Big Sister";

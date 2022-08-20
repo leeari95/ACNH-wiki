@@ -19,21 +19,10 @@ class CollectionViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var emptyView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 8)
-        let titleLabel = UILabel(
-            text: "There are no collectibles.".localized,
-            font: .preferredFont(for: .body, weight: .semibold),
-            color: .acText.withAlphaComponent(0.7)
-        )
-        let subTitleLabel = UILabel(
-            text: "when you check some items, they'll be displayed here.".localized,
-            font: .preferredFont(forTextStyle: .footnote),
-            color: .acText.withAlphaComponent(0.7)
-        )
-        stackView.addArrangedSubviews(titleLabel, subTitleLabel)
-        return stackView
-    }()
+    private lazy var emptyView: EmptyView = EmptyView(
+        title: "There are no collectibles.".localized,
+        description: "when you check some items, they'll be displayed here.".localized
+    )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,14 +46,21 @@ class CollectionViewController: UIViewController {
         navigationItem.title = "Collection".localized
     }
     
-    func bind(to viewModel: CollectionViewModel) {
+    func bind(to reactor: CollectionReactor) {
         setUpNavigationItem()
-        let input = CollectionViewModel.Input(
-            selectedCategory: tableView.rx.modelSelected((title: Category, count: Int).self).asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        output.catagories
+        self.rx.viewDidLoad
+            .map { CollectionReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected((title: Category, count: Int).self)
+            .map { CollectionReactor.Action.selectedCategory(title: $0.title) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.catagories }
             .bind(to: tableView.rx.items(cellIdentifier: CategoryRow.className, cellType: CategoryRow.self)) { _, item, cell in
                 cell.setUp(
                     iconName: item.title.iconName,
@@ -72,15 +68,16 @@ class CollectionViewController: UIViewController {
                     itemCount: item.count
                 )
             }.disposed(by: disposeBag)
-        
-        output.catagories
+
+        reactor.state.map { $0.catagories }
             .map { !$0.isEmpty }
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
 
         tableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                self.tableView.deselectRow(at: indexPath, animated: true)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
     }
 }

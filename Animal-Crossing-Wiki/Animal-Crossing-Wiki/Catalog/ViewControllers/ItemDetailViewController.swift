@@ -60,20 +60,36 @@ class ItemDetailViewController: UIViewController {
         navigationItem.enableMultilineTitle()
     }
 
-    func bind(to viewModel: ItemDetailViewModel) {
-        keywordView = ItemKeywordView(item: viewModel.item)
+    func bind(to reactor: ItemDetailReactor) {
+        keywordView = ItemKeywordView(item: reactor.currentState.item)
         playerView = ItemPlayerView()
-        navigationItem.title = viewModel.item.translations.localizedName()
-        setUpSection(in: viewModel.item)
+        navigationItem.title = reactor.currentState.item.translations.localizedName()
+        setUpSection(in: reactor.currentState.item)
         
-        let input = ItemDetailViewModel.Input(
-            didTapCheck: checkButton.rx.tap.asObservable(),
-            didTapKeyword: keywordView?.didTapKeyword,
-            didTapPlay: playerView?.playButton.rx.tap.asObservable()
-        )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        self.rx.viewDidLoad
+            .map { ItemDetailReactor.Action.fetch }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
         
-        output.isAcquired
+        checkButton.rx.tap
+            .map { ItemDetailReactor.Action.check }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        keywordView?.didTapKeyword
+            .compactMap { $0 }
+            .map { ItemDetailReactor.Action.didTapKeyword($0) }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+        
+        playerView?.playButton.rx.tap
+            .map { ItemDetailReactor.Action.play }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isAcquired }
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in
@@ -106,6 +122,7 @@ class ItemDetailViewController: UIViewController {
         setUpSaeson(item)
         setUpKeyword(item)
         setUpMaterials(item)
+        setUpPlayer(item)
     }
     
     private func setUpDetail(_ item: Item) {
