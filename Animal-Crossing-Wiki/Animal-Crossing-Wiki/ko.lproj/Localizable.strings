@@ -139,6 +139,7 @@
 "Ceiling Decor" = "천장";
 "Recipes" = "레시피";
 "Songs" = "음악";
+"Photos" = "사진";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -368,6 +369,8 @@
 "Red" = "레드";
 "White" = "화이트";
 "Yellow" = "옐로우";
+"Natural wood" = "내추럴우드";
+"Dark wood" = "다크우드";
 
 // MARK: - CollectionViewController
 "There are no collectibles." = "수집함이 비어있습니다.";
@@ -487,6 +490,9 @@
 "All villagers (while stung)" = "모든 주민";
 "Niko" = "방글";
 "K.K. concert" = "K.K. 콘서트";
+"Lottie" = "솜이";
+"High Friendship" = "높은 친밀도인 상태에서 선물 주거나 부탁을 들어주기";
+"Check Toy Day stockings the day after Toy Day" = "크리스마스 이브 날 이후";
 
 // MARK: - Source note
 "Source Note" = "메모";
