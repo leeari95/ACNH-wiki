@@ -151,7 +151,16 @@ class ItemDetailViewController: UIViewController {
         let bodyTitle = "\("Variants".localized) (\(canBodyCustomize ? "Reformable".localized : "Not reformed".localized))"
         let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
         
-        if isNoPattern {
+        if item.category == .photos {
+            itemVariantsColorView.flatMap { view in
+                let variantsView = SectionView(
+                    title: bodyTitle,
+                    iconName: "paintbrush.fill",
+                    contentView: view
+                )
+                sectionsScrollView.addSection(variantsView)
+            }
+        } else if isNoPattern {
             itemVariantsColorView.flatMap { view in
                 let variantsView = SectionView(
                     title: bodyTitle,
