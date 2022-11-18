@@ -139,6 +139,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Songs" = "Songs";
 "Photos" = "Photos";
 "Tops" = "Tops";
+"Bottoms" = "Bottoms";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
