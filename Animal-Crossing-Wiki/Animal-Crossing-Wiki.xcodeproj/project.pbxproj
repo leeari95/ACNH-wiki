@@ -11,6 +11,8 @@
 		023349F829261A5700C7080F /* PhotosResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349F729261A5700C7080F /* PhotosResponseDTO.swift */; };
 		023349FA29274D1700C7080F /* TopsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349F929274D1700C7080F /* TopsRequest.swift */; };
 		023349FC29274D3500C7080F /* TopsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FB29274D3500C7080F /* TopsResponseDTO.swift */; };
+		023349FE2927668400C7080F /* BottomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FD2927668400C7080F /* BottomsRequest.swift */; };
+		02334A00292766AB00C7080F /* BottomsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FF292766AB00C7080F /* BottomsResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -217,6 +219,8 @@
 		023349F729261A5700C7080F /* PhotosResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosResponseDTO.swift; sourceTree = "<group>"; };
 		023349F929274D1700C7080F /* TopsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsRequest.swift; sourceTree = "<group>"; };
 		023349FB29274D3500C7080F /* TopsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsResponseDTO.swift; sourceTree = "<group>"; };
+		023349FD2927668400C7080F /* BottomsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomsRequest.swift; sourceTree = "<group>"; };
+		023349FF292766AB00C7080F /* BottomsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomsResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -518,6 +522,7 @@
 				9A836EF228AE0CAF00B5A74A /* SongsRequest.swift */,
 				023349F529261A3800C7080F /* PhotosReqeust.swift */,
 				023349F929274D1700C7080F /* TopsRequest.swift */,
+				023349FD2927668400C7080F /* BottomsRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -544,6 +549,7 @@
 				9A836EF428AE0CC200B5A74A /* SongResponseDTO.swift */,
 				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
 				023349FB29274D3500C7080F /* TopsResponseDTO.swift */,
+				023349FF292766AB00C7080F /* BottomsResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1250,6 +1256,7 @@
 				9AF0422C2853161500C51449 /* UserInfoStorage.swift in Sources */,
 				9A7ACEFA287EC25B001D47CB /* CatalogCoordinator.swift in Sources */,
 				9AD343EC28746593008A3D6D /* Int+extension.swift in Sources */,
+				02334A00292766AB00C7080F /* BottomsResponseDTO.swift in Sources */,
 				9A99AA1E2858743F00629C4A /* SectionView.swift in Sources */,
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A99AA7628657A9900629C4A /* TodaysTasksSectionReactor.swift in Sources */,
@@ -1318,6 +1325,7 @@
 				9A7ACF0C287EC26F001D47CB /* ItemBellsView.swift in Sources */,
 				9A7ACF12287EC2DE001D47CB /* CollectionCoordinator.swift in Sources */,
 				9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */,
+				023349FE2927668400C7080F /* BottomsRequest.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				023349F629261A3800C7080F /* PhotosReqeust.swift in Sources */,
 				9A3CFB3F288082AF00B0FFCB /* OtherRequest.swift in Sources */,
