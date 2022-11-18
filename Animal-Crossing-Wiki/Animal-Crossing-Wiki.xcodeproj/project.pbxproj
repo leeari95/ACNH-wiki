@@ -13,6 +13,8 @@
 		023349FC29274D3500C7080F /* TopsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FB29274D3500C7080F /* TopsResponseDTO.swift */; };
 		023349FE2927668400C7080F /* BottomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FD2927668400C7080F /* BottomsRequest.swift */; };
 		02334A00292766AB00C7080F /* BottomsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FF292766AB00C7080F /* BottomsResponseDTO.swift */; };
+		02334A02292769BF00C7080F /* DressUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A01292769BF00C7080F /* DressUpRequest.swift */; };
+		02334A04292769DD00C7080F /* DressUpResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A03292769DD00C7080F /* DressUpResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -221,6 +223,8 @@
 		023349FB29274D3500C7080F /* TopsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsResponseDTO.swift; sourceTree = "<group>"; };
 		023349FD2927668400C7080F /* BottomsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomsRequest.swift; sourceTree = "<group>"; };
 		023349FF292766AB00C7080F /* BottomsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomsResponseDTO.swift; sourceTree = "<group>"; };
+		02334A01292769BF00C7080F /* DressUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DressUpRequest.swift; sourceTree = "<group>"; };
+		02334A03292769DD00C7080F /* DressUpResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DressUpResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -523,6 +527,7 @@
 				023349F529261A3800C7080F /* PhotosReqeust.swift */,
 				023349F929274D1700C7080F /* TopsRequest.swift */,
 				023349FD2927668400C7080F /* BottomsRequest.swift */,
+				02334A01292769BF00C7080F /* DressUpRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
 				023349FB29274D3500C7080F /* TopsResponseDTO.swift */,
 				023349FF292766AB00C7080F /* BottomsResponseDTO.swift */,
+				02334A03292769DD00C7080F /* DressUpResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1180,6 +1186,7 @@
 				9A3CFB3B2880790C00B0FFCB /* RugsRequest.swift in Sources */,
 				9A6891B5283376E50061AAF1 /* BugRequest.swift in Sources */,
 				9A7ACEF7287EC239001D47CB /* CatalogCellReactor.swift in Sources */,
+				02334A02292769BF00C7080F /* DressUpRequest.swift in Sources */,
 				9A99AA362859C8BD00629C4A /* VillagersView.swift in Sources */,
 				9A7ACF30288000D7001D47CB /* KeywordCell.swift in Sources */,
 				9A7ACF04287EC26F001D47CB /* ItemDetailInfoView.swift in Sources */,
@@ -1311,6 +1318,7 @@
 				9A99AA1428584C9B00629C4A /* UIFont+extension.swift in Sources */,
 				9A3CFB3128806A8200B0FFCB /* WallpaperResponseDTO.swift in Sources */,
 				9A7ACF1A287EC2F3001D47CB /* ItemProgressRow.swift in Sources */,
+				02334A04292769DD00C7080F /* DressUpResponseDTO.swift in Sources */,
 				9AD343F728767649008A3D6D /* ProgressReactor.swift in Sources */,
 				9A68919928335ADD0061AAF1 /* DefaultAPIProvider.swift in Sources */,
 				9A99AA7428656D1600629C4A /* VillagersSectionReactor.swift in Sources */,
