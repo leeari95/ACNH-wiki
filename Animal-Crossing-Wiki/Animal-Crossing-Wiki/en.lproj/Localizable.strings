@@ -138,6 +138,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Recipes" = "Recipes";
 "Songs" = "Songs";
 "Photos" = "Photos";
+"Tops" = "Tops";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -493,6 +494,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Lottie" = "Lottie";
 "High Friendship" = "High Friendship";
 "Check Toy Day stockings the day after Toy Day" = "Check Toy Day stockings the day after Toy Day";
+"HHP Apparel Shop" = "HHP Apparel Shop";
+"Able Sisters" = "Able Sisters";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -579,6 +582,16 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Small shadow" = "Small shadow";
 "Since 1.6.0, Leif sells pumpkin starts year-round." = "Since 1.6.0, Leif sells pumpkin starts year-round.";
 "Hidden song" = "Hidden song";
+"Received in mail from DAL after 5 flights" = "Received in mail from DAL after 5 flights";
+"Received in June in the Northern Hemisphere and received in December in the Southern Hemisphere" = "Received in June in the Northern Hemisphere and received in December in the Southern Hemisphere";
+"Available from Able Sisters shop only" = "Available from Able Sisters shop only";
+"Added to Able Sisters stock rotation the day after receiving this item from Label" = "Added to Able Sisters stock rotation the day after receiving this item from Label";
+"Available during DJ KK festival" = "Available during DJ KK festival";
+"Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere" = "Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere";
+"Only available as a work clothes for Paradise Planning" = "Only available as a work clothes for Paradise Planning";
+"Received in mail from DAL after 250 flights" = "Received in mail from DAL after 250 flights";
+"Available from either Mabel\'s temporary shop or Able Sisters shop" = "Available from either Mabel\'s temporary shop or Able Sisters shop";
+"Received in mail from DAL after 100 flights" = "Received in mail from DAL after 100 flights";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";
