@@ -142,6 +142,7 @@
 "Photos" = "사진";
 "Tops" = "상의";
 "Bottoms" = "하의";
+"Dress-Up" = "원피스";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -593,6 +594,8 @@
 "Received in mail from DAL after 250 flights" = "250회 비행 후 DAL에서 우편으로 획득";
 "Available from either Mabel\'s temporary shop or Able Sisters shop" = "에이블의 임시 상점 또는 에이블 시스터즈 상점에서 구매 가능";
 "Received in mail from DAL after 100 flights" = "100회 비행 후 DAL에서 우편으로 획득";
+"Sent in the mail after doing group stretches on 3 different days" = "3일 연속 단체 스트레칭 후 우편으로 발송";
+"Give Jack candy or a lollipop" = "펌킹에게 사탕이나 막대사탕을 주기";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";
