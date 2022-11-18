@@ -59,7 +59,8 @@ class ItemVariantsView: UIView {
         Observable.just(variations)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
             ) { [weak self] _, item, cell in
-                let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName()) ?? item.variation?.localized
+                let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
+                ?? item.variation?.localized
                 cell.setUp(imageURL: item.image, name: name)
             }.disposed(by: disposeBag)
         
