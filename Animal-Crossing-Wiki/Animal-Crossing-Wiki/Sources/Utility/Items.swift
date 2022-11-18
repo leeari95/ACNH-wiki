@@ -352,6 +352,22 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.request(TopsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.tops] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 상의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.updateAllItemList(by: itemList)
             self.networkGroup.leave()

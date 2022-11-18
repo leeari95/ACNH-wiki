@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		023349F629261A3800C7080F /* PhotosReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349F529261A3800C7080F /* PhotosReqeust.swift */; };
 		023349F829261A5700C7080F /* PhotosResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349F729261A5700C7080F /* PhotosResponseDTO.swift */; };
+		023349FA29274D1700C7080F /* TopsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349F929274D1700C7080F /* TopsRequest.swift */; };
+		023349FC29274D3500C7080F /* TopsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023349FB29274D3500C7080F /* TopsResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -213,6 +215,8 @@
 /* Begin PBXFileReference section */
 		023349F529261A3800C7080F /* PhotosReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosReqeust.swift; sourceTree = "<group>"; };
 		023349F729261A5700C7080F /* PhotosResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosResponseDTO.swift; sourceTree = "<group>"; };
+		023349F929274D1700C7080F /* TopsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsRequest.swift; sourceTree = "<group>"; };
+		023349FB29274D3500C7080F /* TopsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -513,6 +517,7 @@
 				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
 				9A836EF228AE0CAF00B5A74A /* SongsRequest.swift */,
 				023349F529261A3800C7080F /* PhotosReqeust.swift */,
+				023349F929274D1700C7080F /* TopsRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -538,6 +543,7 @@
 				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
 				9A836EF428AE0CC200B5A74A /* SongResponseDTO.swift */,
 				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
+				023349FB29274D3500C7080F /* TopsResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1160,6 +1166,7 @@
 				9A7ACF10287EC2D3001D47CB /* CollectionViewController.swift in Sources */,
 				9AF042212853131400C51449 /* DailyTaskEntity+Mapping.swift in Sources */,
 				9A836EF328AE0CAF00B5A74A /* SongsRequest.swift in Sources */,
+				023349FA29274D1700C7080F /* TopsRequest.swift in Sources */,
 				9A6891BB2833787D0061AAF1 /* FossilsResponseDTO.swift in Sources */,
 				9A68919D28335AFF0061AAF1 /* APIRequest.swift in Sources */,
 				9AF0421028530CA300C51449 /* ItemEntity+Mapping.swift in Sources */,
@@ -1204,6 +1211,7 @@
 				9A6891A7283362C90061AAF1 /* VillagersResponseDTO.swift in Sources */,
 				9A6DC20B287D0AC5004EEC41 /* AppSettingReactor.swift in Sources */,
 				9A7ACEE7287EC194001D47CB /* VillagerDetailView.swift in Sources */,
+				023349FC29274D3500C7080F /* TopsResponseDTO.swift in Sources */,
 				9A99AA062858247700629C4A /* Coordinator.swift in Sources */,
 				9A99AA2C28597B7500629C4A /* TodaysTasksView.swift in Sources */,
 				9A3DE3D02887B7E6006EECF7 /* RecipesRequest.swift in Sources */,

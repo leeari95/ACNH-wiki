@@ -67,12 +67,17 @@ struct Item {
     var doorDeco: Bool?
     
     var musicURL: String?
+    var themes: [String]?
+    var styles: [Style]?
 }
 
 extension Item {
 
     var keyword: [String] {
-        var list = colors.map { $0.rawValue } + (concepts?.map { $0.rawValue } ?? [])
+        var list = colors.map { $0.rawValue }
+        + (concepts?.map { $0.rawValue } ?? [])
+        + (themes ?? [])
+        + (styles?.map { $0.rawValue } ?? [])
         if let tag = tag, !list.contains(tag.lowercased()) {
             list.append(tag)
         }
