@@ -141,6 +141,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Tops" = "Tops";
 "Bottoms" = "Bottoms";
 "Dress-Up" = "Dress-Up";
+"Headwear" = "Headwear";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -596,6 +597,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Received in mail from DAL after 100 flights" = "Received in mail from DAL after 100 flights";
 "Sent in the mail after doing group stretches on 3 different days" = "Sent in the mail after doing group stretches on 3 different days";
 "Give Jack candy or a lollipop" = "Give Jack candy or a lollipop";
+"Received in mail from DAL after 130 flights" = "Received in mail from DAL after 130 flights";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";
