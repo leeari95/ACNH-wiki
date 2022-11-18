@@ -45,7 +45,7 @@ extension BottomsResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .tops,
+            category: .bottoms,
             image: closetImage ?? variations?.first?.closetImage,
             diy: diy,
             buy: buy,
