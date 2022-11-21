@@ -25,6 +25,8 @@
 		02334A14292B4E1000C7080F /* ShoesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A13292B4E1000C7080F /* ShoesRequest.swift */; };
 		02334A16292B52B800C7080F /* BagsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A15292B52B800C7080F /* BagsRequest.swift */; };
 		02334A18292B55C700C7080F /* BagsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A17292B55C700C7080F /* BagsResponseDTO.swift */; };
+		02334A1A292B66DF00C7080F /* UmbrellasRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A19292B66DF00C7080F /* UmbrellasRequest.swift */; };
+		02334A1C292B66F900C7080F /* UmbrellasResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A1B292B66F900C7080F /* UmbrellasResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -245,6 +247,8 @@
 		02334A13292B4E1000C7080F /* ShoesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoesRequest.swift; sourceTree = "<group>"; };
 		02334A15292B52B800C7080F /* BagsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagsRequest.swift; sourceTree = "<group>"; };
 		02334A17292B55C700C7080F /* BagsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagsResponseDTO.swift; sourceTree = "<group>"; };
+		02334A19292B66DF00C7080F /* UmbrellasRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmbrellasRequest.swift; sourceTree = "<group>"; };
+		02334A1B292B66F900C7080F /* UmbrellasResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmbrellasResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -553,6 +557,7 @@
 				02334A0D292B4A2300C7080F /* SocksRequest.swift */,
 				02334A13292B4E1000C7080F /* ShoesRequest.swift */,
 				02334A15292B52B800C7080F /* BagsRequest.swift */,
+				02334A19292B66DF00C7080F /* UmbrellasRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -586,6 +591,7 @@
 				02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */,
 				02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */,
 				02334A17292B55C700C7080F /* BagsResponseDTO.swift */,
+				02334A1B292B66F900C7080F /* UmbrellasResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1242,10 +1248,12 @@
 				9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */,
 				9A7ACEF8287EC239001D47CB /* ItemsReactor.swift in Sources */,
 				9A6DE3592889271200EB2F3F /* MinimizePlayerView.swift in Sources */,
+				02334A1A292B66DF00C7080F /* UmbrellasRequest.swift in Sources */,
 				9A6891AD283368EE0061AAF1 /* TurnipRequest.swift in Sources */,
 				9A62D74128783A4D0047750F /* UITableView+extension.swift in Sources */,
 				9A99AA46285AF1D600629C4A /* SectionsScrollView.swift in Sources */,
 				9A6891B3283371E20061AAF1 /* FishResponseDTO.swift in Sources */,
+				02334A1C292B66F900C7080F /* UmbrellasResponseDTO.swift in Sources */,
 				9A3CFB3328806EDB00B0FFCB /* FloorsResponseDTO.swift in Sources */,
 				9A541B6B28220A72001B57FD /* SceneDelegate.swift in Sources */,
 				9A7ACEE1287EC188001D47CB /* VillagersReactor.swift in Sources */,
