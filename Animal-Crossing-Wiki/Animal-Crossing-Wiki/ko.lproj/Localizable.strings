@@ -145,6 +145,7 @@
 "Dress-Up" = "원피스";
 "Headwear" = "모자";
 "Accessories" = "악세사리";
+"Socks" = "양말";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -500,6 +501,8 @@
 "Check Toy Day stockings the day after Toy Day" = "크리스마스 이브 날 이후";
 "HHP Apparel Shop" = "해피홈 파라다이스 옷가게";
 "Able Sisters" = "에이블 시스터즈";
+"Kicks\' Co-op" = "패트릭 노점";
+"Kicks" = "패트릭";
 
 // MARK: - Source note
 "Source Note" = "메모";
