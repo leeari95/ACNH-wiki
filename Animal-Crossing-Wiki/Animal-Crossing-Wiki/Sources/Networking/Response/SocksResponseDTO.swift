@@ -42,7 +42,7 @@ extension SocksResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .headwear,
+            category: .socks,
             image: closetImage ?? variations?.first?.closetImage,
             diy: diy,
             buy: buy,

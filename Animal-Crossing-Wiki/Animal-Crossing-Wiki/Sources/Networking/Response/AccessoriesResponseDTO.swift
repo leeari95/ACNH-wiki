@@ -45,7 +45,7 @@ extension AccessoriesResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .headwear,
+            category: .accessories,
             image: closetImage ?? variations?.first?.closetImage,
             diy: diy,
             buy: buy,
