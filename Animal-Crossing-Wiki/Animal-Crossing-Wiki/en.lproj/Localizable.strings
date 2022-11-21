@@ -146,6 +146,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Socks" = "Socks";
 "Shoes" = "Shoes";
 "Bags" = "Bags";
+"Umbrellas" = "Umbrellas";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -611,6 +612,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Received in mail from DAL after 30 flights" = "Received in mail from DAL after 30 flights";
 "Received in mail from DAL after 200 flights" = "Received in mail from DAL after 200 flights";
 "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere";
+"Received in mail from DAL after 160 flights" = "Received in mail from DAL after 160 flights";
+"Available in Nook\'s Cranny (upgraded only)" = "Available in Nook\'s Cranny (upgraded only)";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";

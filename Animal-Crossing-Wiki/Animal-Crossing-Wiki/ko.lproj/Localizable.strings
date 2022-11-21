@@ -148,6 +148,7 @@
 "Socks" = "양말";
 "Shoes" = "신발";
 "Bags" = "가방";
+"Umbrellas" = "우산";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -611,6 +612,8 @@
 "Received in mail from DAL after 30 flights" = "30회 비행 후 DAL에서 우편으로 획득";
 "Received in mail from DAL after 200 flights" = "200회 비행 후 DAL에서 우편으로 획득";
 "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "북반구 5월, 남반구 11월";
+"Received in mail from DAL after 160 flights" = "160회 비행 후 DAL에서 우편으로 획득";
+"Available in Nook\'s Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";

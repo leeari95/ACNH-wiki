@@ -152,7 +152,7 @@ class ItemDetailViewController: UIViewController {
         let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
         
         switch item.category {
-        case .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags:
+        case .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas:
             itemVariantsColorView.flatMap { view in
                 let variantsView = SectionView(
                     title: bodyTitle,

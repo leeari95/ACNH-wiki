@@ -32,6 +32,7 @@ enum Category: String, CaseIterable {
     case socks = "Socks"
     case shoes = "Shoes"
     case bags = "Bags"
+    case umbrellas = "Umbrellas"
     
     var iconName: String {
         switch self {
@@ -59,6 +60,7 @@ enum Category: String, CaseIterable {
         case .socks: return "icon-socks"
         case .shoes: return "icon-shoes"
         case .bags: return "icon-bag"
+        case .umbrellas: return "icon-umbrella"
         }
     }
 
@@ -88,6 +90,7 @@ enum Category: String, CaseIterable {
         case .socks: return "icon-socks"
         case .shoes: return "icon-shoes"
         case .bags: return "icon-bag"
+        case .umbrellas: return "icon-umbrella"
         }
     }
     
@@ -98,7 +101,7 @@ enum Category: String, CaseIterable {
             .miscellaneous, .wallMounted, .ceilingDecor,
             .wallpaper, .floors, .rugs,
             .other, .recipes, .songs, .photos,
-            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags
+            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas
         ]
     }
     
@@ -115,7 +118,7 @@ enum Category: String, CaseIterable {
             .housewares, .miscellaneous, .wallMounted,
             .ceilingDecor, .wallpaper, .floors,
             .rugs, .other, .songs, .photos,
-            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags
+            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas
         ]
     }
 }
