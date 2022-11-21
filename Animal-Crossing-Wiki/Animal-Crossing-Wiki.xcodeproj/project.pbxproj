@@ -19,6 +19,8 @@
 		02334A082927702600C7080F /* HeadwearResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A072927702600C7080F /* HeadwearResponseDTO.swift */; };
 		02334A0A292B468100C7080F /* AccessoriesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A09292B468100C7080F /* AccessoriesRequest.swift */; };
 		02334A0C292B469E00C7080F /* AccessoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */; };
+		02334A0E292B4A2300C7080F /* SocksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A0D292B4A2300C7080F /* SocksRequest.swift */; };
+		02334A10292B4A2D00C7080F /* SocksResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -233,6 +235,8 @@
 		02334A072927702600C7080F /* HeadwearResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadwearResponseDTO.swift; sourceTree = "<group>"; };
 		02334A09292B468100C7080F /* AccessoriesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoriesRequest.swift; sourceTree = "<group>"; };
 		02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoriesResponseDTO.swift; sourceTree = "<group>"; };
+		02334A0D292B4A2300C7080F /* SocksRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocksRequest.swift; sourceTree = "<group>"; };
+		02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocksResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 				02334A01292769BF00C7080F /* DressUpRequest.swift */,
 				02334A052927701200C7080F /* HeadwearRequest.swift */,
 				02334A09292B468100C7080F /* AccessoriesRequest.swift */,
+				02334A0D292B4A2300C7080F /* SocksRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -568,6 +573,7 @@
 				02334A03292769DD00C7080F /* DressUpResponseDTO.swift */,
 				02334A072927702600C7080F /* HeadwearResponseDTO.swift */,
 				02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */,
+				02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1359,6 +1365,7 @@
 				023349F829261A5700C7080F /* PhotosResponseDTO.swift in Sources */,
 				9A6891B1283371A60061AAF1 /* FishRequest.swift in Sources */,
 				9AF0418A28503F7900C51449 /* Item.swift in Sources */,
+				02334A0E292B4A2300C7080F /* SocksRequest.swift in Sources */,
 				9A99AA2028587A7500629C4A /* SectionHeaderView.swift in Sources */,
 				9A7ACF27287F9F00001D47CB /* HousewaresRequest.swift in Sources */,
 				9AF042042852F2F500C51449 /* Keyword.swift in Sources */,
@@ -1366,6 +1373,7 @@
 				9A3DE3CC2886AFDA006EECF7 /* UINavigationItem.swift in Sources */,
 				9A3CFB45288128CD00B0FFCB /* Array+extension.swift in Sources */,
 				9A99AA662860431A00629C4A /* IconChooserViewController.swift in Sources */,
+				02334A10292B4A2D00C7080F /* SocksResponseDTO.swift in Sources */,
 				9A6DC209287C7B42004EEC41 /* AppSettingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
