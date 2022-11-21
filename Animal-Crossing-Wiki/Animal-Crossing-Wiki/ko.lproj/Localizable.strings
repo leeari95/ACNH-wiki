@@ -146,6 +146,7 @@
 "Headwear" = "모자";
 "Accessories" = "악세사리";
 "Socks" = "양말";
+"Shoes" = "신발";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -605,6 +606,8 @@
 "Received in mail from DAL after 75 flights" = "75회 비행 후 DAL에서 우편으로 획득";
 "Received in mail from DAL after 15 flights" = "15회 비행 후 DAL에서 우편으로 획득";
 "Mailed to players after the 1.3.0 update in a letter from Nintendo" = "1.3.0 업데이트 후\n닌텐도에게서 우편으로 획득";
+"Available at Able Sisters only during Fireworks Shows" = "축제 시즌 때\n에이블시스터즈에서 구입 가능";
+"Received in mail from DAL after 30 flights" = "30회 비행 후 DAL에서 우편으로 획득";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";
