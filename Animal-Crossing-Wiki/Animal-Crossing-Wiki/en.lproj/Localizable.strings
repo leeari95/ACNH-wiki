@@ -145,6 +145,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Accessories" = "Accessories";
 "Socks" = "Socks";
 "Shoes" = "Shoes";
+"Bags" = "Bags";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -608,6 +609,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Mailed to players after the 1.3.0 update in a letter from Nintendo" = "Mailed to players after the 1.3.0 update in a letter from Nintendo";
 "Available at Able Sisters only during Fireworks Shows" = "Available at Able Sisters only during Fireworks Shows";
 "Received in mail from DAL after 30 flights" = "Received in mail from DAL after 30 flights";
+"Received in mail from DAL after 200 flights" = "Received in mail from DAL after 200 flights";
+"Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";
