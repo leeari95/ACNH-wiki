@@ -49,7 +49,8 @@ enum Theme: String, Codable {
 }
 
 struct WardrobeVariat: Codable {
-    let closetImage, storageImage: String
+    let closetImage: String?
+    let storageImage: String
     let exchangePrice: Int?
     let exchangeCurrency: ExchangeCurrency?
     let seasonEvent: String?
@@ -65,7 +66,7 @@ struct WardrobeVariat: Codable {
     
     func toVariat() -> Variant {
         return .init(
-            image: closetImage,
+            image: closetImage ?? storageImage,
             variation: nil,
             pattern: nil,
             patternTitle: nil,

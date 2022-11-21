@@ -23,6 +23,8 @@
 		02334A10292B4A2D00C7080F /* SocksResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */; };
 		02334A12292B4DDD00C7080F /* ShoesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */; };
 		02334A14292B4E1000C7080F /* ShoesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A13292B4E1000C7080F /* ShoesRequest.swift */; };
+		02334A16292B52B800C7080F /* BagsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A15292B52B800C7080F /* BagsRequest.swift */; };
+		02334A18292B55C700C7080F /* BagsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02334A17292B55C700C7080F /* BagsResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -241,6 +243,8 @@
 		02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocksResponseDTO.swift; sourceTree = "<group>"; };
 		02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoesResponseDTO.swift; sourceTree = "<group>"; };
 		02334A13292B4E1000C7080F /* ShoesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoesRequest.swift; sourceTree = "<group>"; };
+		02334A15292B52B800C7080F /* BagsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagsRequest.swift; sourceTree = "<group>"; };
+		02334A17292B55C700C7080F /* BagsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagsResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -548,6 +552,7 @@
 				02334A09292B468100C7080F /* AccessoriesRequest.swift */,
 				02334A0D292B4A2300C7080F /* SocksRequest.swift */,
 				02334A13292B4E1000C7080F /* ShoesRequest.swift */,
+				02334A15292B52B800C7080F /* BagsRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -580,6 +585,7 @@
 				02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */,
 				02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */,
 				02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */,
+				02334A17292B55C700C7080F /* BagsResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1274,6 +1280,7 @@
 				9A99AA52285C32C300629C4A /* PreferencesView.swift in Sources */,
 				9AF04227285313ED00C51449 /* UserInfo.swift in Sources */,
 				9A99AA7E286AC4F900629C4A /* AboutViewController.swift in Sources */,
+				02334A18292B55C700C7080F /* BagsResponseDTO.swift in Sources */,
 				9A2B0FD92897C84F00285C77 /* UserInfoReactor.swift in Sources */,
 				02334A082927702600C7080F /* HeadwearResponseDTO.swift in Sources */,
 				9AF0421528530CFE00C51449 /* VillagersHouseStorage.swift in Sources */,
@@ -1363,6 +1370,7 @@
 				9A7ACF0C287EC26F001D47CB /* ItemBellsView.swift in Sources */,
 				9A7ACF12287EC2DE001D47CB /* CollectionCoordinator.swift in Sources */,
 				9A99AA85286AE22200629C4A /* AboutItem.swift in Sources */,
+				02334A16292B52B800C7080F /* BagsRequest.swift in Sources */,
 				023349FE2927668400C7080F /* BottomsRequest.swift in Sources */,
 				9A68919B28335AE90061AAF1 /* APIProvider.swift in Sources */,
 				023349F629261A3800C7080F /* PhotosReqeust.swift in Sources */,
