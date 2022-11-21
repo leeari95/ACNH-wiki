@@ -3,6 +3,7 @@ included:
 excluded: # 린트 과정에서 무시할 파일 경로. `included`보다 우선순위 높음
   - Animal-Crossing-Wiki/Resources/AppDelegate.swift
   - Animal-Crossing-Wiki/Resources/SceneDelegate.swift
+  - Animal-Crossing-Wiki/Sources/Utility/Items.swift
 type_body_length: # 타입 길이
     warning: 200
     error: 250
@@ -18,7 +19,7 @@ function_body_length:
   error: 300
 type_body_length:
     - 300 # warning
-    - 400
+    - 500
 file_length:
     warning: 500
     error: 1200
