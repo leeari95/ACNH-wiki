@@ -35,7 +35,7 @@ extension UmbrellasResponseDTO {
     func toDomain() -> Item {
         return Item(
             name: name,
-            category: .bags,
+            category: .umbrellas,
             image: storageImage,
             diy: diy,
             buy: buy,
