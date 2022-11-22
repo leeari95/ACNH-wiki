@@ -149,6 +149,7 @@
 "Shoes" = "신발";
 "Bags" = "가방";
 "Umbrellas" = "우산";
+"Wet Suit" = "잠수복";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
