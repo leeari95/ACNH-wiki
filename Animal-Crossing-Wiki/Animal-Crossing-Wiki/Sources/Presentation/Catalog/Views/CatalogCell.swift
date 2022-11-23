@@ -116,6 +116,7 @@ extension CatalogCell {
             } else {
                 priceView = ItemBellsView(mode: .sell, price: item.sell)
             }
+        default: return
         }
         backgroundStackView.addArrangedSubviews(priceView)
     }

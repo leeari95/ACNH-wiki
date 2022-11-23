@@ -150,6 +150,7 @@
 "Bags" = "가방";
 "Umbrellas" = "우산";
 "Wet Suit" = "잠수복";
+"Reactions" = "리액션";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -507,6 +508,10 @@
 "Able Sisters" = "에이블 시스터즈";
 "Kicks\' Co-op" = "패트릭 노점";
 "Kicks" = "패트릭";
+"New Reactions Notebook" = "리액션 아이디어 노트";
+"DJ KK concert" = "DJ KK 콘서트";
+"Viva Festivale Reaction Set" = "비바! 카니발 리액션";
+"Hip Reaction Collection" = "최신 유행! 리액션 도감";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -615,6 +620,8 @@
 "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "북반구 5월, 남반구 11월";
 "Received in mail from DAL after 160 flights" = "160회 비행 후 DAL에서 우편으로 획득";
 "Available in Nook\'s Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
+"Requires a high level of friendship" = "높은 수준의 우정이 필요";
+"Received after doing your 50th group stretch" = "50번째 그룹 스트레칭 후 획득";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";

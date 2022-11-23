@@ -137,6 +137,7 @@ class ItemDetailInfoView: UIView {
                 let price = ItemBellsView(mode: .point, price: price)
                 infoStackView.addArrangedSubviews(price)
             }
+        case .reactions: return
         default: break
         }
         if let buy = item.buy, buy > 0, item.isCritters == false {

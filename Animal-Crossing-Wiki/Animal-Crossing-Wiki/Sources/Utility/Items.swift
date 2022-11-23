@@ -512,6 +512,21 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.request(ReactionsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.reactions] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 리액션을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.updateAllItemList(by: itemList)
             self.networkGroup.leave()
