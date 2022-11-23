@@ -325,7 +325,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.songs] = items
             case .failure(let error):
                 os_log(
@@ -341,7 +340,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.photos] = items
             case .failure(let error):
                 os_log(
@@ -357,7 +355,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.tops] = items
             case .failure(let error):
                 os_log(
@@ -373,7 +370,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.bottoms] = items
             case .failure(let error):
                 os_log(
@@ -389,7 +385,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.dressUp] = items
             case .failure(let error):
                 os_log(
@@ -405,7 +400,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.headwear] = items
             case .failure(let error):
                 os_log(
@@ -421,7 +415,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.accessories] = items
             case .failure(let error):
                 os_log(
@@ -437,7 +430,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.socks] = items
             case .failure(let error):
                 os_log(
@@ -453,7 +445,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.shoes] = items
             case .failure(let error):
                 os_log(
@@ -469,7 +460,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.bags] = items
             case .failure(let error):
                 os_log(
@@ -485,7 +475,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.umbrellas] = items
             case .failure(let error):
                 os_log(
@@ -501,7 +490,6 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.wetSuit] = items
             case .failure(let error):
                 os_log(
