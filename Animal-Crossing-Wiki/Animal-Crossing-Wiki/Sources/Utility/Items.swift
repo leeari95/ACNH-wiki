@@ -38,6 +38,7 @@ final class Items {
         fetchVillagers()
         fetchCritters()
         fetchFurniture()
+        fetchClothes()
         
         networkGroup.notify(queue: .main) {
             self.isLoad.accept(false)
@@ -350,6 +351,17 @@ final class Items {
             }
             group.leave()
         }
+        group.notify(queue: .main) {
+            self.updateAllItemList(by: itemList)
+            self.networkGroup.leave()
+        }
+    }
+    
+    private func fetchClothes() {
+        self.networkGroup.enter()
+        let group = DispatchGroup()
+        var itemList: [Category: [Item]] = [:]
+        
         group.enter()
         network.request(TopsRequest()) { result in
             switch result {
