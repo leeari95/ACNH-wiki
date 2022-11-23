@@ -468,6 +468,100 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		023447C8292DCF8400B9457C /* Museum */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */,
+				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
+				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
+				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
+				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
+			);
+			path = Museum;
+			sourceTree = "<group>";
+		};
+		023447C9292DCFCC00B9457C /* Museum */ = {
+			isa = PBXGroup;
+			children = (
+				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
+				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
+				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
+				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
+				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
+			);
+			path = Museum;
+			sourceTree = "<group>";
+		};
+		023447CA292DD06B00B9457C /* Furniture */ = {
+			isa = PBXGroup;
+			children = (
+				9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */,
+				9A3CFB2828805C4400B0FFCB /* MiscellaneousResponseDTO.swift */,
+				9A3CFB2C2880637100B0FFCB /* WallMountedResponseDTO.swift */,
+				9A3CFB3028806A8200B0FFCB /* WallpaperResponseDTO.swift */,
+				9A3CFB3228806EDB00B0FFCB /* FloorsResponseDTO.swift */,
+				9A3CFB382880787100B0FFCB /* RugsResponseDTO.swift */,
+				9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */,
+				9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */,
+				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
+				9A836EF428AE0CC200B5A74A /* SongResponseDTO.swift */,
+				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
+			);
+			path = Furniture;
+			sourceTree = "<group>";
+		};
+		023447CB292DD15700B9457C /* Furniture */ = {
+			isa = PBXGroup;
+			children = (
+				9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */,
+				9A3CFB2A28805F4000B0FFCB /* MiscellaneousRequest.swift */,
+				9A3CFB2E2880655900B0FFCB /* WallMountedRequest.swift */,
+				9A3CFB34288073AE00B0FFCB /* WallpaperRequest.swift */,
+				9A3CFB36288076B900B0FFCB /* FloorsRequest.swift */,
+				9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */,
+				9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */,
+				9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */,
+				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
+				9A836EF228AE0CAF00B5A74A /* SongsRequest.swift */,
+				023349F529261A3800C7080F /* PhotosReqeust.swift */,
+			);
+			path = Furniture;
+			sourceTree = "<group>";
+		};
+		023447CC292DE2C400B9457C /* Clothes */ = {
+			isa = PBXGroup;
+			children = (
+				023349FB29274D3500C7080F /* TopsResponseDTO.swift */,
+				023349FF292766AB00C7080F /* BottomsResponseDTO.swift */,
+				02334A03292769DD00C7080F /* DressUpResponseDTO.swift */,
+				02334A072927702600C7080F /* HeadwearResponseDTO.swift */,
+				02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */,
+				02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */,
+				02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */,
+				02334A17292B55C700C7080F /* BagsResponseDTO.swift */,
+				02334A1B292B66F900C7080F /* UmbrellasResponseDTO.swift */,
+				02334A1F292B6B5E00C7080F /* WetSuitResponseDTO.swift */,
+			);
+			path = Clothes;
+			sourceTree = "<group>";
+		};
+		023447CD292DE2CA00B9457C /* Clothes */ = {
+			isa = PBXGroup;
+			children = (
+				023349F929274D1700C7080F /* TopsRequest.swift */,
+				023349FD2927668400C7080F /* BottomsRequest.swift */,
+				02334A01292769BF00C7080F /* DressUpRequest.swift */,
+				02334A052927701200C7080F /* HeadwearRequest.swift */,
+				02334A09292B468100C7080F /* AccessoriesRequest.swift */,
+				02334A0D292B4A2300C7080F /* SocksRequest.swift */,
+				02334A13292B4E1000C7080F /* ShoesRequest.swift */,
+				02334A15292B52B800C7080F /* BagsRequest.swift */,
+				02334A19292B66DF00C7080F /* UmbrellasRequest.swift */,
+				02334A1D292B6B2500C7080F /* WetSuitRequest.swift */,
+			);
+			path = Clothes;
+			sourceTree = "<group>";
+		};
 		9A4B4C3828503A6100CC687C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -535,34 +629,11 @@
 		9A6891A5283361F60061AAF1 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891C0283380CD0061AAF1 /* ArtRequest.swift */,
-				9A6891B4283376E50061AAF1 /* BugRequest.swift */,
-				9A6891B0283371A60061AAF1 /* FishRequest.swift */,
-				9A6891B8283378630061AAF1 /* FossilsRequest.swift */,
-				9A6891BC283379830061AAF1 /* SeaCreaturesRequest.swift */,
+				023447CD292DE2CA00B9457C /* Clothes */,
+				023447CB292DD15700B9457C /* Furniture */,
+				023447C9292DCFCC00B9457C /* Museum */,
 				9A6891AC283368EE0061AAF1 /* TurnipRequest.swift */,
 				9A6891A3283361F20061AAF1 /* VillagersRequest.swift */,
-				9A7ACF26287F9F00001D47CB /* HousewaresRequest.swift */,
-				9A3CFB2A28805F4000B0FFCB /* MiscellaneousRequest.swift */,
-				9A3CFB2E2880655900B0FFCB /* WallMountedRequest.swift */,
-				9A3CFB34288073AE00B0FFCB /* WallpaperRequest.swift */,
-				9A3CFB36288076B900B0FFCB /* FloorsRequest.swift */,
-				9A3CFB3A2880790C00B0FFCB /* RugsRequest.swift */,
-				9A3CFB3E288082AF00B0FFCB /* OtherRequest.swift */,
-				9A3CFB48288295CA00B0FFCB /* CeilingDecorRequest.swift */,
-				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
-				9A836EF228AE0CAF00B5A74A /* SongsRequest.swift */,
-				023349F529261A3800C7080F /* PhotosReqeust.swift */,
-				023349F929274D1700C7080F /* TopsRequest.swift */,
-				023349FD2927668400C7080F /* BottomsRequest.swift */,
-				02334A01292769BF00C7080F /* DressUpRequest.swift */,
-				02334A052927701200C7080F /* HeadwearRequest.swift */,
-				02334A09292B468100C7080F /* AccessoriesRequest.swift */,
-				02334A0D292B4A2300C7080F /* SocksRequest.swift */,
-				02334A13292B4E1000C7080F /* ShoesRequest.swift */,
-				02334A15292B52B800C7080F /* BagsRequest.swift */,
-				02334A19292B66DF00C7080F /* UmbrellasRequest.swift */,
-				02334A1D292B6B2500C7080F /* WetSuitRequest.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -570,34 +641,11 @@
 		9A6891AA283366B10061AAF1 /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				9A6891C2283380D50061AAF1 /* ArtResponseDTO.swift */,
-				9A6891B6283377010061AAF1 /* BugResponseDTO.swift */,
-				9A6891B2283371E20061AAF1 /* FishResponseDTO.swift */,
-				9A6891BA2833787D0061AAF1 /* FossilsResponseDTO.swift */,
-				9A6891BE283379B80061AAF1 /* SeaCreaturesResponseDTO.swift */,
+				023447CC292DE2C400B9457C /* Clothes */,
+				023447CA292DD06B00B9457C /* Furniture */,
+				023447C8292DCF8400B9457C /* Museum */,
 				9A6891AE2833690A0061AAF1 /* TurnipResponseDTO.swift */,
 				9A6891A6283362C90061AAF1 /* VillagersResponseDTO.swift */,
-				9A7ACF24287F9C87001D47CB /* HousewaresResponseDTO.swift */,
-				9A3CFB2828805C4400B0FFCB /* MiscellaneousResponseDTO.swift */,
-				9A3CFB2C2880637100B0FFCB /* WallMountedResponseDTO.swift */,
-				9A3CFB3028806A8200B0FFCB /* WallpaperResponseDTO.swift */,
-				9A3CFB3228806EDB00B0FFCB /* FloorsResponseDTO.swift */,
-				9A3CFB382880787100B0FFCB /* RugsResponseDTO.swift */,
-				9A3CFB3C2880809100B0FFCB /* OtherResponseDTO.swift */,
-				9A3CFB46288291C300B0FFCB /* CeilingDecorResponseDTO.swift */,
-				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
-				9A836EF428AE0CC200B5A74A /* SongResponseDTO.swift */,
-				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
-				023349FB29274D3500C7080F /* TopsResponseDTO.swift */,
-				023349FF292766AB00C7080F /* BottomsResponseDTO.swift */,
-				02334A03292769DD00C7080F /* DressUpResponseDTO.swift */,
-				02334A072927702600C7080F /* HeadwearResponseDTO.swift */,
-				02334A0B292B469E00C7080F /* AccessoriesResponseDTO.swift */,
-				02334A0F292B4A2D00C7080F /* SocksResponseDTO.swift */,
-				02334A11292B4DDD00C7080F /* ShoesResponseDTO.swift */,
-				02334A17292B55C700C7080F /* BagsResponseDTO.swift */,
-				02334A1B292B66F900C7080F /* UmbrellasResponseDTO.swift */,
-				02334A1F292B6B5E00C7080F /* WetSuitResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
