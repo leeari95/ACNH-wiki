@@ -352,6 +352,166 @@ final class Items {
             }
             group.leave()
         }
+        group.enter()
+        network.request(TopsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.tops] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 상의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(BottomsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.bottoms] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 하의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(DressUpRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.dressUp] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 원피스를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(HeadwearRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.headwear] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 모자를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(AccessoriesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.accessories] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 악세사리를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(SocksRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.socks] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 양말을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(ShoesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.shoes] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 신발을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(BagsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.bags] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 가방을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(UmbrellasRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.umbrellas] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 우산을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(WetSuitRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+                itemList[.wetSuit] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 잠수복을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
         group.notify(queue: .main) {
             self.updateAllItemList(by: itemList)
             self.networkGroup.leave()

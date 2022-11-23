@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - WelcomeElement
 struct PhotosResponseDTO: Codable {
     let sourceSheet: String
     let name: String

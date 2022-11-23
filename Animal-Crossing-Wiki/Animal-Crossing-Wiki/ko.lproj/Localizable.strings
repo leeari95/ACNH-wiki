@@ -140,6 +140,16 @@
 "Recipes" = "레시피";
 "Songs" = "음악";
 "Photos" = "사진";
+"Tops" = "상의";
+"Bottoms" = "하의";
+"Dress-Up" = "원피스";
+"Headwear" = "모자";
+"Accessories" = "악세사리";
+"Socks" = "양말";
+"Shoes" = "신발";
+"Bags" = "가방";
+"Umbrellas" = "우산";
+"Wet Suit" = "잠수복";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -493,6 +503,10 @@
 "Lottie" = "솜이";
 "High Friendship" = "높은 친밀도인 상태에서 선물 주거나 부탁을 들어주기";
 "Check Toy Day stockings the day after Toy Day" = "크리스마스 이브 날 이후";
+"HHP Apparel Shop" = "해피홈 파라다이스 옷가게";
+"Able Sisters" = "에이블 시스터즈";
+"Kicks\' Co-op" = "패트릭 노점";
+"Kicks" = "패트릭";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -579,6 +593,28 @@
 "Small shadow" = "작은 그림자";
 "Since 1.6.0, Leif sells pumpkin starts year-round." = "1.6.0 업데이트 후\n늘봉에게서 구매.";
 "Hidden song" = "숨겨진 음악\n섬에 방문한 K.K.에게\n직접 신청해야 획득 가능";
+"Received in mail from DAL after 5 flights" = "5회 비행 후 DAL에서 우편으로 획득";
+"Received in June in the Northern Hemisphere and received in December in the Southern Hemisphere" = "북반구 6월, 남반구 12월";
+"Available from Able Sisters shop only" = "에이블 시스터즈 샵에서만 구매 가능";
+"Added to Able Sisters stock rotation the day after receiving this item from Label" = "고숙이한태 이 아이템을 받은 다음 날, 에이블 시스터즈 재고 회전에 추가됨";
+"Available during DJ KK festival" = "DJ K.K. 축제 기간 동안 구매 가능";
+"Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere" = "북반구 12월, 남반구 6월";
+"Only available as a work clothes for Paradise Planning" = "파라다이스 기획 작업복으로만 가능";
+"Received in mail from DAL after 250 flights" = "250회 비행 후 DAL에서 우편으로 획득";
+"Available from either Mabel\'s temporary shop or Able Sisters shop" = "에이블의 임시 상점 또는 에이블 시스터즈 상점에서 구매 가능";
+"Received in mail from DAL after 100 flights" = "100회 비행 후 DAL에서 우편으로 획득";
+"Sent in the mail after doing group stretches on 3 different days" = "3일 연속 단체 스트레칭 후 우편으로 발송";
+"Give Jack candy or a lollipop" = "펌킹에게 사탕이나 막대사탕을 주기";
+"Received in mail from DAL after 130 flights" = "130회 비행 후 DAL에서 우편으로 획득";
+"Received in mail from DAL after 75 flights" = "75회 비행 후 DAL에서 우편으로 획득";
+"Received in mail from DAL after 15 flights" = "15회 비행 후 DAL에서 우편으로 획득";
+"Mailed to players after the 1.3.0 update in a letter from Nintendo" = "1.3.0 업데이트 후\n닌텐도에게서 우편으로 획득";
+"Available at Able Sisters only during Fireworks Shows" = "축제 시즌 때\n에이블시스터즈에서 구입 가능";
+"Received in mail from DAL after 30 flights" = "30회 비행 후 DAL에서 우편으로 획득";
+"Received in mail from DAL after 200 flights" = "200회 비행 후 DAL에서 우편으로 획득";
+"Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "북반구 5월, 남반구 11월";
+"Received in mail from DAL after 160 flights" = "160회 비행 후 DAL에서 우편으로 획득";
+"Available in Nook\'s Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";

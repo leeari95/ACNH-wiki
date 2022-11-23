@@ -24,6 +24,16 @@ enum Category: String, CaseIterable {
     case recipes = "Recipes"
     case songs = "Songs"
     case photos = "Photos"
+    case tops = "Tops"
+    case bottoms = "Bottoms"
+    case dressUp = "Dress-Up"
+    case headwear = "Headwear"
+    case accessories = "Accessories"
+    case socks = "Socks"
+    case shoes = "Shoes"
+    case bags = "Bags"
+    case umbrellas = "Umbrellas"
+    case wetSuit = "Wet Suit"
     
     var iconName: String {
         switch self {
@@ -43,6 +53,16 @@ enum Category: String, CaseIterable {
         case .recipes: return "icon-recipe"
         case .songs: return "icon-song"
         case .photos: return "icon-photos"
+        case .tops: return "icon-top"
+        case .bottoms: return "icon-pant"
+        case .dressUp: return "icon-top"
+        case .headwear: return "icon-helm"
+        case .accessories: return "icon-glasses"
+        case .socks: return "icon-socks"
+        case .shoes: return "icon-shoes"
+        case .bags: return "icon-bag"
+        case .umbrellas: return "icon-umbrella"
+        case .wetSuit: return "icon-wetsuit"
         }
     }
 
@@ -64,6 +84,16 @@ enum Category: String, CaseIterable {
         case .recipes: return "icon-recipe"
         case .songs: return "icon-song"
         case .photos: return "icon-photos"
+        case .tops: return "icon-top"
+        case .bottoms: return "icon-pant"
+        case .dressUp: return "icon-top"
+        case .headwear: return "icon-helm"
+        case .accessories: return "icon-glasses"
+        case .socks: return "icon-socks"
+        case .shoes: return "icon-shoes"
+        case .bags: return "icon-bag"
+        case .umbrellas: return "icon-umbrella"
+        case .wetSuit: return "icon-wetsuit"
         }
     }
     
@@ -73,7 +103,8 @@ enum Category: String, CaseIterable {
             .fossils, .art, .housewares,
             .miscellaneous, .wallMounted, .ceilingDecor,
             .wallpaper, .floors, .rugs,
-            .other, .recipes, .songs, .photos
+            .other, .recipes, .songs, .photos,
+            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit
         ]
     }
     
@@ -89,7 +120,8 @@ enum Category: String, CaseIterable {
         [
             .housewares, .miscellaneous, .wallMounted,
             .ceilingDecor, .wallpaper, .floors,
-            .rugs, .other, .songs, .photos
+            .rugs, .other, .songs, .photos,
+            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit
         ]
     }
 }
