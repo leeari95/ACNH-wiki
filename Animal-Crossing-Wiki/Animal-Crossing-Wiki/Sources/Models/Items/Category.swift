@@ -165,11 +165,11 @@ extension Category: Comparable {
         }
     }
     
-    static func ==(lhs: Self, rhs: Self) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.sortOrder == rhs.sortOrder
     }
     
-    static func <(lhs: Self, rhs: Self) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
         return lhs.sortOrder < rhs.sortOrder
     }
     
