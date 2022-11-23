@@ -74,5 +74,6 @@ extension Item {
         self.bodyCustomize = bodyCustomize
         self.hhaBasePoints = hhaBasePoints
         self.variations = variations
+        self.genuine = true
     }
 }
