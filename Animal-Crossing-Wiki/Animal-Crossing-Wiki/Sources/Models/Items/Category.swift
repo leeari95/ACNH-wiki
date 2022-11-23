@@ -125,3 +125,46 @@ enum Category: String, CaseIterable {
         ]
     }
 }
+
+extension Category: Comparable {
+    
+    private var sortOrder: Int {
+        switch self {
+        case .fishes: return 0
+        case .seaCreatures: return 1
+        case .bugs: return 2
+        case .fossils: return 3
+        case .art: return 4
+        case .housewares: return 5
+        case .miscellaneous: return 6
+        case .wallMounted: return 7
+        case .wallpaper: return 8
+        case .floors: return 9
+        case .rugs: return 10
+        case .other: return 11
+        case .ceilingDecor: return 12
+        case .recipes: return 13
+        case .songs: return 14
+        case .photos: return 15
+        case .tops: return 16
+        case .bottoms: return 17
+        case .dressUp: return 18
+        case .headwear: return 19
+        case .accessories: return 20
+        case .socks: return 21
+        case .shoes: return 22
+        case .bags: return 23
+        case .umbrellas: return 24
+        case .wetSuit: return 25
+        }
+    }
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.sortOrder == rhs.sortOrder
+    }
+    
+    static func <(lhs: Self, rhs: Self) -> Bool {
+        return lhs.sortOrder < rhs.sortOrder
+    }
+    
+}
