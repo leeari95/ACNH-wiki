@@ -162,5 +162,6 @@ extension Item {
         self.styles = styles
         self.recipe = recipe
         self.variations = variations
+        self.genuine = true
     }
 }

@@ -33,9 +33,13 @@ class DashboardViewController: UIViewController {
         setUpViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateDate()
+    }
+    
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        navigationItem.title = dateString
         navigationItem.rightBarButtonItem = moreButton
         
         view.addSubviews(sectionsScrollView)
@@ -46,6 +50,10 @@ class DashboardViewController: UIViewController {
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func updateDate() {
+        navigationItem.title = dateString
     }
     
     func setUpViewModels(

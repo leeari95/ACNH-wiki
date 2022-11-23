@@ -55,7 +55,7 @@ final class CollectionReactor: Reactor {
         var newState = state
         switch mutation {
         case .setCategories(let categories):
-            newState.catagories = categories
+            newState.catagories = categories.sorted(by: <)
             
         case .transition(let route):
             coordinator.transition(for: route)

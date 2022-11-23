@@ -148,6 +148,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Bags" = "Bags";
 "Umbrellas" = "Umbrellas";
 "Wet Suit" = "Wet Suit";
+"Reactions" = "Reactions";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -507,6 +508,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Able Sisters" = "Able Sisters";
 "Kicks\' Co-op" = "Kicks\' Co-op";
 "Kicks" = "Kicks";
+"New Reactions Notebook" = "New Reactions Notebook";
+"DJ KK concert" = "DJ KK concert";
+"Viva Festivale Reaction Set" = "Viva Festivale Reaction Set";
+"Hip Reaction Collection" = "Hip Reaction Collection";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -615,6 +620,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere";
 "Received in mail from DAL after 160 flights" = "Received in mail from DAL after 160 flights";
 "Available in Nook\'s Cranny (upgraded only)" = "Available in Nook\'s Cranny (upgraded only)";
+"Requires a high level of friendship" = "Requires a high level of friendship";
+"Received after doing your 50th group stretch" = "Received after doing your 50th group stretch";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";
