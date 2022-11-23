@@ -32,6 +32,8 @@
 		023447D3292DE70F00B9457C /* CollectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023447D2292DE70F00B9457C /* CollectionCoordinator.swift */; };
 		023447D5292E064C00B9457C /* ReactionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023447D4292E064C00B9457C /* ReactionsRequest.swift */; };
 		023447D7292E067400B9457C /* ReactionsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023447D6292E067400B9457C /* ReactionsResponseDTO.swift */; };
+		023447D9292E178B00B9457C /* FencingReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023447D8292E178B00B9457C /* FencingReqeust.swift */; };
+		023447DB292E179C00B9457C /* FencingResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023447DA292E179C00B9457C /* FencingResponseDTO.swift */; };
 		9A1DB1CE2840504B00689F11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1CD2840504B00689F11 /* Kingfisher */; };
 		9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */; };
 		9A1DB1D7284081E400689F11 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1DB1D6284081E400689F11 /* Alamofire */; };
@@ -258,6 +260,8 @@
 		023447D2292DE70F00B9457C /* CollectionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCoordinator.swift; sourceTree = "<group>"; };
 		023447D4292E064C00B9457C /* ReactionsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsRequest.swift; sourceTree = "<group>"; };
 		023447D6292E067400B9457C /* ReactionsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsResponseDTO.swift; sourceTree = "<group>"; };
+		023447D8292E178B00B9457C /* FencingReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FencingReqeust.swift; sourceTree = "<group>"; };
+		023447DA292E179C00B9457C /* FencingResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FencingResponseDTO.swift; sourceTree = "<group>"; };
 		9A1DB1D1284069DD00689F11 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		9A1DB1D82840857300689F11 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		9A2B0FD82897C84F00285C77 /* UserInfoReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoReactor.swift; sourceTree = "<group>"; };
@@ -510,6 +514,7 @@
 				9A3DE3CD2887B6F5006EECF7 /* RecipeResponseDTO.swift */,
 				9A836EF428AE0CC200B5A74A /* SongResponseDTO.swift */,
 				023349F729261A5700C7080F /* PhotosResponseDTO.swift */,
+				023447DA292E179C00B9457C /* FencingResponseDTO.swift */,
 			);
 			path = Furniture;
 			sourceTree = "<group>";
@@ -528,6 +533,7 @@
 				9A3DE3CF2887B7E6006EECF7 /* RecipesRequest.swift */,
 				9A836EF228AE0CAF00B5A74A /* SongsRequest.swift */,
 				023349F529261A3800C7080F /* PhotosReqeust.swift */,
+				023447D8292E178B00B9457C /* FencingReqeust.swift */,
 			);
 			path = Furniture;
 			sourceTree = "<group>";
@@ -1339,6 +1345,7 @@
 				9A541B6928220A72001B57FD /* AppDelegate.swift in Sources */,
 				9A7ACEE8287EC194001D47CB /* VillagersCell.swift in Sources */,
 				9A6891C3283380D50061AAF1 /* ArtResponseDTO.swift in Sources */,
+				023447DB292E179C00B9457C /* FencingResponseDTO.swift in Sources */,
 				02334A0A292B468100C7080F /* AccessoriesRequest.swift in Sources */,
 				9A99AA5A28602F4A00629C4A /* CustomTaskView.swift in Sources */,
 				9A7ACEDC287EC180001D47CB /* VillagersCoordinator.swift in Sources */,
@@ -1410,6 +1417,7 @@
 				9AF0421928530D8D00C51449 /* ItemsStorage.swift in Sources */,
 				9A99AA7628657A9900629C4A /* TodaysTasksSectionReactor.swift in Sources */,
 				9A1DB1D2284069DD00689F11 /* UIImageView+extension.swift in Sources */,
+				023447D9292E178B00B9457C /* FencingReqeust.swift in Sources */,
 				9AF042252853133200C51449 /* DailyTaskStorage.swift in Sources */,
 				9A6891A9283366220061AAF1 /* EnvironmentsVariable.swift in Sources */,
 				9A3DE3CE2887B6F5006EECF7 /* RecipeResponseDTO.swift in Sources */,
