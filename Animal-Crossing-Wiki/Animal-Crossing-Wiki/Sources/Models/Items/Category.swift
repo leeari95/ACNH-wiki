@@ -24,6 +24,7 @@ enum Category: String, CaseIterable {
     case recipes = "Recipes"
     case songs = "Songs"
     case photos = "Photos"
+    case fencing = "Fencing"
     case tops = "Tops"
     case bottoms = "Bottoms"
     case dressUp = "Dress-Up"
@@ -54,6 +55,7 @@ enum Category: String, CaseIterable {
         case .recipes: return "icon-recipe"
         case .songs: return "icon-song"
         case .photos: return "icon-photos"
+        case .fencing: return "icon-fence"
         case .tops: return "icon-top"
         case .bottoms: return "icon-pant"
         case .dressUp: return "icon-top"
@@ -86,6 +88,7 @@ enum Category: String, CaseIterable {
         case .recipes: return "icon-recipe"
         case .songs: return "icon-song"
         case .photos: return "icon-photos"
+        case .fencing: return "icon-fence"
         case .tops: return "icon-top"
         case .bottoms: return "icon-pant"
         case .dressUp: return "icon-top"
@@ -106,7 +109,7 @@ enum Category: String, CaseIterable {
             .fossils, .art, .housewares,
             .miscellaneous, .wallMounted, .ceilingDecor,
             .wallpaper, .floors, .rugs,
-            .other, .recipes, .songs, .photos,
+            .other, .recipes, .songs, .photos, .fencing,
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
             .reactions
         ]
@@ -124,7 +127,7 @@ enum Category: String, CaseIterable {
         [
             .housewares, .miscellaneous, .wallMounted,
             .ceilingDecor, .wallpaper, .floors,
-            .rugs, .other, .songs, .photos,
+            .rugs, .other, .songs, .photos, .fencing,
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
             .reactions
         ]
@@ -150,18 +153,19 @@ extension Category: Comparable {
         case .ceilingDecor: return 12
         case .recipes: return 13
         case .songs: return 14
-        case .photos: return 15
-        case .tops: return 16
-        case .bottoms: return 17
-        case .dressUp: return 18
-        case .headwear: return 19
-        case .accessories: return 20
-        case .socks: return 21
-        case .shoes: return 22
-        case .bags: return 23
-        case .umbrellas: return 24
-        case .wetSuit: return 25
-        case .reactions: return 26
+        case .fencing: return 15
+        case .photos: return 16
+        case .tops: return 17
+        case .bottoms: return 18
+        case .dressUp: return 19
+        case .headwear: return 20
+        case .accessories: return 21
+        case .socks: return 22
+        case .shoes: return 23
+        case .bags: return 24
+        case .umbrellas: return 25
+        case .wetSuit: return 26
+        case .reactions: return 27
         }
     }
     
