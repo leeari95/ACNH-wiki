@@ -126,7 +126,10 @@ class ItemDetailInfoView: UIView {
             let sell = ItemBellsView(mode: .sell, price: item.sell)
             let cjSell = ItemBellsView(mode: .cj, price: Int(Double(item.sell) * 1.5))
             infoStackView.addArrangedSubviews(sell, cjSell)
-        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .ceilingDecor:
+        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .ceilingDecor,
+                .other, .recipes, .songs, .fencing,
+                .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
+                .socks, .shoes, .bags, .umbrellas, .wetSuit:
             if item.canExchangePoki, let price = item.exchangePrice {
                 let priceLabel = ItemBellsView(mode: .poki, price: price)
                 infoStackView.addArrangedSubviews(priceLabel)

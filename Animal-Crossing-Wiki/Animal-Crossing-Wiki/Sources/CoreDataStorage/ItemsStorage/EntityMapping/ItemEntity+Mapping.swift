@@ -302,8 +302,8 @@ extension Variant {
             "variantId": variantId,
             "internalId": internalId,
             "variantTranslations": variantTranslations?.toDictionary() ?? [:],
-            "colors": colors.map { $0.rawValue },
-            "concepts": concepts.map { $0.rawValue },
+            "colors": colors?.map { $0.rawValue } ?? [],
+            "concepts": concepts?.map { $0.rawValue } ?? [],
             "patternTranslations": patternTranslations?.toDictionary() ?? [:]
         ]
     }

@@ -151,6 +151,7 @@
 "Umbrellas" = "우산";
 "Wet Suit" = "잠수복";
 "Reactions" = "리액션";
+"Fencing" = "울타리";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -622,6 +623,7 @@
 "Available in Nook\'s Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
 "Requires a high level of friendship" = "높은 수준의 우정이 필요";
 "Received after doing your 50th group stretch" = "50번째 그룹 스트레칭 후 획득";
+"50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "스토리 진행 중에 세 개의 집터를 완성한 후 너굴에게서 50개의 울타리를 획득";
 
 // MARK: - Housewares - tag
 "Museum" = "박물관";
