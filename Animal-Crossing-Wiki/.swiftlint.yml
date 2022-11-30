@@ -3,6 +3,7 @@ included:
 excluded: # 린트 과정에서 무시할 파일 경로. `included`보다 우선순위 높음
   - Animal-Crossing-Wiki/Resources/AppDelegate.swift
   - Animal-Crossing-Wiki/Resources/SceneDelegate.swift
+  - Animal-Crossing-Wiki/Sources/Utility/Items.swift
 type_body_length: # 타입 길이
     warning: 200
     error: 250
@@ -18,7 +19,7 @@ function_body_length:
   error: 300
 type_body_length:
     - 300 # warning
-    - 400
+    - 500
 file_length:
     warning: 500
     error: 1200
@@ -30,6 +31,8 @@ disabled_rules: # 실행에서 제외할 룰 식별자들
     - trailing_whitespace
     - vertical_parameter_alignment
     - cyclomatic_complexity
+    - void_function_in_ternary
+    - comment_spacing
 opt_in_rules: # 일부 룰은 옵트 인 형태로 제공
     - empty_count
     - conditional_returns_on_newline

@@ -151,7 +151,8 @@ class ItemDetailViewController: UIViewController {
         let bodyTitle = "\("Variants".localized) (\(canBodyCustomize ? "Reformable".localized : "Not reformed".localized))"
         let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
         
-        if isNoPattern {
+        switch item.category {
+        case .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit:
             itemVariantsColorView.flatMap { view in
                 let variantsView = SectionView(
                     title: bodyTitle,
@@ -160,31 +161,42 @@ class ItemDetailViewController: UIViewController {
                 )
                 sectionsScrollView.addSection(variantsView)
             }
-        } else if isNoColor {
-            itemVariantsPatternView.flatMap { view in
-                let variantsView = SectionView(
-                    title: patternTitle,
-                    iconName: "camera.macro",
-                    contentView: view
-                )
-                sectionsScrollView.addSection(variantsView)
-            }
-        } else {
-            itemVariantsColorView.flatMap { view in
-                let variantsView = SectionView(
-                    title: bodyTitle,
-                    iconName: "paintbrush.fill",
-                    contentView: view
-                )
-                sectionsScrollView.addSection(variantsView)
-            }
-            itemVariantsPatternView.flatMap { view in
-                let variantsView = SectionView(
-                    title: patternTitle,
-                    iconName: "camera.macro",
-                    contentView: view
-                )
-                sectionsScrollView.addSection(variantsView)
+        default:
+            if isNoPattern {
+                itemVariantsColorView.flatMap { view in
+                    let variantsView = SectionView(
+                        title: bodyTitle,
+                        iconName: "paintbrush.fill",
+                        contentView: view
+                    )
+                    sectionsScrollView.addSection(variantsView)
+                }
+            } else if isNoColor {
+                itemVariantsPatternView.flatMap { view in
+                    let variantsView = SectionView(
+                        title: patternTitle,
+                        iconName: "camera.macro",
+                        contentView: view
+                    )
+                    sectionsScrollView.addSection(variantsView)
+                }
+            } else {
+                itemVariantsColorView.flatMap { view in
+                    let variantsView = SectionView(
+                        title: bodyTitle,
+                        iconName: "paintbrush.fill",
+                        contentView: view
+                    )
+                    sectionsScrollView.addSection(variantsView)
+                }
+                itemVariantsPatternView.flatMap { view in
+                    let variantsView = SectionView(
+                        title: patternTitle,
+                        iconName: "camera.macro",
+                        contentView: view
+                    )
+                    sectionsScrollView.addSection(variantsView)
+                }
             }
         }
     }

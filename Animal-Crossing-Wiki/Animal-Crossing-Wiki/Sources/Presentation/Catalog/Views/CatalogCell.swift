@@ -18,11 +18,12 @@ class CatalogCell: UICollectionViewCell {
     
     private lazy var checkButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
+        let font = UIFont.preferredFont(forTextStyle: .title2)
+        let config = UIImage.SymbolConfiguration(font: font)
         button.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
         button.tintColor = .acNavigationBarTint
         button.backgroundColor = .acSecondaryBackground
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = font.pointSize / 2
         return button
     }()
 
@@ -77,7 +78,7 @@ class CatalogCell: UICollectionViewCell {
             .observe(on: MainScheduler.instance)
             .withUnretained(self)
             .subscribe(onNext: { owner, isAcquired in
-                let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title3))
+                let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
                 owner.checkButton.setImage(
                     UIImage(
                         systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal",
@@ -103,7 +104,9 @@ extension CatalogCell {
             priceView = ItemBellsView(mode: .sell, price: item.sell)
         case .art:
             priceView = ItemBellsView(mode: .buy, price: item.sell)
-        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .floors, .rugs, .other, .ceilingDecor, .recipes, .songs:
+        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .fencing,
+                .floors, .rugs, .other, .ceilingDecor, .recipes, .songs,
+                .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit:
             if item.canExchangeNookMiles, let price = item.exchangePrice {
                 priceView = ItemBellsView(mode: .miles, price: price)
             } else if item.canExchangeNookPoints, let price = item.exchangePrice {
@@ -113,6 +116,7 @@ extension CatalogCell {
             } else {
                 priceView = ItemBellsView(mode: .sell, price: item.sell)
             }
+        default: return
         }
         backgroundStackView.addArrangedSubviews(priceView)
     }

@@ -38,6 +38,7 @@ final class Items {
         fetchVillagers()
         fetchCritters()
         fetchFurniture()
+        fetchClothes()
         
         networkGroup.notify(queue: .main) {
             self.isLoad.accept(false)
@@ -325,13 +326,218 @@ final class Items {
             switch result {
             case .success(let response):
                 let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
                 itemList[.songs] = items
             case .failure(let error):
                 os_log(
                     .error,
                     log: .default,
                     "⛔️ 음악을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(PhotosReqeust()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.photos] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 주민 사진을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(FencingReqeust()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.fencing] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 울타리을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.notify(queue: .main) {
+            self.updateAllItemList(by: itemList)
+            self.networkGroup.leave()
+        }
+    }
+    
+    private func fetchClothes() {
+        self.networkGroup.enter()
+        let group = DispatchGroup()
+        var itemList: [Category: [Item]] = [:]
+        
+        group.enter()
+        network.request(TopsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.tops] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 상의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(BottomsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.bottoms] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 하의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(DressUpRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.dressUp] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 원피스를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(HeadwearRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.headwear] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 모자를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(AccessoriesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.accessories] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 악세사리를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(SocksRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.socks] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 양말을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(ShoesRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.shoes] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 신발을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(BagsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.bags] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 가방을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(UmbrellasRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.umbrellas] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 우산을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(WetSuitRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.wetSuit] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 잠수복을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
+                )
+            }
+            group.leave()
+        }
+        group.enter()
+        network.request(ReactionsRequest()) { result in
+            switch result {
+            case .success(let response):
+                let items = response.map { $0.toDomain() }
+                itemList[.reactions] = items
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ 리액션을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
                 )
             }
             group.leave()

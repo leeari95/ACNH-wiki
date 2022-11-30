@@ -64,6 +64,8 @@ extension ItemEntity {
         self.foodPower = Int64(item.foodPower ?? 0)
         self.doorDeco = item.doorDeco ?? false
         self.musicURL = item.musicURL
+        self.themes = item.themes
+        self.styles = item.styles?.map { $0.rawValue }
     }
     
     func toKeyword() -> [Keyword: [String]] {
@@ -132,7 +134,9 @@ extension ItemEntity {
             variations: variations?.compactMap { Variant($0)},
             foodPower: Int(foodPower),
             doorDeco: doorDeco,
-            musicURL: musicURL
+            musicURL: musicURL,
+            themes: themes,
+            styles: styles?.compactMap { Style(rawValue: $0) }
         )
     }
 }
@@ -298,8 +302,8 @@ extension Variant {
             "variantId": variantId,
             "internalId": internalId,
             "variantTranslations": variantTranslations?.toDictionary() ?? [:],
-            "colors": colors.map { $0.rawValue },
-            "concepts": concepts.map { $0.rawValue },
+            "colors": colors?.map { $0.rawValue } ?? [],
+            "concepts": concepts?.map { $0.rawValue } ?? [],
             "patternTranslations": patternTranslations?.toDictionary() ?? [:]
         ]
     }

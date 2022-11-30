@@ -37,7 +37,7 @@ extension UIViewController {
                     popoverController.barButtonItem = barButtonItem
                 } else {
                     popoverController.sourceRect = CGRect(
-                        x: self.view.bounds.midX ,
+                        x: self.view.bounds.midX,
                         y: self.view.bounds.midY,
                         width: .zero,
                         height: .zero

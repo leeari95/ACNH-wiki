@@ -33,7 +33,7 @@ struct AboutItem {
             AboutItem(
                 icon: "star.fill",
                 title: "Rate the app on the App Store",
-                url: nil
+                url: URL(string: "itms-apps://itunes.apple.com/app/itunes-u/id\(1636229399)?ls=1&mt=8&action=write-review")
             ),
             AboutItem(
                 icon: "lock",
@@ -70,7 +70,7 @@ struct AboutItem {
             AboutItem(
                 icon: "tag",
                 title: "App version",
-                description: "1.0.0"
+                description: "1.2.0"
             ),
             AboutItem(
                 icon: "gamecontroller",

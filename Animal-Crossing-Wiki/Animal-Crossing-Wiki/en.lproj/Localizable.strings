@@ -137,6 +137,19 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Ceiling Decor" = "Ceiling Decor";
 "Recipes" = "Recipes";
 "Songs" = "Songs";
+"Photos" = "Photos";
+"Tops" = "Tops";
+"Bottoms" = "Bottoms";
+"Dress-Up" = "Dress-Up";
+"Headwear" = "Headwear";
+"Accessories" = "Accessories";
+"Socks" = "Socks";
+"Shoes" = "Shoes";
+"Bags" = "Bags";
+"Umbrellas" = "Umbrellas";
+"Wet Suit" = "Wet Suit";
+"Reactions" = "Reactions";
+"Fencing" = "Fencing";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -366,6 +379,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Red" = "Red";
 "White" = "White";
 "Yellow" = "Yellow";
+"Natural wood" = "Natural wood";
+"Dark wood" = "Dark wood";
+
 
 // MARK: - CollectionViewController
 "There are no collectibles." = "There are no collectibles.";
@@ -486,6 +502,17 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Niko" = "Niko";
 "K.K. concert" = "K.K. concert";
+"Lottie" = "Lottie";
+"High Friendship" = "High Friendship";
+"Check Toy Day stockings the day after Toy Day" = "Check Toy Day stockings the day after Toy Day";
+"HHP Apparel Shop" = "HHP Apparel Shop";
+"Able Sisters" = "Able Sisters";
+"Kicks\' Co-op" = "Kicks\' Co-op";
+"Kicks" = "Kicks";
+"New Reactions Notebook" = "New Reactions Notebook";
+"DJ KK concert" = "DJ KK concert";
+"Viva Festivale Reaction Set" = "Viva Festivale Reaction Set";
+"Hip Reaction Collection" = "Hip Reaction Collection";
 
 // MARK: - source note
 "Source Note" = "Source Note";
@@ -572,6 +599,31 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Small shadow" = "Small shadow";
 "Since 1.6.0, Leif sells pumpkin starts year-round." = "Since 1.6.0, Leif sells pumpkin starts year-round.";
 "Hidden song" = "Hidden song";
+"Received in mail from DAL after 5 flights" = "Received in mail from DAL after 5 flights";
+"Received in June in the Northern Hemisphere and received in December in the Southern Hemisphere" = "Received in June in the Northern Hemisphere and received in December in the Southern Hemisphere";
+"Available from Able Sisters shop only" = "Available from Able Sisters shop only";
+"Added to Able Sisters stock rotation the day after receiving this item from Label" = "Added to Able Sisters stock rotation the day after receiving this item from Label";
+"Available during DJ KK festival" = "Available during DJ KK festival";
+"Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere" = "Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere";
+"Only available as a work clothes for Paradise Planning" = "Only available as a work clothes for Paradise Planning";
+"Received in mail from DAL after 250 flights" = "Received in mail from DAL after 250 flights";
+"Available from either Mabel\'s temporary shop or Able Sisters shop" = "Available from either Mabel\'s temporary shop or Able Sisters shop";
+"Received in mail from DAL after 100 flights" = "Received in mail from DAL after 100 flights";
+"Sent in the mail after doing group stretches on 3 different days" = "Sent in the mail after doing group stretches on 3 different days";
+"Give Jack candy or a lollipop" = "Give Jack candy or a lollipop";
+"Received in mail from DAL after 130 flights" = "Received in mail from DAL after 130 flights";
+"Received in mail from DAL after 75 flights" = "Received in mail from DAL after 75 flights";
+"Received in mail from DAL after 15 flights" = "Received in mail from DAL after 15 flights";
+"Mailed to players after the 1.3.0 update in a letter from Nintendo" = "Mailed to players after the 1.3.0 update in a letter from Nintendo";
+"Available at Able Sisters only during Fireworks Shows" = "Available at Able Sisters only during Fireworks Shows";
+"Received in mail from DAL after 30 flights" = "Received in mail from DAL after 30 flights";
+"Received in mail from DAL after 200 flights" = "Received in mail from DAL after 200 flights";
+"Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere";
+"Received in mail from DAL after 160 flights" = "Received in mail from DAL after 160 flights";
+"Available in Nook\'s Cranny (upgraded only)" = "Available in Nook\'s Cranny (upgraded only)";
+"Requires a high level of friendship" = "Requires a high level of friendship";
+"Received after doing your 50th group stretch" = "Received after doing your 50th group stretch";
+"50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "50 fences are given by Tom Nook after completing the three house plots during the main storyline";
 
 // MARK: - Housewares - tag
 "Museum" = "Museum";

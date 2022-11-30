@@ -182,12 +182,12 @@ struct Variant: Codable {
     let variantId: String
     let internalId: Int
     let variantTranslations: Translations?
-    let colors: [Color]
-    let concepts: [Concept]
+    let colors: [Color]?
+    let concepts: [Concept]?
     let patternTranslations: Translations?
     
     func toKeyword() -> [String] {
-        return colors.map { $0.rawValue } + concepts.map { $0.rawValue }
+        return (colors?.map { $0.rawValue } ?? []) + (concepts?.map { $0.rawValue } ?? [])
     }
 }
 
