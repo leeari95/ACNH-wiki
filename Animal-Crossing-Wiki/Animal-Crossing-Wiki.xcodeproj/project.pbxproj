@@ -609,6 +609,16 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		023F420D2936EB9A00D41163 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9A541B6828220A72001B57FD /* AppDelegate.swift */,
+				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
+				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		9A4B4C3828503A6100CC687C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -804,8 +814,6 @@
 		9A836EF828AE48E000B5A74A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9A541B6828220A72001B57FD /* AppDelegate.swift */,
-				9A541B6A28220A72001B57FD /* SceneDelegate.swift */,
 				9A541B7328220A73001B57FD /* LaunchScreen.storyboard */,
 				9A541B7128220A73001B57FD /* Assets.xcassets */,
 			);
@@ -815,13 +823,13 @@
 		9A836EFA28AE491500B5A74A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				023F420D2936EB9A00D41163 /* App */,
 				9AF041CD2851DDE700C51449 /* CoreDataStorage */,
 				9AF041A42851ADFF00C51449 /* Extension */,
 				9A4B4C3828503A6100CC687C /* Models */,
 				9A6891A128335B2D0061AAF1 /* Networking */,
 				9A836EFB28AE498300B5A74A /* Presentation */,
 				9A7ACF1B287EC3F0001D47CB /* Utility */,
-				9A99AA09285824DF00629C4A /* AppAppearance.swift */,
 				9A99AA072858248600629C4A /* AppCoordinator.swift */,
 				9A99AA052858247700629C4A /* Coordinator.swift */,
 			);
