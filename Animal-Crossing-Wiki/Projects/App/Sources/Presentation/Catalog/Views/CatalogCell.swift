@@ -76,10 +76,9 @@ class CatalogCell: UICollectionViewCell {
         reactor.state.map { $0.isAcquired }
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isAcquired in
+            .subscribe(onNext: { [weak self] isAcquired in
                 let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
-                owner.checkButton.setImage(
+                self?.checkButton.setImage(
                     UIImage(
                         systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal",
                         withConfiguration: config

@@ -191,9 +191,8 @@ class ItemsViewController: UIViewController {
         selectedKeyword
             .filter { $0.isEmpty == false }
             .map { !$0.keys.contains(.all) }
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, isFiltering in
+            .subscribe(with: self, onNext: { owner, isFiltering in
                 owner.navigationItem.rightBarButtonItem?.image = UIImage(
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "ellipsis.circle"
                 )
@@ -201,8 +200,7 @@ class ItemsViewController: UIViewController {
 
         searchController.searchBar.rx.text
             .map { $0 != "" }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isSearching in
+            .subscribe(with: self, onNext: { owner, isSearching in
                 if isSearching {
                     owner.emptyView.editLabel(
                         title: "Item is empty.".localized,
@@ -214,8 +212,7 @@ class ItemsViewController: UIViewController {
         searchController.searchBar.rx.selectedScopeButtonIndex
             .compactMap { SearchScope.allCases[safe: $0] }
             .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, currentScope in
+            .subscribe(with: self, onNext: { owner, currentScope in
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
@@ -390,17 +387,19 @@ extension ItemsViewController {
             title: Menu.allSelect.title,
             image: UIImage(systemName: "text.badge.checkmark")
         ) { [weak self] action in
-            guard let self = self else {
+            guard let owner = self else {
                 return
             }
-            self.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
+            owner.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
                 .filter { $0 == true }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, _ in
+                .subscribe(onNext: { [weak owner] _ in
+                    guard let owner else {
+                        return
+                    }
                     owner.reactor.action.onNext(.selectedMenu(keywords: [.allSelect: ""]))
                     owner.selectedKeyword.accept(owner.selectedKeyword.value)
-                }).disposed(by: self.disposeBag)
-            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+                }).disposed(by: owner.disposeBag)
+            owner.navigationItem.rightBarButtonItem?.menu = owner.createMoreMenu()
         }
         let resetAction = UIAction(
             title: Menu.reset.title,
@@ -411,8 +410,7 @@ extension ItemsViewController {
             }
             self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
                 .filter { $0 == true }
-                .withUnretained(self)
-                .subscribe(onNext: { owner, _ in
+                .subscribe(with: self, onNext: { owner, _ in
                     owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))
                     owner.selectedKeyword.accept(owner.selectedKeyword.value)
                 }).disposed(by: self.disposeBag)

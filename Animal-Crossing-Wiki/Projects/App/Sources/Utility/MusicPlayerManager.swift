@@ -40,8 +40,7 @@ final class MusicPlayerManager {
     private init() {
         Items.shared.categoryList
             .compactMap { $0[.songs] }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, songs in
+            .subscribe(with: self, onNext: { owner, songs in
                 var newSongs = [String: Item]()
                 songs.forEach { item in
                     newSongs[item.name] = item
@@ -53,32 +52,29 @@ final class MusicPlayerManager {
         currentSong
             .compactMap { $0?.musicURL }
             .compactMap { URL(string: $0) }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, musicURL in
+            .subscribe(with: self, onNext: { owner, musicURL in
                 owner.player = AVPlayer(url: musicURL)
             }).disposed(by: disposeBag)
 
         currentSong
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, song in
+            .subscribe(with: self, onNext: { owner, song in
                 owner.currentIndex.accept(owner.songsItem.value.firstIndex(of: song))
             }).disposed(by: disposeBag)
 
         isPlaying
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isPlaying in
+            .subscribe(onNext: { [weak self]  isPlaying in
                 if isPlaying {
-                    if owner.currentSong.value == nil {
-                        owner.currentSong.accept(owner.songsItem.value.first)
+                    if self?.currentSong.value == nil {
+                        self?.currentSong.accept(self?.songsItem.value.first)
                     }
-                    owner.setUpBackground()
-                    owner.player?.play()
+                    self?.setUpBackground()
+                    self?.player?.play()
                 } else {
-                    owner.player?.pause()
+                    self?.player?.pause()
                 }
-                owner.setUpPlayerTimer()
+                self?.setUpPlayerTimer()
             }).disposed(by: disposeBag)
 
         setUpNotification()

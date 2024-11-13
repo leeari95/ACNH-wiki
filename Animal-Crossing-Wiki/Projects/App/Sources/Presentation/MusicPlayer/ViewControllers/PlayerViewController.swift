@@ -78,9 +78,8 @@ class PlayerViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         dragGesture.rx.event
-            .withUnretained(self)
-            .map { owner, gestureRecognizer -> Bool? in
-                let velocity = gestureRecognizer.velocity(in: owner.visualEffectView)
+            .map { [weak self] gestureRecognizer -> Bool? in
+                let velocity = gestureRecognizer.velocity(in: self?.visualEffectView)
                 if gestureRecognizer.state == .ended {
                     if velocity.y < 0 {
                         return true
@@ -147,38 +146,37 @@ class PlayerViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         reactor.state.map { $0.playerMode }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, playerMode in
+            .subscribe(onNext: { [weak self] playerMode in
                 switch playerMode {
                 case .large:
                     UIView.animate(withDuration: 0.25) {
-                        owner.maximizeView.alpha = 1
-                        owner.minimizeView.alpha = 0
-                        owner.tableView.alpha = 0
+                        self?.maximizeView.alpha = 1
+                        self?.minimizeView.alpha = 0
+                        self?.tableView.alpha = 0
                     } completion: { _ in
-                        owner.maximizeView.isHidden = false
-                        owner.minimizeView.isHidden = true
-                        owner.tableView.isHidden = true
+                        self?.maximizeView.isHidden = false
+                        self?.minimizeView.isHidden = true
+                        self?.tableView.isHidden = true
                     }
                 case .small:
                     UIView.animate(withDuration: 0.25) {
-                        owner.maximizeView.alpha = 0
-                        owner.minimizeView.alpha = 1
-                        owner.tableView.alpha = 0
+                        self?.maximizeView.alpha = 0
+                        self?.minimizeView.alpha = 1
+                        self?.tableView.alpha = 0
                     } completion: { _ in
-                        owner.maximizeView.isHidden = true
-                        owner.tableView.isHidden = true
-                        owner.minimizeView.isHidden = false
+                        self?.maximizeView.isHidden = true
+                        self?.tableView.isHidden = true
+                        self?.minimizeView.isHidden = false
                     }
                 case .list:
                     UIView.animate(withDuration: 0.25) {
-                        owner.maximizeView.alpha = 0
-                        owner.minimizeView.alpha = 1
-                        owner.tableView.alpha = 1
+                        self?.maximizeView.alpha = 0
+                        self?.minimizeView.alpha = 1
+                        self?.tableView.alpha = 1
                     } completion: { _ in
-                        owner.maximizeView.isHidden = true
-                        owner.tableView.isHidden = false
-                        owner.minimizeView.isHidden = false
+                        self?.maximizeView.isHidden = true
+                        self?.tableView.isHidden = false
+                        self?.minimizeView.isHidden = false
                     }
                 }
             }).disposed(by: disposeBag)
@@ -190,16 +188,15 @@ class PlayerViewController: UIViewController {
 
         reactor.state.map { $0.songs }
             .filter { $0.isEmpty == false }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .flatMapLatest { _ in
                 MusicPlayerManager.shared.playingSongIndex
                     .compactMap { $0 }
                     .map { IndexPath(row: $0, section: .zero) }
-                    .withUnretained(self)
-                    .subscribe(onNext: { owner, indexPath in
-                        owner.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-                    }).disposed(by: owner.disposeBag)
-            }).disposed(by: disposeBag)
+            }
+            .subscribe(onNext: { [weak self] indexPath in
+                self?.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            })
+            .disposed(by: disposeBag)
 
     }
 }

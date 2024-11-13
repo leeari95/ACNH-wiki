@@ -91,10 +91,9 @@ class ItemDetailViewController: UIViewController {
 
         reactor.state.map { $0.isAcquired }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isAcquired in
+            .subscribe(onNext: { [weak self]  isAcquired in
                 let config = UIImage.SymbolConfiguration(scale: .large)
-                owner.checkButton.setImage(
+                self?.checkButton.setImage(
                     UIImage(systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal", withConfiguration: config),
                     for: .normal
                 )
@@ -102,16 +101,14 @@ class ItemDetailViewController: UIViewController {
 
         itemVariantsColorView?.didTapImage
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, image in
-                owner.itemDetailInfoView?.changeImage(image)
+            .subscribe(onNext: { [weak self]  image in
+                self?.itemDetailInfoView?.changeImage(image)
             }).disposed(by: disposeBag)
 
         itemVariantsPatternView?.didTapImage
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, image in
-                owner.itemDetailInfoView?.changeImage(image)
+            .subscribe(onNext: { [weak self]  image in
+                self?.itemDetailInfoView?.changeImage(image)
             }).disposed(by: disposeBag)
     }
 

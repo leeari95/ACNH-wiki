@@ -78,13 +78,12 @@ class CollectionProgressView: UIView {
 
         Items.shared.itemsCount
             .map { $0.isEmpty }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isEmpty in
-                owner.emptyView.isHidden = !isEmpty
+            .subscribe(onNext: { [weak self] isEmpty in
+                self?.emptyView.isHidden = !isEmpty
                 if isEmpty {
-                    owner.removeGestureRecognizer(tap)
+                    self?.removeGestureRecognizer(tap)
                 } else {
-                    owner.addGestureRecognizer(tap)
+                    self?.addGestureRecognizer(tap)
                 }
             })
             .disposed(by: disposeBag)

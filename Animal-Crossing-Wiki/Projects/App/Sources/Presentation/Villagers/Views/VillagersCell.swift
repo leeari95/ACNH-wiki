@@ -61,17 +61,15 @@ class VillagersCell: UICollectionViewCell {
         reactor.state.map { $0.isLiked }
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isLiked in
-                owner.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+            .subscribe(onNext: { [weak self]  isLiked in
+                self?.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
             }).disposed(by: disposeBag)
 
         reactor.state.map { $0.isResident }
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isResident in
-                owner.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
+            .subscribe(onNext: { [weak self]  isResident in
+                self?.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
             }).disposed(by: disposeBag)
     }
 

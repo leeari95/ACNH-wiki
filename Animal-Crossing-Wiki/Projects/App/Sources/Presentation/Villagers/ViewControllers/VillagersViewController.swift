@@ -111,10 +111,9 @@ class VillagersViewController: UIViewController {
 
         searchController.searchBar.rx.text
             .map { $0 != "" }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isSearching in
+            .subscribe(onNext: { [weak self] isSearching in
                 if isSearching {
-                    owner.emptyView.editLabel(
+                    self?.emptyView.editLabel(
                         title: "There are no villagers.".localized,
                         description: "There are no results for your search.".localized
                     )
@@ -154,8 +153,7 @@ class VillagersViewController: UIViewController {
         searchController.searchBar.rx.selectedScopeButtonIndex
             .observe(on: MainScheduler.asyncInstance)
             .compactMap { SearchScope.allCases[safe: $0] }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, currentScope in
+            .subscribe(with: self, onNext: { owner, currentScope in
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
@@ -179,10 +177,9 @@ class VillagersViewController: UIViewController {
 
         selectedKeyword
             .map { !$0.keys.contains(.all) }
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, isFiltering in
-                owner.navigationItem.rightBarButtonItem?.image = UIImage(
+            .subscribe(onNext: { [weak self]  isFiltering in
+                self?.navigationItem.rightBarButtonItem?.image = UIImage(
                     systemName: isFiltering ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle"
                 )
         }).disposed(by: disposeBag)

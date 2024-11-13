@@ -96,10 +96,9 @@ class UserInfoView: UIView {
 
         reactor.state.map { $0.userInfo }
             .compactMap { $0 }
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, userInfo in
-                owner.updateInfo(userInfo)
+            .subscribe(onNext: { [weak self] userInfo in
+                self?.updateInfo(userInfo)
             }).disposed(by: disposeBag)
     }
 

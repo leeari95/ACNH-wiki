@@ -68,15 +68,19 @@ final class VillagersReactor: Reactor {
             lastSearchKeyword = text.lowercased()
             guard text != "" else {
                 return currentVillagers()
-                    .withUnretained(self)
-                    .map { owner, villagers in
-                        owner.filtered(villagers: villagers, keywords: owner.currentKeywords)
+                    .compactMap { [weak self] villagers in
+                        guard let owner = self else {
+                            return nil
+                        }
+                        return owner.filtered(villagers: villagers, keywords: owner.currentKeywords)
                     }.map { Mutation.setVillagers($0) }
             }
             return currentVillagers()
-                .withUnretained(self)
-                .map { owner, villagers in
-                    owner.filtered(
+                .compactMap { [weak self] villagers in
+                    guard let owner = self else {
+                        return nil
+                    }
+                    return owner.filtered(
                         villagers: owner.search(villagers: villagers, text: text.lowercased()),
                         keywords: owner.currentKeywords
                     )
@@ -92,9 +96,11 @@ final class VillagersReactor: Reactor {
         case .selectedMenu(let keywords):
             currentKeywords = keywords
             return currentVillagers()
-                .withUnretained(self)
-                .map { owner, villagers in
-                    owner.filtered(
+                .compactMap { [weak self] villagers in
+                    guard let owner = self else {
+                        return nil
+                    }
+                    return owner.filtered(
                         villagers: owner.search(villagers: villagers, text: owner.lastSearchKeyword),
                         keywords: keywords
                     )

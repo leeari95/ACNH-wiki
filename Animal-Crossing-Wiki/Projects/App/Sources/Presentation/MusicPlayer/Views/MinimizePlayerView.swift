@@ -95,10 +95,9 @@ class MinimizePlayerView: UIView {
     private func bind() {
         MusicPlayerManager.shared.isNowPlaying
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isPlaying in
+            .subscribe(onNext: { [weak self]  isPlaying in
                 let config = UIImage.SymbolConfiguration(scale: .large)
-                owner.playButton.setImage(
+                self?.playButton.setImage(
                     UIImage(systemName: isPlaying ? "pause.fill" : "play.fill")?.withConfiguration(config),
                     for: .normal
                 )
@@ -106,17 +105,15 @@ class MinimizePlayerView: UIView {
 
         MusicPlayerManager.shared.currentMusic
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, song in
-                owner.coverImageView.kf.cancelDownloadTask()
-                owner.titleLabel.text = song.translations.localizedName()
-                owner.coverImageView.setImage(with: song.image ?? "")
+            .subscribe(onNext: { [weak self]  song in
+                self?.coverImageView.kf.cancelDownloadTask()
+                self?.titleLabel.text = song.translations.localizedName()
+                self?.coverImageView.setImage(with: song.image ?? "")
             }).disposed(by: disposeBag)
 
         MusicPlayerManager.shared.songProgress
-            .withUnretained(self)
-            .subscribe(onNext: { owner, value in
-                owner.durationBar.setProgress(value, animated: false)
+            .subscribe(onNext: { [weak self]  value in
+                self?.durationBar.setProgress(value, animated: false)
             }).disposed(by: disposeBag)
     }
 }

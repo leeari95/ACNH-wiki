@@ -132,33 +132,30 @@ class VillagersView: UIView {
 
         reactor.state
             .map { $0.villagers }
-            .withUnretained(self)
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { owner, villagers in
+            .subscribe(onNext: { [weak self] villagers in
                 if villagers.isEmpty {
-                    owner.emptyLabel.isHidden = false
-                    owner.backgroundStackView.isHidden = true
+                    self?.emptyLabel.isHidden = false
+                    self?.backgroundStackView.isHidden = true
                 } else {
-                    owner.emptyLabel.isHidden = true
-                    owner.backgroundStackView.isHidden = false
-                    owner.descriptionLabel.text = "tip".localized
+                    self?.emptyLabel.isHidden = true
+                    self?.backgroundStackView.isHidden = false
+                    self?.descriptionLabel.text = "tip".localized
                 }
-                owner.updateCollectionViewHeight()
-                owner.layoutIfNeeded()
+                self?.updateCollectionViewHeight()
+                self?.layoutIfNeeded()
             }).disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
+            .subscribe(onNext: { [weak self] indexPath in
                 HapticManager.shared.selection()
-                let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
+                let cell = self?.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                let cells = owner.collectionView.visibleCells as? [IconCell]
+            .subscribe(onNext: { [weak self] _ in
+                let cells = self?.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
             }).disposed(by: disposeBag)
     }

@@ -68,8 +68,7 @@ class PreferencesViewController: UIViewController {
             .disposed(by: disposeBag)
 
         settingSection.hemisphereButtonObservable
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.showSelectedItemAlert(
                     Hemisphere.allCases.map { $0.rawValue.localized },
                     currentItem: owner.currentHemisphere.value
@@ -79,8 +78,7 @@ class PreferencesViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         settingSection.reputationButtonObservable
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.showSelectedItemAlert(
                     ["⭐️", "⭐️⭐️", "⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️⭐️"],
                     currentItem: owner.currentReputation.value
@@ -90,8 +88,7 @@ class PreferencesViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         settingSection.startingFruitButtonObservable
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.showSelectedItemAlert(
                     Fruit.allCases.map { $0.rawValue.lowercased().localized },
                     currentItem: owner.currentFruit.value
@@ -103,8 +100,7 @@ class PreferencesViewController: UIViewController {
         reactor.state
             .compactMap { $0.userInfo }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, userInfo in
+            .subscribe(with: self, onNext: { owner, userInfo in
                 owner.settingSection.setUpViews(userInfo)
                 owner.currentHemisphere.accept(userInfo.hemisphere.rawValue.localized)
                 owner.currentFruit.accept(userInfo.islandFruit.rawValue.localized)
