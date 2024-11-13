@@ -43,16 +43,15 @@ class ItemSeasonView: UIView {
 
         Items.shared.userInfo
             .compactMap { $0?.hemisphere }
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, hemisphere in
+            .subscribe(onNext: { [weak self] hemisphere in
                 switch hemisphere {
                 case .south:
-                    owner.setUpTime(times: item.hemispheres?.south.time ?? [])
-                    owner.setUpCalendar(months: item.hemispheres?.south.monthsArray ?? [])
+                    self?.setUpTime(times: item.hemispheres?.south.time ?? [])
+                    self?.setUpCalendar(months: item.hemispheres?.south.monthsArray ?? [])
                 case .north:
-                    owner.setUpTime(times: item.hemispheres?.north.time ?? [])
-                    owner.setUpCalendar(months: item.hemispheres?.north.monthsArray ?? [])
+                    self?.setUpTime(times: item.hemispheres?.north.time ?? [])
+                    self?.setUpCalendar(months: item.hemispheres?.north.monthsArray ?? [])
                 }
             }).disposed(by: disposeBag)
 

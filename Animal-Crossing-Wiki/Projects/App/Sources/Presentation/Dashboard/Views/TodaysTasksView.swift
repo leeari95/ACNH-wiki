@@ -124,8 +124,7 @@ class TodaysTasksView: UIView {
             }).disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
+            .subscribe(with: self, onNext: { owner, indexPath in
                 let cell = owner.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.toggle()
                 HapticManager.shared.selection()

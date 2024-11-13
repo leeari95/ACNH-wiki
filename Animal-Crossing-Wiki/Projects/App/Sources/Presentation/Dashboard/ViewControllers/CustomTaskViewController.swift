@@ -75,8 +75,7 @@ class CustomTaskViewController: UIViewController {
             .disposed(by: disposeBag)
 
         customTaskSection.maxAmountButtonObservable
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.showSelectedItemAlert(
                     Array(1...20).map { $0.description },
                     currentItem: owner.currentAmount.value
@@ -92,16 +91,14 @@ class CustomTaskViewController: UIViewController {
 
         reactor.state
             .compactMap { $0.amount }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, amount in
+            .subscribe(with: self, onNext: { owner, amount in
                 owner.customTaskSection.updateAmount(amount.description)
                 owner.currentAmount.accept(amount.description)
             }).disposed(by: disposeBag)
 
         reactor.state.compactMap { $0.task }
             .filter { [weak self] in self?.currentTask.value != $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, task in
+            .subscribe(with: self, onNext: { owner, task in
                 owner.customTaskSection.setUpViews(task)
                 owner.currentAmount.accept(task.amount.description)
                 owner.currentTask.accept(task)

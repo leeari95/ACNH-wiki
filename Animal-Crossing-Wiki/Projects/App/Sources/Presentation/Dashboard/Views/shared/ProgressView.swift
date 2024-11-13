@@ -53,11 +53,10 @@ class ProgressView: UIStackView {
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.itemInfo }
-            .withUnretained(self)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { owner, items in
-                owner.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
-                owner.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: false)
+            .subscribe(onNext: { [weak self] items in
+                self?.progressLabel.text = "\(items.itemCount) / \(items.maxCount)"
+                self?.progressBar.setProgress(Float(items.itemCount) / Float(items.maxCount), animated: false)
             }).disposed(by: disposeBag)
     }
 }

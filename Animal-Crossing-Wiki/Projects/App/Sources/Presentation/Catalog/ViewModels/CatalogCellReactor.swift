@@ -48,9 +48,11 @@ final class CatalogCellReactor: Reactor {
         case .fetch:
             let collectedState = Items.shared.itemList
                 .take(1)
-                .withUnretained(self)
-                .compactMap { owner, items in
-                    items[owner.currentState.category]?.contains(owner.item)
+                .compactMap { [weak self] items in
+                    guard let owner = self else {
+                        return nil
+                    }
+                    return items[owner.currentState.category]?.contains(owner.item)
                 }.map { Mutation.setAcquired($0) }
             return collectedState
 

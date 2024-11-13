@@ -40,8 +40,7 @@ class VillagerDetailViewController: UIViewController {
                 action: nil
             )
             navigationItem.leftBarButtonItem?.rx.tap
-                .withUnretained(self)
-                .subscribe(onNext: { owner, _ in
+                .subscribe(with: self, onNext: { owner, _ in
                     owner.dismiss(animated: true)
                 }).disposed(by: disposeBag)
         }
@@ -86,9 +85,8 @@ class VillagerDetailViewController: UIViewController {
         reactor.state.map { $0.isLiked }
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isLiked in
-                owner.likeButton.setImage(
+            .subscribe(onNext: { [weak self]  isLiked in
+                self?.likeButton.setImage(
                     UIImage(systemName: isLiked ? "heart.fill" : "heart")?.withConfiguration(buttonConfigure),
                     for: .normal
                 )
@@ -97,9 +95,8 @@ class VillagerDetailViewController: UIViewController {
         reactor.state.map { $0.isResident }
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isResident in
-                owner.houseButton.setImage(
+            .subscribe(onNext: { [weak self]  isResident in
+                self?.houseButton.setImage(
                     UIImage(systemName: isResident ? "house.fill" : "house")?.withConfiguration(buttonConfigure),
                     for: .normal
                 )
@@ -108,19 +105,17 @@ class VillagerDetailViewController: UIViewController {
         reactor.state.map { $0.villager }
             .take(1)
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, villager in
+            .subscribe(onNext: { [weak self]  villager in
                 let detailSection = VillagerDetailView(villager)
-                owner.sectionsScrollView.addSection(SectionView(contentView: detailSection))
-                owner.navigationItem.title = villager.translations.localizedName()
+                self?.sectionsScrollView.addSection(SectionView(contentView: detailSection))
+                self?.navigationItem.title = villager.translations.localizedName()
             }).disposed(by: disposeBag)
 
         reactor.state.compactMap { $0.villager.houseImage }
             .take(1)
             .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, houseImage in
-                owner.addHouseSection(houseImage)
+            .subscribe(onNext: { [weak self]  houseImage in
+                self?.addHouseSection(houseImage)
             }).disposed(by: disposeBag)
     }
 

@@ -185,8 +185,7 @@ class MaximizePlayerView: UIView {
     private func bind() {
         MusicPlayerManager.shared.isNowPlaying
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, isPlaying in
+            .subscribe(with: self, onNext: { owner, isPlaying in
                 let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .largeTitle, weight: .bold))
                 owner.playButton.setImage(
                     UIImage(systemName: isPlaying ? "pause.fill" : "play.fill")?.withConfiguration(config),
@@ -196,47 +195,42 @@ class MaximizePlayerView: UIView {
 
         MusicPlayerManager.shared.currentMusic
             .compactMap { $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, song in
+            .subscribe(with: self, onNext: { owner, song in
                 owner.coverImageView.kf.cancelDownloadTask()
                 owner.titleLabel.text = song.translations.localizedName()
                 owner.coverImageView.setImage(with: song.image ?? "")
             }).disposed(by: disposeBag)
 
         MusicPlayerManager.shared.songProgress
-            .withUnretained(self)
-            .subscribe(onNext: { owner, value in
-                owner.durationBar.setProgress(value, animated: false)
+            .subscribe(onNext: { [weak self]  value in
+                self?.durationBar.setProgress(value, animated: false)
             }).disposed(by: disposeBag)
 
         MusicPlayerManager.shared.currentTime
-            .withUnretained(self)
-            .subscribe(onNext: { owner, value in
-                owner.timeElaspedLabel.text = value
+            .subscribe(onNext: { [weak self]  value in
+                self?.timeElaspedLabel.text = value
             }).disposed(by: disposeBag)
 
         MusicPlayerManager.shared.fullTime
             .filter { self.durationLabel.text != $0 }
-            .withUnretained(self)
-            .subscribe(onNext: { owner, value in
-                owner.durationLabel.text = value
+            .subscribe(onNext: { [weak self]  value in
+                self?.durationLabel.text = value
             }).disposed(by: disposeBag)
 
         MusicPlayerManager.shared.currentPlayerMode
-            .withUnretained(self)
-            .subscribe(onNext: { owner, playerMode in
+            .subscribe(onNext: { [weak self]  playerMode in
                 let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(for: .title3, weight: .semibold))
                 switch playerMode {
                 case .fullRepeat:
-                    owner.repeatButton.setImage(UIImage(systemName: "repeat")?.withConfiguration(config), for: .normal)
-                    owner.repeatButton.tintColor = .acHeaderBackground
-                    owner.shuffleButton.tintColor = .acText
+                    self?.repeatButton.setImage(UIImage(systemName: "repeat")?.withConfiguration(config), for: .normal)
+                    self?.repeatButton.tintColor = .acHeaderBackground
+                    self?.shuffleButton.tintColor = .acText
                 case .oneSongRepeat:
-                    owner.repeatButton.setImage(UIImage(systemName: "repeat.1")?.withConfiguration(config), for: .normal)
-                    owner.repeatButton.tintColor = .acHeaderBackground
+                    self?.repeatButton.setImage(UIImage(systemName: "repeat.1")?.withConfiguration(config), for: .normal)
+                    self?.repeatButton.tintColor = .acHeaderBackground
                 case .shuffle:
-                    owner.shuffleButton.tintColor = .acHeaderBackground
-                    owner.repeatButton.tintColor = .acText
+                    self?.shuffleButton.tintColor = .acHeaderBackground
+                    self?.repeatButton.tintColor = .acText
                 }
             }).disposed(by: disposeBag)
     }

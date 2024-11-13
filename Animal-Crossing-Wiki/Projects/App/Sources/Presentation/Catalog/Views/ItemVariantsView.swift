@@ -65,10 +65,9 @@ class ItemVariantsView: UIView {
             }.disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
-                let cell = owner.collectionView.cellForItem(at: indexPath) as? VariantCell
-                owner.cellImage.accept(cell?.imageView.image)
+            .subscribe(onNext: { [weak self] indexPath in
+                let cell = self?.collectionView.cellForItem(at: indexPath) as? VariantCell
+                self?.cellImage.accept(cell?.imageView.image)
             }).disposed(by: disposeBag)
     }
 }

@@ -44,10 +44,17 @@ final class ItemDetailReactor: Reactor {
         case .fetch:
             let collectedState = Items.shared.itemList
                 .take(1)
-                .withUnretained(self)
-                .compactMap { owner, items in
-                    items[owner.currentState.item.category]
-                }.withUnretained(self).map { owner, items -> Mutation in Mutation.setAcquired(items.contains(owner.currentState.item))
+                .compactMap { [weak self] items -> [Item]? in
+                    guard let owner = self else {
+                        return nil
+                    }
+                    return items[owner.currentState.item.category]
+                }
+                .compactMap { [weak self] items -> Mutation? in
+                    guard let owner = self else {
+                        return nil
+                    }
+                    return Mutation.setAcquired(items.contains(owner.currentState.item))
                 }
             return collectedState
 

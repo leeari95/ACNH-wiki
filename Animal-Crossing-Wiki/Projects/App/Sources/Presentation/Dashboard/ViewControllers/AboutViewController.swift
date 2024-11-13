@@ -86,8 +86,7 @@ class AboutViewController: UIViewController {
 
         tableView.rx.itemSelected
             .observe(on: MainScheduler.instance)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, indexPath in
+            .subscribe(with: self, onNext: { owner, indexPath in
                 owner.tableView.deselectRow(at: indexPath, animated: true)
             }).disposed(by: disposeBag)
 
