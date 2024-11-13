@@ -1,0 +1,50 @@
+name: Check build
+on:
+  pull_request:
+    branches: [ "develop" ]
+  
+  issue_comment:
+    types: created
+
+jobs:
+  build:
+    name: Check Build
+    runs-on: macos-latest
+    if: >
+      github.event_name == 'pull_request' || 
+      (github.event_name == 'issue_comment' && 
+      github.event.issue.pull_request != null &&
+      github.event.comment.body == '/build')
+    
+    steps:
+      - uses: SwiftyLab/setup-swift@latest
+        with:
+          swift-version: "6.0.0"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 1
+
+      - name: Install Mise
+        run: |
+            curl https://mise.run | sh
+            mise install
+
+      - name: Install Tuist
+        run: |
+          mise install tuist
+          mise use tuist
+          echo "Adding tuist to PATH..."
+          export PATH="$HOME/.local/share/mise/plugins/tuist/bin:$PATH"
+          echo "New PATH: $PATH"
+          mise which tuist || echo "Tuist path not found"
+
+      - name: Install Tuist dependencies
+        run: mise x -- tuist install
+
+      - name: Install Tuist Generate
+        run: mise x -- tuist generate --no-open
+
+      - name: Build Project
+        run: mise x -- tuist build
