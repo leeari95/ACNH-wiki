@@ -43,7 +43,7 @@ struct WallpaperResponseDTO: Codable {
     let recipe: RecipeResponseDTO?
 }
 
-extension WallpaperResponseDTO {
+extension WallpaperResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

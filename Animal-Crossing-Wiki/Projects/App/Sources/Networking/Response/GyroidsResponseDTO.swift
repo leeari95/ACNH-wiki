@@ -94,7 +94,7 @@ extension Item {
     }
 }
 
-extension GyroidsResponseDTO {
+extension GyroidsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

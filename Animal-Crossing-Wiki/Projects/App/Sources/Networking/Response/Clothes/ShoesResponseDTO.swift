@@ -39,7 +39,7 @@ struct ShoesResponseDTO: Codable {
     let variations: [WardrobeVariat]?
 }
 
-extension ShoesResponseDTO {
+extension ShoesResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

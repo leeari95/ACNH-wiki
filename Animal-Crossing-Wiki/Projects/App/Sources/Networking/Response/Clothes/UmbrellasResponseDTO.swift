@@ -31,7 +31,7 @@ struct UmbrellasResponseDTO: Codable {
     let recipe: RecipeResponseDTO?
 }
 
-extension UmbrellasResponseDTO {
+extension UmbrellasResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

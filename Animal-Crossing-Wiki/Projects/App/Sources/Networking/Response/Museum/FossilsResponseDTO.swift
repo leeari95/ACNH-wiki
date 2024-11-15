@@ -33,7 +33,7 @@ enum Museum: String, Codable {
     case room3 = "Room 3"
 }
 
-extension FossilsResponseDTO {
+extension FossilsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: self.name,

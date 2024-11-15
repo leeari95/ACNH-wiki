@@ -74,22 +74,12 @@ final class Items {
             }).disposed(by: disposeBag)
     }
 
+    // MARK: Fetch Items
     private func fetchVillagers() {
-        networkGroup.enter()
-        network.request(VillagersRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                    .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
-                self.villagers.accept(items)
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 주민을을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            self.networkGroup.leave()
+        fetchItem(VillagersRequest(), group: networkGroup) { [weak self] response in
+            let items = response.map { $0.toDomain() }
+                .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+            self?.villagers.accept(items)
         }
     }
 
@@ -97,66 +87,18 @@ final class Items {
         networkGroup.enter()
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
-        group.enter()
-        network.request(BugRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.bugs] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 곤충을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        
+        fetchItem(BugRequest(), itemKey: .bugs, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(FishRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.fishes] = items
-
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 물고기를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(FishRequest(), itemKey: .fishes, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(FossilsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.fossils] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 화석을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(FossilsRequest(), itemKey: .fossils, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(SeaCreaturesRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.seaCreatures] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 해산물을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(SeaCreaturesRequest(), itemKey: .seaCreatures, group: group) {
+            itemList.merge($0) { _, new in new }
         }
 
         group.notify(queue: .main) {
@@ -170,217 +112,49 @@ final class Items {
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
 
-        group.enter()
-        network.request(ArtRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.art] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 미술품을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(ArtRequest(), itemKey: .art, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(HousewaresRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.housewares] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 가구을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(HousewaresRequest(), itemKey: .housewares, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(MiscellaneousRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.miscellaneous] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 잡화를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(MiscellaneousRequest(), itemKey: .miscellaneous, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(WallMountedRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.wallMounted] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 벽걸이를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(WallMountedRequest(), itemKey: .wallMounted, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(CeilingDecorRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.ceilingDecor] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 천장을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(CeilingDecorRequest(), itemKey: .ceilingDecor, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(WallpaperRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.wallpaper] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 벽지를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(WallpaperRequest(), itemKey: .wallpaper, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(FloorsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.floors] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 바닥을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(FloorsRequest(), itemKey: .floors, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(RugsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.rugs] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 러그을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(RugsRequest(), itemKey: .floors, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(OtherRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                    .filter { !($0.keyword.contains("Unnecessary") && $0.sell == -1) }
-                itemList[.other] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 기타를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(OtherRequest(), itemKey: .other, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(RecipesRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.recipes] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 레시피를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(RecipesRequest(), itemKey: .recipes, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(SongsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.songs] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 음악을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(SongsRequest(), itemKey: .songs, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(PhotosReqeust()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.photos] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 주민 사진을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(PhotosReqeust(), itemKey: .photos, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(FencingReqeust()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.fencing] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 울타리을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(FencingReqeust(), itemKey: .fencing, group: group) {
+            itemList.merge($0) { _, new in new }
         }
-        group.enter()
-        network.request(GyroidsRequst()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.gyroids] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 토용을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
+        fetchItem(GyroidsRequst(), itemKey: .gyroids, group: group) {
+            itemList.merge($0) { _, new in new }
         }
+        
         group.notify(queue: .main) {
             self.updateAllItemList(by: itemList)
             self.networkGroup.leave()
@@ -391,178 +165,82 @@ final class Items {
         self.networkGroup.enter()
         let group = DispatchGroup()
         var itemList: [Category: [Item]] = [:]
+        
+        fetchItem(TopsRequest(), itemKey: .tops, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(BottomsRequest(), itemKey: .bottoms, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(DressUpRequest(), itemKey: .dressUp, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(HeadwearRequest(), itemKey: .headwear, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(AccessoriesRequest(), itemKey: .accessories, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(SocksRequest(), itemKey: .socks, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(ShoesRequest(), itemKey: .shoes, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(BagsRequest(), itemKey: .bags, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(UmbrellasRequest(), itemKey: .umbrellas, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(WetSuitRequest(), itemKey: .wetSuit, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
+        fetchItem(ReactionsRequest(), itemKey: .reactions, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
 
-        group.enter()
-        network.request(TopsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.tops] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 상의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(BottomsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.bottoms] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 하의를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(DressUpRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.dressUp] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 원피스를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(HeadwearRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.headwear] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 모자를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(AccessoriesRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.accessories] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 악세사리를 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(SocksRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.socks] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 양말을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(ShoesRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.shoes] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 신발을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(BagsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.bags] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 가방을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(UmbrellasRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.umbrellas] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 우산을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(WetSuitRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.wetSuit] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 잠수복을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
-        group.enter()
-        network.request(ReactionsRequest()) { result in
-            switch result {
-            case .success(let response):
-                let items = response.map { $0.toDomain() }
-                itemList[.reactions] = items
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ 리액션을 가져오는데 실패했습니다.\n에러내용: \(error.localizedDescription)"
-                )
-            }
-            group.leave()
-        }
         group.notify(queue: .main) {
             self.updateAllItemList(by: itemList)
             self.networkGroup.leave()
         }
     }
 
+    private func fetchItem<T: APIRequest>(
+        _ request: T,
+        itemKey: Category,
+        group: DispatchGroup,
+        completion: @escaping ([Category: [Item]]) -> Void
+    ) where T.Response: Collection, T.Response.Element: DomainConvertible {
+        fetchItem(request, group: group) { response in
+            let items = response.map { $0.toDomain() }
+            completion([itemKey: items])
+        }
+    }
+    
+    private func fetchItem<T: APIRequest>(
+        _ request: T,
+        group: DispatchGroup,
+        completion: @escaping (T.Response) -> Void
+    ) where T.Response: Collection {
+        group.enter()
+        network.request(request) { result in
+            defer { group.leave() }
+            
+            switch result {
+            case .success(let response):
+                completion(response)
+
+            case .failure(let error):
+                os_log(
+                    .error,
+                    log: .default,
+                    "⛔️ %@ - 가져오는데 실패했습니다.\n에러내용: %@", String(describing: request), error.localizedDescription
+                )
+            }
+        }
+    }
+    
     private func updateAllItemList(by items: [Category: [Item]]) {
         var currentItems = self.categories.value
         var itemsCount = self.currentItemsCount.value

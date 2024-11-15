@@ -89,7 +89,7 @@ struct WardrobeVariat: Codable {
     }
 }
 
-extension TopsResponseDTO {
+extension TopsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

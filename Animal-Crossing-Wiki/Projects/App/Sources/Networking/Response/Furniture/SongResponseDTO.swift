@@ -30,7 +30,7 @@ struct SongResponseDTO: Codable {
     let musicURL: String?
 }
 
-extension SongResponseDTO {
+extension SongResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         var sources = ["K.K. concert"]
         var sourceNotes: [String]?

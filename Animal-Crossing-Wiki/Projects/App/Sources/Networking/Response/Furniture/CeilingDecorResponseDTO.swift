@@ -34,7 +34,7 @@ struct CeilingDecorResponseDTO: Codable {
     let recipe: RecipeResponseDTO?
 }
 
-extension CeilingDecorResponseDTO {
+extension CeilingDecorResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         let image = variations.first?.image
         return Item(

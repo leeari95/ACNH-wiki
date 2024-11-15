@@ -49,7 +49,7 @@ extension Item {
     }
 }
 
-extension ReactionsResponseDTO {
+extension ReactionsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

@@ -38,7 +38,7 @@ struct SocksResponseDTO: Codable {
     let colors: [Color]?
 }
 
-extension SocksResponseDTO {
+extension SocksResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

@@ -41,7 +41,7 @@ struct BottomsResponseDTO: Codable {
     let colors: [Color]?
 }
 
-extension BottomsResponseDTO {
+extension BottomsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

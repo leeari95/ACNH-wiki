@@ -104,7 +104,7 @@ enum Vision: String, Codable {
     case wide = "Wide"
 }
 
-extension FishResponseDTO {
+extension FishResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: self.name,

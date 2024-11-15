@@ -197,7 +197,7 @@ enum Kit: String, Codable {
     case rainbowFeather = "Rainbow feather"
 }
 
-extension HousewaresResponseDTO {
+extension HousewaresResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         let image = image ?? variations?.first?.image
         return Item(
