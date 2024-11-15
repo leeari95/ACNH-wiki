@@ -35,7 +35,7 @@ struct RecipeResponseDTO: Codable {
     let materialsTranslations: [String: Translations?]
 }
 
-extension RecipeResponseDTO {
+extension RecipeResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

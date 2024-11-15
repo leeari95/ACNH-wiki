@@ -139,7 +139,7 @@ enum Concept: String, Codable, CaseIterable {
     }
 }
 
-extension ArtResponseDTO {
+extension ArtResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: self.name,

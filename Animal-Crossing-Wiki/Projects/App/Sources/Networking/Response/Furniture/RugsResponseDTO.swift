@@ -36,7 +36,7 @@ struct RugsResponseDTO: Codable {
     let seriesTranslations: Translations?
 }
 
-extension RugsResponseDTO {
+extension RugsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

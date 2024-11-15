@@ -36,7 +36,7 @@ struct WetSuitResponseDTO: Codable {
     let variations: [WardrobeVariat]?
 }
 
-extension WetSuitResponseDTO {
+extension WetSuitResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

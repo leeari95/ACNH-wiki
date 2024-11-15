@@ -58,7 +58,7 @@ struct MiscellaneousResponseDTO: Codable {
 
 }
 
-extension MiscellaneousResponseDTO {
+extension MiscellaneousResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         let image = image ?? variations?.first?.image
         return Item(

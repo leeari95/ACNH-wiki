@@ -37,7 +37,7 @@ struct FloorsResponseDTO: Codable {
 
 }
 
-extension FloorsResponseDTO {
+extension FloorsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

@@ -40,7 +40,7 @@ struct BagsResponseDTO: Codable {
     let colors: [Color]?
 }
 
-extension BagsResponseDTO {
+extension BagsResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

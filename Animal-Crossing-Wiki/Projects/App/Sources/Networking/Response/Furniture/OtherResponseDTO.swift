@@ -37,7 +37,7 @@ struct OtherResponseDTO: Codable {
 
 }
 
-extension OtherResponseDTO {
+extension OtherResponseDTO : DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

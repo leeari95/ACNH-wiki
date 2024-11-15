@@ -80,7 +80,7 @@ extension Item {
     }
 }
 
-extension FencingResponseDTO {
+extension FencingResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

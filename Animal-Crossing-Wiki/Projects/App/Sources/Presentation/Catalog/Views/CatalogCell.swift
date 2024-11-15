@@ -105,7 +105,8 @@ extension CatalogCell {
             priceView = ItemBellsView(mode: .buy, price: item.sell)
         case .housewares, .miscellaneous, .wallMounted, .wallpaper, .fencing,
                 .floors, .rugs, .other, .ceilingDecor, .recipes, .songs,
-                .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit:
+                .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
+                .socks, .shoes, .bags, .umbrellas, .wetSuit, .gyroids:
             if item.canExchangeNookMiles, let price = item.exchangePrice {
                 priceView = ItemBellsView(mode: .miles, price: price)
             } else if item.canExchangeNookPoints, let price = item.exchangePrice {

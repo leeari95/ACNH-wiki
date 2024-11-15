@@ -24,7 +24,7 @@ struct PhotosResponseDTO: Codable {
     let variations: [Variant]
 }
 
-extension PhotosResponseDTO {
+extension PhotosResponseDTO: DomainConvertible {
 
     func toDomain() -> Item {
         return Item(

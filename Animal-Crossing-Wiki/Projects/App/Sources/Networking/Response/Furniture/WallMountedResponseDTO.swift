@@ -55,7 +55,7 @@ struct WallMountedResponseDTO: Codable {
 
 }
 
-extension WallMountedResponseDTO {
+extension WallMountedResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         let image = image ?? variations?.first?.image
         return Item(

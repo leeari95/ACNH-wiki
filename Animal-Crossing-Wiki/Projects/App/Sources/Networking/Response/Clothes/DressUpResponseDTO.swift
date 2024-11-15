@@ -43,7 +43,7 @@ struct DressUpResponseDTO: Codable {
     let colors: [Color]?
 }
 
-extension DressUpResponseDTO {
+extension DressUpResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: name,

@@ -45,7 +45,7 @@ enum MovementSpeed: String, Codable {
     case verySlow = "Very slow"
 }
 
-extension SeaCreaturesResponseDTO {
+extension SeaCreaturesResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: self.name,

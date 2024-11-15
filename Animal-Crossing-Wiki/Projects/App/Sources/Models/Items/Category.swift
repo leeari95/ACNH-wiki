@@ -36,6 +36,7 @@ enum Category: String, CaseIterable {
     case umbrellas = "Umbrellas"
     case wetSuit = "Wet Suit"
     case reactions = "Reactions"
+    case gyroids = "Gyroids"
 
     var iconName: String {
         switch self {
@@ -67,6 +68,7 @@ enum Category: String, CaseIterable {
         case .umbrellas: return "icon-umbrella"
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
+        case .gyroids: return "icon-gyroids"
         }
     }
 
@@ -100,6 +102,7 @@ enum Category: String, CaseIterable {
         case .umbrellas: return "icon-umbrella"
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
+        case .gyroids: return "icon-gyroids"
         }
     }
 
@@ -111,7 +114,7 @@ enum Category: String, CaseIterable {
             .wallpaper, .floors, .rugs,
             .other, .recipes, .songs, .photos, .fencing,
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
-            .reactions
+            .reactions, .gyroids
         ]
     }
 
@@ -129,7 +132,7 @@ enum Category: String, CaseIterable {
             .ceilingDecor, .wallpaper, .floors,
             .rugs, .other, .songs, .photos, .fencing,
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
-            .reactions
+            .reactions, .gyroids
         ]
     }
 }
@@ -166,6 +169,7 @@ extension Category: Comparable {
         case .umbrellas: return 25
         case .wetSuit: return 26
         case .reactions: return 27
+        case .gyroids: return 28
         }
     }
 

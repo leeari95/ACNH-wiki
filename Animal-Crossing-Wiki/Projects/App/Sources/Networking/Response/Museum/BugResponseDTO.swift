@@ -39,7 +39,7 @@ enum Weather: String, Codable {
     case rainOnly = "Rain only"
 }
 
-extension BugResponseDTO {
+extension BugResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         return Item(
             name: self.name,
