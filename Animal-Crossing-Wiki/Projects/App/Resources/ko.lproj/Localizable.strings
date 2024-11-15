@@ -149,6 +149,7 @@
 "Wet Suit" = "잠수복";
 "Reactions" = "리액션";
 "Fencing" = "울타리";
+"Gyroids" = "토용";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -620,6 +621,7 @@
 "Requires a high level of friendship" = "높은 수준의 우정이 필요";
 "Received after doing your 50th group stretch" = "50번째 그룹 스트레칭 후 획득";
 "50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "스토리 진행 중에 세 개의 집터를 완성한 후 너굴에게서 50개의 울타리를 획득";
+"Sit down for coffee on 50 different days" = "50일 동안 앉아서 커피 마시기";
 
 // MARK: - Housewares - tag
 "museum" = "박물관";
@@ -675,6 +677,7 @@
 "kitchen" = "주방";
 "japanese style" = "동양풍";
 "animal" = "동물";
+"haniwa" = "토용";
 
 // MARK: - Housewares - Concept
 "ancient" = "유물";
@@ -1176,3 +1179,12 @@
 "trash" = "쓰레기";
 "tv" = "TV";
 "food" = "음식";
+
+// MARK: - Gyroids SoundType
+"crash" = "심벌";
+"drum set" = "드럼 세트";
+"hi-hat" = "하이햇";
+"kick" = "킥 드럼";
+"melody" = "멜로디";
+"snare" = "작은 북";
+

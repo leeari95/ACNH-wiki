@@ -88,7 +88,7 @@ class ItemOtherInfoView: UIView {
         case .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
                 .wallpaper, .floors, .rugs, .other, .recipes, .songs, .fencing,
                 .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
-                .socks, .shoes, .bags, .umbrellas, .wetSuit, .reactions:
+                .socks, .shoes, .bags, .umbrellas, .wetSuit, .reactions, .gyroids:
             whereHowLabel.text = item.sources?.reduce(with: "\n", characters: ["\n"])
         }
         let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)

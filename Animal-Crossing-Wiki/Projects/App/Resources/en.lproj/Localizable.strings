@@ -148,6 +148,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Wet Suit" = "Wet Suit";
 "Reactions" = "Reactions";
 "Fencing" = "Fencing";
+"Gyroids" = "Gyroids";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -621,6 +622,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Requires a high level of friendship" = "Requires a high level of friendship";
 "Received after doing your 50th group stretch" = "Received after doing your 50th group stretch";
 "50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "50 fences are given by Tom Nook after completing the three house plots during the main storyline";
+"Sit down for coffee on 50 different days" = "Sit down for coffee on 50 different days";
 
 // MARK: - Housewares - tag
 "museum" = "Museum";
@@ -676,6 +678,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "kitchen" = "Kitchen";
 "japanese style" = "Japanese Style";
 "animal" = "Animal";
+"haniwa" = "Haniwa";
 
 // MARK: - Housewares - Concept
 "ancient" = "ancient";
@@ -1174,3 +1177,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "trash" = "Trash";
 "tv" = "TV";
 "food" = "Food";
+
+// MARK: - Gyroids SoundType
+"crash" = "Crash";
+"drum set" = "Drum set";
+"hi-hat" = "Hi-hat";
+"kick" = "Kick";
+"melody" = "Melody";
+"snare" = "Snare";
