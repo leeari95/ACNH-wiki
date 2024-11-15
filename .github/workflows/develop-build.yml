@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Check Build
-    runs-on: macos-latest
+    runs-on: macos-15
     if: >
       github.event_name == 'pull_request' || 
       (github.event_name == 'issue_comment' && 
