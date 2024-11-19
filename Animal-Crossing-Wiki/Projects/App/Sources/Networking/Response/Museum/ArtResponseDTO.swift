@@ -30,6 +30,15 @@ struct ArtResponseDTO: Codable {
     let translations: Translations
     let colors: [Color]
     let concepts: [Concept]
+    let fakeDifferences: Translations?
+    
+    enum CodingKeys: String, CodingKey {
+        case name, image, highResTexture, genuine, category, buy, sell, size,
+             realArtworkTitle, artist, description, source, hhaBasePoints,
+             interact, tag, unlocked, filename, internalId, uniqueEntryId,
+             translations, colors, concepts
+        case fakeDifferences = "fake_differences"
+    }
 }
 
 enum ArtCategory: String, Codable {
@@ -147,6 +156,7 @@ extension ArtResponseDTO: DomainConvertible {
             image: self.image,
             highResTexture: self.highResTexture,
             genuine: self.genuine,
+            fakeDifferences: self.fakeDifferences,
             artCategory: self.category,
             buy: self.buy,
             sell: self.sell ?? 0,
@@ -168,6 +178,7 @@ extension Item {
         image: String,
         highResTexture: String?,
         genuine: Bool,
+        fakeDifferences: Translations?,
         artCategory: ArtCategory,
         buy: Int,
         sell: Int,
@@ -183,6 +194,7 @@ extension Item {
         self.image = image
         self.highResTexture = highResTexture
         self.genuine = genuine
+        self.fakeDifferences = fakeDifferences
         self.artCategory = artCategory
         self.buy = buy
         self.sell = sell

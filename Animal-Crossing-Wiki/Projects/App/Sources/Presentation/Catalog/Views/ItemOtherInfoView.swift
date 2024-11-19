@@ -121,5 +121,11 @@ class ItemOtherInfoView: UIView {
         let fakeInfoLabel = descriptionLabel(genuine ? "Original".localized : "Fake".localized)
         let fakeInfo = InfoContentView(title: "Whether fake".localized, contentView: fakeInfoLabel)
         backgroundStackView.addArrangedSubviews(fakeInfo)
+        
+        if let fakeDifferences = item.fakeDifferences {
+            let fakeDetailLabel = descriptionLabel(fakeDifferences.localizedName())
+            let fakeDetail = InfoContentView(title: "differences".localized, contentView: fakeDetailLabel)
+            backgroundStackView.addArrangedSubviews(fakeDetail)
+        }
     }
 }

@@ -191,6 +191,7 @@
 "Whether fake" = "가짜 여부";
 "Original" = "진품";
 "Fake" = "가품";
+"differences" = "구분 방법";
 
 // MARK: - WhereHow
 "Disguised on shoreline" = "해안선 근처";

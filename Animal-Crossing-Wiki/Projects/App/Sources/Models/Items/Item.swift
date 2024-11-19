@@ -32,6 +32,7 @@ struct Item {
 
     var highResTexture: String?
     var genuine: Bool?
+    var fakeDifferences: Translations?
     var artCategory: ArtCategory?
     var size: Size?
     var source: String?

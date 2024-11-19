@@ -133,7 +133,7 @@ final class Items {
         fetchItem(FloorsRequest(), itemKey: .floors, group: group) {
             itemList.merge($0) { _, new in new }
         }
-        fetchItem(RugsRequest(), itemKey: .floors, group: group) {
+        fetchItem(RugsRequest(), itemKey: .rugs, group: group) {
             itemList.merge($0) { _, new in new }
         }
         fetchItem(OtherRequest(), itemKey: .other, group: group) {
