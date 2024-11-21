@@ -30,7 +30,7 @@ class CatalogViewController: UIViewController {
 
     private lazy var searchButton: UIButton = {
         let button = UIButton()
-        button.tintColor = .acNavigationBarTint
+        button.tintColor = .acText
         let config = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(
             UIImage(systemName: "magnifyingglass.circle.fill", withConfiguration: config),
