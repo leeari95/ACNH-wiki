@@ -274,7 +274,7 @@ class ItemsViewController: UIViewController {
         case .keyword(let title, _): navigationItem.title = title.lowercased().localized.capitalized
             
         case .search:
-            navigationItem.title = "search".lowercased().localized.capitalized
+            navigationItem.title = "searching".lowercased().localized.capitalized
         default: break
         }
         let moreButton = UIBarButtonItem(

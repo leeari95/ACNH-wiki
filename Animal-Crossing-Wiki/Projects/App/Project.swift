@@ -32,6 +32,12 @@ let appPrivacyInfo: PrivacyManifest = .privacyManifest(
     ]
 )
 
+let settings: Settings = .settings(
+        base: [
+            "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+        ]
+    )
+
 let project = Project(
     name: "ACNH-wiki",
     targets: [
@@ -50,6 +56,7 @@ let project = Project(
                                    privacyManifest: appPrivacyInfo),
             scripts: [.runSwiftLintAutocorrect, .runSwiftLint],
             dependencies: dependencies,
+            settings: settings,
             coreDataModels: [
                 CoreDataModel.coreDataModel("Sources/CoreDataStorage/CoreDataStorage.xcdatamodeld")
             ]

@@ -168,7 +168,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "There are no results for your search." = "There are no results for your search.";
 "Are you sure you want to check them all?" = "Are you sure you want to check them all?";
 "Are you sure you want to uncheck them all?" = "Are you sure you want to uncheck them all?";
-"search" = "Search";
+"searching" = "Search";
 
 // MARK: - CatalogViewController
 "Catalog" = "Catalog";
