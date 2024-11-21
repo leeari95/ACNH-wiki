@@ -28,6 +28,17 @@ class CatalogViewController: UIViewController {
         return activityIndicator
     }()
 
+    private lazy var searchButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .acNavigationBarTint
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        button.setImage(
+            UIImage(systemName: "magnifyingglass.circle.fill", withConfiguration: config),
+            for: .normal
+        )
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -41,6 +52,8 @@ class CatalogViewController: UIViewController {
     private func setUpNavigationItem() {
         view.backgroundColor = .acBackground
         navigationItem.title = "Catalog".localized
+        let checkBarButton = UIBarButtonItem(customView: searchButton)
+        navigationItem.rightBarButtonItems = [checkBarButton]
     }
 
     private func setUpViews() {
@@ -63,6 +76,11 @@ class CatalogViewController: UIViewController {
 
         tableView.rx.modelSelected((title: Category, count: Int).self)
             .map { CatalogReactor.Action.selectedCategory(title: $0.0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchButton.rx.tap
+            .map { CatalogReactor.Action.searchButtonTapped }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 

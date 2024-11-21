@@ -15,6 +15,7 @@ class ItemsViewController: UIViewController {
         case user
         case all
         case keyword(title: String, keyword: Keyword)
+        case search
     }
 
     enum Menu: Int {
@@ -130,6 +131,7 @@ class ItemsViewController: UIViewController {
         case .user: mode = .user
         case .keyword(let title, let keyword): mode = .keyword(title: title, keyword: keyword)
         case .all: mode = .all
+        case .search: mode = .search
         }
         setUpFilterKeyword(keyword)
 
@@ -146,6 +148,7 @@ class ItemsViewController: UIViewController {
 
         searchController.searchBar.rx.text
             .compactMap { $0 }
+            .debounce(.milliseconds(300), scheduler: MainScheduler.asyncInstance)
             .map { ItemsReactor.Action.search(text: $0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -269,6 +272,9 @@ class ItemsViewController: UIViewController {
     private func setUpNavigationItem() {
         switch mode {
         case .keyword(let title, _): navigationItem.title = title.lowercased().localized.capitalized
+            
+        case .search:
+            navigationItem.title = "search".lowercased().localized.capitalized
         default: break
         }
         let moreButton = UIBarButtonItem(

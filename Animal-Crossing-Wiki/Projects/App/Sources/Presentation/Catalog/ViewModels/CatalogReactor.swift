@@ -13,6 +13,7 @@ final class CatalogReactor: Reactor {
     enum Action {
         case fetch
         case selectedCategory(title: Category)
+        case searchButtonTapped
     }
 
     enum Mutation {
@@ -49,6 +50,9 @@ final class CatalogReactor: Reactor {
 
         case .selectedCategory(let category):
             return .just(.transition(.items(for: category)))
+            
+        case .searchButtonTapped:
+            return .just(.transition(.search))
         }
     }
 

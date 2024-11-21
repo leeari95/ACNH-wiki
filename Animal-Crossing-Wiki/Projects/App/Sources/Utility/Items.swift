@@ -32,6 +32,8 @@ final class Items {
     private let songs = BehaviorRelay<[Item]>(value: [])
 
     private(set) var materialsItemList: [String: Item] = [:]
+    
+    var list: [Item] { allItems.value }
 
     private init() {
         setUpUserCollection()
