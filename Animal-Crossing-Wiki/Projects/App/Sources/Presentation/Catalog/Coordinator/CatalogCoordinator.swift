@@ -13,6 +13,7 @@ final class CatalogCoordinator: Coordinator {
         case items(for: Category)
         case itemDetail(_ item: Item)
         case keyword(title: String, keyword: Keyword)
+        case search
     }
 
     var type: CoordinatorType = .catalog
@@ -36,6 +37,7 @@ final class CatalogCoordinator: Coordinator {
             let viewController = ItemsViewController()
             viewController.bind(to: ItemsReactor(category: category, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
+
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
             viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
@@ -43,6 +45,11 @@ final class CatalogCoordinator: Coordinator {
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
             viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
+            rootViewController.pushViewController(viewController, animated: true)
+            
+        case .search:
+            let viewController = ItemsViewController()
+            viewController.bind(to: ItemsReactor(coordinator: self, mode: .search))
             rootViewController.pushViewController(viewController, animated: true)
         }
     }

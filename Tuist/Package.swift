@@ -18,7 +18,12 @@ import PackageDescription
             "ReactorKit": .framework,
             "RxCocoaRuntime" : .framework,
             "RxRelay" : .framework
-        ]
+        ],
+        baseSettings: .settings(
+            base: [
+                "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+            ]
+        )
     )
 #endif
 

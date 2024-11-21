@@ -14,6 +14,7 @@ final class ItemsReactor: Reactor {
         case user
         case all
         case keyword(title: String, category: Keyword)
+        case search
     }
 
     enum Action {
@@ -284,6 +285,9 @@ final class ItemsReactor: Reactor {
         case .keyword(let title, let category):
             let filteredData = Items.shared.itemFilter(keyword: title, category: category)
             return .just(filteredData)
+            
+        case .search:
+            return .just(Items.shared.list)
         }
     }
 

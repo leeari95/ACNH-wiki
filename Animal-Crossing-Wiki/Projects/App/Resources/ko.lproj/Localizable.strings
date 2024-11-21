@@ -169,6 +169,7 @@
 "There are no results for your search." = "검색에 대한 결과가 없습니다.";
 "Are you sure you want to check them all?" = "정말 모두 체크하시겠습니까?";
 "Are you sure you want to uncheck them all?" = "정말 모두 체크 해제 하시겠습니까?";
+"searching" = "검색하기";
 
 // MARK: - CatalogViewController
 "Catalog" = "카탈로그";
