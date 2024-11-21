@@ -44,6 +44,13 @@ class CatalogCell: UICollectionViewCell {
         nameLabel.textColor = .acText
         disposeBag = DisposeBag()
         backgroundStackView.subviews.compactMap { $0 as? ItemBellsView }.first?.removeFromSuperview()
+        checkButton.setImage(
+            UIImage(
+                systemName: "checkmark.seal",
+                withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
+            ),
+            for: .normal
+        )
     }
 
     private func configure() {
