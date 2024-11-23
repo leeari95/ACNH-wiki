@@ -41,6 +41,7 @@ class ItemOtherInfoView: UIView {
         setUpShadowSize(item)
         setUpMovementSpeed(item)
         setUpWhetherFake(item)
+        setUpSeasonEvent(item)
         item.sourceNotes.flatMap { sourceNotes in
             let sourceNotesLabel = descriptionLabel(sourceNotes.reduce(with: "\n", characters: ["\n"]))
             sourceNotesLabel.numberOfLines = 0
@@ -129,5 +130,15 @@ class ItemOtherInfoView: UIView {
             let fakeDetail = InfoContentView(title: "differences".localized, contentView: fakeDetailLabel)
             backgroundStackView.addArrangedSubviews(fakeDetail)
         }
+    }
+    
+    private func setUpSeasonEvent(_ item: Item) {
+        guard let seasonEvent = item.seasonEvent else {
+            return
+        }
+        
+        let seasonInfoLabel = descriptionLabel(seasonEvent.localized)
+        let seasonInfo = InfoContentView(title: "season event".localized, contentView: seasonInfoLabel)
+        backgroundStackView.addArrangedSubviews(seasonInfo)
     }
 }
