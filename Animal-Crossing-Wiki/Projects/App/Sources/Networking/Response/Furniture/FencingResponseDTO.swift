@@ -50,11 +50,13 @@ extension Item {
         internalId: Int?,
         translations: Translations,
         colors: [Color] = [],
+        concepts: [Concept] = [],
         recipe: RecipeResponseDTO?,
         bodyTitle: String?,
         catalog: Catalog?,
         variations: [Variant]?,
-        bodyCustomize: Bool
+        bodyCustomize: Bool,
+        hhaBasePoints: Int = 0
     ) {
         self.name = name
         self.category = category
@@ -70,6 +72,7 @@ extension Item {
         self.internalId = internalId
         self.translations = translations
         self.colors = colors
+        self.concepts = concepts
         self.recipe = recipe
         self.bodyTitle = bodyTitle
         self.catalog = catalog
@@ -77,6 +80,7 @@ extension Item {
         self.genuine = true
         self.patternCustomize = false
         self.bodyCustomize = bodyCustomize
+        self.hhaBasePoints = hhaBasePoints
     }
 }
 

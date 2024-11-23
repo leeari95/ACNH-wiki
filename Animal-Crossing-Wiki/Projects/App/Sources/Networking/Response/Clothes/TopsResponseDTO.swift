@@ -84,7 +84,8 @@ struct WardrobeVariat: Decodable {
             variantTranslations: variantTranslations,
             colors: colors,
             concepts: [],
-            patternTranslations: nil
+            patternTranslations: nil,
+            soundType: nil
         )
     }
 }

@@ -41,6 +41,7 @@ class ItemOtherInfoView: UIView {
         setUpShadowSize(item)
         setUpMovementSpeed(item)
         setUpWhetherFake(item)
+        setUpSoundType(item)
         setUpSeasonEvent(item)
         item.sourceNotes.flatMap { sourceNotes in
             let sourceNotesLabel = descriptionLabel(sourceNotes.reduce(with: "\n", characters: ["\n"]))
@@ -140,5 +141,15 @@ class ItemOtherInfoView: UIView {
         let seasonInfoLabel = descriptionLabel(seasonEvent.localized)
         let seasonInfo = InfoContentView(title: "season event".localized, contentView: seasonInfoLabel)
         backgroundStackView.addArrangedSubviews(seasonInfo)
+    }
+    
+    private func setUpSoundType(_ item: Item) {
+        guard let soundType = item.soundType else {
+            return
+        }
+        
+        let soundTypeInfoLabel = descriptionLabel(soundType.rawValue.lowercased().localized)
+        let soundTypeInfo = InfoContentView(title: "sound type".localized, contentView: soundTypeInfoLabel)
+        backgroundStackView.addArrangedSubviews(soundTypeInfo)
     }
 }

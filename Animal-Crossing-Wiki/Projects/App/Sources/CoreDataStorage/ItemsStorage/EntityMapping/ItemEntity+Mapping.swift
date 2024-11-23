@@ -328,7 +328,8 @@ extension Variant {
             variantTranslations: Translations(dictionary["variantTranslations"] as? [String: String] ?? [:]),
             colors: (dictionary["colors"] as? [String] ?? []).compactMap { Color(rawValue: $0) },
             concepts: (dictionary["concepts"] as? [String] ?? []).compactMap { Concept(rawValue: $0) },
-            patternTranslations: Translations(dictionary["patternTranslations"] as? [String: String] ?? [:])
+            patternTranslations: Translations(dictionary["patternTranslations"] as? [String: String] ?? [:]),
+            soundType: SoundType(rawValue: dictionary["soundType"] as? String ?? "")
         )
     }
 }

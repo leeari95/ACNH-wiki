@@ -75,7 +75,8 @@ extension Item {
         catalog: Catalog,
         variations: [Variant]?,
         bodyCustomize: Bool,
-        hhaBasePoints: Int
+        hhaBasePoints: Int,
+        soundType: SoundType?
     ) {
         self.name = name
         self.category = category
@@ -93,6 +94,7 @@ extension Item {
         self.variations = variations
         self.bodyCustomize = bodyCustomize
         self.hhaBasePoints = hhaBasePoints
+        self.soundType = soundType
     }
 }
 
@@ -114,7 +116,8 @@ extension GyroidsResponseDTO: DomainConvertible {
             catalog: catalog,
             variations: variations,
             bodyCustomize: bodyCustomize,
-            hhaBasePoints: hhaBasePoints
+            hhaBasePoints: hhaBasePoints,
+            soundType: soundType ?? variations?.first?.soundType
         )
     }
 }
