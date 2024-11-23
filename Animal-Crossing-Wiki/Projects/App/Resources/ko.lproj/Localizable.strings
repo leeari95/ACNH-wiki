@@ -9,8 +9,9 @@
 // MARK: - Tab Bar Titles
 "Dashboard" = "대시보드";
 "Catalog" = "카탈로그";
-"Villagers" = "마을주민";
+"villagers" = "마을주민";
 "Collection" = "수집품";
+"animals" = "동물";
 
 // MARK: - etc
 "Cancel" = "취소";
@@ -150,6 +151,7 @@
 "Reactions" = "리액션";
 "Fencing" = "울타리";
 "Gyroids" = "토용";
+"Villager" = "마을주민";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -272,6 +274,11 @@
 "9 PM – 4 AM" = "오후 9시 – 오후 4시";
 "All day" = "하루종일";
 
+// MARK: - NPCViewController
+"Search a npc" = "NPC를 검색해주세요. (초성도 가능)";
+"There are no npc." = "NPC가 없습니다.";
+"Tap the npc's heart button and it will appear here." = "NPC의 하트 모양 버튼을 누르면 여기에 표시됩니다.";
+
 // MARK: - VillagersViewController
 "All" = "전체";
 "Personality" = "성격";
@@ -281,7 +288,6 @@
 "Liked" = "좋아하는 주민";
 "Residents" = "내 섬 주민";
 "Search a villager" = "주민을 검색해주세요. (초성도 가능)";
-"Villagers" = "마을 주민";
 "There are no villagers." = "마을 주민이 없습니다.";
 "Please check the network status." = "네트워크 상태를 확인해주세요.";
 "Tap the villager's heart button and it will appear here." = "마을 주민의 하트 모양 버튼을 누르면 여기에 표시됩니다.";

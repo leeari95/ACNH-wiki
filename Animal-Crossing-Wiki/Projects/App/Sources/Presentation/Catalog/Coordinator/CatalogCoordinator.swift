@@ -26,8 +26,8 @@ final class CatalogCoordinator: Coordinator {
     }
 
     func start() {
-        let catalogVC = CatalogViewController()
-        catalogVC.bind(to: CatalogReactor(coordinator: self))
+        let catalogVC = CatalogViewController(mode: .item)
+        catalogVC.bind(to: CatalogReactor(delegate: self))
         rootViewController.addChild(catalogVC)
     }
 
@@ -56,5 +56,15 @@ final class CatalogCoordinator: Coordinator {
 
     func setUpParent(to coordinator: Coordinator) {
         parentCoordinator = coordinator
+    }
+}
+
+extension CatalogCoordinator: CatalogReactorDelegate {
+    func showItemList(category: Category) {
+        transition(for: .items(for: category))
+    }
+    
+    func showSearchList() {
+        transition(for: .search)
     }
 }

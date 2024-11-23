@@ -90,6 +90,8 @@ class ItemOtherInfoView: UIView {
                 .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
                 .socks, .shoes, .bags, .umbrellas, .wetSuit, .reactions, .gyroids:
             whereHowLabel.text = item.sources?.reduce(with: "\n", characters: ["\n"])
+
+        default: return
         }
         let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)
         backgroundStackView.addArrangedSubviews(placeInfo)

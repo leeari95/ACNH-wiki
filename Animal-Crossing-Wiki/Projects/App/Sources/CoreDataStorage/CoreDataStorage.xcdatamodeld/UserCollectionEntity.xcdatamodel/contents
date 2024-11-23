@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A400" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24C5057p" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="DailyTaskEntity" representedClassName="DailyTaskEntity" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -67,6 +67,16 @@
         <attribute name="whereHow" optional="YES" attributeType="String"/>
         <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
     </entity>
+    <entity name="NPCLikeEntity" representedClassName="NPCLikeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="birthday" attributeType="String"/>
+        <attribute name="gender" attributeType="String"/>
+        <attribute name="genderAsia" attributeType="String"/>
+        <attribute name="iconImage" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="photoImage" attributeType="String"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="npcLike" inverseEntity="UserCollectionEntity"/>
+    </entity>
     <entity name="UserCollectionEntity" representedClassName="UserCollectionEntity" syncable="YES" codeGenerationType="class">
         <attribute name="hemisphere" optional="YES" attributeType="String"/>
         <attribute name="islandFruit" optional="YES" attributeType="String"/>
@@ -75,6 +85,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="critters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="userColletion" inverseEntity="ItemEntity"/>
         <relationship name="dailyTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyTaskEntity" inverseName="userCollection" inverseEntity="DailyTaskEntity"/>
+        <relationship name="npcLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NPCLikeEntity" inverseName="userCollection" inverseEntity="NPCLikeEntity"/>
         <relationship name="villagersHouse" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersHouseEntity" inverseName="userCollection" inverseEntity="VillagersHouseEntity"/>
         <relationship name="villagersLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersLikeEntity" inverseName="userCollection" inverseEntity="VillagersLikeEntity"/>
     </entity>
@@ -124,11 +135,4 @@
         <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="villagersLike" inverseEntity="UserCollectionEntity"/>
     </entity>
-    <elements>
-        <element name="DailyTaskEntity" positionX="-97.80707811657339" positionY="133.6700587761588" width="128" height="134"/>
-        <element name="ItemEntity" positionX="337.44140625" positionY="27.109375" width="128" height="854"/>
-        <element name="UserCollectionEntity" positionX="117" positionY="198" width="128" height="178"/>
-        <element name="VillagersHouseEntity" positionX="139.7109375" positionY="445.0390625" width="128" height="344"/>
-        <element name="VillagersLikeEntity" positionX="-0.90234375" positionY="441.87109375" width="128" height="344"/>
-    </elements>
 </model>

@@ -33,7 +33,7 @@ final class ProgressReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetch:
-            let itemsInfo = Observable.combineLatest(Items.shared.itemList, Items.shared.itemsCount)
+            let itemsInfo = Observable.combineLatest(Items.shared.itemList, Items.shared.count())
                 .map { info -> (itemCount: Int, maxCount: Int) in
                     let itemsCount = info.0[self.category]?.count ?? 0
                     let maxCount = info.1[self.category] ?? itemsCount

@@ -37,6 +37,8 @@ enum Category: String, CaseIterable {
     case wetSuit = "Wet Suit"
     case reactions = "Reactions"
     case gyroids = "Gyroids"
+    case villager = "Villager"
+    case npc = "NPC"
 
     var iconName: String {
         switch self {
@@ -69,6 +71,8 @@ enum Category: String, CaseIterable {
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
         case .gyroids: return "icon-gyroids"
+        case .villager: return "icon-raymond"
+        case .npc: return "icon-kk"
         }
     }
 
@@ -103,6 +107,8 @@ enum Category: String, CaseIterable {
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
         case .gyroids: return "icon-gyroids"
+        case .villager: return "icon-raymond"
+        case .npc: return "icon-kk"
         }
     }
 
@@ -134,6 +140,10 @@ enum Category: String, CaseIterable {
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
             .reactions, .gyroids
         ]
+    }
+    
+    static func animals() -> [Category] {
+        [.npc, .villager]
     }
 }
 
@@ -170,6 +180,9 @@ extension Category: Comparable {
         case .wetSuit: return 26
         case .reactions: return 27
         case .gyroids: return 28
+
+        case .villager: return 0
+        case .npc: return 1
         }
     }
 

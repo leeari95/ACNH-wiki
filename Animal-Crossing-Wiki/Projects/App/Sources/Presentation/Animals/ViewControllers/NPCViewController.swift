@@ -1,5 +1,5 @@
 //
-//  VillagersViewController.swift
+//  NPCViewController.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/06/29.
@@ -9,21 +9,15 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class VillagersViewController: UIViewController {
+class NPCViewController: UIViewController {
     enum Menu: String {
         case all = "All"
-        case personality = "Personality"
         case gender = "Gender"
-        case type = "Type"
-        case species = "Species"
 
         static func transform(_ localizedString: String) -> String? {
             switch localizedString {
             case Menu.all.rawValue.localized: return Menu.all.rawValue
-            case Menu.personality.rawValue.localized: return Menu.personality.rawValue
             case Menu.gender.rawValue.localized: return Menu.gender.rawValue
-            case Menu.type.rawValue.localized: return Menu.type.rawValue
-            case Menu.species.rawValue.localized: return Menu.species.rawValue
             default: return nil
             }
         }
@@ -32,13 +26,11 @@ class VillagersViewController: UIViewController {
     enum SearchScope: String, CaseIterable {
         case all = "All"
         case liked = "Liked"
-        case residents = "Residents"
 
         static func transform(_ localizedString: String) -> String? {
             switch localizedString {
             case SearchScope.all.rawValue.localized: return SearchScope.all.rawValue
             case SearchScope.liked.rawValue.localized: return SearchScope.liked.rawValue
-            case SearchScope.residents.rawValue.localized: return SearchScope.residents.rawValue
             default: return nil
             }
         }
@@ -63,7 +55,7 @@ class VillagersViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.showsScopeBar = true
-        searchController.searchBar.placeholder = "Search a villager".localized
+        searchController.searchBar.placeholder = "Search a npc".localized
         searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
         return searchController
     }()
@@ -78,7 +70,7 @@ class VillagersViewController: UIViewController {
 
     private lazy var emptyView: EmptyView = EmptyView(
         title: "There are no villagers.".localized,
-        description: "They appear here when you press the villager's heart button or home button.".localized
+        description: "They appear here when you press the npc's heart button or home button.".localized
     )
 
     override func viewDidLoad() {
@@ -91,21 +83,21 @@ class VillagersViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
 
-    func bind(to reactor: VillagersReactor) {
+    func bind(to reactor: NPCReactor) {
         self.rx.viewDidLoad
-            .map { VillagersReactor.Action.fetch }
+            .map { NPCReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
 
         searchController.searchBar.rx.cancelButtonClicked
-            .map { VillagersReactor.Action.searchText("") }
+            .map { NPCReactor.Action.searchText("") }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
         searchController.searchBar.rx.text
             .compactMap { $0 }
-            .map { VillagersReactor.Action.searchText($0) }
+            .map { NPCReactor.Action.searchText($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
@@ -114,7 +106,7 @@ class VillagersViewController: UIViewController {
             .subscribe(onNext: { [weak self] isSearching in
                 if isSearching {
                     self?.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
+                        title: "There are no npc.".localized,
                         description: "There are no results for your search.".localized
                     )
                 }
@@ -122,26 +114,26 @@ class VillagersViewController: UIViewController {
 
         searchController.searchBar.rx.selectedScopeButtonIndex
             .compactMap { [weak self] in self?.searchController.searchBar.scopeButtonTitles?[$0] }
-            .map { VillagersReactor.Action.selectedScope($0) }
+            .map { NPCReactor.Action.selectedScope($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
         selectedKeyword
-            .map { VillagersReactor.Action.selectedMenu(keywords: $0) }
+            .map { NPCReactor.Action.selectedMenu(keywords: $0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .map { VillagersReactor.Action.selectedVillager(indexPath: $0) }
+            .map { NPCReactor.Action.selectedNPC(indexPath: $0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
-        reactor.state.map { $0.villagers }
-            .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, villager, cell in
-                cell.setUp(villager)
+        reactor.state.map { $0.npcs }
+            .bind(to: collectionView.rx.items(cellIdentifier: VillagersCell.className, cellType: VillagersCell.self)) { _, npc, cell in
+                cell.setUp(npc)
             }.disposed(by: disposeBag)
 
-        reactor.state.map { $0.villagers }
+        reactor.state.map { $0.npcs }
             .map { !$0.isEmpty }
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
@@ -157,18 +149,13 @@ class VillagersViewController: UIViewController {
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
+                        title: "There are no npc.".localized,
                         description: "Please check the network status.".localized
                     )
                 case .liked:
                     owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
-                        description: "Tap the villager's heart button and it will appear here.".localized
-                    )
-                case .residents:
-                    owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
-                        description: "Tap the villager's home button and it will appear here.".localized
+                        title: "There are no npc.".localized,
+                        description: "Tap the npc's heart button and it will appear here.".localized
                     )
                 }
                 owner.searchController.searchBar.endEditing(true)
@@ -202,7 +189,7 @@ class VillagersViewController: UIViewController {
     }
 
     private func setUpNavigationItem() {
-        navigationItem.title = "Villagers".localized
+        navigationItem.title = "NPC"
         let moreButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -221,10 +208,7 @@ class VillagersViewController: UIViewController {
 
     private func createFilterMenu() -> UIMenu {
         let menuItems: [(title: String, subTitle: [String])] = [
-            (Menu.personality.rawValue.localized, Personality.allCases.map { $0.rawValue.localized }),
-            (Menu.gender.rawValue.localized, Gender.allCases.map { $0.rawValue.localized }),
-            (Menu.type.rawValue.localized, Subtype.allCases.map { $0.rawValue.localized }),
-            (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.localized })
+            (Menu.gender.rawValue.localized, Gender.allCases.map { $0.rawValue.lowercased().localized })
         ]
 
         let actionHandler: (UIAction) -> Void = { [weak self] action in
