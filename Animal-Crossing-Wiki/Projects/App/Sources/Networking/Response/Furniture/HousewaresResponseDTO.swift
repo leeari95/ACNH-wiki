@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct HousewaresResponseDTO: Codable {
-
+struct HousewaresResponseDTO: Decodable {
     let name: String
     let image: String?
     let variation: String?
@@ -56,7 +55,7 @@ struct HousewaresResponseDTO: Codable {
 
 }
 
-struct FurnitureTranslations: Codable {
+struct FurnitureTranslations: Decodable {
     let id: Int
     let eUde, eUen, eUit, eUnl: String
     let eUru, eUfr, eUes, uSen: String
@@ -118,7 +117,7 @@ enum HhaCategory: String, Codable {
     case food = "Food"
 }
 
-enum InteractUnion: Codable {
+enum InteractUnion: Decodable {
     case bool(Bool)
     case enumeration(InteractEnum)
 
@@ -165,7 +164,7 @@ enum InteractEnum: String, Codable {
 }
 
 // MARK: - Variation
-struct Variant: Codable {
+struct Variant: Decodable {
     let image: String
     let variation: String?
     let pattern: String?
@@ -185,6 +184,7 @@ struct Variant: Codable {
     let colors: [Color]?
     let concepts: [Concept]?
     let patternTranslations: Translations?
+    let soundType: SoundType?
 
     func toKeyword() -> [String] {
         return (colors?.map { $0.rawValue } ?? []) + (concepts?.map { $0.rawValue } ?? [])

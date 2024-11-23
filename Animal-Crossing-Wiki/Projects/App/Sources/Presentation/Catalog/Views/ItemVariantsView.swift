@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class ItemVariantsView: UIView {
+final class ItemVariantsView: UIView {
 
     enum Mode {
         case color

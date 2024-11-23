@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ReactionsResponseDTO: Codable {
+struct ReactionsResponseDTO: Decodable {
     let num: Int
     let name: String
     let image: String

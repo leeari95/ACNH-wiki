@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CustomTaskView: UIView {
+final class CustomTaskView: UIView {
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()

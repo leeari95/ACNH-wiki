@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - VillagersResponseDTO
-struct VillagersResponseDTO: Codable {
+struct VillagersResponseDTO: Decodable {
     let name: String
     let iconImage: String
     let photoImage: String
@@ -120,7 +120,7 @@ enum Specie: String, Codable, CaseIterable {
     }
 }
 
-enum KitchenEquipment: Codable {
+enum KitchenEquipment: Decodable {
     case integer(Int)
     case string(String)
 
@@ -251,7 +251,7 @@ enum Subtype: String, Codable, CaseIterable {
     case b = "B"
 }
 
-struct Translations: Codable {
+struct Translations: Decodable {
     let eUde, eUen, eUit, eUnl: String
     let eUru, eUfr, eUes, uSen: String
     let uSfr, uSes, jPja, kRko: String

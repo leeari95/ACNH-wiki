@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class VillagersCell: UICollectionViewCell {
+final class VillagersCell: UICollectionViewCell {
 
     private var disposeBag = DisposeBag()
 

@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - BugResponseDTO
-struct BugResponseDTO: Codable {
+struct BugResponseDTO: Decodable {
     let num: Int
     let name: String
     let iconImage: String

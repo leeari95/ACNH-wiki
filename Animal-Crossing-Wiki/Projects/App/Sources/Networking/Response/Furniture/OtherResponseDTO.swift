@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OtherResponseDTO: Codable {
+struct OtherResponseDTO: Decodable {
 
     let name: String
     let inventoryImage: String?

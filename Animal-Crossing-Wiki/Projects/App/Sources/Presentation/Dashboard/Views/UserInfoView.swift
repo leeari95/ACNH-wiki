@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class UserInfoView: UIView {
+final class UserInfoView: UIView {
 
     private let disposeBag = DisposeBag()
 

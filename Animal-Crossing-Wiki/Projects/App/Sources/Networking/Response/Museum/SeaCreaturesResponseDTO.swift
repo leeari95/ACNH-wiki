@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - SeaCreaturesResponseDTO
-struct SeaCreaturesResponseDTO: Codable {
+struct SeaCreaturesResponseDTO: Decodable {
     let num: Int
     let name: String
     let iconImage: String

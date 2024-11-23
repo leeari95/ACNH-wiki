@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class AppSettingView: UIView {
+final class AppSettingView: UIView {
 
     private let disposeBag = DisposeBag()
     private let resetTapGesture = UITapGestureRecognizer()

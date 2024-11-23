@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SocksResponseDTO: Codable {
+struct SocksResponseDTO: Decodable {
     let name: String
     let diy: Bool
     let size: Size

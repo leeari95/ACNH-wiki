@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhotosResponseDTO: Codable {
+struct PhotosResponseDTO: Decodable {
     let sourceSheet: String
     let name: String
     let diy: Bool

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NPCResponseDTO: Codable {
+struct NPCResponseDTO: Decodable {
     let name: String
     let iconImage: String
     let photoImage: String?

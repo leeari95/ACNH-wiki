@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ShoesResponseDTO: Codable {
+struct ShoesResponseDTO: Decodable {
     let name: String
     let closetImage, storageImage: String?
     let diy: Bool

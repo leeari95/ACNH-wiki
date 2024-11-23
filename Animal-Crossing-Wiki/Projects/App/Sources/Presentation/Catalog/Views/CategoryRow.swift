@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoryRow: UITableViewCell {
+final class CategoryRow: UITableViewCell {
 
     @IBOutlet private weak var iconImage: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!

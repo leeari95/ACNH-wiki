@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SectionHeaderView: UIView {
+final class SectionHeaderView: UIView {
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()

@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class ProgressView: UIStackView {
+final class ProgressView: UIStackView {
 
     private var disposeBag = DisposeBag()
     private var barHeight: CGFloat = 30

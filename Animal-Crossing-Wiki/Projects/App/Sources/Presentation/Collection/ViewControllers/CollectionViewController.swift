@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CollectionViewController: UIViewController {
+final class CollectionViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

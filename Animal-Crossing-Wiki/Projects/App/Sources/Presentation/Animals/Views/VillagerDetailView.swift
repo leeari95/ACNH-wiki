@@ -7,7 +7,7 @@
 
 import UIKit
 
-class VillagerDetailView: UIView {
+final class VillagerDetailView: UIView {
 
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()

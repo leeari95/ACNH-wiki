@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class ItemDetailViewController: UIViewController {
+final class ItemDetailViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

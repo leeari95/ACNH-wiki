@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class NPCDetailViewController: UIViewController {
+final class NPCDetailViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

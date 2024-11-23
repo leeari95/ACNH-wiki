@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class ItemsViewController: UIViewController {
+final class ItemsViewController: UIViewController {
 
     enum Mode: Equatable {
         case user

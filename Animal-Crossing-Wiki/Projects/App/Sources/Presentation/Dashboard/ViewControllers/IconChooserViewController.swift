@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IconChooserViewController: UIViewController {
+final class IconChooserViewController: UIViewController {
 
     weak var coordinator: DashboardCoordinator?
 

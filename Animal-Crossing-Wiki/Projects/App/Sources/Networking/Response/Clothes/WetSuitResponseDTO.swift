@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WetSuitResponseDTO: Codable {
+struct WetSuitResponseDTO: Decodable {
     let sourceSheet, name: String
     let closetImage, storageImage: String?
     let diy: Bool

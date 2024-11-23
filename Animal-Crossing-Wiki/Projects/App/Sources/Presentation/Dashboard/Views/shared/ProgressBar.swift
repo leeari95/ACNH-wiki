@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProgressBar: UIProgressView {
+final class ProgressBar: UIProgressView {
     private var height: CGFloat = 10
 
     override var intrinsicContentSize: CGSize {

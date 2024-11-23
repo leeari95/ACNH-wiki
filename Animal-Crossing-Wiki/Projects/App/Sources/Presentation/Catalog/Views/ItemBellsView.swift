@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemBellsView: UIView {
+final class ItemBellsView: UIView {
     enum Mode {
         case buy, sell, cj, flick, poki, miles, point
 

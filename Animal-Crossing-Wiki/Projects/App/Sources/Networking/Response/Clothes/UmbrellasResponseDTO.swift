@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UmbrellasResponseDTO: Codable {
+struct UmbrellasResponseDTO: Decodable {
     let name: String
     let storageImage: String
     let diy: Bool

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CalendarView: UIView {
+final class CalendarView: UIView {
 
     private let months = [
         [

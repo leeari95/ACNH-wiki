@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class VillagersViewController: UIViewController {
+final class VillagersViewController: UIViewController {
     enum Menu: String {
         case all = "All"
         case personality = "Personality"

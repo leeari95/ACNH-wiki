@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InfoContentView: UIStackView {
+final class InfoContentView: UIStackView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()

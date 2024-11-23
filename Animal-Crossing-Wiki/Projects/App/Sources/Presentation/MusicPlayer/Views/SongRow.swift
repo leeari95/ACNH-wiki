@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SongRow: UITableViewCell {
+final class SongRow: UITableViewCell {
 
     @IBOutlet private weak var coverImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!

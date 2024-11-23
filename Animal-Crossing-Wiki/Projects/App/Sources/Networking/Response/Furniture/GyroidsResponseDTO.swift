@@ -75,7 +75,8 @@ extension Item {
         catalog: Catalog,
         variations: [Variant]?,
         bodyCustomize: Bool,
-        hhaBasePoints: Int
+        hhaBasePoints: Int,
+        soundType: SoundType?
     ) {
         self.name = name
         self.category = category
@@ -93,6 +94,7 @@ extension Item {
         self.variations = variations
         self.bodyCustomize = bodyCustomize
         self.hhaBasePoints = hhaBasePoints
+        self.soundType = soundType
     }
 }
 
@@ -107,14 +109,15 @@ extension GyroidsResponseDTO: DomainConvertible {
             diy: false,
             internalId: internalId,
             translations: translations,
-            colors: colors ?? [],
+            colors: colors ?? variations?.first?.colors ?? [],
             image: variations?.first?.image ?? image ?? "",
             sources: source,
             sourceNotes: sourceNotes,
             catalog: catalog,
             variations: variations,
             bodyCustomize: bodyCustomize,
-            hhaBasePoints: hhaBasePoints
+            hhaBasePoints: hhaBasePoints,
+            soundType: soundType ?? variations?.first?.soundType
         )
     }
 }

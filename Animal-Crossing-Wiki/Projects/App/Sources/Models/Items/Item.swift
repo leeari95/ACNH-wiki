@@ -70,6 +70,8 @@ struct Item {
     var musicURL: String?
     var themes: [String]?
     var styles: [Style]?
+    
+    var soundType: SoundType?
 }
 
 extension Item {

@@ -35,7 +35,7 @@ struct ToolsResponseDTO: Decodable {
     let uniqueEntryID: String?
     let translations: Translations
     let colors: [Color]?
-    let concepts: [String]?
+    let concepts: [Concept]?
     let recipe: RecipeResponseDTO?
     let variations: [Variant]?
 
@@ -66,11 +66,14 @@ extension ToolsResponseDTO: DomainConvertible {
             seasonEvent: seasonEvent,
             internalId: internalID,
             translations: translations,
+            colors: colors ?? variations?.first?.colors ?? [],
+            concepts: concepts ?? variations?.first?.concepts ?? [],
             recipe: recipe,
             bodyTitle: bodyTitle,
             catalog: catalog,
             variations: variations,
-            bodyCustomize: customize
+            bodyCustomize: customize,
+            hhaBasePoints: hhaBasePoints
         )
     }
 }

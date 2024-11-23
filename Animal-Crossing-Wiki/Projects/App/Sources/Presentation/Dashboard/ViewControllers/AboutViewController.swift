@@ -9,7 +9,7 @@ import UIKit
 import RxDataSources
 import ReactorKit
 
-class AboutViewController: UIViewController {
+final class AboutViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

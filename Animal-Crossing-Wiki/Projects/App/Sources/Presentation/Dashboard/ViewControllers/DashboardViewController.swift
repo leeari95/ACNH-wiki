@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class DashboardViewController: UIViewController {
+final class DashboardViewController: UIViewController {
 
     private var dateString: String {
         let formatter = DateFormatter()
