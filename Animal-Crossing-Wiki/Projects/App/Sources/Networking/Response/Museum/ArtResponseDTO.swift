@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - ArtResponseDTO
-struct ArtResponseDTO: Codable {
+struct ArtResponseDTO: Decodable {
     let name: String
     let image: String
     let highResTexture: String?

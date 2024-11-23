@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TopsResponseDTO: Codable {
+struct TopsResponseDTO: Decodable {
     let sourceSheet: String
     let name: String
     let closetImage, storageImage: String?
@@ -48,7 +48,7 @@ enum Theme: String, Codable {
     case fairyTale = "fairy tale"
 }
 
-struct WardrobeVariat: Codable {
+struct WardrobeVariat: Decodable {
     let closetImage: String?
     let storageImage: String
     let exchangePrice: Int?

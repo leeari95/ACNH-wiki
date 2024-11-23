@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BottomsResponseDTO: Codable {
+struct BottomsResponseDTO: Decodable {
     let name: String
     let diy: Bool
     let size: Size

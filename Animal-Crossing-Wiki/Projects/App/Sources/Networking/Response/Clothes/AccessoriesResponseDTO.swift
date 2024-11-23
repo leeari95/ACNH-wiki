@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AccessoriesResponseDTO: Codable {
+struct AccessoriesResponseDTO: Decodable {
     let name: String
     let diy: Bool
     let size: Size

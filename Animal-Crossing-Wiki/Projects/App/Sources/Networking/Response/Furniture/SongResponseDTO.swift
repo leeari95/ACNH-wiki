@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SongResponseDTO: Codable {
+struct SongResponseDTO: Decodable {
     let name: String
     let framedImage: String?
     let albumImage: String?

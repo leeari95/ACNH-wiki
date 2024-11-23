@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WallMountedResponseDTO: Codable {
+struct WallMountedResponseDTO: Decodable {
 
     let name: String
     let image: String?

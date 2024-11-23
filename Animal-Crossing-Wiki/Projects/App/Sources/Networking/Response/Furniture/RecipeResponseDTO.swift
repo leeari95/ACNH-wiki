@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Recipe
-struct RecipeResponseDTO: Codable {
+struct RecipeResponseDTO: Decodable {
     let name: String
     let image: String
     let imageSh: String?

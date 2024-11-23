@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - FishResponseDTO
-struct FishResponseDTO: Codable {
+struct FishResponseDTO: Decodable {
     let num: Int
     let name: String
     let iconImage: String
@@ -46,13 +46,13 @@ enum CatchDifficulty: String, Codable {
 }
 
 // MARK: - Hemispheres
-struct Hemispheres: Codable {
+struct Hemispheres: Decodable {
     let north: EmergenceInfo
     let south: EmergenceInfo
 }
 
 // MARK: - North
-struct EmergenceInfo: Codable {
+struct EmergenceInfo: Decodable {
     let time: [String]
     let months: [String]
     let monthsArray: [Int]
