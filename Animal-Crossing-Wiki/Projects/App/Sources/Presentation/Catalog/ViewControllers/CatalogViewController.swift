@@ -18,6 +18,7 @@ class CatalogViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.registerNib(CategoryRow.self)
         tableView.contentInsetAdjustmentBehavior = .always
+        tableView.contentInset.bottom = 60
         return tableView
     }()
 
