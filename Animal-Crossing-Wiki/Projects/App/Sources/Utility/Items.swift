@@ -136,6 +136,9 @@ final class Items {
         fetchItem(ArtRequest(), itemKey: .art, group: group) {
             itemList.merge($0) { _, new in new }
         }
+        fetchItem(ToolsRequest(), itemKey: .tools, group: group) {
+            itemList.merge($0) { _, new in new }
+        }
         fetchItem(HousewaresRequest(), itemKey: .housewares, group: group) {
             itemList.merge($0) { _, new in new }
         }

@@ -151,6 +151,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Fencing" = "Fencing";
 "Gyroids" = "Gyroids";
 "Villager" = "Villager";
+"Tools" = "Tools";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -519,8 +520,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "DJ KK concert" = "DJ KK concert";
 "Viva Festivale Reaction Set" = "Viva Festivale Reaction Set";
 "Hip Reaction Collection" = "Hip Reaction Collection";
+"Redd's Co-op Raffle" = "Redd's Co-op Raffle";
+"Wilbur" = "Wilbur";
+"Kapp'n" = "Kapp'n";
 
-// MARK: - source note
+// MARK: - Source note
 "Source Note" = "Source Note";
 "Mailed to the player from Luna" = "Mailed to the player from Luna";
 "Available in Nook\'s Cranny (either upgrade tier) in the unique furniture slot" = "Available in Nook\'s Cranny (either upgrade tier) in the unique furniture slot";
@@ -631,6 +635,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Received after doing your 50th group stretch" = "Received after doing your 50th group stretch";
 "50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "50 fences are given by Tom Nook after completing the three house plots during the main storyline";
 "Sit down for coffee on 50 different days" = "Sit down for coffee on 50 different days";
+"Sent in the mail after doing group stretches on 20 different days" = "Sent in the mail after doing group stretches on 20 different days";
+"Mailed to players after the 1.7.0 update in a letter from Nintendo" = "Mailed to players after the 1.7.0 update in a letter from Nintendo";
+"Available from Nook's Cranny" = "Available from Nook's Cranny";
+"Available from Tom Nook during Countdown" = "Available from Tom Nook during Countdown";
+"Sent in the mail after doing group stretches on 30 different days" = "Sent in the mail after doing group stretches on 30 different days";
+"Available after unlocking the axe in the story" = "Available after unlocking the axe in the story";
+"Available after unlocking the shovel in the story" = "Available after unlocking the shovel in the story";
 
 // MARK: - Housewares - tag
 "museum" = "Museum";

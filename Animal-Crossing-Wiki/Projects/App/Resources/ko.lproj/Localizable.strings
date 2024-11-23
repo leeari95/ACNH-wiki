@@ -152,6 +152,7 @@
 "Fencing" = "울타리";
 "Gyroids" = "토용";
 "Villager" = "마을주민";
+"Tools" = "도구";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -518,6 +519,9 @@
 "DJ KK concert" = "DJ KK 콘서트";
 "Viva Festivale Reaction Set" = "비바! 카니발 리액션";
 "Hip Reaction Collection" = "최신 유행! 리액션 도감";
+"Redd's Co-op Raffle" = "여욱 노점";
+"Wilbur" = "로드리";
+"Kapp'n" = "갑돌";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -630,6 +634,14 @@
 "Received after doing your 50th group stretch" = "50번째 그룹 스트레칭 후 획득";
 "50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "스토리 진행 중에 세 개의 집터를 완성한 후 너굴에게서 50개의 울타리를 획득";
 "Sit down for coffee on 50 different days" = "50일 동안 앉아서 커피 마시기";
+"Sent in the mail after doing group stretches on 20 different days" = "20일씩 그룹 스트레칭을 하고 편지로 발송";
+"Mailed to players after the 1.7.0 update in a letter from Nintendo" = "1.7.0 업데이트 후 닌텐도에게서 받는 편지";
+"Available from Nook's Cranny" = "너굴 상점에서 구매 가능";
+"Available from Tom Nook during Countdown" = "카운트 다운 중 광장에 있는 너굴에게 구매 가능";
+"Sent in the mail after doing group stretches on 30 different days" = "30일씩 그룹 스트레칭을 하면 편지로 발송";
+"Available after unlocking the axe in the story" = "스토리에서 도끼를 잠금 해제";
+"Available after unlocking the shovel in the story" = "스토리에서 삽을 잠금 해제";
+
 
 // MARK: - Housewares - tag
 "museum" = "박물관";

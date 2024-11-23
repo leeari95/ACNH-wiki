@@ -85,7 +85,7 @@ class ItemOtherInfoView: UIView {
             whereHowLabel.text = "Underwater".localized
         case .fossils, .art:
             whereHowLabel.text = item.source?.localized
-        case .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
+        case .tools, .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
                 .wallpaper, .floors, .rugs, .other, .recipes, .songs, .fencing,
                 .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
                 .socks, .shoes, .bags, .umbrellas, .wetSuit, .reactions, .gyroids:

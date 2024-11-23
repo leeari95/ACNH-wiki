@@ -37,6 +37,7 @@ enum Category: String, CaseIterable {
     case wetSuit = "Wet Suit"
     case reactions = "Reactions"
     case gyroids = "Gyroids"
+    case tools = "Tools"
     case villager = "Villager"
     case npc = "NPC"
 
@@ -71,6 +72,7 @@ enum Category: String, CaseIterable {
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
         case .gyroids: return "icon-gyroids"
+        case .tools: return "icon-tool"
         case .villager: return "icon-raymond"
         case .npc: return "icon-kk"
         }
@@ -107,6 +109,7 @@ enum Category: String, CaseIterable {
         case .wetSuit: return "icon-wetsuit"
         case .reactions: return "icon-reactions"
         case .gyroids: return "icon-gyroids"
+        case .tools: return "icon-tool"
         case .villager: return "icon-raymond"
         case .npc: return "icon-kk"
         }
@@ -115,7 +118,7 @@ enum Category: String, CaseIterable {
     static func items() -> [Category] {
         [
             .fishes, .seaCreatures, .bugs,
-            .fossils, .art, .housewares,
+            .fossils, .art, .tools, .housewares,
             .miscellaneous, .wallMounted, .ceilingDecor,
             .wallpaper, .floors, .rugs,
             .other, .recipes, .songs, .photos, .fencing,
@@ -134,7 +137,7 @@ enum Category: String, CaseIterable {
 
     static func furniture() -> [Category] {
         [
-            .housewares, .miscellaneous, .wallMounted,
+            .tools, .housewares, .miscellaneous, .wallMounted,
             .ceilingDecor, .wallpaper, .floors,
             .rugs, .other, .songs, .photos, .fencing,
             .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
@@ -156,31 +159,32 @@ extension Category: Comparable {
         case .bugs: return 2
         case .fossils: return 3
         case .art: return 4
-        case .housewares: return 5
-        case .miscellaneous: return 6
-        case .wallMounted: return 7
-        case .wallpaper: return 8
-        case .floors: return 9
-        case .rugs: return 10
-        case .other: return 11
-        case .ceilingDecor: return 12
-        case .recipes: return 13
-        case .songs: return 14
-        case .fencing: return 15
-        case .photos: return 16
-        case .tops: return 17
-        case .bottoms: return 18
-        case .dressUp: return 19
-        case .headwear: return 20
-        case .accessories: return 21
-        case .socks: return 22
-        case .shoes: return 23
-        case .bags: return 24
-        case .umbrellas: return 25
-        case .wetSuit: return 26
-        case .reactions: return 27
-        case .gyroids: return 28
-
+        case .tools: return 5
+        case .housewares: return 6
+        case .miscellaneous: return 7
+        case .wallMounted: return 8
+        case .wallpaper: return 9
+        case .floors: return 10
+        case .rugs: return 11
+        case .other: return 12
+        case .ceilingDecor: return 13
+        case .recipes: return 14
+        case .songs: return 15
+        case .fencing: return 16
+        case .photos: return 17
+        case .tops: return 18
+        case .bottoms: return 19
+        case .dressUp: return 20
+        case .headwear: return 21
+        case .accessories: return 22
+        case .socks: return 23
+        case .shoes: return 24
+        case .bags: return 25
+        case .umbrellas: return 26
+        case .wetSuit: return 27
+        case .reactions: return 28
+        case .gyroids: return 29
+    
         case .villager: return 0
         case .npc: return 1
         }
