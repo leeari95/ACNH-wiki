@@ -110,7 +110,7 @@ extension CatalogCell {
             priceView = ItemBellsView(mode: .sell, price: item.sell)
         case .art:
             priceView = ItemBellsView(mode: .buy, price: item.sell)
-        case .housewares, .miscellaneous, .wallMounted, .wallpaper, .fencing,
+        case .tools, .housewares, .miscellaneous, .wallMounted, .wallpaper, .fencing,
                 .floors, .rugs, .other, .ceilingDecor, .recipes, .songs,
                 .photos, .tops, .bottoms, .dressUp, .headwear, .accessories,
                 .socks, .shoes, .bags, .umbrellas, .wetSuit, .gyroids:

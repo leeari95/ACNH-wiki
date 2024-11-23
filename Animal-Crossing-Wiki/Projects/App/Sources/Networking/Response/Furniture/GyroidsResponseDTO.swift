@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - WelcomeElement
+// MARK: - GyroidsResponseDTO
 struct GyroidsResponseDTO: Decodable {
     let image: String?
     let name: String
@@ -45,6 +45,7 @@ struct GyroidsResponseDTO: Decodable {
     }
 }
 
+// MARK: - SoundType
 enum SoundType: String, Decodable {
     case crash = "Crash"
     case drumSet = "Drum set"
@@ -56,6 +57,7 @@ enum SoundType: String, Decodable {
     var localized: String { rawValue.localized }
 }
 
+// MARK: - DomainConvertible
 extension Item {
     init(
         name: String,

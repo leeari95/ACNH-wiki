@@ -152,6 +152,7 @@
 "Fencing" = "울타리";
 "Gyroids" = "토용";
 "Villager" = "마을주민";
+"Tools" = "도구";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
@@ -195,6 +196,7 @@
 "Original" = "진품";
 "Fake" = "가품";
 "differences" = "구분 방법";
+"season event" = "시즌 이벤트";
 
 // MARK: - WhereHow
 "Disguised on shoreline" = "해안선 근처";
@@ -232,7 +234,7 @@
 
 // MARK: - fossils, Art Source
 "Assessing fossils" = "화석 감정";
-"Jolly Redd\'s Treasure Trawler" = "여욱이";
+"Jolly Redd's Treasure Trawler" = "여욱이";
 
 // MARK: - Shadow
 "Large" = "대형";
@@ -433,7 +435,7 @@
 "Blathers" = "부엉";
 "Donating all art" = "모든 미술품 기부";
 "Donating all fossils" = "모든 화석 기부";
-"Saharah\'s Co-op" = "사하라의 상점";
+"Saharah's Co-op" = "사하라의 상점";
 "Saharah" = "사하라";
 "Chopping a tree" = "나무 자르기";
 "Clam dig spot" = "해변에 물 뿜는 곳";
@@ -446,7 +448,7 @@
 "Cedar Tree" = "삼나무";
 "Planting a cedar sapling" = "삼나무 묘목 심기";
 "Orange Tree" = "오렌지 나무";
-"Don\'t return treasure quest item" = "보물 퀘스트 아이템을 돌려주지 말 것";
+"Don't return treasure quest item" = "보물 퀘스트 아이템을 돌려주지 말 것";
 "5-star town status" = "섬평판 5성";
 "Digging up a wheat plant" = "밀을 삽으로 파기";
 "Shaking a hardwood or cedar tree" = "나무나 삼나무를 흔들어요.";
@@ -468,7 +470,7 @@
 "Digging up a carrot plant" = "당근을 삽으로 파기";
 "Planting a peach" = "복숭아 심기";
 "Dig Spot" = "땅을 삽으로 파기";
-"Redd\'s Raffle" = "여욱이의 뽑기상점";
+"Redd's Raffle" = "여욱이의 뽑기상점";
 "Wrapping a present" = "선물 포장";
 "Digging up a fully grown bush" = "완전히 자란 덤불을 파고 들었을 때";
 "Pear Tree" = "배나무";
@@ -486,7 +488,7 @@
 "Breeding" = "교배";
 "Peach Tree" = "복숭아 나무";
 "Seed bag" = "씨앗 가방";
-"Kapp\'n islands" = "갑돌이의 섬";
+"Kapp'n islands" = "갑돌이의 섬";
 "Picking carrots" = "당근 재배";
 "Expired turnips" = "일주일이 지난 순무";
 "Planting a cherry" = "체리 심기";
@@ -498,7 +500,7 @@
 "Digging up a tomato plant" = "토마토를 삽으로 파기";
 "May Day Tour" = "노동절 (낯선 고양이)";
 "Leif" = "늘봉";
-"Don\'t return lost item" = "분실물을 돌려주지 말 것";
+"Don't return lost item" = "분실물을 돌려주지 말 것";
 "Snowboy" = "눈사람";
 "Planting a pear" = "배 심기";
 "Picking pumpkins" = "호박 재배";
@@ -512,29 +514,32 @@
 "Check Toy Day stockings the day after Toy Day" = "크리스마스 이브 날 이후";
 "HHP Apparel Shop" = "해피홈 파라다이스 옷가게";
 "Able Sisters" = "에이블 시스터즈";
-"Kicks\' Co-op" = "패트릭 노점";
+"Kicks' Co-op" = "패트릭 노점";
 "Kicks" = "패트릭";
 "New Reactions Notebook" = "리액션 아이디어 노트";
 "DJ KK concert" = "DJ KK 콘서트";
 "Viva Festivale Reaction Set" = "비바! 카니발 리액션";
 "Hip Reaction Collection" = "최신 유행! 리액션 도감";
+"Redd's Co-op Raffle" = "여욱 노점";
+"Wilbur" = "로드리";
+"Kapp'n" = "갑돌";
 
 // MARK: - Source note
 "Source Note" = "메모";
 "Mailed to the player from Luna" = "몽셰르의 우편 발송";
-"Available in Nook\'s Cranny (either upgrade tier) in the unique furniture slot" = "상점(업그레이드 전도 가능)\n내부 특이한 가구 자리 부분";
-"Available in Nook\'s Cranny (upgraded only), in the unique furniture slot" = "상점(업그레이드 후)\n내부 특이한 가구 자리 부분";
+"Available in Nook's Cranny (either upgrade tier) in the unique furniture slot" = "상점(업그레이드 전도 가능)\n내부 특이한 가구 자리 부분";
+"Available in Nook's Cranny (upgraded only), in the unique furniture slot" = "상점(업그레이드 후)\n내부 특이한 가구 자리 부분";
 "Scan the associated Sanrio amiibo card" = "산리오 아미보 카드를 스캔";
 "Sit down for coffee on 20 different days" = "20일 동안 앉아서 커피 마시기";
 "Link Nintendo Account to Pocket Camp, then redeem a 16-digit code on your Nintendo Switch" = "포켓 캠프";
 "Sent in the mail after doing group stretches on 10 different days" = "10일 동안 국민 체조를 하면\n우편으로 발송";
-"Available in Nook\'s Cranny (upgraded only), in the seasonal slot" = "상점 (업그레이드)\n시즌 가구 자리 부분";
+"Available in Nook's Cranny (upgraded only), in the seasonal slot" = "상점 (업그레이드)\n시즌 가구 자리 부분";
 "Reward from Pavé after receiving 9 furniture items and giving 3 rainbow feathers" = "무지개 깃털 3개를 주면\n베르리나에게 받는 보상";
 "Trade 3 fish to receive a model in the mail the next day" = "3마리의 물고기를 주면\n다음날 우편으로 발송";
 "Trade 3 insects to receive a model in the mail the next day" = "3개의 곤충을 주면\n다음날 우편으로 발송";
 "Available in all tiers of shops, including Timmy & Tommy before the shop is opened" = "너굴 상점\n업그레이드 전에도 구매 가능";
-"Available in the re-buyable slot in Nook\'s Cranny" = "너굴 쇼핑의\n재구매 탭에서 구매 가능";
-"Available in Nook\'s Cranny (upgraded only), in the third unique furniture slot" = "너굴 쇼핑 재구매 가능";
+"Available in the re-buyable slot in Nook's Cranny" = "너굴 쇼핑의\n재구매 탭에서 구매 가능";
+"Available in Nook's Cranny (upgraded only), in the third unique furniture slot" = "너굴 쇼핑 재구매 가능";
 
 "Received in April in the Northern Hemisphere and received in October in the Southern Hemisphere" = "북반구 4월, 남반구 10월";
 "Reward for finishing all recipes" = "모든 레시피 완료 보상";
@@ -575,12 +580,12 @@
 "Mailed to players after the 1.2.0 update in a letter from Bank of Nook" = "1.2.0 업데이트 후\n너굴에게서 우편으로 획득";
 "Received in November in the Northern Hemisphere and received in May in the Southern Hemisphere" = "북반구 11월, 남반구 5월";
 "Obtained from Franklin after completing 4 recipes with secret ingredient" = "비밀 재료를 완료하였을 때\n프랭클린에게 획득";
-"sold in Nook\'s Cranny after Turkey Day until the end of November" = "추수감사절 이후\n11월 말까지\n너굴 쇼핑에서 판매";
+"sold in Nook's Cranny after Turkey Day until the end of November" = "추수감사절 이후\n11월 말까지\n너굴 쇼핑에서 판매";
 "Black roses watered with gold watering can" = "검정장미에\n금 물뿌리개로 물주기";
 "Large shadow" = "큰 그림자";
 "Since 1.6.0" = "1.6.0 업데이트 후\n늘봉에게 구매";
 "Leif sells pumpkin starts year-round." = "호박은 1년 내내 판매";
-"Sold in Nook\'s Cranny during the month of October" = "10월에 너굴 상점에서 판매";
+"Sold in Nook's Cranny during the month of October" = "10월에 너굴 상점에서 판매";
 "gifted by talking to villagers during Halloween" = "할로윈 기간에\n마을 주민들과\n대화를 통해 선물 받음";
 "Shaking decorated trees" = "흔들리는 나무 장식";
 "Near a bamboo tree" = "대나무 근처";
@@ -593,11 +598,11 @@
 "Only available while on a quest for Gullivarrr" = "해적 죠니의 심부름 후";
 "Shaking" = "흔들리는 나무 장식";
 "X-Small shadow when fishing" = "낚시 시 작은 그림자";
-"Placed randomly on island for a villager\'s treasure hunt quest" = "마을 주민의\n보물찾기 퀘스트를 할 때\n섬에 무작위로 배치";
-"Available from Redd\'s Raffle during Fireworks Shows" = "불꽃 축제 때\n여욱 노점에서";
-"Available from Nook\'s Cranny rotating cabinet stock outside of August" = "너굴 상점에서\n8월에 구매 가능";
+"Placed randomly on island for a villager's treasure hunt quest" = "마을 주민의\n보물찾기 퀘스트를 할 때\n섬에 무작위로 배치";
+"Available from Redd's Raffle during Fireworks Shows" = "불꽃 축제 때\n여욱 노점에서";
+"Available from Nook's Cranny rotating cabinet stock outside of August" = "너굴 상점에서\n8월에 구매 가능";
 "Medium shadow" = "중간 그림자";
-"Received in the mail the day after uploading your island to Luna\'s Dream Library" = "몽셰르에게 당신의 섬을\n업로드하면 우편으로 획득";
+"Received in the mail the day after uploading your island to Luna's Dream Library" = "몽셰르에게 당신의 섬을\n업로드하면 우편으로 획득";
 "Found under the Special tab of the Nook Miles Redemption service." = "너굴 마일 교환 서비스의\n스페셜 구간";
 "Obtained from crafting villagers during October if player already knows the recipe or as a reward for gifting candy on Halloween" = "플레이어가\n이미 레시피를 알고 있는 경우\n10월 동안 제작하여 얻거나,\n할로윈에 사탕을 선물하면\n보상으로 획득";
 "Only available while on a quest for Gulliver" = "죠니의 심부름 후";
@@ -612,7 +617,7 @@
 "Received in December in the Northern Hemisphere and received in June in the Southern Hemisphere" = "북반구 12월, 남반구 6월";
 "Only available as a work clothes for Paradise Planning" = "파라다이스 기획 작업복으로만 가능";
 "Received in mail from DAL after 250 flights" = "250회 비행 후 DAL에서 우편으로 획득";
-"Available from either Mabel\'s temporary shop or Able Sisters shop" = "에이블의 임시 상점 또는 에이블 시스터즈 상점에서 구매 가능";
+"Available from either Mabel's temporary shop or Able Sisters shop" = "에이블의 임시 상점 또는 에이블 시스터즈 상점에서 구매 가능";
 "Received in mail from DAL after 100 flights" = "100회 비행 후 DAL에서 우편으로 획득";
 "Sent in the mail after doing group stretches on 3 different days" = "3일 연속 단체 스트레칭 후 우편으로 발송";
 "Give Jack candy or a lollipop" = "펌킹에게 사탕이나 막대사탕을 주기";
@@ -625,11 +630,19 @@
 "Received in mail from DAL after 200 flights" = "200회 비행 후 DAL에서 우편으로 획득";
 "Received in May in the Northern Hemisphere and received in November in the Southern Hemisphere" = "북반구 5월, 남반구 11월";
 "Received in mail from DAL after 160 flights" = "160회 비행 후 DAL에서 우편으로 획득";
-"Available in Nook\'s Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
+"Available in Nook's Cranny (upgraded only)" = "너굴상점에서만 구입 가능 \n(업그레이드 한 너굴상점)";
 "Requires a high level of friendship" = "높은 수준의 우정이 필요";
 "Received after doing your 50th group stretch" = "50번째 그룹 스트레칭 후 획득";
 "50 fences are given by Tom Nook after completing the three house plots during the main storyline" = "스토리 진행 중에 세 개의 집터를 완성한 후 너굴에게서 50개의 울타리를 획득";
 "Sit down for coffee on 50 different days" = "50일 동안 앉아서 커피 마시기";
+"Sent in the mail after doing group stretches on 20 different days" = "20일씩 그룹 스트레칭을 하고 편지로 발송";
+"Mailed to players after the 1.7.0 update in a letter from Nintendo" = "1.7.0 업데이트 후 닌텐도에게서 받는 편지";
+"Available from Nook's Cranny" = "너굴 상점에서 구매 가능";
+"Available from Tom Nook during Countdown" = "카운트 다운 중 광장에 있는 너굴에게 구매 가능";
+"Sent in the mail after doing group stretches on 30 different days" = "30일씩 그룹 스트레칭을 하면 편지로 발송";
+"Available after unlocking the axe in the story" = "스토리에서 도끼를 잠금 해제";
+"Available after unlocking the shovel in the story" = "스토리에서 삽을 잠금 해제";
+
 
 // MARK: - Housewares - tag
 "museum" = "박물관";
@@ -1078,7 +1091,7 @@
 "Balloons" = "하늘을 나는 풍선";
 "Isabelle" = "여울";
 "All villagers" = "주민 (모두)";
-"Kapp\'n island bottles" = "갑돌투어 섬 유리병";
+"Kapp'n island bottles" = "갑돌투어 섬 유리병";
 "Peppy villagers" = "주민 (아이돌)";
 "Tom Nook" = "너굴";
 "Catching a horse mackerel" = "전갱이 잡기";
@@ -1119,20 +1132,20 @@
 "Obtained during the main storyline during the villager house development quest if the native flower is cosmos" = "섬의 꽃이 코스모스일 때\n주민집 발전 퀘스트 완료";
 "Obtained during the main storyline during the villager house development quest if the native flower is lilies" = "섬의 꽃이 백합일 때\n주민집 발전 퀘스트 완료";
 "Obtained during the main storyline during the villager house development quest if the native flower is mums" = "섬의 꽃이 국화일 때\n주민집 발전 퀘스트 완료";
-"Purchase Test Your DIY Skills from Nook\'s Cranny" = "도전! DIY 레시피를 너굴 상점에서 구매";
+"Purchase Test Your DIY Skills from Nook's Cranny" = "도전! DIY 레시피를 너굴 상점에서 구매";
 "Obtained during the main storyline during the villager house development quest if the native flower is hyacinths" = "섬의 꽃이 히아신스일 때\n주민집 발전 퀘스트 완료";
-"Purchase Wildest Dreams DIY from Nook\'s Cranny" = "DIY 레시피\n무엇이든 뚝딱?! DIY 레시피를\n너굴 상점에서 구매";
+"Purchase Wildest Dreams DIY from Nook's Cranny" = "DIY 레시피\n무엇이든 뚝딱?! DIY 레시피를\n너굴 상점에서 구매";
 "Reward for making a perfect Snowboy" = "완벽한 눈사람을 만든 후 획득";
 "Fish up 15 trash" = "낚시로 쓰레기 15개 낚기";
 "Obtained during the main storyline" = "메인 스토리 진행 중 획득";
 "Talk to Pavé during the Festivale event" = "축제 때 베르리나와 대화하기";
 "Also obtained from digging up an existing pitfall" = "기존 함정을 파헤쳐 획득";
-"Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서\n삶에 풍요를! 하베스트 DIY\n레시피를 구매";
-"Obtain Turkey Day Recipes from Franklin or buy it from Nook\'s Cranny" = "너굴 상점에서\n추수감사절 레시피를 구매";
+"Obtain Cozy Turkey Day DIY from Franklin or buy it from Nook's Cranny" = "너굴 상점에서\n삶에 풍요를! 하베스트 DIY\n레시피를 구매";
+"Obtain Turkey Day Recipes from Franklin or buy it from Nook's Cranny" = "너굴 상점에서\n추수감사절 레시피를 구매";
 "Fish up 3 empty cans" = "빈 통조림 캔 3개 낚기";
 "Obtained during the main storyline during the villager house development quest if the native fruit is peaches" = "섬 과일이 복숭아일 때\n스토리 잰행 중에 주민 집 발전 퀘스트 완료";
 "Received in the mail after buying veggies from Leif on 3 different days." = "늘봉에게서 야채를\n3일 이상 구매하였을 때\n우편으로 획득";
-"Purchase DIY for Beginners at Nook\'s Cranny" = "너굴 상점에서\n첫 DIY 레시피 구매";
+"Purchase DIY for Beginners at Nook's Cranny" = "너굴 상점에서\n첫 DIY 레시피 구매";
 "Reward from Zipper after crafting all Bunny Day recipes" = "모든 이스터 아이템을 만든 후\n토빗에게 획득";
 "Sent in the mail after purchasing turnips" = "무 구매 후 편지로 획득";
 "50% chance of being obtained during the main storyline during the villager house development quest" = "주민의 집 개발 심부름 중\n메인 스토리 진행 중\n50% 확률로 획득";
@@ -1151,8 +1164,8 @@
 "Obtained from Tom Nook after completing his DIY Workshop at the beginning of the game" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득";
 "Obtained from Tom Nook after completing one Nature Day Nook Miles+ task" = "지구의 날 마일리지 완료 후\n너굴에게서 획득";
 "Obtained from Leif after buying anything from him on three different days" = "3일 동안 늘봉에게\n물건을 구매한 후\n늘봉에게서 획득";
-"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game" = "게임 진행 중\n너굴의 DIY 워크숍 진행 중";
-"Obtained through Tom Nook\'s DIY Workshop at the beginning of the game and can also be purchased at Nook\'s Cranny" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득,\n너굴 상점";
+"Obtained through Tom Nook's DIY Workshop at the beginning of the game" = "게임 진행 중\n너굴의 DIY 워크숍 진행 중";
+"Obtained through Tom Nook's DIY Workshop at the beginning of the game and can also be purchased at Nook's Cranny" = "DIY 워크숍을 다 마친 후\n너굴에게서 획득,\n너굴 상점";
 "Picking up gold nuggets knocked out of rocks" = "돌을 친 후 금광석 줍기";
 "Purchase Pretty Good Tools Recipes via Nook Miles Redemption" = "너굴 상점에서\n언제나 쓸 수 있는 도구 레시피 구매";
 "Received after completing 8th HHP house" = "8번째 해피홈 파라다이스 하우스를\n완료하였을 때";
@@ -1196,3 +1209,115 @@
 "melody" = "멜로디";
 "snare" = "작은 북";
 
+// MARK: - Season Event
+"Libra" = "천칭자리";
+"Dano Festival" = "단오";
+"Festivale" = "카니발";
+"Turkey Day; Turkey Day (shopping days)" = "하베스트 (쇼핑 기간)";
+"Setsubun (Able Sisters)" = "일본 세츠분 (에이블 자매점)";
+"Big Game Celebration (2)" = "미국 빅 게임 (2)";
+"maple leaves" = "단풍 시즌";
+"Toy Day" = "크리스마스 이브";
+"New Year's Day (Year of the Snake)" = "새해 (뱀띠)";
+"Leo" = "사자자리";
+"Shōgatsu (1)" = "새해 (일본)";
+"Prom (1)" = "프롬 (1)";
+"Gemini" = "쌍둥이자리";
+"Winter Solstice (southern hemisphere); Winter Solstice (northern hemisphere)" = "동지 (남반구), 동지 (북반구)";
+"Summer shopping" = "여름 쇼핑";
+"Hinamatsuri" = "일본 히나마츠리";
+"Toy Day (ready days phase 2); Toy Day; Toy Day (day after)" = "크리스마스 (준비 2단계); 크리스마스 이브; 크리스마스";
+"Wedding Season (Able Sisters)" = "6월의 신부 (에이블 자매점)";
+"summer shells" = "여름 조개껍데기";
+"Summer Solstice (northern hemisphere) (2)" = "하지 (북반구) (2)";
+"Nanakusa Gayu" = "일본 나나큐사가유";
+"Wedding Season" = "6월의 신부";
+"Moon-Viewing Day (3)" = "달맞이의 날 (3)";
+"Sagittarius" = "사수자리";
+"Shichi-Go-San" = "일본 시치고산";
+"π Day" = "파이 데이";
+"Scorpio" = "전갈자리";
+"Singmogil" = "식목일";
+"New Year's Day (Year of the Dog)" = "새해 (개띠)";
+"Shōgatsu (3)" = "새해 (일본)";
+"Dragon Boat Festival" = "단오";
+"New Year's Day (Year of the Rooster)" = "새해 (닭띠)";
+"Winter Solstice (northern hemisphere) (2)" = "동지 (북반구) (2)";
+"New Year's Day (Korea)" = "설날 (한국)";
+"Super Mario Bros." = "슈퍼 마리오 브라더스";
+"Obon" = "일본 오봉";
+"Tomato Festival" = "토마토 축제";
+"Nature Day (Nook Shopping)" = "지구의 날 (너굴 쇼핑)";
+"Grape Harvest Festival" = "포도 수확제";
+"New Year's Day (Year of the Rat)" = "새해 (쥐띠)";
+"Summer Solstice (northern hemisphere); Summer Solstice (southern hemisphere)" = "하지 (북반구); 하지 (남반구)";
+"Groundhog Day" = "그라운드호그 데이";
+"Happy Home Paradise" = "해피 홈 파라다이스";
+"Cheese Rolling" = "치즈 굴리기";
+"May Day" = "근로자의 날";
+"Moon-Viewing Day" = "달맞이날";
+"New Year's Day" = "새해";
+"Shamrock Day" = "성 패트릭 데이";
+"Setsubun" = "세츠분";
+"International Children's Day" = "국제 어린이날";
+"Tanabata" = "칠석";
+"Mother's Day" = "어머니날";
+"Winter Solstice (northern hemisphere); Winter Solstice (southern hemisphere)" = "동지 (북반구); 동지 (남반구)";
+"Lunar New Year" = "춘절";
+"New Year's Day (World)" = "새해 (세계)";
+"Countdown" = "카운트다운";
+"Big Game Celebration (1)" = "미국 빅 게임 (1)";
+"Pisces" = "물고기자리";
+"Halloween" = "할로윈";
+"Festivale (ready days); Festivale" = "카니발 (준비 기간); 카니발";
+"mushrooms" = "버섯";
+"Father's Day" = "아버지날";
+"Seollal" = "설날";
+"young spring bamboo" = "봄의 대나무";
+"New Year's Day (Year of the Ox)" = "새해 (소띠)";
+"New Year's Day (Year of the Pig)" = "새해 (돼지띠)";
+"ornaments" = "오너먼트";
+"New Year's Day (Year of the Rabbit)" = "새해 (토끼띠)";
+"Day of the Dead" = "망자의 날";
+"Toy Day (ready days phase 2); Toy Day" = "크리스마스 (준비 2단계); 크리스마스 이브";
+"Winter Solstice (northern hemisphere) (3)" = "동지 (북반구) (3)";
+"Virgo" = "처녀자리";
+"Halloween (ready days); Halloween" = "할로윈 (준비 기간); 할로윈";
+"New Year's Day (Year of the Horse)" = "새해 (말띠)";
+"Cowboy Festival" = "카우보이 축제";
+"Bunny Day" = "이스터";
+"New Year's Day (Year of the Dragon)" = "새해 (용띠)";
+"Nature Day" = "지구의 날";
+"Festive shopping" = "패션 체크";
+"Nochevieja" = "스페인 노체 비에하";
+"Moon-Viewing Day (2)" = "달맞이날 (2)";
+"Marine Day" = "바다의 날";
+"Bunny Day (ready days); Bunny Day" = "이스터 (준비 기간); 이스터";
+"Winter shopping" = "겨울 쇼핑";
+"International Museum Day" = "국제 박물관의 날";
+"Capricorn" = "염소자리";
+"New Year's Day (Year of the Sheep)" = "새해 (양띠)";
+"Cancer" = "게자리";
+"Aquarius" = "물병자리";
+"Fishing Tourney" = "낚시 대회";
+"New Year's Eve (Russia)" = "새해 전야 (러시아)";
+"Shamrock Day (Able Sisters)" = "성 패트릭 데이 (에이블 자매점)";
+"Birthday" = "생일";
+"New Year's Day (Year of the Monkey)" = "새해 (원숭이띠)";
+"Silvester" = "질베스터";
+"Halloween (ready days)" = "할로윈 (준비 기간)";
+"Chuseok" = "추석";
+"Taurus" = "황소자리";
+"Bug-Off" = "곤충 채집 대회";
+"acorns and pine cones" = "도토리 & 솔방울";
+"New Year's Day (Year of the Tiger)" = "새해 (호랑이띠)";
+"Turkey Day" = "하베스트";
+"Cowherd & Weaver Girl Day" = "견우와 직녀의 날";
+"Children's Day" = "어린이날";
+"Aries" = "양자리";
+"snowflakes" = "눈송이 시즌";
+"Shōgatsu (2)" = "새해 (일본)";
+"cherry-blossom petals" = "벚꽃 시즌";
+"Wedding Season (Nook Shopping 1)" = "6월의 신부 (너굴 쇼핑 1)";
+"New Year's Eve" = "새해 전날";
+"Fireworks Show" = "불꽃놀이";
