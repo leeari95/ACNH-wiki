@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class TaskEditViewController: UIViewController {
+final class TaskEditViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class PreferencesView: UIView {
+final class PreferencesView: UIView {
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()

@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class NPCViewController: UIViewController {
+final class NPCViewController: UIViewController {
     enum Menu: String {
         case all = "All"
         case gender = "Gender"

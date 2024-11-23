@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemMaterialsView: UIView {
+final class ItemMaterialsView: UIView {
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()

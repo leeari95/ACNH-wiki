@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NPCDetailView: UIView {
+final class NPCDetailView: UIView {
 
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()

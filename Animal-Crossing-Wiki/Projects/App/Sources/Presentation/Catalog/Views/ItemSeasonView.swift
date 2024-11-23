@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class ItemSeasonView: UIView {
+final class ItemSeasonView: UIView {
 
     private let disposeBag = DisposeBag()
 

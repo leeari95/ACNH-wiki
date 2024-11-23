@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class TodaysTasksView: UIView {
+final class TodaysTasksView: UIView {
 
     private let disposeBag = DisposeBag()
     private var heightConstraint: NSLayoutConstraint!

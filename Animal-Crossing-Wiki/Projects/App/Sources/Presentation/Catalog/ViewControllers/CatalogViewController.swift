@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CatalogViewController: UIViewController {
+final class CatalogViewController: UIViewController {
 
     let mode: CatalogReactor.Mode
     private let disposeBag = DisposeBag()

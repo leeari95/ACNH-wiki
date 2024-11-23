@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class VillagerDetailViewController: UIViewController {
+final class VillagerDetailViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

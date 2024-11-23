@@ -7,7 +7,7 @@
 
 import UIKit
 
-class VillagerHouseView: UIView {
+final class VillagerHouseView: UIView {
 
     private lazy var houseImageView: UIImageView = {
         let imageView = UIImageView()

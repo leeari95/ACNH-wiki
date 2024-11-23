@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class MaximizePlayerView: UIView {
+final class MaximizePlayerView: UIView {
 
     private let disposeBag = DisposeBag()
 

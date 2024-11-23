@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadingView: UIActivityIndicatorView {
+final class LoadingView: UIActivityIndicatorView {
 
     convenience init(backgroundColor: UIColor, alpha: CGFloat) {
         self.init(frame: .zero)

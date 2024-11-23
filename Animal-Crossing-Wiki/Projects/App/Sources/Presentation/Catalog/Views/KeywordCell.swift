@@ -7,7 +7,7 @@
 
 import UIKit
 
-class KeywordCell: UICollectionViewCell {
+final class KeywordCell: UICollectionViewCell {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var stackView: UIStackView!

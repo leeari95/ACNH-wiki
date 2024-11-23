@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class PreferencesViewController: UIViewController {
+final class PreferencesViewController: UIViewController {
 
     private let currentHemisphere = BehaviorRelay<String?>(value: nil)
     private let currentFruit = BehaviorRelay<String?>(value: nil)

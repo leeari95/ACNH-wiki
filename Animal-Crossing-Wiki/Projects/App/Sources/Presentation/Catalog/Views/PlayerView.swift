@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class ItemPlayerView: UIView {
+final class ItemPlayerView: UIView {
 
     private let disposeBag = DisposeBag()
 

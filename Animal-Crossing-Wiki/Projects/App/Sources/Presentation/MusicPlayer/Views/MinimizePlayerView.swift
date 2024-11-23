@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class MinimizePlayerView: UIView {
+final class MinimizePlayerView: UIView {
 
     private let disposeBag = DisposeBag()
 

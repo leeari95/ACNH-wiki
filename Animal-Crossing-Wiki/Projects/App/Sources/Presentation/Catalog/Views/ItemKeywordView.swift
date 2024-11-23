@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ItemKeywordView: UIView {
+final class ItemKeywordView: UIView {
 
     private let disposeBag = DisposeBag()
 

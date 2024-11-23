@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PlayerViewController: UIViewController {
+final class PlayerViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 

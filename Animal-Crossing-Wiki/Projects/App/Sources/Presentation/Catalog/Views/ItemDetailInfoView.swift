@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemDetailInfoView: UIView {
+final class ItemDetailInfoView: UIView {
 
     enum ImageSize {
         static let large: CGFloat = 150

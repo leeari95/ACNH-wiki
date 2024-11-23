@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SectionsScrollView: UIView {
+final class SectionsScrollView: UIView {
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

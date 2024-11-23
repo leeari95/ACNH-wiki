@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class CustomTaskViewController: UIViewController {
+final class CustomTaskViewController: UIViewController {
 
     enum Mode: String {
         case add = "New task"

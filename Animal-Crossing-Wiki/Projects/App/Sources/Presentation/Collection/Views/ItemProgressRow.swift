@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemProgressRow: UITableViewCell {
+final class ItemProgressRow: UITableViewCell {
 
     private var progressView: ProgressView = .init(category: .art, barHeight: 40)
 

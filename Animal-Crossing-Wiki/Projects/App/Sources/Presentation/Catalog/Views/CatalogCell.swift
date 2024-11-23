@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class CatalogCell: UICollectionViewCell {
+final class CatalogCell: UICollectionViewCell {
 
     private var disposeBag = DisposeBag()
 

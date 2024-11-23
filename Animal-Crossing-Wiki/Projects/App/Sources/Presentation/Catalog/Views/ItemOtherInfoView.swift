@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemOtherInfoView: UIView {
+final class ItemOtherInfoView: UIView {
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical

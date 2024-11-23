@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SectionView: UIView {
+final class SectionView: UIView {
 
     private lazy var headerView: SectionHeaderView = {
         let headerView = SectionHeaderView()
