@@ -76,7 +76,7 @@ class CollectionProgressView: UIView {
             .bind(to: activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
 
-        Items.shared.itemsCount
+        Items.shared.count()
             .map { $0.isEmpty }
             .subscribe(onNext: { [weak self] isEmpty in
                 self?.emptyView.isHidden = !isEmpty

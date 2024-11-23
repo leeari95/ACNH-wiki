@@ -21,6 +21,9 @@ final class Items {
     private let villagers = BehaviorRelay<[Villager]>(value: [])
     private let villagersLike = BehaviorRelay<[Villager]>(value: [])
     private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
+    private let npc = BehaviorRelay<[NPC]>(value: [])
+    private let npcLike = BehaviorRelay<[NPC]>(value: [])
+    private let currentPeopleCount = BehaviorRelay<[Category: Int]>(value: [:])
 
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
     private let allItems = BehaviorRelay<[Item]>(value: [])
@@ -34,10 +37,11 @@ final class Items {
     private(set) var materialsItemList: [String: Item] = [:]
     
     var list: [Item] { allItems.value }
+    
 
     private init() {
         setUpUserCollection()
-        fetchVillagers()
+        fetchPeople()
         fetchCritters()
         fetchFurniture()
         fetchClothes()
@@ -77,11 +81,26 @@ final class Items {
     }
 
     // MARK: Fetch Items
-    private func fetchVillagers() {
-        fetchItem(VillagersRequest(), group: networkGroup) { [weak self] response in
+    private func fetchPeople() {
+        networkGroup.enter()
+        let group = DispatchGroup()
+        fetchItem(VillagersRequest(), group: group) { [weak self] response in
             let items = response.map { $0.toDomain() }
                 .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
             self?.villagers.accept(items)
+        }
+        fetchItem(NPCRequest(), group: group) { [weak self] response in
+            let items = response.map { $0.toDomain() }
+                .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+            self?.npc.accept(items)
+        }
+        
+        group.notify(queue: .main) {
+            self.currentPeopleCount.accept([
+                .villager: self.villagers.value.count,
+                .npc: self.npc.value.count
+            ])
+            self.networkGroup.leave()
         }
     }
 
@@ -279,6 +298,14 @@ extension Items {
     var villagerLikeList: Observable<[Villager]> {
         return villagersLike.asObservable()
     }
+    
+    var npcList: Observable<[NPC]> {
+        return npc.asObservable()
+    }
+
+    var npcLikeList: Observable<[NPC]> {
+        return npcLike.asObservable()
+    }
 
     var categoryList: Observable<[Category: [Item]]> {
         return categories.asObservable()
@@ -302,8 +329,8 @@ extension Items {
         currentUserInfo.accept(userInfo)
     }
 
-    var itemsCount: Observable<[Category: Int]> {
-        return currentItemsCount.asObservable()
+    func count(isItem: Bool = true) -> Observable<[Category: Int]> {
+        return (isItem ? currentItemsCount : currentPeopleCount).asObservable()
     }
 
     func updateTasks(_ task: DailyTask) {
@@ -342,6 +369,16 @@ extension Items {
             villagers.append(villager)
         }
         villagersLike.accept(villagers)
+    }
+
+    func updateNPCLike(_ npc: NPC) {
+        var npcLikeList = npcLike.value
+        if let index = npcLikeList.firstIndex(where: {$0.name == npc.name}) {
+            npcLikeList.remove(at: index)
+        } else {
+            npcLikeList.append(npc)
+        }
+        npcLike.accept(npcLikeList)
     }
 
     func updateItem(_ item: Item) {

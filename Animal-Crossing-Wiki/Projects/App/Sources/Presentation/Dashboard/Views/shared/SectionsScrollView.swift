@@ -14,6 +14,7 @@ class SectionsScrollView: UIView {
         scrollView.backgroundColor = .clear
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.contentInset.bottom = 60
         return scrollView
     }()
 

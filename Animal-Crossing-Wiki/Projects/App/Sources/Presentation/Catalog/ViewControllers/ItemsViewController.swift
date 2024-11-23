@@ -83,6 +83,7 @@ class ItemsViewController: UIViewController {
         flowLayout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
+        collectionView.contentInset.bottom = 60
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.registerNib(CatalogCell.self)
         return collectionView

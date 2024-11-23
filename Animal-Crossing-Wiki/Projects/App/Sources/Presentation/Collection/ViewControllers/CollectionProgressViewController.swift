@@ -15,6 +15,7 @@ class CollectionProgressViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = .clear
+        tableView.contentInset.bottom = 60
         tableView.registerNib(ItemProgressRow.self)
         return tableView
     }()

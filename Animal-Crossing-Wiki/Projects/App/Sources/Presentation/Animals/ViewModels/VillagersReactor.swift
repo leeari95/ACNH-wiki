@@ -8,6 +8,10 @@
 import Foundation
 import ReactorKit
 
+protocol VillagersReactorDelegate: AnyObject {
+    func showDetail(villager: Villager)
+}
+
 final class VillagersReactor: Reactor {
 
     enum Action {
@@ -25,7 +29,7 @@ final class VillagersReactor: Reactor {
         case setHouseVillagers(_ villagers: [Villager])
         case setLoadingState(_ isLoading: Bool)
         case setScope(_ scope: VillagersViewController.SearchScope)
-        case transition(route: VillagersCoordinator.Route)
+        case transition(route: AnimalsCoordinator.Route)
     }
 
     struct State {
@@ -34,7 +38,7 @@ final class VillagersReactor: Reactor {
     }
 
     let initialState: State
-    var coordinator: VillagersCoordinator?
+    var coordinator: AnimalsCoordinator?
 
     private var allVillagers: [Villager] = []
     private var likeVillagers: [Villager] = []
@@ -43,7 +47,7 @@ final class VillagersReactor: Reactor {
     private var currentKeywords: [VillagersViewController.Menu: String] = [:]
     private var lastSearchKeyword: String = ""
 
-    init(coordinator: VillagersCoordinator, state: State = State()) {
+    init(coordinator: AnimalsCoordinator, state: State = State()) {
         self.coordinator = coordinator
         self.initialState = state
     }
@@ -110,7 +114,7 @@ final class VillagersReactor: Reactor {
             guard let villager = currentState.villagers[safe: indexPath.item] else {
                 return Observable.empty()
             }
-            return Observable.just(Mutation.transition(route: .detail(villager: villager)))
+            return Observable.just(Mutation.transition(route: .detailVillager(villager)))
         }
     }
 

@@ -8,6 +8,11 @@
 import Foundation
 import ReactorKit
 
+protocol CatalogReactorDelegate: AnyObject {
+    func showItemList(category: Category)
+    func showSearchList()
+}
+
 final class CatalogReactor: Reactor {
 
     enum Action {
@@ -17,7 +22,8 @@ final class CatalogReactor: Reactor {
     }
 
     enum Mutation {
-        case transition(CatalogCoordinator.Route)
+        case showItemList(category: Category)
+        case showSearchList
         case setCategories(_ categories: [(title: Category, count: Int)])
         case setLoadingState(_ isLoading: Bool)
     }
@@ -28,19 +34,26 @@ final class CatalogReactor: Reactor {
     }
 
     let initialState: State
-    var coordinator: CatalogCoordinator
+    weak var delegate: CatalogReactorDelegate?
+    
+    let mode: Mode
 
-    init(coordinator: CatalogCoordinator, state: State = State()) {
-        self.coordinator = coordinator
+    init(delegate: CatalogReactorDelegate, state: State = State(), mode: Mode = .item) {
+        self.delegate = delegate
         self.initialState = state
+        self.mode = mode
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetch:
-            let categories = Items.shared.itemsCount
-                .map { itemsCount in Category.items().map { ($0, itemsCount[$0] ?? 0)} }
+            let count: Observable<[Category: Int]> = Items.shared.count(isItem: mode == .item)
+            let categorieList: [Category] = mode == .item ? Category.items() : Category.animals()
+
+            let categories = count
+                .map { itemsCount in categorieList.map { ($0, itemsCount[$0] ?? 0)} }
                 .map { Mutation.setCategories($0) }
+
             let loadingState = Items.shared.isLoading
                 .map { Mutation.setLoadingState($0) }
 
@@ -49,18 +62,21 @@ final class CatalogReactor: Reactor {
             ])
 
         case .selectedCategory(let category):
-            return .just(.transition(.items(for: category)))
-            
+            return .just(.showItemList(category: category))
+
         case .searchButtonTapped:
-            return .just(.transition(.search))
+            return .just(.showSearchList)
         }
     }
 
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
-        case .transition(let route):
-            coordinator.transition(for: route)
+        case .showItemList(let category):
+            delegate?.showItemList(category: category)
+            
+        case .showSearchList:
+            delegate?.showSearchList()
 
         case .setCategories(let categories):
             newState.categories = categories
@@ -69,5 +85,12 @@ final class CatalogReactor: Reactor {
             newState.isLoading = isLoading
         }
         return newState
+    }
+}
+
+extension CatalogReactor {
+    enum Mode {
+        case animals
+        case item
     }
 }

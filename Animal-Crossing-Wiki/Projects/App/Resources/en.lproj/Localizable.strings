@@ -9,8 +9,9 @@
 // MARK: - Tab Bar Titles
 "Dashboard" = "Dashboard";
 "Catalog" = "Catalog";
-"Villagers" = "Villagers";
+"villagers" = "Villagers";
 "Collection" = "Collection";
+"animals" = "Animals";
 
 // MARK: - etc
 "Cancel" = "Cancel";
@@ -149,6 +150,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Reactions" = "Reactions";
 "Fencing" = "Fencing";
 "Gyroids" = "Gyroids";
+"Villager" = "Villager";
 
 // MARK: - ItemsViewController
 "To catch now" = "To catch now";
@@ -269,6 +271,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "9 PM – 4 AM" = "9 PM – 4 AM";
 "All day" = "All day";
 
+// MARK: - NPCViewController
+"Search a npc" = "Search a NPC";
+"There are no npc." = "There are no npc.";
+"Tap the npc's heart button and it will appear here." = "Tap the npc's heart button and it will appear here.";
+
 // MARK: - VillagersViewController
 "All" = "All";
 "Personality" = "Personality";
@@ -278,7 +285,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Liked" = "Liked";
 "Residents" = "Residents";
 "Search a villager" = "Search a villager";
-"Villagers" = "Villagers";
 "There are no villagers." = "There are no villagers.";
 "Please check the network status." = "Please check the network status.";
 "Tap the villager's heart button and it will appear here." = "Tap the villager's heart button and it will appear here.";

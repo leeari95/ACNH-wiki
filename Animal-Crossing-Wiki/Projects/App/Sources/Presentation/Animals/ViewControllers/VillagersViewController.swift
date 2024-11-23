@@ -55,6 +55,7 @@ class VillagersViewController: UIViewController {
         flowLayout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
+        collectionView.contentInset.bottom = 60
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.registerNib(VillagersCell.self)
         return collectionView
@@ -202,7 +203,7 @@ class VillagersViewController: UIViewController {
     }
 
     private func setUpNavigationItem() {
-        navigationItem.title = "Villagers".localized
+        navigationItem.title = "Villagers".lowercased().localized
         let moreButton = UIBarButtonItem(
             image: UIImage(systemName: "arrow.up.arrow.down.circle"),
             style: .plain,
@@ -221,10 +222,10 @@ class VillagersViewController: UIViewController {
 
     private func createFilterMenu() -> UIMenu {
         let menuItems: [(title: String, subTitle: [String])] = [
-            (Menu.personality.rawValue.localized, Personality.allCases.map { $0.rawValue.localized }),
-            (Menu.gender.rawValue.localized, Gender.allCases.map { $0.rawValue.localized }),
+            (Menu.personality.rawValue.localized, Personality.allCases.map { $0.rawValue.lowercased().localized }),
+            (Menu.gender.rawValue.localized, Gender.allCases.map { $0.rawValue.lowercased().localized }),
             (Menu.type.rawValue.localized, Subtype.allCases.map { $0.rawValue.localized }),
-            (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.localized })
+            (Menu.species.rawValue.localized, Specie.allCases.map { $0.rawValue.lowercased().localized })
         ]
 
         let actionHandler: (UIAction) -> Void = { [weak self] action in

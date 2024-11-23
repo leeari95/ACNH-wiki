@@ -10,6 +10,7 @@ import RxSwift
 
 class CatalogViewController: UIViewController {
 
+    let mode: CatalogReactor.Mode
     private let disposeBag = DisposeBag()
 
     private lazy var tableView: UITableView = {
@@ -17,6 +18,7 @@ class CatalogViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.registerNib(CategoryRow.self)
         tableView.contentInsetAdjustmentBehavior = .always
+        tableView.contentInset.bottom = 60
         return tableView
     }()
 
@@ -38,7 +40,15 @@ class CatalogViewController: UIViewController {
         )
         return button
     }()
-
+    
+    init(mode: CatalogReactor.Mode) {
+        self.mode = mode
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
@@ -51,9 +61,11 @@ class CatalogViewController: UIViewController {
 
     private func setUpNavigationItem() {
         view.backgroundColor = .acBackground
-        navigationItem.title = "Catalog".localized
-        let checkBarButton = UIBarButtonItem(customView: searchButton)
-        navigationItem.rightBarButtonItems = [checkBarButton]
+        navigationItem.title = (mode == .item ? "Catalog" : "animals").localized
+        if mode == .item {
+            let checkBarButton = UIBarButtonItem(customView: searchButton)
+            navigationItem.rightBarButtonItems = [checkBarButton]
+        }
     }
 
     private func setUpViews() {

@@ -32,10 +32,10 @@ final class AppCoordinator: Coordinator {
         addViewController(catalogCoordinator.rootViewController, title: "Catalog".localized, icon: "icon-leaf-tabbar")
         childCoordinators.append(catalogCoordinator)
 
-        let villagersCoordinator = VillagersCoordinator()
-        villagersCoordinator.start()
-        addViewController(villagersCoordinator.rootViewController, title: "Villagers".localized, icon: "icon-book-tabbar")
-        childCoordinators.append(villagersCoordinator)
+        let animalsCoordinator = AnimalsCoordinator()
+        animalsCoordinator.start()
+        addViewController(animalsCoordinator.rootViewController, title: "animals".localized, icon: "icon-book-tabbar")
+        childCoordinators.append(animalsCoordinator)
 
         let collectionCoordinator = CollectionCoordinator()
         collectionCoordinator.start()
