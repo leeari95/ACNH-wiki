@@ -78,24 +78,34 @@ final class PreferencesViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         settingSection.reputationButtonObservable
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showSelectedItemAlert(
+            .flatMap { [weak self] _ -> Observable<String> in
+                guard let owner = self else {
+                    return .empty()
+                }
+                
+                return owner.showSelectedItemAlert(
                     ["⭐️", "⭐️⭐️", "⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️", "⭐️⭐️⭐️⭐️⭐️"],
                     currentItem: owner.currentReputation.value
-                ).map { PreferencesReactor.Action.reputation($0) }
-                    .bind(to: reactor.action)
-                    .disposed(by: owner.disposeBag)
-            }).disposed(by: disposeBag)
+                )
+            }
+            .map { PreferencesReactor.Action.reputation($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         settingSection.startingFruitButtonObservable
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showSelectedItemAlert(
+            .flatMap { [weak self] _ -> Observable<String> in
+                guard let owner = self else {
+                    return .empty()
+                }
+                
+                return owner.showSelectedItemAlert(
                     Fruit.allCases.map { $0.rawValue.lowercased().localized },
                     currentItem: owner.currentFruit.value
-                ).map { PreferencesReactor.Action.fruit(title: $0)}
-                    .bind(to: reactor.action)
-                    .disposed(by: owner.disposeBag)
-            }).disposed(by: disposeBag)
+                )
+            }
+            .map { PreferencesReactor.Action.fruit(title: $0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         reactor.state
             .compactMap { $0.userInfo }
