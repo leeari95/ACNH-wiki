@@ -41,7 +41,7 @@ final class Items {
 
     private init() {
         setUpUserCollection()
-        fetchPeople()
+        fetchAnimals()
         fetchCritters()
         fetchFurniture()
         fetchClothes()
@@ -65,6 +65,7 @@ final class Items {
 
         self.villagersLike.accept(CoreDataVillagersLikeStorage().fetch())
         self.villagersHouse.accept(CoreDataVillagersHouseStorage().fetch())
+        self.npcLike.accept(CoreDataNPCLikeStorage().fetch())
 
         CoreDataItemsStorage().fetch()
             .subscribe(onSuccess: { items in
@@ -81,7 +82,7 @@ final class Items {
     }
 
     // MARK: Fetch Items
-    private func fetchPeople() {
+    private func fetchAnimals() {
         networkGroup.enter()
         let group = DispatchGroup()
         fetchItem(VillagersRequest(), group: group) { [weak self] response in

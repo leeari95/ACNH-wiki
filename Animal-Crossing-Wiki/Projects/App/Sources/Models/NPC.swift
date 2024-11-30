@@ -13,6 +13,8 @@ struct NPC {
     let photoImage: String?
     let gender: Gender
     let genderAsia: Gender
+    let species: String
     let birthday: String
+    let appearanceLocation: [AppearanceLocation]?
     let translations: Translations
 }
