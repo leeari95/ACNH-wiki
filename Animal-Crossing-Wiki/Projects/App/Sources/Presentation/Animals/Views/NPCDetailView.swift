@@ -52,9 +52,10 @@ extension NPCDetailView {
         self.init(frame: .zero)
         profileImage.setImage(with: npc.photoImage ?? npc.iconImage)
 
-        let items: [(title: String, value: String)] = [
+        var items: [(title: String, value: String)] = [
             ("Gender".localized, npc.gender.rawValue.lowercased().localized.capitalized),
-            ("Birthday".localized, npc.birthday)
+            ("Birthday".localized, npc.birthday),
+            ("Specie".localized, npc.species.localized)
         ]
 
         let contentViews = items.map { item -> InfoContentView in
