@@ -19,9 +19,20 @@ final class CoreDataNPCLikeStorage: NPCLikeStorage {
     func fetch() -> [NPC] {
         let context = coreDataStorage.persistentContainer.viewContext
         let object = try? self.coreDataStorage.getUserCollection(context)
-        let npc = object?.npcLike?.allObjects as? [NPCLikeEntity] ?? []
-        return npc.map { $0.toDomain() }
-            .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
+        let npcs = object?.npcLike?.allObjects as? [NPCLikeEntity] ?? []
+        return npcs.map { object -> NPC in
+            var appearanceLocation: [AppearanceLocation] = []
+            
+            if let dataList = object.appearanceLocation {
+                let decodedList = dataList.compactMap { data -> AppearanceLocation? in
+                    try? JSONDecoder().decode(AppearanceLocation.self, from: data)
+                }
+                appearanceLocation.append(contentsOf: decodedList)
+            }
+              
+            return object.toDomain(appearanceLocation: appearanceLocation)
+        }
+        .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
     }
 
     func update(_ npc: NPC) {

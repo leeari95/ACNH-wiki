@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import SwiftUI
 
 final class NPCDetailViewController: UIViewController {
 
@@ -82,10 +83,31 @@ final class NPCDetailViewController: UIViewController {
         reactor.state.map { $0.npc }
             .take(1)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self]  npc in
+            .subscribe(onNext: { [weak self] npc in
                 let detailSection = NPCDetailView(npc)
                 self?.sectionsScrollView.addSection(SectionView(contentView: detailSection))
                 self?.navigationItem.title = npc.translations.localizedName()
+                self?.setUpAppearanceLocation(npc.appearanceLocation ?? [])
             }).disposed(by: disposeBag)
+    }
+    
+    private func setUpAppearanceLocation(_ appearanceLocation: [AppearanceLocation]) {
+        guard appearanceLocation.isEmpty == false else {
+            return
+        }
+        
+        appearanceLocation.enumerated().forEach { index, item  in
+            let hosting = UIHostingController(rootView: AppearanceLocationView(item: item))
+            hosting.view.backgroundColor = .clear
+            if index == 0 {
+                sectionsScrollView.addSection(
+                    SectionView(title: "appearance location".localized, iconName: "calendar", contentView: hosting.view)
+                )
+            } else {
+                sectionsScrollView.addSection(
+                    SectionView(contentView: hosting.view)
+                )
+            }
+        }
     }
 }

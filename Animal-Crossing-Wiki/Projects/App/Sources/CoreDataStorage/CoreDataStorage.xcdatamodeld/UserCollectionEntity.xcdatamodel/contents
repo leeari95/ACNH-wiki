@@ -68,12 +68,14 @@
         <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="NPCLikeEntity" representedClassName="NPCLikeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="appearanceLocation" optional="YES" attributeType="Transformable" customClassName="[Data]"/>
         <attribute name="birthday" attributeType="String"/>
         <attribute name="gender" attributeType="String"/>
         <attribute name="genderAsia" attributeType="String"/>
         <attribute name="iconImage" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="photoImage" attributeType="String"/>
+        <attribute name="species" optional="YES" attributeType="String"/>
         <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="npcLike" inverseEntity="UserCollectionEntity"/>
     </entity>

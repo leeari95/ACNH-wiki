@@ -122,7 +122,9 @@ final class ItemsReactor: Reactor {
             currentKeywords = keywords
             return currentItems()
                 .map { [weak self] items -> [Item] in
-                    guard let owner = self else { return [] }
+                    guard let owner = self else {
+                        return []
+                    }
                     return owner.filtered(
                         items: owner.search(items: items, text: owner.lastSearchKeyword),
                         keywords: keywords
@@ -305,7 +307,10 @@ final class ItemsReactor: Reactor {
         case .keyword(let title, _):
             return Items.shared.itemList
                 .map { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
-
+            
+        case .search:
+            return Items.shared.itemList
+                .map { $0.flatMap { $0.value }  }
         default:
             return .empty()
         }
