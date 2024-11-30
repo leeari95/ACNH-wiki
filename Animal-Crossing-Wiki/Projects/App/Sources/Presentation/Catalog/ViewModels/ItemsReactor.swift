@@ -305,7 +305,10 @@ final class ItemsReactor: Reactor {
         case .keyword(let title, _):
             return Items.shared.itemList
                 .map { $0.values.flatMap { $0.filter { $0.keyword.contains(title) } } }
-
+            
+        case .search:
+            return Items.shared.itemList
+                .map { $0.flatMap { $0.value }  }
         default:
             return .empty()
         }
