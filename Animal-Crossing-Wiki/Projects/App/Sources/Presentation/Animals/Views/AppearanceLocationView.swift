@@ -12,15 +12,15 @@ struct AppearanceLocationView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            infoView(title: "장소", description: item.place.localized)
+            infoView(title: "place".localized, description: item.place.localized)
             if let time = item.time?.formatted {
-                infoView(title: "시간", description: time)
+                infoView(title: "time".localized, description: time)
             }
             if let conditions = item.conditions {
-                infoView(title: "조건", description: conditions.localized)
+                infoView(title: "conditions".localized, description: conditions.localized)
             }
             if let features = item.features?.map({ $0.localized }).joined(separator: "\n") {
-                infoView(title: "특징", description: features)
+                infoView(title: "features".localized, description: features)
             }
         }
         .background(SwiftUI.Color.clear)

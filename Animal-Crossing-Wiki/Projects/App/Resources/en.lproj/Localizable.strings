@@ -1342,7 +1342,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Museum" = "Museum";
 "Random Visit" = "Random Visit";
 "Random Outdoor Location" = "Random Outdoor Location";
-"Next day" = "Next day";
+"Next day " = "Next day ";
+
+// MARK: - AppearanceLocation conditions
 "Appears during the Thanksgiving event (Turkey Day) as the main NPC." = "Appears during the Thanksgiving event (Turkey Day) as the main NPC.";
 "Appears after the Able Sisters shop is constructed." = "Appears after the Able Sisters shop is constructed.";
 "Available as the museum curator to accept donations of fish, bugs, sea creatures, and art. Provides information on donated items." = "Available as the museum curator to accept donations of fish, bugs, sea creatures, and art. Provides information on donated items.";
@@ -1503,3 +1505,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Wild boar" = "Wild boar";
 "Fox" = "Fox";
 "Turkey" = "Turkey";
+
+// MARK: - NPCDetailViewController
+"appearance location" = "Appearance Location";
+
+// MARK: - AppearanceLocationView
+"place" = "Place";
+"time" = "Time";
+"conditions" = "Conditions";
+"features" = "Features";

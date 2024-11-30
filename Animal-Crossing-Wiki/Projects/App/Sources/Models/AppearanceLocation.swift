@@ -21,8 +21,8 @@ struct Time: Codable {
     let nextDay: Bool?
     
     var formatted: String {
-        let nextDay = nextDay == true ? "Next day" : ""
-        return "\(start) - \(nextDay.localized + " "  + end)"
+        let nextDay = nextDay == true ? "Next day " : ""
+        return "\(start) - \(nextDay.localized + end)"
     }
 }
 

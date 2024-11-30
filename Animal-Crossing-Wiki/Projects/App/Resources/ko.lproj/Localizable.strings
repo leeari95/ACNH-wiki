@@ -1345,7 +1345,7 @@
 "Museum" = "박물관";
 "Random Visit" = "랜덤 방문";
 "Random Outdoor Location" = "섬 (야외 장소)";
-"Next day" = "다음 날";
+"Next day " = "다음 날 ";
 
 // MARK: - AppearanceLocation conditions
 "Appears during the Thanksgiving event (Turkey Day) as the main NPC." = "추수감사절 이벤트 동안 메인 NPC로 등장합니다.";
@@ -1508,3 +1508,12 @@
 "Wild boar" = "멧돼지";
 "Fox" = "여우";
 "Turkey" = "칠면조";
+
+// MARK: - NPCDetailViewController
+"appearance location" = "출현 장소";
+
+// MARK: - AppearanceLocationView
+"place" = "장소";
+"time" = "시간";
+"conditions" = "조건";
+"features" = "특징";
