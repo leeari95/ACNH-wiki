@@ -124,6 +124,15 @@ final class ItemsViewController: UIViewController {
         navigationController?.navigationBar.sizeToFit()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .search {
+            DispatchQueue.main.async { [weak self] in
+                self?.searchController.searchBar.becomeFirstResponder()
+            }
+        }
+    }
+
     func bind(to reactor: ItemsReactor, keyword: [Menu: String] = [:]) {
         self.reactor = reactor
 
@@ -258,7 +267,7 @@ final class ItemsViewController: UIViewController {
         view.addSubviews(collectionView, activityIndicator, emptyView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor),
