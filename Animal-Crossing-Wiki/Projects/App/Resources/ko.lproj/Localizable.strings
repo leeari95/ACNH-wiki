@@ -1324,8 +1324,7 @@
 "Fireworks Show" = "불꽃놀이";
 
 // MARK: - AppearanceLocation Place
-
-"Ocean" = "바다";
+"Somewhere in the ocean" = "바다 어딘가";
 "Happy Home Paradise Island" = "해피 홈 파라다이스 섬";
 "Upper Levels (2nd tier or higher)" = "높은 지대 (2층 이상)";
 "Able Sisters Shop" = "에이블 시스터즈 상점";
@@ -1342,7 +1341,7 @@
 "Harv's Island Plaza" = "파니엘의 섬 광장";
 "Emergency Escape Service" = "긴급 탈출 서비스";
 "Event Plaza" = "광장";
-"Museum" = "박물관";
+"Inside a museum building" = "박물관 건물 내부";
 "Random Visit" = "랜덤 방문";
 "Random Outdoor Location" = "섬 (야외 장소)";
 "Next day " = "다음 날 ";
@@ -1385,7 +1384,7 @@
 "Hosts visitors from previous games and special event characters not included in the base game." = "이전 게임의 방문객과 기본 게임에 포함되지 않은 특별 이벤트 캐릭터를 초대합니다.";
 "Requests the player to collect 5 spirit pieces scattered around the island." = "섬 곳곳에 흩어진 영혼 조각 5개를 수집해달라고 요청합니다.";
 "Reacts positively to all reactions but especially enjoys 'Scare' and 'Ha!' reactions, even imitating or trembling at them." = "모든 반응에 긍정적으로 반응하며 특히 '놀래기'와 '하!' 반응을 즐기며 이를 따라 하거나 떨기도 합니다.";
-"Reflects on life and the concept of a 'reset button.'" = "삶과 '리셋 버튼'이라는 개념에 대해 고민합니다.";
+"Reflects on life and the concept of a reset button." = "삶과 리셋 버튼이라는 개념에 대해 고민합니다.";
 "Completing all courses grants a set of course recipes." = "모든 코스를 완료하면 코스 레시피 세트를 받을 수 있습니다.";
 "Can only be encountered once per day." = "하루에 한 번만 만날 수 있습니다.";
 "Displays credits and photos of decorated vacation homes during the festival." = "축제 동안 꾸민 휴가용 집의 크레딧과 사진을 표시합니다.";
@@ -1472,42 +1471,39 @@
 "Residents provide easier-to-obtain ingredients in exchange for help." = "주민들은 도움의 대가로 얻기 쉬운 재료를 제공합니다.";
 
 // MARK: - NPC Species
-"Cat" = "고양이";
-"Walrus" = "바다 코끼리";
-"Pigeon" = "비둘기";
-"Skunk" = "스컹크";
-"Hedgehog" = "고슴도치";
-"Axolotl" = "아홀로틀";
-"Sea otter" = "해달";
-"Peafowl" = "공작새";
-"Chameleon" = "카멜레온";
-"Puma" = "퓨마";
-"Mole" = "두더지";
-"Manatee" = "매너티";
-"Sloth" = "나무늘보";
-"Ghost" = "유령";
-"Alpaca" = "알파카";
-"Otter" = "수달";
-"Camel" = "낙타";
-"Tapir" = "맥";
-"Dog" = "개";
-"Dodo" = "도도새";
-"Kappa" = "갓파";
-"Tortoise" = "거북이";
-"Beaver" = "비버";
-"Japanese raccoon dog" = "일본 너구리";
-"Jack-o'-lantern" = "잭오랜턴";
-"Common gull" = "갈매기";
-"Giraffe" = "기린";
-"Reindeer" = "순록";
-"Owl" = "올빼미";
-"Japanese sea lion" = "바다 사자";
-"Unknown" = "알 수 없음";
-"Monkey" = "원숭이";
-"Pelican" = "펠리컨";
-"Wild boar" = "멧돼지";
-"Fox" = "여우";
-"Turkey" = "칠면조";
+"walrus" = "바다 코끼리";
+"pigeon" = "비둘기";
+"skunk" = "스컹크";
+"hedgehog" = "고슴도치";
+"axolotl" = "아홀로틀";
+"sea otter" = "해달";
+"peafowl" = "공작새";
+"chameleon" = "카멜레온";
+"puma" = "퓨마";
+"mole" = "두더지";
+"manatee" = "매너티";
+"sloth" = "나무늘보";
+"ghost" = "유령";
+"alpaca" = "알파카";
+"otter" = "수달";
+"camel" = "낙타";
+"tapir" = "맥";
+"dodo" = "도도새";
+"kappa" = "갓파";
+"tortoise" = "거북이";
+"beaver" = "비버";
+"japanese raccoon dog" = "일본 너구리";
+"jack-o'-lantern" = "잭오랜턴";
+"common gull" = "갈매기";
+"giraffe" = "기린";
+"reindeer" = "순록";
+"owl" = "올빼미";
+"japanese sea lion" = "바다 사자";
+"unknown" = "알 수 없음";
+"pelican" = "펠리컨";
+"wild boar" = "멧돼지";
+"fox" = "여우";
+"turkey" = "칠면조";
 
 // MARK: - NPCDetailViewController
 "appearance location" = "출현 장소";
