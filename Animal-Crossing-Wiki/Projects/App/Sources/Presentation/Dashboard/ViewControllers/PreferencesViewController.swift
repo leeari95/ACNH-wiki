@@ -68,14 +68,21 @@ final class PreferencesViewController: UIViewController {
             .disposed(by: disposeBag)
 
         settingSection.hemisphereButtonObservable
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showSelectedItemAlert(
+            .flatMapLatest { [weak self] _ -> Observable<PreferencesReactor.Action> in
+                guard let owner = self else {
+                    return .empty()
+                }
+
+                return owner.showSelectedItemAlert(
                     Hemisphere.allCases.map { $0.rawValue.localized },
                     currentItem: owner.currentHemisphere.value
-                ).map { PreferencesReactor.Action.hemishphere(title: $0) }
-                    .bind(to: reactor.action)
-                    .disposed(by: owner.disposeBag)
-            }).disposed(by: disposeBag)
+                )
+                .map { PreferencesReactor.Action.hemishphere(title: $0) }
+            }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            })
+            .disposed(by: disposeBag)
 
         settingSection.reputationButtonObservable
             .flatMap { [weak self] _ -> Observable<String> in
