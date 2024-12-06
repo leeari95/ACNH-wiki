@@ -1,14 +1,14 @@
 //
-//  VillagersView.swift
+//  NpcsView.swift
 //  Animal-Crossing-Wiki
 //
-//  Created by Ari on 2022/06/15.
+//  Created by Ari on 2024/12/06.
 //
 
 import UIKit
 import RxSwift
 
-final class VillagersView: UIView {
+final class NpcsView: UIView {
 
     private let disposeBag = DisposeBag()
 
@@ -96,8 +96,8 @@ final class VillagersView: UIView {
         ])
     }
 
-    private func bind(to reactor: VillagersSectionReactor) {
-        Observable.just(VillagersSectionReactor.Action.fetch)
+    private func bind(to reactor: NpcsSectionReactor) {
+        Observable.just(NpcsSectionReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
@@ -114,30 +114,29 @@ final class VillagersView: UIView {
                 }
                 return nil
             }.compactMap { $0 }
-            .map { VillagersSectionReactor.Action.villagerLongPress(indexPath: $0)}
+            .map { NpcsSectionReactor.Action.npcLongPress(index: $0.item)}
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
 
         reactor.state
-            .map { $0.villagers }
+            .map { $0.npcs }
+            .filter { $0.isEmpty == false }
+            .take(1)
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
                     cellType: IconCell.self
                 )
-            ) { _, villager, cell in
-                cell.setImage(url: villager.iconImage)
-                if reactor.currentState.checkedVillagers.contains(where: {  $0.name == villager.name }) {
-                    cell.checkMark()
-                }
+            ) { _, npc, cell in
+                cell.setImage(url: npc.iconImage)
             }.disposed(by: disposeBag)
 
         reactor.state
-            .map { $0.villagers }
+            .map { $0.npcs }
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { [weak self] villagers in
-                if villagers.isEmpty {
+            .subscribe(onNext: { [weak self] npcs in
+                if npcs.isEmpty {
                     self?.emptyLabel.isHidden = false
                     self?.backgroundStackView.isHidden = true
                 } else {
@@ -154,22 +153,18 @@ final class VillagersView: UIView {
                 HapticManager.shared.selection()
                 let cell = self?.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
-                if let villager = reactor.currentState.villagers[safe: indexPath.item] {
-                    reactor.action.onNext(.villagersChecked(checked: villager))
-                }
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 let cells = self?.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
-                reactor.action.onNext(.resetCheckedVillagers)
             }).disposed(by: disposeBag)
     }
 }
 
-extension VillagersView {
-    convenience init(_ viewModel: VillagersSectionReactor) {
+extension NpcsView {
+    convenience init(_ viewModel: NpcsSectionReactor) {
         self.init(frame: .zero)
         configure()
         bind(to: viewModel)

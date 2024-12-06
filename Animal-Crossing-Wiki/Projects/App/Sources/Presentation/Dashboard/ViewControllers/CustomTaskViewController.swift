@@ -75,14 +75,21 @@ final class CustomTaskViewController: UIViewController {
             .disposed(by: disposeBag)
 
         customTaskSection.maxAmountButtonObservable
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showSelectedItemAlert(
+            .flatMapLatest { [weak self] _ -> Observable<CustomTaskReactor.Action> in
+                guard let owner = self else {
+                    return .empty()
+                }
+
+                return owner.showSelectedItemAlert(
                     Array(1...20).map { $0.description },
                     currentItem: owner.currentAmount.value
-                ).map { CustomTaskReactor.Action.amount($0) }
-                    .bind(to: reactor.action)
-                    .disposed(by: owner.disposeBag)
-            }).disposed(by: disposeBag)
+                )
+                .map { CustomTaskReactor.Action.amount($0) }
+            }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            })
+            .disposed(by: disposeBag)
 
         customTaskSection.taskNameObservable
             .map { CustomTaskReactor.Action.taskName($0) }

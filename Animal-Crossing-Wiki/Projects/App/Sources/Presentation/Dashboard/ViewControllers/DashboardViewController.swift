@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import SwiftUI
 
 final class DashboardViewController: UIViewController {
 
@@ -60,7 +61,9 @@ final class DashboardViewController: UIViewController {
         userInfoVM: UserInfoReactor,
         tasksVM: TodaysTasksSectionReactor,
         villagersVM: VillagersSectionReactor,
-        progressVM: CollectionProgressSectionReactor
+        progressVM: CollectionProgressSectionReactor,
+        fixeVisitdNPCListVM: NpcsSectionReactor,
+        randomVisitNPCListVM: NpcsSectionReactor
     ) {
         let userInfoSection = SectionView(
             title: "My Island".localized,
@@ -82,7 +85,22 @@ final class DashboardViewController: UIViewController {
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )
-        sectionsScrollView.addSection(userInfoSection, tasksSection, villagersSection, progressSection)
+        let randomVisitResidentsSectionView = SectionView(
+            title: "Residents who can visit randomly on weekdays".localized,
+            iconName: "bubbles.and.sparkles.fill",
+            contentView: NpcsView(randomVisitNPCListVM)
+        )
+        let fixedVisitResidentsSectionView = SectionView(
+            title: "Residents who visit regularly".localized,
+            iconName: "pin.fill",
+            contentView: NpcsView(fixeVisitdNPCListVM)
+        )
+        sectionsScrollView.addSection(userInfoSection,
+                                      tasksSection, 
+                                      villagersSection, 
+                                      progressSection, 
+                                      randomVisitResidentsSectionView, 
+                                      fixedVisitResidentsSectionView)
     }
 
     func bind(to reactor: DashboardReactor) {
