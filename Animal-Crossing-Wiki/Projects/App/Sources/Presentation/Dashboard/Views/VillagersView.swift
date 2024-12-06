@@ -128,6 +128,9 @@ final class VillagersView: UIView {
                 )
             ) { _, villager, cell in
                 cell.setImage(url: villager.iconImage)
+                if reactor.currentState.checkedVillagers.contains(where: {  $0.name == villager.name }) {
+                    cell.checkMark()
+                }
             }.disposed(by: disposeBag)
 
         reactor.state
@@ -151,12 +154,16 @@ final class VillagersView: UIView {
                 HapticManager.shared.selection()
                 let cell = self?.collectionView.cellForItem(at: indexPath) as? IconCell
                 cell?.checkMark()
+                if let villager = reactor.currentState.villagers[safe: indexPath.item] {
+                    reactor.action.onNext(.villagersChecked(checked: villager))
+                }
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 let cells = self?.collectionView.visibleCells as? [IconCell]
                 cells?.forEach { $0.removeCheckMark() }
+                reactor.action.onNext(.resetCheckedVillagers)
             }).disposed(by: disposeBag)
     }
 }
