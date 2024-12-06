@@ -17,6 +17,7 @@ final class DashboardCoordinator: Coordinator {
         case customTask(task: DailyTask)
         case iconChooser
         case villagerDetail(villager: Villager)
+        case npcDetail(npc: NPC)
         case progress
         case item(category: Category)
         case itemDetail(item: Item)
@@ -43,7 +44,9 @@ final class DashboardCoordinator: Coordinator {
             userInfoVM: UserInfoReactor(coordinator: self),
             tasksVM: TodaysTasksSectionReactor(coordinator: self),
             villagersVM: VillagersSectionReactor(coordinator: self),
-            progressVM: CollectionProgressSectionReactor(coordinator: self)
+            progressVM: CollectionProgressSectionReactor(coordinator: self),
+            fixeVisitdNPCListVM: NpcsSectionReactor(state: .init(), mode: .fixedVisit, coordinator: self),
+            randomVisitNPCListVM: NpcsSectionReactor(state: .init(), mode: .randomVisit, coordinator: self)
         )
         rootViewController.addChild(viewController)
     }
@@ -58,16 +61,19 @@ final class DashboardCoordinator: Coordinator {
             )
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
+
         case .about:
             let viewController = AboutViewController()
             viewController.bind(to: AboutReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
+
         case .taskEdit:
             let viewController = TaskEditViewController()
             viewController.bind(to: TasksEditReactor(coordinator: self))
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
+
         case .customTask(let task):
             let viewController = CustomTaskViewController()
             delegate = viewController
@@ -80,11 +86,13 @@ final class DashboardCoordinator: Coordinator {
             }
             let navigationController = rootViewController.visibleViewController?.navigationController as? UINavigationController
             navigationController?.pushViewController(viewController, animated: true)
+
         case .iconChooser:
             let viewController = IconChooserViewController()
             viewController.coordinator = self
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.visibleViewController?.present(navigationController, animated: true)
+
         case .villagerDetail(let villager):
             let viewController = VillagerDetailViewController()
             viewController.bind(
@@ -93,10 +101,21 @@ final class DashboardCoordinator: Coordinator {
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true)
             HapticManager.shared.notification(type: .success)
+
+        case let .npcDetail(npc):
+            let viewController = NPCDetailViewController()
+            viewController.bind(
+                to: NPCDetailReactor(npc: npc, state: .init(npc: npc))
+            )
+            let navigationController = UINavigationController(rootViewController: viewController)
+            rootViewController.present(navigationController, animated: true)
+            HapticManager.shared.notification(type: .success)
+
         case .progress:
             let viewController = CollectionProgressViewController()
             viewController.bind(to: CollectionProgressReactor(coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
+
         case .item(let category):
             let viewController = ItemsViewController()
             let currentMonth = (Calendar.current.dateComponents([.month], from: Date()).month ?? 1).description
@@ -105,16 +124,20 @@ final class DashboardCoordinator: Coordinator {
                 keyword: [.month: currentMonth]
             )
             rootViewController.pushViewController(viewController, animated: true)
+
         case .itemDetail(let item):
             let viewController = ItemDetailViewController()
             viewController.bind(to: ItemDetailReactor(item: item, coordinator: self))
             rootViewController.pushViewController(viewController, animated: true)
+
         case .keyword(let title, let keyword):
             let viewController = ItemsViewController()
             viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
+
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)
+
         case .dismiss:
             rootViewController.visibleViewController?.navigationController?.dismiss(animated: true)
         }

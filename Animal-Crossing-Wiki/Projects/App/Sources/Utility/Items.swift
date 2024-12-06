@@ -9,6 +9,7 @@ import Foundation
 import OSLog
 import RxSwift
 import RxRelay
+import RxCocoa
 
 final class Items {
     static let shared = Items()
@@ -23,7 +24,9 @@ final class Items {
     private let villagersHouse = BehaviorRelay<[Villager]>(value: [])
     private let npc = BehaviorRelay<[NPC]>(value: [])
     private let npcLike = BehaviorRelay<[NPC]>(value: [])
-    private let currentPeopleCount = BehaviorRelay<[Category: Int]>(value: [:])
+    private let randomVisitNPCList = BehaviorRelay<[NPC]>(value: [])
+    private let fixedVisitNPCList = BehaviorRelay<[NPC]>(value: [])
+    private let currentAnimalCount = BehaviorRelay<[Category: Int]>(value: [:])
 
     private let categories = BehaviorRelay<[Category: [Item]]>(value: [:])
     private let allItems = BehaviorRelay<[Item]>(value: [])
@@ -37,7 +40,9 @@ final class Items {
     private(set) var materialsItemList: [String: Item] = [:]
     
     var list: [Item] { allItems.value }
-    
+
+    var fixedVisitNpcs: Driver<[NPC]> { fixedVisitNPCList.asDriver() }
+    var randomVisitNpcs: Driver<[NPC]> { randomVisitNPCList.asDriver() }
 
     private init() {
         setUpUserCollection()
@@ -51,6 +56,14 @@ final class Items {
             self.allItems.accept(self.categories.value.flatMap { $0.value })
             self.setUpMaterialsItems()
         }
+        
+        npc.subscribe(with: self) { owner, list in
+            let randomVisitNPCList = list.filter(\.isRandomVisit)
+            let fixedVisitNPCList = list.filter(\.isFixedVisit)
+            owner.randomVisitNPCList.accept(randomVisitNPCList)
+            owner.fixedVisitNPCList.accept(fixedVisitNPCList)
+        }
+        .disposed(by: disposeBag)
     }
 
     private func setUpUserCollection() {
@@ -97,7 +110,7 @@ final class Items {
         }
         
         group.notify(queue: .main) {
-            self.currentPeopleCount.accept([
+            self.currentAnimalCount.accept([
                 .villager: self.villagers.value.count,
                 .npc: self.npc.value.count
             ])
@@ -334,7 +347,7 @@ extension Items {
     }
 
     func count(isItem: Bool = true) -> Observable<[Category: Int]> {
-        return (isItem ? currentItemsCount : currentPeopleCount).asObservable()
+        return (isItem ? currentItemsCount : currentAnimalCount).asObservable()
     }
 
     func updateTasks(_ task: DailyTask) {

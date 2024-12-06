@@ -22,6 +22,8 @@
 "Today's Tasks" = "Today's Tasks";
 "My Villagers" = "My Villagers";
 "Collection Progress" = "Collection Progress";
+"Residents who can visit randomly on weekdays" = "Residents who can visit randomly on weekdays";
+"Residents who visit regularly" = "Residents who visit regularly";
 
 // MARK: - UserInfoView
 "Please set a name." = "Please set a name.";

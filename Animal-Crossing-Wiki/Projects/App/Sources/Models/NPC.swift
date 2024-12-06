@@ -17,4 +17,16 @@ struct NPC {
     let birthday: String
     let appearanceLocation: [AppearanceLocation]?
     let translations: Translations
+    
+    var isRandomVisit: Bool {
+        ["C.J.", "Flick", "Redd", "Gulliver", "Gullivarrr", "Label", "Wisp", "Celeste"].contains(name)
+    }
+    
+    var isFixedVisit: Bool {
+        ["Saharah", "Kicks", "Leif", "Pascal", "Sable", "K.K.", "Daisy Mae"].contains(name)
+    }
+}
+
+extension NPC: Identifiable {
+    public var id: String { UUID().uuidString }
 }
