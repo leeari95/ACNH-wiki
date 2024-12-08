@@ -70,7 +70,7 @@ struct AboutItem {
             AboutItem(
                 icon: "tag",
                 title: "App version",
-                description: "2.0.0"
+                description: "2.0.1"
             ),
             AboutItem(
                 icon: "gamecontroller",
