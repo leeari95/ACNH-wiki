@@ -20,11 +20,11 @@ enum Fruit: String, CaseIterable {
 
     static func transform(_ string: String) -> String? {
         switch string {
-        case Fruit.apple.imageName.localized: return Fruit.apple.rawValue
-        case Fruit.orange.imageName.localized: return Fruit.orange.rawValue
-        case Fruit.pear.imageName.localized: return Fruit.pear.rawValue
-        case Fruit.cherry.imageName.localized: return Fruit.cherry.rawValue
-        case Fruit.peach.imageName.localized: return Fruit.peach.rawValue
+        case Fruit.apple.rawValue.localized: return Fruit.apple.rawValue
+        case Fruit.orange.rawValue.localized: return Fruit.orange.rawValue
+        case Fruit.pear.rawValue.localized: return Fruit.pear.rawValue
+        case Fruit.cherry.rawValue.localized: return Fruit.cherry.rawValue
+        case Fruit.peach.rawValue.localized: return Fruit.peach.rawValue
         default: return nil
         }
     }
