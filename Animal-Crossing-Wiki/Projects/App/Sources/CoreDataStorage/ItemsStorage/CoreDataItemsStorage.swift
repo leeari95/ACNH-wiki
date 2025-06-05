@@ -54,8 +54,21 @@ final class CoreDataItemsStorage: ItemsStorage {
         coreDataStorage.performBackgroundTask { context in
             do {
                 let object = try self.coreDataStorage.getUserCollection(context)
-                let newItems = items.map { ItemEntity($0, context: context) }
-                object.addToCritters(NSSet(array: newItems))
+                let existingItems = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                for item in items {
+                    // 중복 체크: 이름과 genuine 값으로 기존 항목 확인
+                    let isDuplicate = existingItems.contains { existing in
+                        existing.name == item.name && existing.genuine == item.genuine
+                    }
+                    
+                    // 중복이 아닌 경우에만 추가
+                    if !isDuplicate {
+                        let newItem = ItemEntity(item, context: context)
+                        object.addToCritters(newItem)
+                    }
+                }
+                
                 context.saveContext()
             } catch {
                 debugPrint(error)
@@ -69,6 +82,31 @@ final class CoreDataItemsStorage: ItemsStorage {
                 let object = try self.coreDataStorage.getUserCollection(context)
                 let items = object.critters?.allObjects as? [ItemEntity] ?? []
                 object.removeFromCritters(NSSet(array: items.filter { $0.category == category.rawValue }))
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+    
+    func updateVariantCollection(_ item: Item, variantName: String, isCollected: Bool) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                // 기존 아이템을 찾아서 variant 상태를 업데이트
+                if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    var variants = items[index].variations
+//                    variants?[variantName] = isCollected
+//                    items[index].variants = variants
+                } else {
+                    // 새로운 아이템 추가
+                    let newItem = ItemEntity(item, context: context)
+                    newItem.variants = [variantName: isCollected]
+                    object.addToCritters(newItem)
+                }
+                
                 context.saveContext()
             } catch {
                 debugPrint(error)
