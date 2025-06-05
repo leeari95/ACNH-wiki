@@ -72,6 +72,9 @@ struct Item {
     var styles: [Style]?
     
     var soundType: SoundType?
+    
+    // 체크된 변형들의 ID 저장
+    var checkedVariants: Set<String>?
 }
 
 extension Item {

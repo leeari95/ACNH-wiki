@@ -19,6 +19,10 @@ final class ItemVariantsView: UIView {
     private let disposeBag = DisposeBag()
     private var mode: Mode = .color
     private let cellImage = BehaviorRelay<UIImage?>(value: nil)
+    private let variantChecked = BehaviorRelay<(variantId: String, isChecked: Bool)?>(value: nil)
+    
+    private var variations: [Variant] = []
+    private var checkedVariants: Set<String> = []
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -32,11 +36,13 @@ final class ItemVariantsView: UIView {
         return collectionView
     }()
 
-    convenience init(item: [Variant], mode: Mode) {
+    convenience init(item: [Variant], mode: Mode, checkedVariants: Set<String> = []) {
         self.init(frame: .zero)
         self.mode = mode
+        self.variations = item
+        self.checkedVariants = checkedVariants
         configure()
-        setUpItems(by: item)
+        setUpItems()
     }
 
     private func configure() {
@@ -55,13 +61,24 @@ final class ItemVariantsView: UIView {
         ])
     }
 
-    private func setUpItems(by variations: [Variant]) {
+    private func setUpItems() {
         Observable.just(variations)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
             ) { [weak self] _, item, cell in
-                let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
+                guard let self = self else { return }
+                
+                let name = (self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
                 ?? item.variation?.localized
-                cell.setUp(imageURL: item.image, name: name)
+                
+                let isChecked = self.checkedVariants.contains(item.variantId)
+                
+                cell.setUp(
+                    imageURL: item.image,
+                    name: name,
+                    isChecked: isChecked
+                ) { [weak self] in
+                    self?.toggleVariantCheck(item.variantId)
+                }
             }.disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
@@ -70,11 +87,32 @@ final class ItemVariantsView: UIView {
                 self?.cellImage.accept(cell?.imageView.image)
             }).disposed(by: disposeBag)
     }
+    
+    private func toggleVariantCheck(_ variantId: String) {
+        if checkedVariants.contains(variantId) {
+            checkedVariants.remove(variantId)
+            variantChecked.accept((variantId: variantId, isChecked: false))
+        } else {
+            checkedVariants.insert(variantId)
+            variantChecked.accept((variantId: variantId, isChecked: true))
+        }
+    }
+    
+    func updateCheckedVariants(_ checkedVariants: Set<String>) {
+        self.checkedVariants = checkedVariants
+        collectionView.reloadData()
+    }
 }
 
 extension ItemVariantsView {
 
     var didTapImage: Observable<UIImage?> {
         return cellImage.asObservable()
+    }
+    
+    var didCheckVariant: Observable<(variantId: String, isChecked: Bool)> {
+        return variantChecked
+            .compactMap { $0 }
+            .asObservable()
     }
 }

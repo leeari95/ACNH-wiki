@@ -48,7 +48,15 @@ extension ItemEntity {
         self.exchangePrice = Int64(item.exchangePrice ?? -1)
         self.exchangeCurrency = item.exchangeCurrency?.rawValue
         self.sources = item.sources
-        self.sourceNotes = item.sourceNotes
+        // sourceNotes의 첫 번째 요소로 checkedVariants를 저장
+        var notes = item.sourceNotes ?? []
+        if let checkedVariants = item.checkedVariants, !checkedVariants.isEmpty {
+            let checkedVariantsJson = "CHECKED_VARIANTS:" + checkedVariants.joined(separator: ",")
+            notes = [checkedVariantsJson] + notes.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+        } else {
+            notes = notes.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+        }
+        self.sourceNotes = notes.isEmpty ? nil : notes
         self.seasonEvent = item.seasonEvent
         self.hhaCategory = item.hhaCategory?.rawValue
         self.outdoor = item.outdoor ?? false
@@ -119,7 +127,7 @@ extension ItemEntity {
             exchangePrice: Int(exchangePrice),
             exchangeCurrency: ExchangeCurrency(rawValue: exchangeCurrency ?? ""),
             sources: sources,
-            sourceNotes: sourceNotes,
+            sourceNotes: extractSourceNotes(),
             seasonEvent: seasonEvent,
             hhaCategory: HhaCategory(rawValue: hhaCategory ?? ""),
             outdoor: outdoor,
@@ -136,8 +144,25 @@ extension ItemEntity {
             doorDeco: doorDeco,
             musicURL: musicURL,
             themes: themes,
-            styles: styles?.compactMap { Style(rawValue: $0) }
+            styles: styles?.compactMap { Style(rawValue: $0) },
+            checkedVariants: extractCheckedVariants()
         )
+    }
+    
+    private func extractSourceNotes() -> [String]? {
+        return sourceNotes?.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+    }
+    
+    private func extractCheckedVariants() -> Set<String>? {
+        guard let notes = sourceNotes else { return nil }
+        
+        for note in notes {
+            if note.hasPrefix("CHECKED_VARIANTS:") {
+                let variantsString = String(note.dropFirst("CHECKED_VARIANTS:".count))
+                return Set(variantsString.components(separatedBy: ",").filter { !$0.isEmpty })
+            }
+        }
+        return nil
     }
 }
 
