@@ -16,6 +16,7 @@ struct DailyTask {
     let createdDate: Date
 
     mutating func toggleCompleted(_ index: Int) {
+        guard index >= 0 && index < progressList.count else { return }
         self.progressList[index].toggle()
     }
 
@@ -107,7 +108,7 @@ extension DailyTask {
                 createdDate: Date(timeIntervalSince1970: 1654614000.0)
             ),
             DailyTask(
-                name: "Find peral",
+                name: "Find pearl",
                 icon: "Inv199",
                 isCompleted: false,
                 amount: 1,
