@@ -19,8 +19,11 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
 
     func fetchUserInfo() -> UserInfo? {
         let context = coreDataStorage.persistentContainer.viewContext
-        let object = try? self.coreDataStorage.getUserCollection(context)
-        let userInfo = object?.toDomain()
+        var userInfo: UserInfo?
+        context.performAndWait {
+            let object = try? self.coreDataStorage.getUserCollection(context)
+            userInfo = object?.toDomain()
+        }
         return userInfo
     }
 

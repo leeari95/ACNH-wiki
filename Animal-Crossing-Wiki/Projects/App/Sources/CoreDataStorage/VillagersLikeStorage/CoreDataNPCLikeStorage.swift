@@ -18,8 +18,11 @@ final class CoreDataNPCLikeStorage: NPCLikeStorage {
 
     func fetch() -> [NPC] {
         let context = coreDataStorage.persistentContainer.viewContext
-        let object = try? self.coreDataStorage.getUserCollection(context)
-        let npcs = object?.npcLike?.allObjects as? [NPCLikeEntity] ?? []
+        var npcs: [NPCLikeEntity] = []
+        context.performAndWait {
+            let object = try? self.coreDataStorage.getUserCollection(context)
+            npcs = object?.npcLike?.allObjects as? [NPCLikeEntity] ?? []
+        }
         return npcs.map { object -> NPC in
             var appearanceLocation: [AppearanceLocation] = []
             

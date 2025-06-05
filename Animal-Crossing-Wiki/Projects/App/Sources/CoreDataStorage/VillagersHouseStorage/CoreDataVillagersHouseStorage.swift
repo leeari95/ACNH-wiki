@@ -18,8 +18,11 @@ final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
 
     func fetch() -> [Villager] {
         let context = coreDataStorage.persistentContainer.viewContext
-        let object = try? self.coreDataStorage.getUserCollection(context)
-        let villagers = object?.villagersHouse?.allObjects as? [VillagersHouseEntity] ?? []
+        var villagers: [VillagersHouseEntity] = []
+        context.performAndWait {
+            let object = try? self.coreDataStorage.getUserCollection(context)
+            villagers = object?.villagersHouse?.allObjects as? [VillagersHouseEntity] ?? []
+        }
         return villagers.compactMap { $0.toDomain() }
             .sorted(by: { $0.translations.localizedName() < $1.translations.localizedName() })
     }
