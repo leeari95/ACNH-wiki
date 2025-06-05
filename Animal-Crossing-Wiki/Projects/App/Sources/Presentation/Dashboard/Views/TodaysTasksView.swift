@@ -35,13 +35,13 @@ final class TodaysTasksView: UIView {
 
     private lazy var editButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Edit".localized, for: .normal)
+        button.setTitle("edit".localized, for: .normal)
         return button
     }()
 
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Reset".localized, for: .normal)
+        button.setTitle("reset".localized, for: .normal)
         return button
     }()
 

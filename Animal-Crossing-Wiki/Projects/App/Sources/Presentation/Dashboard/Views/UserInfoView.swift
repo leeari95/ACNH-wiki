@@ -24,7 +24,7 @@ final class UserInfoView: UIView {
 
     private lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please set a name.".localized
+        label.text = "please_set_a_name".localized
         return label
     }()
 
@@ -36,7 +36,7 @@ final class UserInfoView: UIView {
 
     private lazy var islandNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Please set a Island Name.".localized
+        label.text = "please_set_a_island_name".localized
         return label
     }()
 
@@ -56,10 +56,10 @@ final class UserInfoView: UIView {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "island".localized.uppercased(), contentView: islandNameLabel),
-            InfoContentView(title: "REPUTATION".localized, contentView: reputationLabel),
-            InfoContentView(title: "USER".localized, contentView: userNameLabel),
+            InfoContentView(title: "reputation".localized, contentView: reputationLabel),
+            InfoContentView(title: "user".localized, contentView: userNameLabel),
             InfoContentView(title: "hemisphere".localized.uppercased(), contentView: hemisphereLabel),
-            InfoContentView(title: "FRUIT".localized, contentView: fruitImageView)
+            InfoContentView(title: "fruit".localized, contentView: fruitImageView)
 
         )
 
@@ -103,8 +103,8 @@ final class UserInfoView: UIView {
     }
 
     private func updateInfo(_ userInfo: UserInfo) {
-        userNameLabel.text = userInfo.name == "" ? "Please set a name.".localized : userInfo.name
-        islandNameLabel.text = userInfo.islandName  == "" ? "Please set a Island Name.".localized : userInfo.islandName
+        userNameLabel.text = userInfo.name == "" ? "please_set_a_name".localized : userInfo.name
+        islandNameLabel.text = userInfo.islandName  == "" ? "please_set_a_island_name".localized : userInfo.islandName
         fruitImageView.image = UIImage(named: userInfo.islandFruit.imageName)
         hemisphereLabel.text = userInfo.hemisphere.rawValue.localized.capitalized
         reputationLabel.text = String(repeating: "⭐️", count: userInfo.islandReputation + 1)

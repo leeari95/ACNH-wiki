@@ -27,7 +27,7 @@ final class CollectionProgressView: UIView {
     }()
 
     private lazy var emptyView: EmptyView = EmptyView(
-        title: "Please check the network status.".localized,
+        title: "please_check_the_network_status".localized,
         description: ""
     )
 

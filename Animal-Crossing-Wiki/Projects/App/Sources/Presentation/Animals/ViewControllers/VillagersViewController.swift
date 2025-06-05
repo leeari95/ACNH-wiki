@@ -64,7 +64,7 @@ final class VillagersViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.showsScopeBar = true
-        searchController.searchBar.placeholder = "Search a villager".localized
+        searchController.searchBar.placeholder = "search_a_villager".localized
         searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
         return searchController
     }()
@@ -78,7 +78,7 @@ final class VillagersViewController: UIViewController {
     }()
 
     private lazy var emptyView: EmptyView = EmptyView(
-        title: "There are no villagers.".localized,
+        title: "there_are_no_villagers".localized,
         description: "They appear here when you press the villager's heart button or home button.".localized
     )
 
@@ -115,8 +115,8 @@ final class VillagersViewController: UIViewController {
             .subscribe(onNext: { [weak self] isSearching in
                 if isSearching {
                     self?.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
-                        description: "There are no results for your search.".localized
+                        title: "there_are_no_villagers".localized,
+                        description: "there_are_no_results_for_your_search".localized
                     )
                 }
             }).disposed(by: disposeBag)
@@ -158,17 +158,17 @@ final class VillagersViewController: UIViewController {
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
-                        description: "Please check the network status.".localized
+                        title: "there_are_no_villagers".localized,
+                        description: "please_check_the_network_status".localized
                     )
                 case .liked:
                     owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
-                        description: "Tap the villager's heart button and it will appear here.".localized
+                        title: "there_are_no_villagers".localized,
+                        description: "tap_the_villagers_heart_button_and_it_will_appear_here".localized
                     )
                 case .residents:
                     owner.emptyView.editLabel(
-                        title: "There are no villagers.".localized,
+                        title: "there_are_no_villagers".localized,
                         description: "Tap the villager's home button and it will appear here.".localized
                     )
                 }

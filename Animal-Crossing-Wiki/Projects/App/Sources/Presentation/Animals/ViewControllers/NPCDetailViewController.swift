@@ -101,7 +101,7 @@ final class NPCDetailViewController: UIViewController {
             hosting.view.backgroundColor = .clear
             if index == 0 {
                 sectionsScrollView.addSection(
-                    SectionView(title: "appearance location".localized, iconName: "calendar", contentView: hosting.view)
+                    SectionView(title: "appearance_location".localized, iconName: "calendar", contentView: hosting.view)
                 )
             } else {
                 sectionsScrollView.addSection(

@@ -38,7 +38,7 @@ final class CollectionProgressViewController: UIViewController {
     }
 
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection Progress".localized
+        navigationItem.title = "collection_progress".localized
     }
 
     func bind(to reactor: CollectionProgressReactor) {

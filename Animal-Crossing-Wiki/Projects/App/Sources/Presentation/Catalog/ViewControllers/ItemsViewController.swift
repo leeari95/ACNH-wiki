@@ -28,12 +28,12 @@ final class ItemsViewController: UIViewController {
 
         var title: String {
             switch self {
-            case .all: return "All".localized
-            case .month: return "Month".localized
-            case .name: return "Name".localized
-            case .sell: return "Sell".localized
-            case .allSelect: return "All Select".localized
-            case .reset: return "Reset".localized
+            case .all: return "all".localized
+            case .month: return "month".localized
+            case .name: return "name".localized
+            case .sell: return "sell".localized
+            case .allSelect: return "all_select".localized
+            case .reset: return "reset".localized
             }
         }
 
@@ -44,12 +44,12 @@ final class ItemsViewController: UIViewController {
 
         static func transform(localized: String) -> Self {
             switch localized {
-            case "All".localized: return .all
-            case "Month".localized: return .month
-            case "Name".localized: return .name
-            case "Sell".localized: return .sell
-            case "All Select".localized: return .allSelect
-            case "Reset".localized: return .reset
+            case "all".localized: return .all
+            case "month".localized: return .month
+            case "name".localized: return .name
+            case "sell".localized: return .sell
+            case "all_select".localized: return .allSelect
+            case "reset".localized: return .reset
             default: return .all
             }
         }
@@ -99,7 +99,7 @@ final class ItemsViewController: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search...".localized
+        searchController.searchBar.placeholder = "search".localized
         if mode != .user {
             searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
             searchController.searchBar.showsScopeBar = true
@@ -110,7 +110,7 @@ final class ItemsViewController: UIViewController {
     }()
 
     private lazy var emptyView: EmptyView = EmptyView(
-        title: "There are no villagers.".localized,
+        title: "there_are_no_villagers".localized,
         description: "They appear here when you press the villager's heart button or home button.".localized
     )
 
@@ -216,8 +216,8 @@ final class ItemsViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, isSearching in
                 if isSearching {
                     owner.emptyView.editLabel(
-                        title: "Item is empty.".localized,
-                        description: "There are no results for your search.".localized
+                        title: "item_is_empty".localized,
+                        description: "there_are_no_results_for_your_search".localized
                     )
                 }
             }).disposed(by: disposeBag)
@@ -229,18 +229,18 @@ final class ItemsViewController: UIViewController {
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
-                        title: "Item is empty.".localized,
-                        description: "Please check the network status.".localized
+                        title: "item_is_empty".localized,
+                        description: "please_check_the_network_status".localized
                     )
                 case .notCollected:
                     owner.emptyView.editLabel(
-                        title: "Item is empty.".localized,
-                        description: "There are no more items to collect.".localized
+                        title: "item_is_empty".localized,
+                        description: "there_are_no_more_items_to_collect".localized
                     )
                 case .collected:
                     owner.emptyView.editLabel(
-                        title: "There are no collectibles.".localized,
-                        description: "when you check some items, they'll be displayed here.".localized
+                        title: "there_are_no_collectibles".localized,
+                        description: "when_you_check_some_items_theyll_be_displayed_here".localized
                     )
                 }
                 owner.searchController.searchBar.endEditing(true)
@@ -254,10 +254,10 @@ final class ItemsViewController: UIViewController {
         }
         currentSelected = keyword
         if let category = category, Category.critters.contains(category) {
-            navigationItem.title = "To catch now".localized
+            navigationItem.title = "to_catch_now".localized
         } else {
             currentSelected[.month] = nil
-            navigationItem.title = "Currently Available".localized
+            navigationItem.title = "currently_available".localized
         }
         searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
     }
@@ -406,7 +406,7 @@ extension ItemsViewController {
             guard let owner = self else {
                 return
             }
-            owner.showAlert(title: "Notice".localized, message: "Are you sure you want to check them all?".localized)
+            owner.showAlert(title: "notice".localized, message: "are_you_sure_you_want_to_check_them_all?".localized)
                 .filter { $0 == true }
                 .subscribe(onNext: { [weak owner] _ in
                     guard let owner else {
@@ -424,7 +424,7 @@ extension ItemsViewController {
             guard let self = self else {
                 return
             }
-            self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
+            self.showAlert(title: "notice".localized, message: "are_you_sure_you_want_to_uncheck_them_all?".localized)
                 .filter { $0 == true }
                 .subscribe(with: self, onNext: { owner, _ in
                     owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))

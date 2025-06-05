@@ -66,32 +66,32 @@ final class DashboardViewController: UIViewController {
         randomVisitNPCListVM: NpcsSectionReactor
     ) {
         let userInfoSection = SectionView(
-            title: "My Island".localized,
+            title: "my_island".localized,
             iconName: "leaf.fill",
             contentView: UserInfoView(userInfoVM)
         )
         let tasksSection = SectionView(
-            title: "Today's Tasks".localized,
+            title: "todays_tasks".localized,
             iconName: "checkmark.seal.fill",
             contentView: TodaysTasksView(tasksVM)
         )
         let villagersSection = SectionView(
-            title: "My Villagers".localized,
+            title: "my_villagers".localized,
             iconName: "person.circle.fill",
             contentView: VillagersView(villagersVM)
         )
         let progressSection = SectionView(
-            title: "Collection Progress".localized,
+            title: "collection_progress".localized,
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )
         let randomVisitResidentsSectionView = SectionView(
-            title: "Residents who can visit randomly on weekdays".localized,
+            title: "residents_who_can_visit_randomly_on_weekdays".localized,
             iconName: "bubbles.and.sparkles.fill",
             contentView: NpcsView(randomVisitNPCListVM)
         )
         let fixedVisitResidentsSectionView = SectionView(
-            title: "Residents who visit regularly".localized,
+            title: "residents_who_visit_regularly".localized,
             iconName: "pin.fill",
             contentView: NpcsView(fixeVisitdNPCListVM)
         )

@@ -145,8 +145,8 @@ final class ItemDetailViewController: UIViewController {
         let isNoPattern = item.patternCustomize == false
         let canBodyCustomize = item.bodyCustomize == true
         let canPatternCustomize = item.patternCustomize == true
-        let bodyTitle = "\("Variants".localized) (\(canBodyCustomize ? "Reformable".localized : "Not reformed".localized))"
-        let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
+        let bodyTitle = "\("variants".localized) (\(canBodyCustomize ? "reformable".localized : "not_reformed".localized))"
+        let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "reformable".localized : "not_reformed".localized))"
 
         switch item.category {
         case .photos, .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit, .gyroids:
@@ -210,7 +210,7 @@ final class ItemDetailViewController: UIViewController {
             return
         }
         let seasonView = SectionView(
-            title: "Seasonality".localized,
+            title: "seasonality".localized,
             iconName: "calendar",
             contentView: ItemSeasonView(item: item)
         )
@@ -237,7 +237,7 @@ final class ItemDetailViewController: UIViewController {
         }
         let materialsView = ItemMaterialsView(item: item)
         let materialsSection = SectionView(
-            title: "Materials".localized,
+            title: "materials".localized,
             iconName: "book.closed.fill",
             contentView: materialsView
         )
@@ -250,7 +250,7 @@ final class ItemDetailViewController: UIViewController {
         }
         playerView.flatMap {
             let musicSection = SectionView(
-                title: "Music Player".localized,
+                title: "music_player".localized,
                 iconName: "music.note",
                 contentView: $0
             )

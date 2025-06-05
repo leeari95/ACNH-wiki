@@ -39,9 +39,9 @@ final class AppSettingView: UIView {
             backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
             backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
-        let resetView = InfoContentView(title: "Data reset".localized)
+        let resetView = InfoContentView(title: "data_reset".localized)
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            InfoContentView(title: "system_haptic".localized, contentView: hapticSwitch),
             resetView
         )
         resetView.addGestureRecognizer(resetTapGesture)

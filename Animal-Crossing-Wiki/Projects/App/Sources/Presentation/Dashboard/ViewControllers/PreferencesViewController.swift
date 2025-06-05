@@ -37,7 +37,7 @@ final class PreferencesViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        navigationItem.title = "Preferences".localized
+        navigationItem.title = "preferences".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
 
@@ -129,7 +129,7 @@ final class PreferencesViewController: UIViewController {
 
     private func setUpAppSettings(to reactor: AppSettingReactor) {
         sectionsScrollView.addSection(
-            SectionView(title: "App Settings".localized, iconName: "square.and.pencil", contentView: AppSettingView(reactor: reactor))
+            SectionView(title: "app_settings".localized, iconName: "square.and.pencil", contentView: AppSettingView(reactor: reactor))
         )
     }
 }

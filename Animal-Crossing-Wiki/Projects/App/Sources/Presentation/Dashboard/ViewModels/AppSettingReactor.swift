@@ -43,7 +43,7 @@ final class AppSettingReactor: Reactor {
 
         case .reset:
             return coordinator
-                .showAlert(title: "Notice".localized, message: "Are you sure you want to reset it?".localized)
+                .showAlert(title: "notice".localized, message: "are_you_sure_you_want_to_reset_it?".localized)
                 .map { AppSettingReactor.Mutation.reset($0) }
                 .observe(on: MainScheduler.asyncInstance)
         }

@@ -20,9 +20,9 @@ final class AboutReactor: Reactor {
 
     struct State {
         var items: [(title: String, items: [AboutItem])] = [
-            ("Version".localized, AboutItem.versions),
-            ("The app".localized, AboutItem.theApp),
-            ("Credit / Thanks".localized, AboutItem.acknowledgement)
+            ("version".localized, AboutItem.versions),
+            ("the_app".localized, AboutItem.theApp),
+            ("credit_thanks".localized, AboutItem.acknowledgement)
         ]
     }
 

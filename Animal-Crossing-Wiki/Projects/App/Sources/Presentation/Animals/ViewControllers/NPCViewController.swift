@@ -56,7 +56,7 @@ final class NPCViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.showsScopeBar = true
-        searchController.searchBar.placeholder = "Search a npc".localized
+        searchController.searchBar.placeholder = "search_a_npc".localized
         searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
         return searchController
     }()
@@ -70,7 +70,7 @@ final class NPCViewController: UIViewController {
     }()
 
     private lazy var emptyView: EmptyView = EmptyView(
-        title: "There are no villagers.".localized,
+        title: "there_are_no_villagers".localized,
         description: "They appear here when you press the npc's heart button or home button.".localized
     )
 
@@ -107,8 +107,8 @@ final class NPCViewController: UIViewController {
             .subscribe(onNext: { [weak self] isSearching in
                 if isSearching {
                     self?.emptyView.editLabel(
-                        title: "There are no npc.".localized,
-                        description: "There are no results for your search.".localized
+                        title: "there_are_no_npc".localized,
+                        description: "there_are_no_results_for_your_search".localized
                     )
                 }
             }).disposed(by: disposeBag)
@@ -150,13 +150,13 @@ final class NPCViewController: UIViewController {
                 switch currentScope {
                 case .all:
                     owner.emptyView.editLabel(
-                        title: "There are no npc.".localized,
-                        description: "Please check the network status.".localized
+                        title: "there_are_no_npc".localized,
+                        description: "please_check_the_network_status".localized
                     )
                 case .liked:
                     owner.emptyView.editLabel(
-                        title: "There are no npc.".localized,
-                        description: "Tap the npc's heart button and it will appear here.".localized
+                        title: "there_are_no_npc".localized,
+                        description: "tap_the_npcs_heart_button_and_it_will_appear_here".localized
                     )
                 }
                 owner.searchController.searchBar.endEditing(true)
