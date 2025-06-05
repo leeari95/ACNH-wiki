@@ -151,9 +151,9 @@ extension Hemispheres {
                 "monthsArray": north.monthsArray
             ],
             "south": [
-                "time": north.time,
-                "months": north.months,
-                "monthsArray": north.monthsArray
+                "time": south.time,
+                "months": south.months,
+                "monthsArray": south.monthsArray
             ]
         ]
     }
