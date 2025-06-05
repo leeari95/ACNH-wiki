@@ -10,7 +10,9 @@ import UIKit
 extension UINavigationItem {
 
     func enableMultilineTitle() {
-        setValue(true, forKey: "__largeTitleTwoLineMode")
+        // 비공개 API 사용 제거
+        // setValue(true, forKey: "__largeTitleTwoLineMode")는 앱스토어 거절 위험
+        // 다줄 타이틀이 필요한 경우 공개 API 사용 또는 커스텀 뷰 구현 필요
     }
 
 }
