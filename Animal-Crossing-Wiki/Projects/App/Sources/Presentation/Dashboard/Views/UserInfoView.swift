@@ -56,10 +56,10 @@ final class UserInfoView: UIView {
         addSubviews(backgroundStackView)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "island".localized.uppercased(), contentView: islandNameLabel),
-            InfoContentView(title: "REPUTATION".localized, contentView: reputationLabel),
-            InfoContentView(title: "USER".localized, contentView: userNameLabel),
+            InfoContentView(title: "reputation".localized.uppercased(), contentView: reputationLabel),
+            InfoContentView(title: "user".localized.uppercased(), contentView: userNameLabel),
             InfoContentView(title: "hemisphere".localized.uppercased(), contentView: hemisphereLabel),
-            InfoContentView(title: "FRUIT".localized, contentView: fruitImageView)
+            InfoContentView(title: "fruit".localized.uppercased(), contentView: fruitImageView)
 
         )
 

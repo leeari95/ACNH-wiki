@@ -7,15 +7,16 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "대시보드";
-"Catalog" = "카탈로그";
+"dashboard" = "대시보드";
+"catalog" = "카탈로그";
 "villagers" = "마을주민";
-"Collection" = "수집품";
+"collection" = "수집품";
 "animals" = "동물";
 
 // MARK: - etc
-"Cancel" = "취소";
-"Setting" = "앱 기본 설정";
+"cancel" = "취소";
+"ok" = "확인";
+"setting" = "앱 기본 설정";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "나의 섬 정보";
@@ -29,9 +30,9 @@
 "Please set a name." = "이름을 설정해주세요.";
 "Please set a Island Name." = "섬 이름을 설정해주세요.";
 "Please set a Hemisphere." = "반구를 설정해주세요.";
-"USER" = "주민 대표";
-"FRUIT" = "과일";
-"REPUTATION" = "섬 평판";
+"user" = "주민 대표";
+"fruit" = "과일";
+"reputation" = "섬 평판";
 
 // MARK: - TodaysTasksView
 "Edit" = "편집";

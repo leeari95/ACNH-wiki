@@ -7,15 +7,16 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "Dashboard";
-"Catalog" = "Catalog";
+"dashboard" = "Dashboard";
+"catalog" = "Catalog";
 "villagers" = "Villagers";
-"Collection" = "Collection";
+"collection" = "Collection";
 "animals" = "Animals";
 
 // MARK: - etc
-"Cancel" = "Cancel";
-"Setting" = "Setting";
+"cancel" = "Cancel";
+"ok" = "OK";
+"setting" = "Setting";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "My Island";
@@ -29,9 +30,9 @@
 "Please set a name." = "Please set a name.";
 "Please set a Island Name." = "Please set a Island Name.";
 "Please set a Hemisphere." = "Please set a Hemisphere.";
-"USER" = "USER";
-"FRUIT" = "FRUIT";
-"REPUTATION" = "REPUTATION";
+"user" = "USER";
+"fruit" = "FRUIT";
+"reputation" = "REPUTATION";
 
 // MARK: - TodaysTasksView
 "Edit" = "Edit";
