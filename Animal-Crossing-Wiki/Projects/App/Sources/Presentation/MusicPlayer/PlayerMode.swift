@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import ACNHCore
+import ACNHShared
 
 enum PlayerMode {
     case small

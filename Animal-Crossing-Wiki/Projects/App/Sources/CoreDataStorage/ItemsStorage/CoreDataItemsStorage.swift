@@ -7,6 +7,8 @@
 
 import Foundation
 import RxSwift
+import ACNHCore
+import ACNHShared
 
 final class CoreDataItemsStorage: ItemsStorage {
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 protocol DomainConvertible: Decodable {
     func toDomain() -> Item

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ACNHCore
+import ACNHShared
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

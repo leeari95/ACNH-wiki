@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreData
+import ACNHCore
+import ACNHShared
 
 extension UserCollectionEntity {
     convenience init(_ userInfo: UserInfo, context: NSManagedObjectContext) {

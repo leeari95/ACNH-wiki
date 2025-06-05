@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct WetSuitResponseDTO: Decodable {
     let sourceSheet, name: String

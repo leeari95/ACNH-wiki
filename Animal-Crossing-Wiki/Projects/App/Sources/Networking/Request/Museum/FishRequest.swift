@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct FishRequest: APIRequest {
     typealias Response = [FishResponseDTO]

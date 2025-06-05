@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct HousewaresResponseDTO: Decodable {
     let name: String

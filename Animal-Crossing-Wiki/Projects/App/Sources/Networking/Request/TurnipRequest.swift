@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 // MARK: - TurnipRequest
 struct TurnipRequest: APIRequest {

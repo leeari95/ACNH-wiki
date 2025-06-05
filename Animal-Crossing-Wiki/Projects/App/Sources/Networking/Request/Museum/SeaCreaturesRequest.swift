@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct SeaCreaturesRequest: APIRequest {
     typealias Response = [SeaCreaturesResponseDTO]

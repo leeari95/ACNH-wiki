@@ -11,6 +11,8 @@ import RxSwift
 import RxRelay
 import AVFoundation
 import MediaPlayer
+import ACNHCore
+import ACNHShared
 
 final class MusicPlayerManager {
 

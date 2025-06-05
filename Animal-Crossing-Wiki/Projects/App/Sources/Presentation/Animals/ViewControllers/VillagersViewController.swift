@@ -8,6 +8,8 @@
 import UIKit
 import RxSwift
 import RxRelay
+import ACNHCore
+import ACNHShared
 
 final class VillagersViewController: UIViewController {
     enum Menu: String {

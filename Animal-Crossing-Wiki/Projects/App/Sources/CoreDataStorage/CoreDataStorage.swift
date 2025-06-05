@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreData
+import ACNHCore
+import ACNHShared
 
 enum CoreDataStorageError: LocalizedError {
     case readError(Error)

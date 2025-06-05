@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ACNHCore
+import ACNHShared
 
 final class ItemOtherInfoView: UIView {
     private lazy var backgroundStackView: UIStackView = {

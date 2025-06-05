@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct CeilingDecorResponseDTO: Decodable {
     let name: String

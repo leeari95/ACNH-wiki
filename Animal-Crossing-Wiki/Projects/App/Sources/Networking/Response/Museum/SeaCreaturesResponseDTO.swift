@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 // MARK: - SeaCreaturesResponseDTO
 struct SeaCreaturesResponseDTO: Decodable {

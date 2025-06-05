@@ -8,6 +8,8 @@
 import UIKit
 import RxDataSources
 import ReactorKit
+import ACNHCore
+import ACNHShared
 
 final class AboutViewController: UIViewController {
 

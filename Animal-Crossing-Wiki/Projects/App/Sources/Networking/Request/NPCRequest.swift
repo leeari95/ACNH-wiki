@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct NPCRequest: APIRequest {
     typealias Response = [NPCResponseDTO]

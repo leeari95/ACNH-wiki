@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import ACNHCore
+import ACNHShared
 
 protocol Coordinator: AnyObject {
     var type: CoordinatorType { get }

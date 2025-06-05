@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import ACNHCore
+import ACNHShared
 
 protocol UserInfoStorage {
     func fetchUserInfo() -> UserInfo?
