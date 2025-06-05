@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct FencingResponseDTO: Decodable {
     let name: String

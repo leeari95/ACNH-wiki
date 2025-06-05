@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct TopsResponseDTO: Decodable {
     let sourceSheet: String

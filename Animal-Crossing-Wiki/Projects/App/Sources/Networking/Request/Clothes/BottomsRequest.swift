@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct BottomsRequest: APIRequest {
     typealias Response = [BottomsResponseDTO]

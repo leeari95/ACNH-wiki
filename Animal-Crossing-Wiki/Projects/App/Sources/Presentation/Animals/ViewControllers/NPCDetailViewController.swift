@@ -8,6 +8,8 @@
 import UIKit
 import RxSwift
 import SwiftUI
+import ACNHCore
+import ACNHShared
 
 final class NPCDetailViewController: UIViewController {
 

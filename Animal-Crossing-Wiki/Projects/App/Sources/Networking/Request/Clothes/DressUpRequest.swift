@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct DressUpRequest: APIRequest {
     typealias Response = [DressUpResponseDTO]

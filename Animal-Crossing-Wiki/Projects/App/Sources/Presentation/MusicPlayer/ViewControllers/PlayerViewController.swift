@@ -8,6 +8,8 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ACNHCore
+import ACNHShared
 
 final class PlayerViewController: UIViewController {
 

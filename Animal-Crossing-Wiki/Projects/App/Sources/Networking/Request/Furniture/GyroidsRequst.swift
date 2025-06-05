@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct GyroidsRequst: APIRequest {
     typealias Response = [GyroidsResponseDTO]

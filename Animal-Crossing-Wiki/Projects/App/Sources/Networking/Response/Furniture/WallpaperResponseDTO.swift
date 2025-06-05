@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct WallpaperResponseDTO: Decodable {
     let name: String //

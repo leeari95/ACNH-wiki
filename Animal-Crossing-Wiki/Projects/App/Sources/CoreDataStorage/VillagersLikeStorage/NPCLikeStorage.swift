@@ -7,6 +7,8 @@
 
 import Foundation
 import RxSwift
+import ACNHCore
+import ACNHShared
 
 protocol NPCLikeStorage {
     func fetch() -> [NPC]

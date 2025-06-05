@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct ShoesRequest: APIRequest {
     typealias Response = [ShoesResponseDTO]

@@ -5,7 +5,9 @@ let dependencies: [TargetDependency] = [
     .SPM.Kingfisher,
     .SPM.Alamofire,
     .SPM.ReactorKit,
-    .SPM.RxDataSources
+    .SPM.RxDataSources,
+    .project(target: "ACNHCore", path: "../ACNHCore"),
+    .project(target: "ACNHShared", path: "../ACNHShared")
 ]
 
 let appPrivacyInfo: PrivacyManifest = .privacyManifest(

@@ -9,6 +9,8 @@ import Foundation
 import ReactorKit
 import RxSwift
 import RxCocoa
+import ACNHCore
+import ACNHShared
 
 final class NpcsSectionReactor: Reactor, ObservableObject {
     enum Action {

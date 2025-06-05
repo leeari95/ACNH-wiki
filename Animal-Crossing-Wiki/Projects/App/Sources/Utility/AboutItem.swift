@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import ACNHCore
+import ACNHShared
 
 struct AboutItem {
     let icon: String

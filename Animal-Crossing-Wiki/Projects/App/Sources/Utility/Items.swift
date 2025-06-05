@@ -10,6 +10,8 @@ import OSLog
 import RxSwift
 import RxRelay
 import RxCocoa
+import ACNHCore
+import ACNHShared
 
 final class Items {
     static let shared = Items()

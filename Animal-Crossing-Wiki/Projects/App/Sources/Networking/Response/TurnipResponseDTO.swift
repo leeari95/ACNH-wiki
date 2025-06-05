@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 // MARK: - TurnipResponseDTO
 struct TurnipResponseDTO: Decodable {

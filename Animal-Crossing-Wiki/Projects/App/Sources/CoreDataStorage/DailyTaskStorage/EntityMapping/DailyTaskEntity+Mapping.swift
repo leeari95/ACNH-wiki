@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreData
+import ACNHCore
+import ACNHShared
 
 extension DailyTaskEntity {
 

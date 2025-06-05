@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import ACNHCore
 
 struct HeadwearRequest: APIRequest {
     typealias Response = [HeadwearResponseDTO]

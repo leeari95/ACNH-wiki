@@ -7,6 +7,8 @@
 
 import Foundation
 import ReactorKit
+import ACNHCore
+import ACNHShared
 
 protocol VillagersReactorDelegate: AnyObject {
     func showDetail(villager: Villager)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct NPCResponseDTO: Decodable {
     let name: String

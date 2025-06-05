@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ACNHCore
+import ACNHShared
 
 final class ProgressBar: UIProgressView {
     private var height: CGFloat = 10

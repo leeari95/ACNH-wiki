@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import ACNHCore
+import ACNHShared
 
 struct AppearanceLocationView: View {
     let item: AppearanceLocation

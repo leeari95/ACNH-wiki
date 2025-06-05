@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct SocksResponseDTO: Decodable {
     let name: String

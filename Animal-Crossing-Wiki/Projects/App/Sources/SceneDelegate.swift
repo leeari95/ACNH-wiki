@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ACNHCore
+import ACNHShared
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 

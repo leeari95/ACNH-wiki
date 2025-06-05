@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ACNHCore
 
 struct ToolsResponseDTO: Decodable {
     let name: String
