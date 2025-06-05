@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class CoreDataVillagersLikeStorage: VillagersLikeStorage {
+final class CoreDataVillagersLikeStorage: VillagersLikeStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -37,7 +37,7 @@ final class CoreDataVillagersLikeStorage: VillagersLikeStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateVillagerLike")
             }
         }
     }

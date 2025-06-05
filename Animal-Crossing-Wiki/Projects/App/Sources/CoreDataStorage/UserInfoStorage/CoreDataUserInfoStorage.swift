@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import CoreData
 
-final class CoreDataUserInfoStorage: UserInfoStorage {
+final class CoreDataUserInfoStorage: UserInfoStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -35,7 +35,7 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
                 object.islandReputation = Int16(userInfo.islandReputation)
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateUserInfo")
             }
         }
     }
