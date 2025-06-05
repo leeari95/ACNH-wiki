@@ -46,7 +46,7 @@ final class ItemOtherInfoView: UIView {
         item.sourceNotes.flatMap { sourceNotes in
             let sourceNotesLabel = descriptionLabel(sourceNotes.reduce(with: "\n", characters: ["\n"]))
             sourceNotesLabel.numberOfLines = 0
-            let sourceNoteInfo = InfoContentView(title: "Source Note".localized, contentView: sourceNotesLabel)
+            let sourceNoteInfo = InfoContentView(title: "source_note".localized, contentView: sourceNotesLabel)
             backgroundStackView.addArrangedSubviews(sourceNoteInfo)
         }
         item.catalog.flatMap { catalog in
@@ -56,13 +56,13 @@ final class ItemOtherInfoView: UIView {
         }
         if let hhaBasePoint = item.hhaBasePoints, hhaBasePoint > 0 {
             let hhaPointLabel = descriptionLabel(hhaBasePoint.decimalFormatted)
-            let hhaPointInfo = InfoContentView(title: "HHA points".localized, contentView: hhaPointLabel)
+            let hhaPointInfo = InfoContentView(title: "hha_points".localized, contentView: hhaPointLabel)
             backgroundStackView.addArrangedSubviews(hhaPointInfo)
         }
         if let sourceRecipe = item.recipe?.source, item.diy == true {
             let sourceRecipeLabel = descriptionLabel(sourceRecipe.reduce(with: "\n", characters: ["\n"]))
             sourceRecipeLabel.numberOfLines = 0
-            let sourceRecipeInfo = InfoContentView(title: "Source recipe".localized, contentView: sourceRecipeLabel)
+            let sourceRecipeInfo = InfoContentView(title: "source_recipe".localized, contentView: sourceRecipeLabel)
             backgroundStackView.addArrangedSubviews(sourceRecipeInfo)
         }
     }
@@ -84,7 +84,7 @@ final class ItemOtherInfoView: UIView {
         case .bugs, .fishes:
             whereHowLabel.text = item.whereHow?.localized
         case .seaCreatures:
-            whereHowLabel.text = "Underwater".localized
+            whereHowLabel.text = "underwater".localized
         case .fossils, .art:
             whereHowLabel.text = item.source?.localized
         case .tools, .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
@@ -95,7 +95,7 @@ final class ItemOtherInfoView: UIView {
 
         default: return
         }
-        let placeInfo = InfoContentView(title: "Where how".localized, contentView: whereHowLabel)
+        let placeInfo = InfoContentView(title: "where_how".localized, contentView: whereHowLabel)
         backgroundStackView.addArrangedSubviews(placeInfo)
     }
 
@@ -104,7 +104,7 @@ final class ItemOtherInfoView: UIView {
             return
         }
         let shadowLabel = descriptionLabel(item.shadow?.rawValue.localized)
-        let shadowInfo = InfoContentView(title: "Shadow size".localized, contentView: shadowLabel)
+        let shadowInfo = InfoContentView(title: "shadow_size".localized, contentView: shadowLabel)
         backgroundStackView.addArrangedSubviews(shadowInfo)
 
     }
@@ -114,7 +114,7 @@ final class ItemOtherInfoView: UIView {
             return
         }
         let speedLabel = descriptionLabel(item.movementSpeed?.rawValue.localized)
-        let speedInfo = InfoContentView(title: "Movement speed".localized, contentView: speedLabel)
+        let speedInfo = InfoContentView(title: "movement_speed".localized, contentView: speedLabel)
         backgroundStackView.addArrangedSubviews(speedInfo)
     }
 
@@ -122,8 +122,8 @@ final class ItemOtherInfoView: UIView {
         guard item.category == .art, let genuine = item.genuine else {
             return
         }
-        let fakeInfoLabel = descriptionLabel(genuine ? "Original".localized : "Fake".localized)
-        let fakeInfo = InfoContentView(title: "Whether fake".localized, contentView: fakeInfoLabel)
+        let fakeInfoLabel = descriptionLabel(genuine ? "original".localized : "fake".localized)
+        let fakeInfo = InfoContentView(title: "whether_fake".localized, contentView: fakeInfoLabel)
         backgroundStackView.addArrangedSubviews(fakeInfo)
         
         if let fakeDifferences = item.fakeDifferences {
@@ -139,7 +139,7 @@ final class ItemOtherInfoView: UIView {
         }
         
         let seasonInfoLabel = descriptionLabel(seasonEvent.localized)
-        let seasonInfo = InfoContentView(title: "season event".localized, contentView: seasonInfoLabel)
+        let seasonInfo = InfoContentView(title: "season_event".localized, contentView: seasonInfoLabel)
         backgroundStackView.addArrangedSubviews(seasonInfo)
     }
     
@@ -149,7 +149,7 @@ final class ItemOtherInfoView: UIView {
         }
         
         let soundTypeInfoLabel = descriptionLabel(soundType.rawValue.lowercased().localized)
-        let soundTypeInfo = InfoContentView(title: "sound type".localized, contentView: soundTypeInfoLabel)
+        let soundTypeInfo = InfoContentView(title: "sound_type".localized, contentView: soundTypeInfoLabel)
         backgroundStackView.addArrangedSubviews(soundTypeInfo)
     }
 }

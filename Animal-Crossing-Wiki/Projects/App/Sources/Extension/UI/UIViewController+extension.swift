@@ -27,7 +27,7 @@ extension UIViewController {
                 )
             }
             alert.addAction(
-                UIAlertAction(title: "Cancel".localized, style: .cancel) { _ in
+                UIAlertAction(title: "cancel".localized, style: .cancel) { _ in
                     alert.dismiss(animated: true)
                 }
             )
@@ -54,7 +54,7 @@ extension UIViewController {
         return Observable.create { observer in
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(
-                UIAlertAction(title: "Cancel".localized, style: .destructive) { _ in
+                UIAlertAction(title: "cancel".localized, style: .destructive) { _ in
                     alert.dismiss(animated: true)
                     observer.onNext(false)
                     observer.onCompleted()

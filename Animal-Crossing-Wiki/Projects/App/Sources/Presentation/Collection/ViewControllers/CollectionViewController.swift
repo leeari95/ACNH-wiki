@@ -21,8 +21,8 @@ final class CollectionViewController: UIViewController {
     }()
 
     private lazy var emptyView: EmptyView = EmptyView(
-        title: "There are no collectibles.".localized,
-        description: "when you check some items, they'll be displayed here.".localized
+        title: "there_are_no_collectibles".localized,
+        description: "when_you_check_some_items_theyll_be_displayed_here".localized
     )
 
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ final class CollectionViewController: UIViewController {
     }
 
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection".localized
+        navigationItem.title = "collection".localized
     }
 
     func bind(to reactor: CollectionReactor) {

@@ -21,13 +21,13 @@ final class PreferencesView: UIView {
 
     private lazy var islandNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Your island name".localized
+        textField.placeholder = "your_island_name".localized
         return textField
     }()
 
     private lazy var userNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Your user name".localized
+        textField.placeholder = "your_user_name".localized
         return textField
     }()
 
@@ -89,11 +89,11 @@ final class PreferencesView: UIView {
         }
 
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "Island name".localized, contentView: islandNameTextField),
-            InfoContentView(title: "Island Reputation".localized, contentView: reputationButton),
-            InfoContentView(title: "User name".localized, contentView: userNameTextField),
+            InfoContentView(title: "island_name".localized, contentView: islandNameTextField),
+            InfoContentView(title: "island_reputation".localized, contentView: reputationButton),
+            InfoContentView(title: "user_name".localized, contentView: userNameTextField),
             InfoContentView(title: "hemisphere".localized.capitalized, contentView: hemisphereButton),
-            InfoContentView(title: "Starting fruit".localized, contentView: startingFruitButton)
+            InfoContentView(title: "starting_fruit".localized, contentView: startingFruitButton)
         )
     }
 }

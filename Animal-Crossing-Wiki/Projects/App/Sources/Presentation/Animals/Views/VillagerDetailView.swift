@@ -53,14 +53,14 @@ extension VillagerDetailView {
         profileImage.setImage(with: villager.photoImage)
 
         let items: [(title: String, value: String)] = [
-            ("Personality".localized, villager.personality.rawValue.lowercased().localized.capitalized),
-            ("Gender".localized, villager.gender.rawValue.lowercased().localized.capitalized),
-            ("Hobby".localized, villager.hobby.rawValue.lowercased().localized.capitalized),
-            ("Birthday".localized, villager.birthday),
-            ("Type".localized, villager.subtype.rawValue),
-            ("Like".localized, villager.like),
-            ("Specie".localized, villager.species.rawValue.lowercased().localized.capitalized),
-            ("Catch phrase".localized, villager.catchphrases.localizedName())
+            ("personality".localized, villager.personality.rawValue.lowercased().localized.capitalized),
+            ("gender".localized, villager.gender.rawValue.lowercased().localized.capitalized),
+            ("hobby".localized, villager.hobby.rawValue.lowercased().localized.capitalized),
+            ("birthday".localized, villager.birthday),
+            ("type".localized, villager.subtype.rawValue),
+            ("like".localized, villager.like),
+            ("specie".localized, villager.species.rawValue.lowercased().localized.capitalized),
+            ("catch_phrase".localized, villager.catchphrases.localizedName())
         ]
 
         let contentViews = items.map { item -> InfoContentView in

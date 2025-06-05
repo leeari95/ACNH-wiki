@@ -34,7 +34,7 @@ final class TaskEditViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        navigationItem.title = "Today's Tasks".localized
+        navigationItem.title = "todays_tasks".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
 
