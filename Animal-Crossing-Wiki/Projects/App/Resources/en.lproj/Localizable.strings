@@ -1511,3 +1511,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "time" = "Time";
 "conditions" = "Conditions";
 "features" = "Features";
+
+// MARK: - iCloud Sync
+"icloud_sync" = "iCloud Sync";
+"icloud_sync_enabled" = "Enabled";
+"icloud_sync_disabled" = "Disabled";
+"icloud_account_required" = "iCloud account required";
+"icloud_sync_description" = "Backup collection data to iCloud for cross-device synchronization";

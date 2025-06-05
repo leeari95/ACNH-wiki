@@ -14,6 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         AppAppearance.setUpAppearance()
+        
+        // iCloud 상태 확인
+        CoreDataStorage.shared.checkiCloudAccountStatus()
+        
         return true
     }
 

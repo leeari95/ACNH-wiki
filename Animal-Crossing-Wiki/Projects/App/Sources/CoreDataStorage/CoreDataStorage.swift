@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 
 enum CoreDataStorageError: LocalizedError {
     case readError(Error)
@@ -32,16 +33,77 @@ final class CoreDataStorage {
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: "CoreDataStorage")
+        
+        // CloudKit 설정
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to get persistentStoreDescription")
+        }
+        
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
+                print("⚠️ CoreData store loading error: \(error), \(error.userInfo)")
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        
         return container
     }()
 
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         persistentContainer.performBackgroundTask(block)
+    }
+    
+    // MARK: - iCloud Sync
+    
+    func checkiCloudAccountStatus() {
+        CKContainer.default().accountStatus { [weak self] status, error in
+            DispatchQueue.main.async {
+                self?.handleiCloudAccountStatus(status, error: error)
+            }
+        }
+    }
+    
+    private func handleiCloudAccountStatus(_ status: CKAccountStatus, error: Error?) {
+        switch status {
+        case .available:
+            print("✅ iCloud account available")
+            setupRemoteChangeNotifications()
+        case .noAccount:
+            print("⚠️ No iCloud account")
+            NotificationCenter.default.post(name: .iCloudAccountUnavailable, object: nil)
+        case .restricted:
+            print("⚠️ iCloud account restricted")
+            NotificationCenter.default.post(name: .iCloudAccountRestricted, object: nil)
+        case .couldNotDetermine:
+            print("⚠️ Could not determine iCloud account status")
+        case .temporarilyUnavailable:
+            print("⚠️ iCloud temporarily unavailable")
+        @unknown default:
+            print("⚠️ Unknown iCloud account status")
+        }
+        
+        if let error = error {
+            print("❌ iCloud account check error: \(error)")
+        }
+    }
+    
+    private func setupRemoteChangeNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(storeRemoteChange(_:)),
+            name: .NSPersistentStoreRemoteChange,
+            object: persistentContainer.persistentStoreCoordinator
+        )
+    }
+    
+    @objc private func storeRemoteChange(_ notification: Notification) {
+        print("📱 Received remote store change notification")
+        NotificationCenter.default.post(name: .dataDidSyncFromCloud, object: nil)
     }
 }
 
@@ -64,4 +126,11 @@ extension NSManagedObjectContext {
             }
         }
     }
+}
+
+// MARK: - Notification Names
+extension Notification.Name {
+    static let iCloudAccountUnavailable = Notification.Name("iCloudAccountUnavailable")
+    static let iCloudAccountRestricted = Notification.Name("iCloudAccountRestricted")
+    static let dataDidSyncFromCloud = Notification.Name("dataDidSyncFromCloud")
 }

@@ -1515,3 +1515,10 @@
 "time" = "시간";
 "conditions" = "조건";
 "features" = "특징";
+
+// MARK: - iCloud Sync
+"icloud_sync" = "iCloud 동기화";
+"icloud_sync_enabled" = "활성화됨";
+"icloud_sync_disabled" = "비활성화됨";
+"icloud_account_required" = "iCloud 계정이 필요합니다";
+"icloud_sync_description" = "수집 데이터를 iCloud에 백업하여 기기 간 동기화가 가능합니다";
