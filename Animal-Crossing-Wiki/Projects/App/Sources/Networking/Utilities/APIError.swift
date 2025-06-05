@@ -18,17 +18,17 @@ enum APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .responseCasting:
-            return "캐스팅에 실패하였습니다."
+            return NSLocalizedString("api_error_response_casting", comment: "Response casting failed")
         case .statusCode(let code, let message):
-            return "상태 코드 에러 : \(code)\n 오류 메세지 : \(message)"
+            return String(format: NSLocalizedString("api_error_status_code", comment: "Status code error"), code, message)
         case .notFoundURL:
-            return "URL을 찾을 수 없습니다."
+            return NSLocalizedString("api_error_not_found_url", comment: "URL not found")
         case .invalidData:
-            return "데이터가 유효하지 않습니다."
+            return NSLocalizedString("api_error_invalid_data", comment: "Invalid data")
         case .invalidURL(let url):
-            return "URL이 잘못되었습니다.\nURL: \(url)"
+            return String(format: NSLocalizedString("api_error_invalid_url", comment: "Invalid URL"), url)
         case .parsingError:
-            return "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다."
+            return NSLocalizedString("api_error_parsing", comment: "JSON parsing error")
         }
     }
 }
