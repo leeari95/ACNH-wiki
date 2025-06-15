@@ -80,6 +80,10 @@ final class MusicPlayerManager {
         setUpNotification()
         setupRemoteCommands()
     }
+    
+    deinit {
+        close()
+    }
 
     private func changeSong(at newIndex: Int) {
         playerProgress.accept(0)
@@ -125,11 +129,10 @@ final class MusicPlayerManager {
     }
 
     private func setUpPlayerTimer() {
+        timer?.invalidate()
+        timer = nil
+        
         if isPlaying.value == true {
-            if timer != nil {
-                timer?.invalidate()
-                timer = nil
-            }
             timer = Timer.scheduledTimer(
                 withTimeInterval: 0.5,
                 repeats: true,
@@ -137,32 +140,30 @@ final class MusicPlayerManager {
                     self?.updatePlayingInfo()
                 }
             )
-        } else {
-            timer?.invalidate()
-            timer = nil
         }
     }
 
     private func setUpNotification() {
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        
         NotificationCenter.default.addObserver(
             forName: .AVPlayerItemDidPlayToEndTime,
             object: player?.currentItem,
             queue: .main
         ) { [weak self] _ in
-            self.flatMap { owner in
-                owner.playerProgress.accept(0)
-                owner.elapsedTime.accept("0:00")
-                owner.isPlaying.accept(false)
-                switch owner.playerMode.value {
-                case .fullRepeat:
-                    owner.next()
-                case .shuffle:
-                    owner.currentSong.accept(owner.songsItem.value.randomElement())
-                    owner.isPlaying.accept(true)
-                case .oneSongRepeat:
-                    owner.currentSong.accept(owner.currentSong.value)
-                    owner.isPlaying.accept(true)
-                }
+            guard let self = self else { return }
+            self.playerProgress.accept(0)
+            self.elapsedTime.accept("0:00")
+            self.isPlaying.accept(false)
+            switch self.playerMode.value {
+            case .fullRepeat:
+                self.next()
+            case .shuffle:
+                self.currentSong.accept(self.songsItem.value.randomElement())
+                self.isPlaying.accept(true)
+            case .oneSongRepeat:
+                self.currentSong.accept(self.currentSong.value)
+                self.isPlaying.accept(true)
             }
         }
     }
@@ -291,11 +292,19 @@ extension MusicPlayerManager {
     }
 
     func close() {
+        timer?.invalidate()
+        timer = nil
+        
+        player?.pause()
         player = nil
+        
         isPlaying.accept(false)
         elapsedTime.accept("0:00")
         durationTime.accept("0:00")
         playerProgress.accept(0)
+        
         NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        
+        try? AVAudioSession.sharedInstance().setActive(false, options: [])
     }
 }
