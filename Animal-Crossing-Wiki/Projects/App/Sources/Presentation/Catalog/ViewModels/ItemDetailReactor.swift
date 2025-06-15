@@ -38,7 +38,28 @@ final class ItemDetailReactor: Reactor {
     init(item: Item, coordinator: Coordinator?, storage: ItemsStorage = CoreDataItemsStorage()) {
         self.storage = storage
         self.coordinator = coordinator
-        self.initialState = State(item: item)
+        var mergedItem = item
+        if let savedItem = Self.getSavedItem(name: item.name, genuine: item.genuine, storage: storage) {
+            mergedItem.checkedVariants = savedItem.checkedVariants
+            print("🔶 ItemDetailReactor init - merged checkedVariants: \(mergedItem.checkedVariants ?? Set<String>())")
+        }
+        
+        self.initialState = State(item: mergedItem)
+    }
+    
+    private static func getSavedItem(name: String, genuine: Bool?, storage: ItemsStorage) -> Item? {
+        var savedItem: Item?
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        _ = storage.fetch().subscribe(onSuccess: { items in
+            savedItem = items.first { $0.name == name && $0.genuine == genuine }
+            semaphore.signal()
+        }, onFailure: { _ in
+            semaphore.signal()
+        })
+        
+        semaphore.wait()
+        return savedItem
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
