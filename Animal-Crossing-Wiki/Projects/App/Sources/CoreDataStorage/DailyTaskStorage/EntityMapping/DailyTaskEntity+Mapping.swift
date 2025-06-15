@@ -15,7 +15,7 @@ extension DailyTaskEntity {
         self.id = task.id
         self.name = task.name
         self.icon = task.icon
-        self.progressList = task.progressList
+        self.progressList = task.progressList as NSArray
         self.amount = Int64(task.amount)
         self.date = task.createdDate
     }
@@ -25,7 +25,7 @@ extension DailyTaskEntity {
             id: self.id ?? UUID(),
             name: self.name ?? "",
             icon: self.icon ?? "",
-            progressList: self.progressList ?? [],
+            progressList: (self.progressList as? [Bool]) ?? [],
             amount: Int(self.amount),
             createdDate: self.date ?? Date()
         )
