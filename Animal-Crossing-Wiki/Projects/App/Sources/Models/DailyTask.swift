@@ -107,7 +107,7 @@ extension DailyTask {
                 createdDate: Date(timeIntervalSince1970: 1654614000.0)
             ),
             DailyTask(
-                name: "Find peral",
+                name: "Find pearl",
                 icon: "Inv199",
                 isCompleted: false,
                 amount: 1,
