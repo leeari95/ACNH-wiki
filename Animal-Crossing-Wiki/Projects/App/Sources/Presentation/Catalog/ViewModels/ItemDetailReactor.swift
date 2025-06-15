@@ -24,6 +24,7 @@ final class ItemDetailReactor: Reactor {
         case showKeywordList(title: String, keyword: Keyword)
         case showMusicPlayer
         case updateVariantCheck(_ variantId: String, _ isChecked: Bool)
+        case clearAllVariants
     }
 
     struct State {
@@ -98,6 +99,17 @@ final class ItemDetailReactor: Reactor {
             } else {
                 Items.shared.updateItem(currentState.item)
                 storage.update(currentState.item)
+                if let firstVariant = currentState.item.variationsWithColor.first, 
+                   currentState.item.checkedVariants?.isEmpty != false {
+                    let firstVariantId = firstVariant.filename
+                    storage.updateVariantCheck(item: currentState.item, variantId: firstVariantId, isChecked: true)
+                    
+                    return Observable.concat([
+                        .just(.updateAcquired),
+                        .just(.updateVariantCheck(firstVariantId, true))
+                    ])
+                }
+                
                 return .just(.updateAcquired)
             }
 
@@ -116,8 +128,6 @@ final class ItemDetailReactor: Reactor {
             return .just(.showMusicPlayer)
             
         case .toggleVariantCheck(let variantId, let isChecked):
-            storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
-            return .just(.updateVariantCheck(variantId, isChecked))
             let shouldAcquire = isChecked && !currentState.isAcquired
             
             if shouldAcquire {
