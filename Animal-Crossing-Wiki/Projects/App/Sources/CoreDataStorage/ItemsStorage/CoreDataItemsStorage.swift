@@ -151,4 +151,46 @@ final class CoreDataItemsStorage: ItemsStorage {
             }
         }
     }
+    
+    func updateVariantCheckAndAcquire(item: Item, variantId: String, isChecked: Bool, shouldAcquire: Bool) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                // 기존 아이템 제거
+                if let existingItem = items.first(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    object.removeFromCritters(existingItem)
+                }
+                
+                // 변형 체크 상태 업데이트
+                var updatedItem = item
+                var checkedVariants = updatedItem.checkedVariants ?? Set<String>()
+                
+                if isChecked {
+                    checkedVariants.insert(variantId)
+                } else {
+                    checkedVariants.remove(variantId)
+                }
+                
+                updatedItem.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
+                let hasCheckedVariants = updatedItem.checkedVariants != nil && !updatedItem.checkedVariants!.isEmpty
+                if shouldAcquire || hasCheckedVariants {
+                    let newItem = ItemEntity(updatedItem, context: context)
+                    object.addToCritters(newItem)
+                    
+                    if shouldAcquire {
+                        // Items.shared도 업데이트
+                        DispatchQueue.main.async {
+                            Items.shared.updateItem(item)
+                        }
+                    }
+                }
+                
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
 }

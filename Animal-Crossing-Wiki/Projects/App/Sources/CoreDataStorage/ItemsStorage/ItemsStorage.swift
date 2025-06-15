@@ -15,4 +15,5 @@ protocol ItemsStorage {
     func updates(_ items: [Item])
     func reset(category: Category)
     func updateVariantCheck(item: Item, variantId: String, isChecked: Bool)
+    func updateVariantCheckAndAcquire(item: Item, variantId: String, isChecked: Bool, shouldAcquire: Bool)
 }

@@ -104,6 +104,19 @@ final class ItemDetailReactor: Reactor {
         case .toggleVariantCheck(let variantId, let isChecked):
             storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
             return .just(.updateVariantCheck(variantId, isChecked))
+            let shouldAcquire = isChecked && !currentState.isAcquired
+            
+            if shouldAcquire {
+                HapticManager.shared.impact(style: .medium)
+                storage.updateVariantCheckAndAcquire(item: currentState.item, variantId: variantId, isChecked: isChecked, shouldAcquire: true)
+                return Observable.concat([
+                    .just(.updateVariantCheck(variantId, isChecked)),
+                    .just(.updateAcquired)
+                ])
+            } else {
+                storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
+                return .just(.updateVariantCheck(variantId, isChecked))
+            }
         }
     }
 
