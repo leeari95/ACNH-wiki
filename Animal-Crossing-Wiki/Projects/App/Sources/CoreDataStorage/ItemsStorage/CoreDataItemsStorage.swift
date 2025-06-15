@@ -193,4 +193,21 @@ final class CoreDataItemsStorage: ItemsStorage {
             }
         }
     }
+    
+    func clearVariantsAndUpdate(_ item: Item) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                if let existingItem = items.first(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    object.removeFromCritters(existingItem)
+                }
+                
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
 }

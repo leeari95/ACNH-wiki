@@ -83,9 +83,23 @@ final class ItemDetailReactor: Reactor {
 
         case .check:
             HapticManager.shared.impact(style: .medium)
-            Items.shared.updateItem(currentState.item)
-            storage.update(currentState.item)
-            return .just(.updateAcquired)
+            
+            if currentState.isAcquired {
+                var updatedItem = currentState.item
+                updatedItem.checkedVariants = nil
+                
+                Items.shared.updateItem(updatedItem)
+                storage.clearVariantsAndUpdate(updatedItem)
+                
+                return Observable.concat([
+                    .just(.clearAllVariants),
+                    .just(.updateAcquired)
+                ])
+            } else {
+                Items.shared.updateItem(currentState.item)
+                storage.update(currentState.item)
+                return .just(.updateAcquired)
+            }
 
         case .didTapKeyword(let value):
             var keyword: Keyword = .tag
@@ -159,6 +173,9 @@ final class ItemDetailReactor: Reactor {
                 currentCheckedVariants.remove(variantId)
             }
             newState.item.checkedVariants = currentCheckedVariants.isEmpty ? nil : currentCheckedVariants
+            
+        case .clearAllVariants:
+            newState.item.checkedVariants = nil
         }
         return newState
     }
