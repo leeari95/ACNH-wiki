@@ -13,12 +13,12 @@ extension VillagersLikeEntity {
         self.init(context: context)
         self.birthday = villager.birthday
         self.catchphrase = villager.catchphrase
-        self.catchphrases = villager.catchphrases.toDictionary()
-        self.colors = villager.colors.map { $0.rawValue }
+        self.catchphrases = villager.catchphrases.toDictionary() as NSDictionary
+        self.colors = villager.colors.map { $0.rawValue } as NSArray
         self.diyWorkbench = villager.diyWorkbench
         self.favoriteSong = villager.favoriteSong
-        self.furnitureList = villager.furnitureList
-        self.furnitureNameList = villager.furnitureNameList
+        self.furnitureList = villager.furnitureList as NSArray
+        self.furnitureNameList = villager.furnitureNameList as NSArray
         self.gender = villager.gender.rawValue
         self.hobby = villager.hobby.rawValue
         self.houseImage = villager.houseImage
@@ -28,9 +28,9 @@ extension VillagersLikeEntity {
         self.personality = villager.personality.rawValue
         self.photoImage = villager.photoImage
         self.species = villager.species.rawValue
-        self.styles = villager.styles.map { $0.rawValue }
+        self.styles = villager.styles.map { $0.rawValue } as NSArray
         self.subtype = villager.subtype.rawValue
-        self.translations = villager.translations.toDictionary()
+        self.translations = villager.translations.toDictionary() as NSDictionary
 
     }
 
@@ -48,14 +48,14 @@ extension VillagersLikeEntity {
             birthday: self.birthday ?? "",
             catchphrase: self.catchphrase ?? "",
             favoriteSong: self.favoriteSong ?? "",
-            furnitureList: self.furnitureList ?? [],
-            furnitureNameList: self.furnitureNameList ?? [],
+            furnitureList: (self.furnitureList as? [Int]) ?? [],
+            furnitureNameList: (self.furnitureNameList as? [String]) ?? [],
             diyWorkbench: self.diyWorkbench ?? "",
             kitchenEquipment: self.kitchenEquipment ?? "",
-            catchphrases: Translations(self.catchphrases ?? [:]),
-            translations: Translations(self.translations ?? [:]),
-            styles: (self.styles ?? []).compactMap { Style(rawValue: $0) },
-            colors: (self.colors ?? []).compactMap { Color(rawValue: $0) }
+            catchphrases: Translations((self.catchphrases as? [String: String]) ?? [:]),
+            translations: Translations((self.translations as? [String: String]) ?? [:]),
+            styles: ((self.styles as? [String]) ?? []).compactMap { Style(rawValue: $0) },
+            colors: ((self.colors as? [String]) ?? []).compactMap { Color(rawValue: $0) }
         )
     }
 }

@@ -21,8 +21,8 @@ extension NPCLikeEntity {
         self.name = npc.name
         self.appearanceLocation = npc.appearanceLocation?.compactMap({ item -> Data? in
             try? JSONEncoder().encode(item)
-        })
-        self.translations = npc.translations.toDictionary()
+        }) as NSArray?
+        self.translations = npc.translations.toDictionary() as NSDictionary
     }
 
     func toDomain(appearanceLocation: [AppearanceLocation]?) -> NPC {
@@ -35,7 +35,7 @@ extension NPCLikeEntity {
             species: self.species ?? "",
             birthday: self.birthday ?? "",
             appearanceLocation: appearanceLocation ?? [],
-            translations: Translations(self.translations ?? [:])
+            translations: Translations((self.translations as? [String: String]) ?? [:])
         )
     }
 }

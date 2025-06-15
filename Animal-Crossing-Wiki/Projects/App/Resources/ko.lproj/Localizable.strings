@@ -77,7 +77,7 @@
 "Find buried bell" = "빛나는 땅에 돈나무 심기";
 "Cut down trees" = "나무 캐기";
 "Buy music" = "너굴상점에서 음악 구입하기";
-"Find peral" = "바닷 속 진주 찾기";
+"Find pearl" = "바닷 속 진주 찾기";
 
 // MARK: - TasksEditViewModel
 "Add a custom task" = "새로운 할일 추가하기";
@@ -1515,3 +1515,11 @@
 "time" = "시간";
 "conditions" = "조건";
 "features" = "특징";
+
+// MARK: - API Error Messages
+"api_error_response_casting" = "캐스팅에 실패하였습니다.";
+"api_error_status_code" = "상태 코드 에러 : %d\n 오류 메세지 : %@";
+"api_error_not_found_url" = "URL을 찾을 수 없습니다.";
+"api_error_invalid_data" = "데이터가 유효하지 않습니다.";
+"api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
+"api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
