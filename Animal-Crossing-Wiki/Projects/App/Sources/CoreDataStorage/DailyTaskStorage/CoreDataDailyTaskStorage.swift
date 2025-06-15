@@ -65,7 +65,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 if let index = itemEntities.firstIndex(where: { $0.id == task.id }) {
                     itemEntities[index].name = task.name
                     itemEntities[index].icon = task.icon
-                    itemEntities[index].progressList = task.progressList
+                    itemEntities[index].progressList = task.progressList as NSArray
                     itemEntities[index].amount = Int64(task.amount)
                 } else {
                     let newTask = DailyTaskEntity(task, context: context)
@@ -84,9 +84,9 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 let object = try self.coreDataStorage.getUserCollection(context)
                 let itemEntities = object.dailyTasks?.allObjects as? [DailyTaskEntity] ?? []
                 if let index = itemEntities.firstIndex(where: { $0.id == task.id }) {
-                    var progressList = itemEntities[index].progressList ?? []
-                    progressList[progressIndex] = progressList[progressIndex] ? false : true
-                    itemEntities[index].progressList = progressList
+                    var progressList = (itemEntities[index].progressList as? [Bool]) ?? []
+                    progressList[progressIndex] = !progressList[progressIndex]
+                    itemEntities[index].progressList = progressList as NSArray
                 }
                 context.saveContext()
             } catch {

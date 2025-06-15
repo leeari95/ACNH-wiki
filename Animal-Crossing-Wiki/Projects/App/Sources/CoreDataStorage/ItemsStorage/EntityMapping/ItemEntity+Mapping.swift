@@ -15,13 +15,13 @@ extension ItemEntity {
         self.name = item.name
         self.category = item.category.rawValue
         self.sell = Int64(item.sell)
-        self.translations = item.translations.toDictionary()
-        self.colors = item.colors.map { $0.rawValue }
+        self.translations = item.translations.toDictionary() as NSDictionary
+        self.colors = item.colors.map { $0.rawValue } as NSArray
         self.image = item.image
         self.iconImage = item.iconImage
         self.critterpediaImage = item.critterpediaImage
         self.furnitureImage = item.furnitureImage
-        self.hemispheres = item.hemispheres?.toDictionary()
+        self.hemispheres = item.hemispheres?.toDictionary() as NSDictionary?
         self.whereHow = item.whereHow
         self.weather = item.weather?.rawValue
         self.spawnRates = item.spawnRates
@@ -37,7 +37,7 @@ extension ItemEntity {
         self.size = item.size?.rawValue
         self.source = item.source
         self.tag = item.tag
-        self.concepts = item.concepts?.map { $0.rawValue }
+        self.concepts = item.concepts?.map { $0.rawValue } as NSArray?
         self.variation = item.variation
         self.bodyTitle = item.bodyTitle
         self.pattern = item.pattern
@@ -47,8 +47,8 @@ extension ItemEntity {
         self.patternCustomize = item.patternCustomize ?? false
         self.exchangePrice = Int64(item.exchangePrice ?? -1)
         self.exchangeCurrency = item.exchangeCurrency?.rawValue
-        self.sources = item.sources
-        self.sourceNotes = item.sourceNotes
+        self.sources = item.sources as NSArray?
+        self.sourceNotes = item.sourceNotes as NSArray?
         self.seasonEvent = item.seasonEvent
         self.hhaCategory = item.hhaCategory?.rawValue
         self.outdoor = item.outdoor ?? false
@@ -58,19 +58,24 @@ extension ItemEntity {
         self.internalId = Int64(item.internalId ?? -1)
         self.set = item.set
         self.series = item.series
-        self.recipe = item.recipe?.toDictionary()
-        self.seriesTranslations = item.seriesTranslations?.toDictionary()
-        self.variations = item.variations?.compactMap { $0.toDictionary() }
+        self.recipe = item.recipe?.toDictionary() as NSDictionary?
+        self.seriesTranslations = item.seriesTranslations?.toDictionary() as NSDictionary?
+        self.variations = item.variations?.compactMap { $0.toDictionary() } as NSArray?
         self.foodPower = Int64(item.foodPower ?? 0)
         self.doorDeco = item.doorDeco ?? false
         self.musicURL = item.musicURL
-        self.themes = item.themes
-        self.styles = item.styles?.map { $0.rawValue }
+        self.themes = item.themes as NSArray?
+        self.styles = item.styles?.map { $0.rawValue } as NSArray?
+        self.keyword = [
+            "color": item.colors.map { $0.rawValue },
+            "concept": item.concepts?.map { $0.rawValue } ?? [],
+            "tag": item.tag.map { [$0] } ?? []
+        ] as NSDictionary
     }
 
     func toKeyword() -> [Keyword: [String]] {
         var keywordList = [Keyword: [String]]()
-        self.keyword?.forEach({ (key: String, value: [String]) in
+        (self.keyword as? [String: [String]])?.forEach({ (key: String, value: [String]) in
             if let keyword = Keyword(rawValue: key) {
                 keywordList[keyword] = value
             }
@@ -86,13 +91,13 @@ extension ItemEntity {
             name: name ?? "",
             category: category,
             sell: Int(sell),
-            translations: Translations(translations ?? [:]),
-            colors: colors?.compactMap { Color(rawValue: $0) } ?? [],
+            translations: Translations((translations as? [String: String]) ?? [:]),
+            colors: (colors as? [String])?.compactMap { Color(rawValue: $0) } ?? [],
             image: image,
             iconImage: iconImage,
             critterpediaImage: critterpediaImage,
             furnitureImage: furnitureImage,
-            hemispheres: Hemispheres(hemispheres ?? [:]),
+            hemispheres: Hemispheres((hemispheres as? [String: [String: [Any]]]) ?? [:]),
             whereHow: whereHow,
             weather: Weather(rawValue: weather ?? ""),
             spawnRates: spawnRates,
@@ -108,7 +113,7 @@ extension ItemEntity {
             size: Size(rawValue: size ?? ""),
             source: source,
             tag: tag,
-            concepts: concepts?.compactMap { Concept(rawValue: $0) },
+            concepts: (concepts as? [String])?.compactMap { Concept(rawValue: $0) },
             variation: variation,
             bodyTitle: bodyTitle,
             pattern: pattern,
@@ -118,8 +123,8 @@ extension ItemEntity {
             patternCustomize: patternCustomize,
             exchangePrice: Int(exchangePrice),
             exchangeCurrency: ExchangeCurrency(rawValue: exchangeCurrency ?? ""),
-            sources: sources,
-            sourceNotes: sourceNotes,
+            sources: sources as? [String],
+            sourceNotes: sourceNotes as? [String],
             seasonEvent: seasonEvent,
             hhaCategory: HhaCategory(rawValue: hhaCategory ?? ""),
             outdoor: outdoor,
@@ -129,14 +134,14 @@ extension ItemEntity {
             internalId: Int(internalId),
             set: set,
             series: series,
-            recipe: RecipeResponseDTO(recipe ?? [:]),
-            seriesTranslations: Translations(seriesTranslations ?? [:]),
-            variations: variations?.compactMap { Variant($0)},
+            recipe: RecipeResponseDTO((recipe as? [String: Any]) ?? [:]),
+            seriesTranslations: Translations((seriesTranslations as? [String: String]) ?? [:]),
+            variations: (variations as? [[String: Any]])?.compactMap { Variant($0) },
             foodPower: Int(foodPower),
             doorDeco: doorDeco,
             musicURL: musicURL,
-            themes: themes,
-            styles: styles?.compactMap { Style(rawValue: $0) }
+            themes: themes as? [String],
+            styles: (styles as? [String])?.compactMap { Style(rawValue: $0) }
         )
     }
 }

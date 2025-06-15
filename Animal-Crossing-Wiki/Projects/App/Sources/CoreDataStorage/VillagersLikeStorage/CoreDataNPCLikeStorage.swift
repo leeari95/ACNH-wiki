@@ -28,7 +28,8 @@ final class CoreDataNPCLikeStorage: NPCLikeStorage {
             
             if let dataList = object.appearanceLocation {
                 let decodedList = dataList.compactMap { data -> AppearanceLocation? in
-                    try? JSONDecoder().decode(AppearanceLocation.self, from: data)
+                    guard let data = data as? Data else { return nil }
+                    return try? JSONDecoder().decode(AppearanceLocation.self, from: data)
                 }
                 appearanceLocation.append(contentsOf: decodedList)
             }
