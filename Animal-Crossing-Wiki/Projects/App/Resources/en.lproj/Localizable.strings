@@ -75,7 +75,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Find buried bell" = "Find buried bell";
 "Cut down trees" = "Cut down trees";
 "Buy music" = "Buy music";
-"Find peral" = "Find peral";
+"Find pearl" = "Find pearl";
 
 // MARK: - TasksEditViewModel
 "Add a custom task" = "Add a custom task";
@@ -1511,3 +1511,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "time" = "Time";
 "conditions" = "Conditions";
 "features" = "Features";
+
+// MARK: - API Error Messages
+"api_error_response_casting" = "Response casting failed.";
+"api_error_status_code" = "Status code error: %d\nError message: %@";
+"api_error_not_found_url" = "URL not found.";
+"api_error_invalid_data" = "Invalid data.";
+"api_error_invalid_url" = "Invalid URL.\nURL: %@";
+"api_error_parsing" = "Unknown error occurred while parsing JSON.";

@@ -32,7 +32,10 @@ extension APIRequest {
         if urlQuries.isEmpty == false {
             urlComponents?.percentEncodedQueryItems = urlQuries
         }
-        return url
+        guard let finalURL = urlComponents?.url else {
+            throw APIError.invalidURL(url.absoluteString)
+        }
+        return finalURL
     }
 
     func asURLRequest() throws -> URLRequest {

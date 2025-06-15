@@ -6,7 +6,7 @@
         <attribute name="icon" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="progressList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Bool]"/>
+        <attribute name="progressList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="dailyTasks" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="ItemEntity" representedClassName="ItemEntity" syncable="YES" codeGenerationType="class">
@@ -17,8 +17,8 @@
         <attribute name="catalog" optional="YES" attributeType="String"/>
         <attribute name="catchDifficulty" optional="YES" attributeType="String"/>
         <attribute name="category" attributeType="String"/>
-        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
-        <attribute name="concepts" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="concepts" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="critterpediaImage" optional="YES" attributeType="String"/>
         <attribute name="diy" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="doorDeco" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -27,13 +27,13 @@
         <attribute name="foodPower" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="furnitureImage" optional="YES" attributeType="String"/>
         <attribute name="genuine" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="hemispheres" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String: [Any]]]"/>
+        <attribute name="hemispheres" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <attribute name="hhaCategory" optional="YES" attributeType="String"/>
         <attribute name="highResTexture" optional="YES" attributeType="String"/>
         <attribute name="iconImage" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
         <attribute name="internalId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="keyword" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: [String]]"/>
+        <attribute name="keyword" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <attribute name="lightingType" optional="YES" attributeType="String"/>
         <attribute name="movementSpeed" optional="YES" attributeType="String"/>
         <attribute name="museum" optional="YES" attributeType="String"/>
@@ -43,32 +43,32 @@
         <attribute name="pattern" optional="YES" attributeType="String"/>
         <attribute name="patternCustomize" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="patternTitle" optional="YES" attributeType="String"/>
-        <attribute name="recipe" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: Any]"/>
+        <attribute name="recipe" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <attribute name="seasonEvent" optional="YES" attributeType="String"/>
         <attribute name="sell" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="series" optional="YES" attributeType="String"/>
-        <attribute name="seriesTranslations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="seriesTranslations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <attribute name="set" optional="YES" attributeType="String"/>
         <attribute name="shadow" optional="YES" attributeType="String"/>
         <attribute name="size" optional="YES" attributeType="String"/>
         <attribute name="source" optional="YES" attributeType="String"/>
-        <attribute name="sourceNotes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
-        <attribute name="sources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="sourceNotes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="sources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="spawnRates" optional="YES" attributeType="String"/>
         <attribute name="speakerType" optional="YES" attributeType="String"/>
-        <attribute name="styles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="styles" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="tag" optional="YES" attributeType="String"/>
-        <attribute name="themes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
-        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="themes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <attribute name="variation" optional="YES" attributeType="String"/>
-        <attribute name="variations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String: Any]]"/>
+        <attribute name="variations" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="vision" optional="YES" attributeType="String"/>
         <attribute name="weather" optional="YES" attributeType="String"/>
         <attribute name="whereHow" optional="YES" attributeType="String"/>
         <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="NPCLikeEntity" representedClassName="NPCLikeEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="appearanceLocation" optional="YES" attributeType="Transformable" customClassName="[Data]"/>
+        <attribute name="appearanceLocation" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="birthday" attributeType="String"/>
         <attribute name="gender" attributeType="String"/>
         <attribute name="genderAsia" attributeType="String"/>
@@ -76,7 +76,7 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="photoImage" attributeType="String"/>
         <attribute name="species" optional="YES" attributeType="String"/>
-        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="npcLike" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="UserCollectionEntity" representedClassName="UserCollectionEntity" syncable="YES" codeGenerationType="class">
@@ -94,12 +94,12 @@
     <entity name="VillagersHouseEntity" representedClassName="VillagersHouseEntity" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" attributeType="String"/>
         <attribute name="catchphrase" attributeType="String"/>
-        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
-        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
+        <attribute name="colors" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="diyWorkbench" attributeType="String"/>
         <attribute name="favoriteSong" attributeType="String"/>
-        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
-        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="gender" attributeType="String"/>
         <attribute name="hobby" attributeType="String"/>
         <attribute name="houseImage" optional="YES" attributeType="String"/>
@@ -109,20 +109,20 @@
         <attribute name="personality" attributeType="String"/>
         <attribute name="photoImage" attributeType="String"/>
         <attribute name="species" attributeType="String"/>
-        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="subtype" attributeType="String"/>
-        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="villagersHouse" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="VillagersLikeEntity" representedClassName="VillagersLikeEntity" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" attributeType="String"/>
         <attribute name="catchphrase" attributeType="String"/>
-        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
-        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="catchphrases" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
+        <attribute name="colors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="diyWorkbench" attributeType="String"/>
         <attribute name="favoriteSong" attributeType="String"/>
-        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
-        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="furnitureList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="furnitureNameList" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="gender" attributeType="String"/>
         <attribute name="hobby" attributeType="String"/>
         <attribute name="houseImage" optional="YES" attributeType="String"/>
@@ -132,9 +132,9 @@
         <attribute name="personality" attributeType="String"/>
         <attribute name="photoImage" attributeType="String"/>
         <attribute name="species" attributeType="String"/>
-        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="styles" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <attribute name="subtype" attributeType="String"/>
-        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: String]"/>
+        <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="villagersLike" inverseEntity="UserCollectionEntity"/>
     </entity>
 </model>
