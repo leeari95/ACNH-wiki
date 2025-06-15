@@ -63,6 +63,7 @@ extension AppCoordinator {
         }
         let viewController = PlayerViewController()
         playerViewController = viewController
+        rootViewController.addChild(viewController)
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
         viewController.didMove(toParent: rootViewController)
@@ -105,7 +106,10 @@ extension AppCoordinator {
     }
 
     func removePlayerViewController() {
-        playerViewController?.view.isHidden = true
+        playerViewController?.willMove(toParent: nil)
+        playerViewController?.view.removeFromSuperview()
+        playerViewController?.removeFromParent()
+        playerViewController = nil
         MusicPlayerManager.shared.close()
     }
 }
