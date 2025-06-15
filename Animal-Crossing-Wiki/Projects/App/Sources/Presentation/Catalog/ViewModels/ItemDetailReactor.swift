@@ -15,6 +15,7 @@ final class ItemDetailReactor: Reactor {
         case check
         case didTapKeyword(_ keyword: String)
         case play
+        case toggleVariantCheck(_ variantId: String, _ isChecked: Bool)
     }
 
     enum Mutation {
@@ -22,10 +23,11 @@ final class ItemDetailReactor: Reactor {
         case updateAcquired
         case showKeywordList(title: String, keyword: Keyword)
         case showMusicPlayer
+        case updateVariantCheck(_ variantId: String, _ isChecked: Bool)
     }
 
     struct State {
-        let item: Item
+        var item: Item
         var isAcquired: Bool = false
     }
 
@@ -77,6 +79,10 @@ final class ItemDetailReactor: Reactor {
 
         case .play:
             return .just(.showMusicPlayer)
+            
+        case .toggleVariantCheck(let variantId, let isChecked):
+            storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
+            return .just(.updateVariantCheck(variantId, isChecked))
         }
     }
 
@@ -110,6 +116,15 @@ final class ItemDetailReactor: Reactor {
                 coordinator?.showMusicPlayer()
             }
             MusicPlayerManager.shared.choice(currentState.item)
+            
+        case .updateVariantCheck(let variantId, let isChecked):
+            var currentCheckedVariants = newState.item.checkedVariants ?? Set<String>()
+            if isChecked {
+                currentCheckedVariants.insert(variantId)
+            } else {
+                currentCheckedVariants.remove(variantId)
+            }
+            newState.item.checkedVariants = currentCheckedVariants.isEmpty ? nil : currentCheckedVariants
         }
         return newState
     }

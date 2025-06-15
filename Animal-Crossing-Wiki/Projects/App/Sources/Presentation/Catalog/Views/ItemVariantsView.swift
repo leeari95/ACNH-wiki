@@ -70,14 +70,15 @@ final class ItemVariantsView: UIView {
                 let name = (self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
                 ?? item.variation?.localized
                 
-                let isChecked = self.checkedVariants.contains(item.variantId)
+                let uniqueId = item.filename
+                let isChecked = self.checkedVariants.contains(uniqueId)
                 
                 cell.setUp(
                     imageURL: item.image,
                     name: name,
                     isChecked: isChecked
                 ) { [weak self] in
-                    self?.toggleVariantCheck(item.variantId)
+                    self?.toggleVariantCheck(uniqueId)
                 }
             }.disposed(by: disposeBag)
 
@@ -89,13 +90,8 @@ final class ItemVariantsView: UIView {
     }
     
     private func toggleVariantCheck(_ variantId: String) {
-        if checkedVariants.contains(variantId) {
-            checkedVariants.remove(variantId)
-            variantChecked.accept((variantId: variantId, isChecked: false))
-        } else {
-            checkedVariants.insert(variantId)
-            variantChecked.accept((variantId: variantId, isChecked: true))
-        }
+        let isCurrentlyChecked = checkedVariants.contains(variantId)
+        variantChecked.accept((variantId: variantId, isChecked: !isCurrentlyChecked))
     }
     
     func updateCheckedVariants(_ checkedVariants: Set<String>) {

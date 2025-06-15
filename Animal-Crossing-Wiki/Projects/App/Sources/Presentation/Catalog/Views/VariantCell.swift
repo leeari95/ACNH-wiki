@@ -52,7 +52,9 @@ final class VariantCell: UICollectionViewCell {
             checkButton.widthAnchor.constraint(equalToConstant: 24),
             checkButton.heightAnchor.constraint(equalToConstant: 24)
         ])
-        
+    }
+    
+    private func setUpButtonEvent() {
         checkButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.checkButtonTapped?()
@@ -64,5 +66,6 @@ final class VariantCell: UICollectionViewCell {
         titleLabel.text = name
         checkButton.isSelected = isChecked
         checkButtonTapped = onCheckTapped
+        setUpButtonEvent()
     }
 }
