@@ -48,13 +48,20 @@ extension ItemEntity {
         self.exchangePrice = Int64(item.exchangePrice ?? -1)
         self.exchangeCurrency = item.exchangeCurrency?.rawValue
         self.sources = item.sources as NSArray?
-        // sourceNotes의 첫 번째 요소로 checkedVariants를 저장
         var notes = item.sourceNotes ?? []
         if let checkedVariants = item.checkedVariants, !checkedVariants.isEmpty {
-            let checkedVariantsJson = "CHECKED_VARIANTS:" + checkedVariants.joined(separator: ",")
-            notes = [checkedVariantsJson] + notes.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+            do {
+                let variantsArray = Array(checkedVariants)
+                let jsonData = try JSONSerialization.data(withJSONObject: ["checkedVariants": variantsArray])
+                let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
+                let checkedVariantsJson = "CHECKED_VARIANTS_JSON:" + jsonString
+                notes = [checkedVariantsJson] + notes.filter { !$0.hasPrefix("CHECKED_VARIANTS") }
+            } catch {
+                let checkedVariantsJson = "CHECKED_VARIANTS:" + checkedVariants.joined(separator: ",")
+                notes = [checkedVariantsJson] + notes.filter { !$0.hasPrefix("CHECKED_VARIANTS") }
+            }
         } else {
-            notes = notes.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+            notes = notes.filter { !$0.hasPrefix("CHECKED_VARIANTS") }
         }
         self.sourceNotes = notes.isEmpty ? nil : notes as NSArray?
         self.seasonEvent = item.seasonEvent
@@ -155,14 +162,21 @@ extension ItemEntity {
     }
     
     private func extractSourceNotes() -> [String]? {
-        return (sourceNotes as? [String])?.filter { !$0.hasPrefix("CHECKED_VARIANTS:") }
+        return (sourceNotes as? [String])?.filter { !$0.hasPrefix("CHECKED_VARIANTS") }
     }
     
     private func extractCheckedVariants() -> Set<String>? {
         guard let notes = sourceNotes as? [String] else { return nil }
         
         for note in notes {
-            if note.hasPrefix("CHECKED_VARIANTS:") {
+            if note.hasPrefix("CHECKED_VARIANTS_JSON:") {
+                let jsonString = String(note.dropFirst("CHECKED_VARIANTS_JSON:".count))
+                if let jsonData = jsonString.data(using: .utf8),
+                   let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+                   let variantsArray = json["checkedVariants"] as? [String] {
+                    return Set(variantsArray)
+                }
+            } else if note.hasPrefix("CHECKED_VARIANTS:") {
                 let variantsString = String(note.dropFirst("CHECKED_VARIANTS:".count))
                 return Set(variantsString.components(separatedBy: ",").filter { !$0.isEmpty })
             }

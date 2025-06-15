@@ -16,6 +16,7 @@ final class ItemDetailReactor: Reactor {
         case didTapKeyword(_ keyword: String)
         case play
         case toggleVariantCheck(_ variantId: String, _ isChecked: Bool)
+        case loadSavedVariants(_ checkedVariants: Set<String>)
     }
 
     enum Mutation {
@@ -25,6 +26,7 @@ final class ItemDetailReactor: Reactor {
         case showMusicPlayer
         case updateVariantCheck(_ variantId: String, _ isChecked: Bool)
         case clearAllVariants
+        case loadSavedVariants(_ checkedVariants: Set<String>)
     }
 
     struct State {
@@ -39,28 +41,31 @@ final class ItemDetailReactor: Reactor {
     init(item: Item, coordinator: Coordinator?, storage: ItemsStorage = CoreDataItemsStorage()) {
         self.storage = storage
         self.coordinator = coordinator
-        var mergedItem = item
-        if let savedItem = Self.getSavedItem(name: item.name, genuine: item.genuine, storage: storage) {
-            mergedItem.checkedVariants = savedItem.checkedVariants
-            print("🔶 ItemDetailReactor init - merged checkedVariants: \(mergedItem.checkedVariants ?? Set<String>())")
-        }
         
-        self.initialState = State(item: mergedItem)
+        self.initialState = State(item: item)
+        
+        Self.loadSavedVariants(for: item, storage: storage) { [weak self] checkedVariants in
+            guard let self = self else { return }
+            if let checkedVariants = checkedVariants {
+                self.action.onNext(.loadSavedVariants(checkedVariants))
+            }
+        }
     }
     
-    private static func getSavedItem(name: String, genuine: Bool?, storage: ItemsStorage) -> Item? {
-        var savedItem: Item?
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        _ = storage.fetch().subscribe(onSuccess: { items in
-            savedItem = items.first { $0.name == name && $0.genuine == genuine }
-            semaphore.signal()
-        }, onFailure: { _ in
-            semaphore.signal()
-        })
-        
-        semaphore.wait()
-        return savedItem
+    private static func loadSavedVariants(
+        for item: Item,
+        storage: ItemsStorage,
+        completion: @escaping (Set<String>?) -> Void
+    ) {
+        _ = storage.fetch().subscribe(
+            onSuccess: { items in
+                let savedItem = items.first { $0.name == item.name && $0.genuine == item.genuine }
+                completion(savedItem?.checkedVariants)
+            },
+            onFailure: { _ in
+                completion(nil)
+            }
+        )
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -99,6 +104,7 @@ final class ItemDetailReactor: Reactor {
             } else {
                 Items.shared.updateItem(currentState.item)
                 storage.update(currentState.item)
+                
                 if let firstVariant = currentState.item.variationsWithColor.first, 
                    currentState.item.checkedVariants?.isEmpty != false {
                     let firstVariantId = firstVariant.filename
@@ -141,6 +147,9 @@ final class ItemDetailReactor: Reactor {
                 storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
                 return .just(.updateVariantCheck(variantId, isChecked))
             }
+            
+        case .loadSavedVariants(let checkedVariants):
+            return .just(.loadSavedVariants(checkedVariants))
         }
     }
 
@@ -186,6 +195,9 @@ final class ItemDetailReactor: Reactor {
             
         case .clearAllVariants:
             newState.item.checkedVariants = nil
+            
+        case .loadSavedVariants(let checkedVariants):
+            newState.item.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
         }
         return newState
     }

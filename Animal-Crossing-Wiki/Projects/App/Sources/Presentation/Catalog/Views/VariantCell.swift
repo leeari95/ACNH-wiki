@@ -17,8 +17,8 @@ final class VariantCell: UICollectionViewCell {
         let button = UIButton()
         let font = UIFont.preferredFont(forTextStyle: .body)
         let config = UIImage.SymbolConfiguration(font: font)
-        button.setImage(UIImage(systemName: "checkmark.circle", withConfiguration: config), for: .normal)
-        button.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: config), for: .selected)
+        button.setImage(UIImage(systemName: "checkmark.seal", withConfiguration: config), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config), for: .selected)
         button.tintColor = .acNavigationBarTint
         button.backgroundColor = .acSecondaryBackground
         button.layer.cornerRadius = font.pointSize / 2
