@@ -19,6 +19,7 @@ final class ItemVariantsView: UIView {
     private let disposeBag = DisposeBag()
     private var mode: Mode = .color
     private let cellImage = BehaviorRelay<UIImage?>(value: nil)
+    private let checkButtonTapEvent = PublishSubject<Variant>()
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -61,7 +62,7 @@ final class ItemVariantsView: UIView {
             ) { [weak self] _, item, cell in
                 let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
                 ?? item.variation?.localized
-                cell.setUp(imageURL: item.image, name: name)
+                cell.setUp(imageURL: item.image, name: name, item: item,checkButtonTapObserver: self?.checkButtonTapEvent.asObserver())
             }.disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
@@ -69,6 +70,12 @@ final class ItemVariantsView: UIView {
                 let cell = self?.collectionView.cellForItem(at: indexPath) as? VariantCell
                 self?.cellImage.accept(cell?.imageView.image)
             }).disposed(by: disposeBag)
+        
+        checkButtonTapEvent
+            .subscribe { item in
+                print("체크버튼 클릭")
+            }
+            .disposed(by: disposeBag)
     }
 }
 
