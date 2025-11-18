@@ -12,7 +12,7 @@ final class IconChooserViewController: UIViewController {
     weak var coordinator: DashboardCoordinator?
 
     private let itemSize = 50
-    private let iconCount = 199
+    private let iconCount = 200
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
