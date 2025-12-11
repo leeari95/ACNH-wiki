@@ -20,6 +20,12 @@ final class AppCoordinator: Coordinator {
     }
 
     func start() {
+        // iPad에서도 하단 탭바 사용
+        if #available(iOS 18.0, *) {
+            rootViewController.mode = .tabBar
+            rootViewController.traitOverrides.horizontalSizeClass = .compact
+        }
+
         let dashboardCoordinator = DashboardCoordinator()
         dashboardCoordinator.start()
         dashboardCoordinator.setUpParent(to: self)

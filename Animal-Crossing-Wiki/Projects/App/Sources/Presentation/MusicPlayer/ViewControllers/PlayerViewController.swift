@@ -35,15 +35,23 @@ final class PlayerViewController: UIViewController {
     func configure() {
         maximizeView.isHidden = true
         containerView.addSubviews(minimizeView, maximizeView)
-        NSLayoutConstraint.activate([
+
+        var constraints: [NSLayoutConstraint] = [
             minimizeView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-            minimizeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             minimizeView.heightAnchor.constraint(equalToConstant: 64),
             maximizeView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
             maximizeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             maximizeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             maximizeView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
-        ])
+        ]
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            constraints.append(minimizeView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor))
+        } else {
+            constraints.append(minimizeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20))
+        }
+
+        NSLayoutConstraint.activate(constraints)
 
         minimizeView.addGestureRecognizer(minimizeViewTap)
         containerView.addGestureRecognizer(dragGesture)
