@@ -106,15 +106,15 @@ final class DashboardViewController: UIViewController {
     func bind(to reactor: DashboardReactor) {
         moreButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else {
+                guard let owner = self else {
                     return
                 }
-                self.showSelectedItemAlert(
+                owner.showSelectedItemAlert(
                     [DashboardReactor.Menu.about.rawValue.localized, DashboardReactor.Menu.setting.rawValue.localized],
                     currentItem: nil
                 ).map { DashboardReactor.Action.selected(title: $0) }
                     .bind(to: reactor.action )
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: owner.disposeBag)
             }).disposed(by: disposeBag)
     }
 }

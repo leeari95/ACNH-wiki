@@ -63,24 +63,21 @@ extension AppCoordinator {
         }
         let viewController = PlayerViewController()
         playerViewController = viewController
-        rootViewController.addChild(viewController)
         rootViewController.view.addSubviews(viewController.view)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
-        viewController.didMove(toParent: rootViewController)
         let viewModel = PlayerReactor(coordinator: self)
         viewController.bind(to: viewModel)
 
         let frame = rootViewController.view.frame
-        let tabBarHeight = rootViewController.tabBar.frame.height
-        viewController.configure(tabBarHeight: tabBarHeight)
+        viewController.configure()
         topAnchorConstraint = viewController.view.topAnchor.constraint(
             equalTo: rootViewController.view.topAnchor,
-            constant: frame.height - rootViewController.tabBar.frame.height - 60
+            constant: frame.height - rootViewController.tabBar.frame.height - PlayerSheetMetrics.minimizedHeight
         )
 
         topAnchorConstraint.flatMap {
             NSLayoutConstraint.activate([
-                viewController.view.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor),
+                viewController.view.bottomAnchor.constraint(equalTo: rootViewController.tabBar.topAnchor),
                 viewController.view.leadingAnchor.constraint(equalTo: rootViewController.view.leadingAnchor),
                 viewController.view.trailingAnchor.constraint(equalTo: rootViewController.view.trailingAnchor),
                 $0
@@ -91,25 +88,42 @@ extension AppCoordinator {
     func minimize() {
         let frame = rootViewController.view.frame
         let tabBarHeight = rootViewController.tabBar.frame.height
-        UIView.animate(withDuration: 0.4) {
-            self.topAnchorConstraint?.constant = frame.height - tabBarHeight - 60
+        topAnchorConstraint?.constant = frame.height - tabBarHeight - PlayerSheetMetrics.minimizedHeight
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseInOut
+        ) {
             self.rootViewController.view.layoutIfNeeded()
         }
     }
 
     func maximize() {
         let frame = rootViewController.view.frame
-        UIView.animate(withDuration: 0.4) {
-            self.topAnchorConstraint?.constant = frame.height - 600
+        let tabBarHeight = rootViewController.tabBar.frame.height
+        rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
+        topAnchorConstraint?.constant = frame.height - tabBarHeight - PlayerSheetMetrics.maximizedHeight
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseInOut
+        ) {
             self.rootViewController.view.layoutIfNeeded()
         }
     }
 
     func removePlayerViewController() {
-        playerViewController?.willMove(toParent: nil)
         playerViewController?.view.removeFromSuperview()
-        playerViewController?.removeFromParent()
         playerViewController = nil
         MusicPlayerManager.shared.close()
+    }
+    
+    private enum PlayerSheetMetrics {
+        static let minimizedHeight: CGFloat = 80
+        static let maximizedHeight: CGFloat = 450
     }
 }

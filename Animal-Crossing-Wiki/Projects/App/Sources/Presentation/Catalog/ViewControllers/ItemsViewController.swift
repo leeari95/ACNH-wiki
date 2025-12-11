@@ -416,16 +416,16 @@ extension ItemsViewController {
             title: Menu.reset.title,
             image: UIImage(systemName: "arrow.counterclockwise")
         ) { [weak self] action in
-            guard let self = self else {
+            guard let owner = self else {
                 return
             }
-            self.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
+            owner.showAlert(title: "Notice".localized, message: "Are you sure you want to uncheck them all?".localized)
                 .filter { $0 == true }
-                .subscribe(with: self, onNext: { owner, _ in
+                .subscribe(with: owner, onNext: { owner, _ in
                     owner.reactor.action.onNext(.selectedMenu(keywords: [.reset: ""]))
                     owner.selectedKeyword.accept(owner.selectedKeyword.value)
-                }).disposed(by: self.disposeBag)
-            self.navigationItem.rightBarButtonItem?.menu = self.createMoreMenu()
+                }).disposed(by: owner.disposeBag)
+            owner.navigationItem.rightBarButtonItem?.menu = owner.createMoreMenu()
         }
         return UIMenu(title: "", options: .displayInline, children: [allSelectAction, resetAction])
     }
