@@ -119,11 +119,6 @@ final class ItemsViewController: UIViewController {
         setUpViews()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        navigationController?.navigationBar.sizeToFit()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if mode == .search {

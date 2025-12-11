@@ -15,6 +15,7 @@ final class SectionsScrollView: UIView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.contentInset.bottom = 60
+        scrollView.contentInsetAdjustmentBehavior = .automatic
         return scrollView
     }()
 
@@ -43,7 +44,7 @@ final class SectionsScrollView: UIView {
         scrollView.addSubviews(contentStackView)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)

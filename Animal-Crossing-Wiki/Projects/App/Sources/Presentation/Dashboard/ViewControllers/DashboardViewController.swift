@@ -46,8 +46,8 @@ final class DashboardViewController: UIViewController {
         view.addSubviews(sectionsScrollView)
 
         NSLayoutConstraint.activate([
-            sectionsScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            sectionsScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            sectionsScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            sectionsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
