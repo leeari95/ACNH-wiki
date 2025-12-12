@@ -33,10 +33,8 @@ let appPrivacyInfo: PrivacyManifest = .privacyManifest(
 )
 
 let settings: Settings = .settings(
-        base: [
-            "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
-        ]
-    )
+    base: [:]
+)
 
 let project = Project(
     name: "ACNH-wiki",
