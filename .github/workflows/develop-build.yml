@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Check Build
-    runs-on: macos-15
+    runs-on: macos-26
     if: >
       github.event_name == 'pull_request' || 
       (github.event_name == 'issue_comment' && 
@@ -47,4 +47,4 @@ jobs:
         run: mise x -- tuist generate --no-open
 
       - name: Build Project
-        run: mise x -- tuist build
+        run: mise x -- tuist build ACNH-wiki --rosetta -d "iPhone 16"
