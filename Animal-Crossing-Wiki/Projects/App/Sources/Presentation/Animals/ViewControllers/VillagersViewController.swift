@@ -87,11 +87,6 @@ final class VillagersViewController: UIViewController {
         setUpViews()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        navigationController?.navigationBar.sizeToFit()
-    }
-
     func bind(to reactor: VillagersReactor) {
         self.rx.viewDidLoad
             .map { VillagersReactor.Action.fetch }

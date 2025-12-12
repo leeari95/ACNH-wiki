@@ -102,14 +102,14 @@ final class PlayerReactor: Reactor {
             newState.songs = items
 
         case .transform(let mode):
-            switch mode {
-            case .small:
+            let previousMode = state.playerMode
+            let wasMaximized = previousMode == .large || previousMode == .list
+            let willMaximize = mode == .large || mode == .list
+
+            if mode == .small {
                 coordinator.minimize()
-
-            case .large:
+            } else if !wasMaximized && willMaximize {
                 coordinator.maximize()
-
-            case .list: break
             }
             newState.playerMode = mode
 

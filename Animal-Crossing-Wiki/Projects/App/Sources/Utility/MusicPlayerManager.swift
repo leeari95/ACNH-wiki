@@ -151,19 +151,21 @@ final class MusicPlayerManager {
             object: player?.currentItem,
             queue: .main
         ) { [weak self] _ in
-            guard let self = self else { return }
-            self.playerProgress.accept(0)
-            self.elapsedTime.accept("0:00")
-            self.isPlaying.accept(false)
-            switch self.playerMode.value {
+            guard let owner = self else {
+                return
+            }
+            owner.playerProgress.accept(0)
+            owner.elapsedTime.accept("0:00")
+            owner.isPlaying.accept(false)
+            switch owner.playerMode.value {
             case .fullRepeat:
-                self.next()
+                owner.next()
             case .shuffle:
-                self.currentSong.accept(self.songsItem.value.randomElement())
-                self.isPlaying.accept(true)
+                owner.currentSong.accept(owner.songsItem.value.randomElement())
+                owner.isPlaying.accept(true)
             case .oneSongRepeat:
-                self.currentSong.accept(self.currentSong.value)
-                self.isPlaying.accept(true)
+                owner.currentSong.accept(owner.currentSong.value)
+                owner.isPlaying.accept(true)
             }
         }
     }
@@ -277,7 +279,12 @@ extension MusicPlayerManager {
     }
 
     func next() {
-        changeSong(at: 1)
+        if playerMode.value == .shuffle {
+            currentSong.accept(songsItem.value.randomElement())
+            isPlaying.accept(true)
+        } else {
+            changeSong(at: 1)
+        }
     }
 
     func prev() {
