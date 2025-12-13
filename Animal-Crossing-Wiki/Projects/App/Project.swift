@@ -33,7 +33,9 @@ let appPrivacyInfo: PrivacyManifest = .privacyManifest(
 )
 
 let settings: Settings = .settings(
-    base: [:]
+    base: [
+        "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+    ]
 )
 
 let project = Project(
