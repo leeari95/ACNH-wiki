@@ -35,5 +35,6 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMinor(from: "7.10.2")),
         .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMinor(from: "6.8.0")),
         .package(url: "https://github.com/RxSwiftCommunity/RxDataSources.git", .upToNextMinor(from: "5.0.0")),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMinor(from: "12.7.0"))
     ]
 )
