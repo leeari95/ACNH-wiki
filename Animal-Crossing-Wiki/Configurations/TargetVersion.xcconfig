@@ -1,0 +1,2 @@
+// 배포 버전 제어용. 워크플로우에서 TARGET_VERSION 값을 덮어씁니다.
+TARGET_VERSION = 2.0.1

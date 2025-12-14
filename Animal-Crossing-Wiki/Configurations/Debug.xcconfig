@@ -1,0 +1,5 @@
+#include "Base.xcconfig"
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
+SWIFT_COMPILATION_MODE = Incremental
+SWIFT_OPTIMIZATION_LEVEL = -Onone

@@ -1,0 +1,61 @@
+name: Set Target Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "새로 설정할 마케팅 버전 (예: 1.2.3)"
+        required: true
+        type: string
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Update TargetVersion.xcconfig
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+
+          if [[ -z "${VERSION}" ]]; then
+            echo "version 입력이 비어 있습니다."
+            exit 1
+          fi
+
+          if [[ ! "${VERSION}" =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "버전 형식이 올바르지 않습니다. 예: 1.2.3"
+            exit 1
+          fi
+
+          cat > Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig <<EOF
+          // 배포 버전 제어용. 워크플로우에서 TARGET_VERSION 값을 덮어씁니다.
+          TARGET_VERSION = ${VERSION}
+          EOF
+
+      - name: Show diff
+        run: |
+          git diff --stat -- Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig
+          git diff -- Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig
+
+      - name: Commit and push version bump
+        env:
+          VERSION: ${{ github.event.inputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig
+          if git diff --cached --quiet; then
+            echo "변경 사항이 없어 커밋/푸시를 건너뜁니다."
+            exit 0
+          fi
+          git commit -m "chore: bump marketing version to ${VERSION}"
+          git push origin HEAD:develop

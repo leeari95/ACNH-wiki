@@ -35,12 +35,17 @@ let appPrivacyInfo: PrivacyManifest = .privacyManifest(
 )
 
 let settings: Settings = .settings(
-    base: [
-        "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64",
-        "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
-        "GCC_GENERATE_DEBUGGING_SYMBOLS": "YES",
-        "OTHER_LDFLAGS": "-ObjC"
-    ]
+    configurations: [
+        .debug(
+            name: "Debug",
+            xcconfig: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Debug.xcconfig")
+        ),
+        .release(
+            name: "Release",
+            xcconfig: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Release.xcconfig")
+        )
+    ],
+    defaultSettings: .recommended
 )
 
 let schemes: [Scheme] = [
@@ -90,5 +95,9 @@ let project = Project(
             ]
         )
     ],
-    schemes: schemes
+    schemes: schemes,
+    additionalFiles: [
+        .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Base.xcconfig")),
+        .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig"))
+    ],
 )
