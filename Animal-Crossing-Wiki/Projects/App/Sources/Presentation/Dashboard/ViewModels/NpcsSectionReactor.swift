@@ -14,15 +14,20 @@ final class NpcsSectionReactor: Reactor, ObservableObject {
     enum Action {
         case fetch
         case npcLongPress(index: Int)
+        case npcChecked(index: Int)
+        case resetCheckedNpcs
     }
 
     enum Mutation {
         case transition(route: DashboardCoordinator.Route)
         case setNpc(_ npcs: [NPC])
+        case setCheckedNpc(_ npc: NPC)
+        case resetCheckedNpcs
     }
 
     struct State {
         var npcs: [NPC] = []
+        var checkedNpcs: [NPC] = []
     }
 
     @Published var initialState: State
@@ -47,6 +52,15 @@ final class NpcsSectionReactor: Reactor, ObservableObject {
                 return Observable.empty()
             }
             return Observable.just(Mutation.transition(route: .npcDetail(npc: npc)))
+
+        case .npcChecked(let index):
+            guard let npc = currentState.npcs[safe: index] else {
+                return .empty()
+            }
+            return .just(Mutation.setCheckedNpc(npc))
+
+        case .resetCheckedNpcs:
+            return .just(Mutation.resetCheckedNpcs)
         }
     }
 
@@ -59,6 +73,16 @@ final class NpcsSectionReactor: Reactor, ObservableObject {
         case let .setNpc(npcs):
             newState.npcs = npcs
             objectWillChange.send()
+
+        case let .setCheckedNpc(npc):
+            if let index = newState.checkedNpcs.firstIndex(where: { $0.name == npc.name }) {
+                newState.checkedNpcs.remove(at: index)
+            } else {
+                newState.checkedNpcs.append(npc)
+            }
+
+        case .resetCheckedNpcs:
+            newState.checkedNpcs = []
         }
         return newState
     }
