@@ -7,6 +7,11 @@ on:
         description: "새로 설정할 마케팅 버전 (예: 1.2.3)"
         required: true
         type: string
+      branch:
+        description: "커밋을 푸시할 브랜치 (기본: develop)"
+        required: false
+        type: string
+        default: develop
 
 jobs:
   update-version:
@@ -20,7 +25,7 @@ jobs:
       - name: Checkout develop
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ${{ github.event.inputs.branch != '' && github.event.inputs.branch || 'develop' }}
 
       - name: Update TargetVersion.xcconfig
         run: |
@@ -49,7 +54,9 @@ jobs:
       - name: Commit and push version bump
         env:
           VERSION: ${{ github.event.inputs.version }}
+          TARGET_BRANCH: ${{ github.event.inputs.branch }}
         run: |
+          TARGET_BRANCH=${TARGET_BRANCH:-develop}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig
@@ -58,4 +65,4 @@ jobs:
             exit 0
           fi
           git commit -m "chore: bump marketing version to ${VERSION}"
-          git push origin HEAD:develop
+          git push origin HEAD:${TARGET_BRANCH}

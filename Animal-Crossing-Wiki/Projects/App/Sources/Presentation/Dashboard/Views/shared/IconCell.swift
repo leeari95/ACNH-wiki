@@ -38,11 +38,9 @@ final class IconCell: UICollectionViewCell {
         checkImage?.removeFromSuperview()
     }
 
-    func checkMark() {
-        guard imageView.subviews.count <= 1 else {
-            removeCheckMark()
-            return
-        }
+    func setChecked(_ isChecked: Bool) {
+        removeCheckMark()
+        guard isChecked else { return }
         let checkImage = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
         checkImage.tintColor = .acHeaderBackground
         checkImage.backgroundColor = .white
@@ -55,5 +53,9 @@ final class IconCell: UICollectionViewCell {
             checkImage.widthAnchor.constraint(equalToConstant: 20),
             checkImage.heightAnchor.constraint(equalToConstant: 20)
         ])
+    }
+
+    func checkMark() {
+        setChecked(true)
     }
 }
