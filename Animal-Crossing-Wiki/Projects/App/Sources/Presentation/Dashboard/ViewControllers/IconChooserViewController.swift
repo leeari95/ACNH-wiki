@@ -12,7 +12,7 @@ final class IconChooserViewController: UIViewController {
     weak var coordinator: DashboardCoordinator?
 
     private let itemSize = 50
-    private let iconCount = 199
+    private let iconCount = 200
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -46,7 +46,7 @@ final class IconChooserViewController: UIViewController {
         view.addSubviews(collectionView)
 
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)

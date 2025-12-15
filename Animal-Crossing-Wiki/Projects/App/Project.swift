@@ -5,7 +5,9 @@ let dependencies: [TargetDependency] = [
     .SPM.Kingfisher,
     .SPM.Alamofire,
     .SPM.ReactorKit,
-    .SPM.RxDataSources
+    .SPM.RxDataSources,
+    .SPM.FirebaseAnalytics,
+    .SPM.FirebaseCrashlytics
 ]
 
 let appPrivacyInfo: PrivacyManifest = .privacyManifest(
@@ -33,10 +35,41 @@ let appPrivacyInfo: PrivacyManifest = .privacyManifest(
 )
 
 let settings: Settings = .settings(
-        base: [
-            "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
-        ]
+    configurations: [
+        .debug(
+            name: "Debug",
+            xcconfig: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Debug.xcconfig")
+        ),
+        .release(
+            name: "Release",
+            xcconfig: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Release.xcconfig")
+        )
+    ],
+    defaultSettings: .recommended
+)
+
+let schemes: [Scheme] = [
+    .scheme(
+        name: "ACNH-wiki",
+        shared: true,
+        buildAction: .buildAction(targets: ["ACNH-wiki"]),
+        testAction: nil,
+        runAction: .runAction(
+            configuration: .debug,
+            executable: "ACNH-wiki",
+            arguments: .arguments(
+                environmentVariables: [:],
+                launchArguments: [
+                    .launchArgument(name: "-FIRDebugDisabled", isEnabled: false),
+                    .launchArgument(name: "-FIRDebugEnabled", isEnabled: true)
+                ]
+            )
+        ),
+        archiveAction: .archiveAction(configuration: .release, revealArchiveInOrganizer: true),
+        profileAction: .profileAction(configuration: .debug, executable: "ACNH-wiki"),
+        analyzeAction: .analyzeAction(configuration: .debug)
     )
+]
 
 let project = Project(
     name: "ACNH-wiki",
@@ -54,12 +87,17 @@ let project = Project(
                 "Sources/**/*.xib"
             ],
                                    privacyManifest: appPrivacyInfo),
-            scripts: [.runSwiftLintAutocorrect, .runSwiftLint],
+            scripts: [.runSwiftLintAutocorrect, .runSwiftLint, .uploadFirebaseDsym],
             dependencies: dependencies,
             settings: settings,
             coreDataModels: [
                 CoreDataModel.coreDataModel("Sources/CoreDataStorage/CoreDataStorage.xcdatamodeld")
             ]
         )
-    ]
+    ],
+    schemes: schemes,
+    additionalFiles: [
+        .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Base.xcconfig")),
+        .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig"))
+    ],
 )

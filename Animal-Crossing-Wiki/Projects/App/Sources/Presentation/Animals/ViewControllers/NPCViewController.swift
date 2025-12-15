@@ -79,11 +79,6 @@ final class NPCViewController: UIViewController {
         setUpViews()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        navigationController?.navigationBar.sizeToFit()
-    }
-
     func bind(to reactor: NPCReactor) {
         self.rx.viewDidLoad
             .map { NPCReactor.Action.fetch }

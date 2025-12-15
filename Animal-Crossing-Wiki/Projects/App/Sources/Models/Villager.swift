@@ -32,11 +32,11 @@ struct Villager {
 
 extension Villager {
     var like: String {
-        let color = colors
-            .reduce("") { $0 + $1.rawValue.lowercased().localized.capitalized + ", " }
-        let style = Set(styles.map { $0.rawValue })
-            .reduce("") { $0 + $1.lowercased().localized.capitalized + ", " }
-            .trimmingCharacters(in: [",", " "])
-        return color + style
+        let colorStrings = colors
+            .map { $0.rawValue.lowercased().localized.capitalized }
+        let styleStrings = Set(styles.map { $0.rawValue })
+            .map { $0.lowercased().localized.capitalized }
+        
+        return (colorStrings + styleStrings).joined(separator: ", ")
     }
 }

@@ -78,6 +78,7 @@
 "Cut down trees" = "나무 캐기";
 "Buy music" = "너굴상점에서 음악 구입하기";
 "Find pearl" = "바닷 속 진주 찾기";
+"Find peral" = "바닷 속 진주 찾기"; // 이전 버전 호환 가능하도록 오타 버전 남겨둠
 
 // MARK: - TasksEditViewModel
 "Add a custom task" = "새로운 할일 추가하기";

@@ -8,12 +8,16 @@
 import Foundation
 
 extension Date {
+    
+    private static let sharedDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        return formatter
+    }()
 
     func formatted(_ format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = TimeZone.current
-        return dateFormatter.string(from: self)
+        Date.sharedDateFormatter.dateFormat = format
+        return Date.sharedDateFormatter.string(from: self)
     }
 
 }

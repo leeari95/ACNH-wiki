@@ -17,4 +17,15 @@ public extension TargetScript {
         path: .relativeToRoot("Animal-Crossing-Wiki/Scripts/SwiftLintAutocorrectScript.sh"),
         name: "Run Script - SwiftLint autocorrect"
     )
+
+    static let uploadFirebaseDsym = TargetScript.post(
+        path: .relativeToRoot("Animal-Crossing-Wiki/Scripts/FirebaseCrashlyticsScript.sh"),
+        name: "Run Script - Firebase dSYM upload",
+        inputPaths: [
+            .glob(.relativeToManifest("${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}")),
+            .glob(.relativeToManifest("Animal-Crossing-Wiki/Projects/App/Resources/GoogleService-Info.plist"))
+        ],
+        basedOnDependencyAnalysis: false,
+        runForInstallBuildsOnly: true
+    )
 }

@@ -18,18 +18,11 @@ extension UIImageView {
     }
 
     func setImage(with urlString: String, options: KingfisherOptionsInfo? = nil) {
-        self.kf.indicatorType = .activity
-        ImageCache.default.retrieveImage(forKey: urlString, options: options) { result in
+        self.kf.setImage(with: URL(string: urlString), options: options) { result in
             switch result {
-            case .success(let value):
-                if let image = value.image {
-                    self.image = image
-                } else {
-                    let url = URL(string: urlString)
-                    self.kf.setImage(with: url, options: options)
-                }
+            case .success: break
             case .failure(let error):
-                os_log(.error, log: .default, "⛔️ 캐시에서 이미지를 가져오는데 실패였습니다.\n에러내용: \(error.localizedDescription)")
+                os_log(.debug, log: .default, "⛔️ 캐시에서 이미지를 가져오는데 실패였습니다.\n에러내용: \(error.localizedDescription)")
             }
         }
     }
