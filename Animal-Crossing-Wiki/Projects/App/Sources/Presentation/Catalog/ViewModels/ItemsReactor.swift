@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 import ReactorKit
 
 final class ItemsReactor: Reactor {
@@ -120,7 +121,11 @@ final class ItemsReactor: Reactor {
 
         case .selectedMenu(let keywords):
             currentKeywords = keywords
-            return currentItems()
+            let sideEffects = handleMenuSideEffects(keywords: keywords)
+                .observe(on: MainScheduler.asyncInstance)
+                .flatMap { Observable<Mutation>.empty() }
+
+            let filteredItems = currentItems()
                 .map { [weak self] items -> [Item] in
                     guard let owner = self else {
                         return []
@@ -129,7 +134,13 @@ final class ItemsReactor: Reactor {
                         items: owner.search(items: items, text: owner.lastSearchKeyword),
                         keywords: keywords
                     )
-                }.map { .setItems($0)}
+                }
+                .map { Mutation.setItems($0) }
+
+            return .merge([
+                sideEffects,
+                filteredItems
+            ])
 
         case .selectedItem(let indexPath):
             guard let item = currentState.items[safe: indexPath.item] else {
@@ -236,12 +247,8 @@ final class ItemsReactor: Reactor {
                         value == ItemsViewController.Menu.ascending ?
                         $0.sell < $1.sell : $0.sell > $1.sell
                     }
-            case .allSelect:
-                Items.shared.allCheckItem(category: self.category)
-                storage.updates(self.notCollectedItem.isEmpty ? currentState.items : self.notCollectedItem)
-            case .reset:
-                Items.shared.resetCheckItem(category: self.category)
-                storage.reset(category: self.category)
+            case .allSelect, .reset:
+                continue
             }
         }
         return filteredItems
@@ -326,5 +333,32 @@ final class ItemsReactor: Reactor {
             ).sorted(by: { $0.name < $1.name })
         }
         return notCollectedItems
+    }
+
+    private func handleMenuSideEffects(keywords: [ItemsViewController.Menu: String]) -> Observable<Void> {
+        guard keywords.keys.contains(.allSelect) || keywords.keys.contains(.reset) else {
+            return .empty()
+        }
+
+        return Observable.create { [weak self] observer in
+            guard let self else {
+                observer.onCompleted()
+                return Disposables.create()
+            }
+
+            DispatchQueue.main.async {
+                if keywords.keys.contains(.allSelect) {
+                    Items.shared.allCheckItem(category: self.category)
+                    self.storage.updates(self.notCollectedItem.isEmpty ? self.currentState.items : self.notCollectedItem)
+                }
+                if keywords.keys.contains(.reset) {
+                    Items.shared.resetCheckItem(category: self.category)
+                    self.storage.reset(category: self.category)
+                }
+                observer.onCompleted()
+            }
+
+            return Disposables.create()
+        }
     }
 }
