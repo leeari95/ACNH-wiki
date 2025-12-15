@@ -1,0 +1,59 @@
+name: Auto Tag Release Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  tag-release:
+    if: >
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Derive tag from release branch
+        id: extract_tag
+        run: |
+          RELEASE_BRANCH="${GITHUB_HEAD_REF:-${{ github.event.pull_request.head.ref }}}"
+          VERSION="${RELEASE_BRANCH#release/}"
+
+          if [[ -z "${VERSION}" || "${VERSION}" == "${RELEASE_BRANCH}" ]]; then
+            echo "release/ 접두사가 없는 브랜치입니다: ${RELEASE_BRANCH}"
+            exit 1
+          fi
+
+          if [[ "${VERSION}" == v* ]]; then
+            TAG="${VERSION}"
+          else
+            TAG="v${VERSION}"
+          fi
+
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Tag to create: ${TAG}"
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.extract_tag.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "Tag ${TAG} already exists. Skipping creation."
+            exit 0
+          fi
+
+          git tag -a "${TAG}" -m "Release ${TAG}"
+          git push origin "refs/tags/${TAG}"
