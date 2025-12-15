@@ -120,16 +120,19 @@ final class NpcsView: UIView {
             }).disposed(by: disposeBag)
 
         reactor.state
-            .map { $0.npcs }
-            .filter { $0.isEmpty == false }
-            .take(1)
+            .map { state -> [(NPC, Bool)] in
+                let checkedNames = Set(state.checkedNpcs.map { $0.name })
+                return state.npcs.map { ($0, checkedNames.contains($0.name)) }
+            }
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
                     cellType: IconCell.self
                 )
-            ) { _, npc, cell in
+            ) { _, npcInfo, cell in
+                let (npc, isChecked) = npcInfo
                 cell.setImage(url: npc.iconImage)
+                cell.setChecked(isChecked)
             }.disposed(by: disposeBag)
 
         reactor.state
@@ -151,14 +154,12 @@ final class NpcsView: UIView {
         collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 HapticManager.shared.selection()
-                let cell = self?.collectionView.cellForItem(at: indexPath) as? IconCell
-                cell?.checkMark()
+                reactor.action.onNext(.npcChecked(index: indexPath.item))
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                let cells = self?.collectionView.visibleCells as? [IconCell]
-                cells?.forEach { $0.removeCheckMark() }
+                reactor.action.onNext(.resetCheckedNpcs)
             }).disposed(by: disposeBag)
     }
 }
