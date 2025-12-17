@@ -12,6 +12,7 @@
 "villagers" = "Villagers";
 "Collection" = "Collection";
 "animals" = "Animals";
+"turnipPrices" = "Turnip";
 
 // MARK: - etc
 "Cancel" = "Cancel";

@@ -12,6 +12,7 @@
 "villagers" = "마을주민";
 "Collection" = "수집품";
 "animals" = "동물";
+"turnipPrices" = "무트코인";
 
 // MARK: - etc
 "Cancel" = "취소";
