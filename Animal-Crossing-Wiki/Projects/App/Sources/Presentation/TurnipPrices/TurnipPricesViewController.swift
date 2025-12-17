@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import SwiftUI
 
 final class TurnipPricesViewController: UIViewController {
 
@@ -17,19 +18,6 @@ final class TurnipPricesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-    }
-
-    private func setUpViews() {
-        setUpNavigationItem()
-        view.backgroundColor = .acBackground
-        view.addSubviews(sectionsScrollView)
-
-        NSLayoutConstraint.activate([
-            sectionsScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            sectionsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
     }
 
     private func setUpNavigationItem() {
@@ -43,14 +31,30 @@ final class TurnipPricesViewController: UIViewController {
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
     }
+    
+    private func setUpViews() {
+        setUpNavigationItem()
+        view.backgroundColor = .acBackground
+        view.addSubviews(sectionsScrollView)
+        setUpSection()
 
-    private func addHouseSection(_ houseImage: String) {
-        let houseSection = VillagerHouseView(houseImage)
-        let sectionView = SectionView(
-            title: "Villager house".localized,
-            iconName: "house.circle.fill",
-            contentView: houseSection
+        NSLayoutConstraint.activate([
+            sectionsScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            sectionsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
+    
+    private func setUpSection() {
+        let hosting = UIHostingController(rootView: TurnipPricesPatternSelectionView())
+        hosting.view.backgroundColor = .clear
+        sectionsScrollView.addSection(
+            SectionView(
+                title: "저번주 가격 패턴을 골라주세요",
+                iconName: "checkmark.circle.dotted",
+                contentView: hosting.view
+            )
         )
-        sectionsScrollView.addSection(sectionView)
     }
 }
