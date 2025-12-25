@@ -13,7 +13,11 @@ final class TurnipPricesViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView()
+    private lazy var hostingController: UIHostingController<TurnipPricesSectionsView> = {
+        let controller = UIHostingController(rootView: TurnipPricesSectionsView())
+        controller.view.backgroundColor = .clear
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,30 +35,20 @@ final class TurnipPricesViewController: UIViewController {
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
     }
-    
+
     private func setUpViews() {
         setUpNavigationItem()
         view.backgroundColor = .acBackground
-        view.addSubviews(sectionsScrollView)
-        setUpSection()
+
+        addChild(hostingController)
+        view.addSubviews(hostingController.view)
+        hostingController.didMove(toParent: self)
 
         NSLayoutConstraint.activate([
-            sectionsScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            sectionsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            sectionsScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            sectionsScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hostingController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-    }
-    
-    private func setUpSection() {
-        let hosting = UIHostingController(rootView: TurnipPricesPatternSelectionView())
-        hosting.view.backgroundColor = .clear
-        sectionsScrollView.addSection(
-            SectionView(
-                title: "저번주 가격 패턴을 골라주세요",
-                iconName: "checkmark.circle.dotted",
-                contentView: hosting.view
-            )
-        )
     }
 }
