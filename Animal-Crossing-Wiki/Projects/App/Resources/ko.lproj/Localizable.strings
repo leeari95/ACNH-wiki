@@ -1525,3 +1525,21 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+// MARK: - TurnipPricesInputView
+"sunday" = "일요일";
+"monday" = "월요일";
+"tuesday" = "화요일";
+"wednesday" = "수요일";
+"thursday" = "목요일";
+"friday" = "금요일";
+"saturday" = "토요일";
+"purchasePrice" = "구매가격";
+"am" = "오전";
+"pm" = "오후";
+
+// MARK: - TurnipPricesSectionsView
+"turnipPatternSectionTitle" = "저번주 가격 패턴을 골라주세요";
+"turnipPriceSectionTitle" = "각 요일의 무 판매가를 입력하세요.";
+"reset" = "초기화";
+"showResults" = "결과보기";

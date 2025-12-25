@@ -1520,3 +1520,21 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+// MARK: - TurnipPricesInputView
+"sunday" = "Sunday";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"purchasePrice" = "Purchase Price";
+"am" = "AM";
+"pm" = "PM";
+
+// MARK: - TurnipPricesSectionsView
+"turnipPatternSectionTitle" = "Please select last week's price pattern";
+"turnipPriceSectionTitle" = "Enter the turnip selling price for each day.";
+"reset" = "Reset";
+"showResults" = "Results";
