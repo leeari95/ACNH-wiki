@@ -13,6 +13,7 @@ final class TurnipPricesReactor: Reactor {
     enum Action {
         case fetch
         case selectPattern(TurnipPricePattern)
+        case updateFirstBuy(Bool)
         case updateSundayPrice(String)
         case updatePrice(day: DayOfWeek, period: Period, price: String)
         case calculate
@@ -20,6 +21,7 @@ final class TurnipPricesReactor: Reactor {
 
     enum Mutation {
         case setPattern(TurnipPricePattern)
+        case setFirstBuy(Bool)
         case setSundayPrice(String)
         case setPrice(day: DayOfWeek, period: Period, price: String)
         case setCalculatedResult(basePrice: Int, pattern: TurnipPricePattern, prices: [DayOfWeek: [Period: Int]])
@@ -27,6 +29,7 @@ final class TurnipPricesReactor: Reactor {
 
     struct State {
         var selectedPattern: TurnipPricePattern = .unknown
+        var isFirstBuy: Bool = false
         var sundayPrice: String = ""
         var prices: [DayOfWeek: [Period: String]] = [
             .monday: [.am: "", .pm: ""],
@@ -78,6 +81,9 @@ final class TurnipPricesReactor: Reactor {
         case .selectPattern(let pattern):
             return .just(.setPattern(pattern))
 
+        case .updateFirstBuy(let isFirstBuy):
+            return .just(.setFirstBuy(isFirstBuy))
+
         case .updateSundayPrice(let price):
             return .just(.setSundayPrice(price))
 
@@ -94,6 +100,9 @@ final class TurnipPricesReactor: Reactor {
         switch mutation {
         case .setPattern(let pattern):
             newState.selectedPattern = pattern
+
+        case .setFirstBuy(let isFirstBuy):
+            newState.isFirstBuy = isFirstBuy
 
         case .setSundayPrice(let price):
             newState.sundayPrice = price
@@ -132,7 +141,8 @@ final class TurnipPricesReactor: Reactor {
         let result = findMatchingPattern(
             basePrice: basePrice,
             userInputs: userInputs,
-            selectedPattern: currentState.selectedPattern
+            selectedPattern: currentState.selectedPattern,
+            isFirstBuy: currentState.isFirstBuy
         )
 
         // 입력값이 있는 요일은 입력값으로 고정
@@ -163,7 +173,8 @@ final class TurnipPricesReactor: Reactor {
     private func findMatchingPattern(
         basePrice: Int,
         userInputs: [UserInput],
-        selectedPattern: TurnipPricePattern
+        selectedPattern: TurnipPricePattern,
+        isFirstBuy: Bool
     ) -> PredictionResult {
         // 사용자 입력을 배열 형태로 변환 (14개 요소)
         let givenPrices = convertToGivenPricesArray(userInputs: userInputs)
@@ -172,7 +183,8 @@ final class TurnipPricesReactor: Reactor {
         let predictor = TurnipPricePredictor(
             basePrice: basePrice,
             givenPrices: givenPrices,
-            selectedPattern: selectedPattern != .unknown ? selectedPattern : nil
+            selectedPattern: selectedPattern != .unknown ? selectedPattern : nil,
+            isFirstBuy: isFirstBuy
         )
 
         let result = predictor.predict()

@@ -14,6 +14,18 @@ struct TurnipPricesSectionsView: View {
         ScrollView {
             VStack(spacing: .zero) {
                 SectionContainerView(
+                    title: "firstBuyDescription".localized,
+                    iconName: "questionmark.circle"
+                ) {
+                    FirstBuySelectionView(
+                        onFirstBuyChanged: { isFirstBuy in
+                            reactor.action.onNext(.updateFirstBuy(isFirstBuy))
+                        }
+                    )
+                }
+                .padding(.bottom, 25)
+
+                SectionContainerView(
                     title: "turnipPatternSectionTitle".localized,
                     iconName: "checkmark.circle.dotted"
                 ) {

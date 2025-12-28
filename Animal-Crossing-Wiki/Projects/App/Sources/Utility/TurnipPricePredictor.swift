@@ -226,11 +226,13 @@ final class TurnipPricePredictor {
     private let basePrice: Int
     private let givenPrices: [Int?]  // 14개 (입력된 가격, 없으면 nil)
     private let selectedPattern: TurnipPricePattern?
+    private let isFirstBuy: Bool
 
-    init(basePrice: Int, givenPrices: [Int?], selectedPattern: TurnipPricePattern?) {
+    init(basePrice: Int, givenPrices: [Int?], selectedPattern: TurnipPricePattern?, isFirstBuy: Bool) {
         self.basePrice = basePrice
         self.givenPrices = givenPrices
         self.selectedPattern = selectedPattern
+        self.isFirstBuy = isFirstBuy
     }
 
     /// 가격 예측 실행
@@ -242,9 +244,15 @@ final class TurnipPricePredictor {
             self.fudgeFactor = factor
 
             // 패턴별 결과 생성
-            let patterns: [TurnipPricePattern] = selectedPattern != nil
-                ? [selectedPattern!]
-                : [.fluctuating, .largespike, .decreasing, .smallspike]
+            // 첫 구매인 경우 패턴 3 (Small Spike)만 생성 (ac-nh-turnip-prices와 동일)
+            let patterns: [TurnipPricePattern]
+            if isFirstBuy {
+                patterns = [.smallspike]
+            } else if selectedPattern != nil {
+                patterns = [selectedPattern!]
+            } else {
+                patterns = [.fluctuating, .largespike, .decreasing, .smallspike]
+            }
 
             var factorResults: [PredictionResult] = []
 
