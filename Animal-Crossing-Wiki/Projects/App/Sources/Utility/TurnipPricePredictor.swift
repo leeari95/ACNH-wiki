@@ -114,9 +114,13 @@ final class TurnipPricePredictor {
         }
 
         // Dec Phase 1
+        // rate = randfloat(0.8, 0.6)
+        // 각 단계마다: rate -= 0.04; rate -= randfloat(0, 0.06)
+        // 즉, 매번 0.04~0.1씩 감소
         for i in 0..<decPhase1Len {
-            let rate = 0.6 + (0.8 - 0.6) * Double(decPhase1Len - i - 1) / Double(decPhase1Len)
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rate - 0.1, rateMax: rate) {
+            let minRate = max(0.0, 0.6 - Double(i) * 0.1)  // 최소: 0.6에서 시작, 매번 0.1 감소
+            let maxRate = max(0.0, 0.8 - Double(i) * 0.04) // 최대: 0.8에서 시작, 매번 0.04 감소
+            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
                 return nil
             }
             work += 1
@@ -131,9 +135,12 @@ final class TurnipPricePredictor {
         }
 
         // Dec Phase 2
+        // rate = randfloat(0.8, 0.6)
+        // 각 단계마다: rate -= 0.04; rate -= randfloat(0, 0.06)
         for i in 0..<decPhase2Len {
-            let rate = 0.6 + (0.8 - 0.6) * Double(decPhase2Len - i - 1) / Double(decPhase2Len)
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rate - 0.1, rateMax: rate) {
+            let minRate = max(0.0, 0.6 - Double(i) * 0.1)  // 최소: 0.6에서 시작, 매번 0.1 감소
+            let maxRate = max(0.0, 0.8 - Double(i) * 0.04) // 최대: 0.8에서 시작, 매번 0.04 감소
+            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
                 return nil
             }
             work += 1
@@ -178,9 +185,13 @@ final class TurnipPricePredictor {
         var work = 2
 
         // 피크 전 하락
+        // rate = randfloat(0.9, 0.85)
+        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
+        // 즉, 매번 0.03~0.05씩 감소
         for i in 0..<(peakStart - 2) {
-            let rate = 0.85 + (0.9 - 0.85) * Double(peakStart - 2 - i - 1) / Double(peakStart - 2)
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rate - 0.05, rateMax: rate) {
+            let minRate = max(0.0, 0.85 - Double(i) * 0.05) // 최소: 0.85에서 시작, 매번 0.05 감소
+            let maxRate = max(0.0, 0.9 - Double(i) * 0.03)  // 최대: 0.9에서 시작, 매번 0.03 감소
+            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
                 return nil
             }
             work += 1
@@ -226,9 +237,13 @@ final class TurnipPricePredictor {
         maxPrices[1] = basePrice
 
         // 지속적 하락 (12단계)
+        // rate = randfloat(0.9, 0.85)
+        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
+        // 즉, 매번 0.03~0.05씩 감소
         for i in 0..<12 {
-            let rate = 0.85 + (0.9 - 0.85) * Double(12 - i - 1) / 12.0
-            if !setPrice(&minPrices, &maxPrices, i + 2, rateMin: rate - 0.05, rateMax: rate) {
+            let minRate = max(0.0, 0.85 - Double(i) * 0.05) // 최소: 0.85에서 시작, 매번 0.05 감소
+            let maxRate = max(0.0, 0.9 - Double(i) * 0.03)  // 최대: 0.9에서 시작, 매번 0.03 감소
+            if !setPrice(&minPrices, &maxPrices, i + 2, rateMin: minRate, rateMax: maxRate) {
                 return []
             }
         }
@@ -264,9 +279,13 @@ final class TurnipPricePredictor {
         var work = 2
 
         // 피크 전 하락
+        // rate = randfloat(0.9, 0.4)
+        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
+        // 즉, 매번 0.03~0.05씩 감소
         for i in 0..<(peakStart - 2) {
-            let rate = 0.4 + (0.9 - 0.4) * Double(peakStart - 2 - i - 1) / Double(max(peakStart - 2, 1))
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rate - 0.05, rateMax: rate) {
+            let minRate = max(0.0, 0.4 - Double(i) * 0.05) // 최소: 0.4에서 시작, 매번 0.05 감소
+            let maxRate = max(0.0, 0.9 - Double(i) * 0.03) // 최대: 0.9에서 시작, 매번 0.03 감소
+            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
                 return nil
             }
             work += 1
@@ -290,10 +309,13 @@ final class TurnipPricePredictor {
         }
 
         // 피크 후 하락
+        // rate = randfloat(0.9, 0.4)
+        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
         let remaining = 14 - work
         for i in 0..<remaining {
-            let rate = 0.4 + (0.9 - 0.4) * Double(remaining - i - 1) / Double(max(remaining, 1))
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rate - 0.05, rateMax: rate) {
+            let minRate = max(0.0, 0.4 - Double(i) * 0.05) // 최소: 0.4에서 시작, 매번 0.05 감소
+            let maxRate = max(0.0, 0.9 - Double(i) * 0.03) // 최대: 0.9에서 시작, 매번 0.03 감소
+            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
                 return nil
             }
             work += 1
