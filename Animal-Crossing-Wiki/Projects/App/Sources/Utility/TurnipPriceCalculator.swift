@@ -26,10 +26,16 @@ final class TurnipPriceCalculator {
     }
 
     /// 무 가격 계산
-    /// - Parameter previousPattern: 저번 주 패턴 (nil이면 무작위)
-    func calculate(previousPattern: TurnipPricePattern? = nil) {
-        // 기본 구매가 설정 (90~110)
-        basePrice = rng.getInt(min: 90, max: 110)
+    /// - Parameters:
+    ///   - previousPattern: 저번 주 패턴 (nil이면 무작위)
+    ///   - userBasePrice: 사용자가 입력한 일요일 구매가 (nil이면 자동 생성)
+    func calculate(previousPattern: TurnipPricePattern? = nil, userBasePrice: Int? = nil) {
+        // 기본 구매가 설정
+        if let userPrice = userBasePrice {
+            basePrice = userPrice
+        } else {
+            basePrice = rng.getInt(min: 90, max: 110)
+        }
 
         // 다음 패턴 결정
         if let previous = previousPattern, previous != .unknown {
