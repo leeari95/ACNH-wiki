@@ -1538,5 +1538,5 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "turnipPriceSectionTitle" = "Enter the turnip selling price for each day.";
 "turnipPricePattern" = "Price Pattern";
 "selectTurnipPricePattern" = "Select a price pattern";
-"reset" = "Reset";
+"turnipReset" = "Reset";
 "showResults" = "Results";

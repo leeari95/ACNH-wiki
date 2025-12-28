@@ -1543,5 +1543,5 @@
 "turnipPriceSectionTitle" = "각 요일의 무 판매가를 입력하세요.";
 "turnipPricePattern" = "무 가격 패턴";
 "selectTurnipPricePattern" = "무 가격 패턴을 선택하세요";
-"reset" = "초기화";
+"turnipReset" = "초기화";
 "showResults" = "결과보기";
