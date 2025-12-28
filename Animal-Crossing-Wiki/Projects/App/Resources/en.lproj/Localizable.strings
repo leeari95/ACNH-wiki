@@ -1532,6 +1532,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "purchasePrice" = "Purchase Price";
 "am" = "AM";
 "pm" = "PM";
+"mondayShort" = "Mon";
+"tuesdayShort" = "Tue";
+"wednesdayShort" = "Wed";
+"thursdayShort" = "Thu";
+"fridayShort" = "Fri";
+"saturdayShort" = "Sat";
 
 // MARK: - FirstBuySelectionView
 "firstBuyTitle" = "First Time";

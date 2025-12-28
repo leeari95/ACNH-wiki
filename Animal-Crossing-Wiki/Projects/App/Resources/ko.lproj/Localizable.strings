@@ -1537,10 +1537,16 @@
 "purchasePrice" = "구매가격";
 "am" = "오전";
 "pm" = "오후";
+"mondayShort" = "월";
+"tuesdayShort" = "화";
+"wednesdayShort" = "수";
+"thursdayShort" = "목";
+"fridayShort" = "금";
+"saturdayShort" = "토";
 
 // MARK: - FirstBuySelectionView
 "firstBuyTitle" = "첫 구매 여부";
-"firstBuyDescription" = "무파니한테 처음 무를 사는 건가요?";
+"firstBuyDescription" = "무파니에게서 처음 무를 사는 건가요?";
 "yes" = "예";
 "no" = "아니오";
 
