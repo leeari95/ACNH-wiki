@@ -21,7 +21,7 @@ final class TurnipPricePredictor {
     // MARK: - Constants
 
     /// Rate를 정수로 다루기 위한 승수 (JavaScript와 동일)
-    private static let RATE_MULTIPLIER = 10000
+    private static let rateMultiplier = 10000
 
     /// 입력값 검증 시 허용 오차
     private let fudgeFactor = 5
@@ -428,19 +428,19 @@ final class TurnipPricePredictor {
 
     // MARK: - Utility Functions (JavaScript 호환)
 
-    /// rate를 사용하여 가격 계산 (RATE_MULTIPLIER 적용)
+    /// rate를 사용하여 가격 계산 (rateMultiplier 적용)
     private func getPrice(rate: Int, basePrice: Int) -> Int {
-        return intCeil(Double(rate) * Double(basePrice) / Double(Self.RATE_MULTIPLIER))
+        return intCeil(Double(rate) * Double(basePrice) / Double(Self.rateMultiplier))
     }
 
     /// 주어진 가격으로부터 최소 rate 역산
     private func minimumRateFromGivenAndBase(givenPrice: Int, buyPrice: Int) -> Int {
-        return Self.RATE_MULTIPLIER * (givenPrice - 1) / buyPrice
+        return Self.rateMultiplier * (givenPrice - 1) / buyPrice
     }
 
     /// 주어진 가격으로부터 최대 rate 역산
     private func maximumRateFromGivenAndBase(givenPrice: Int, buyPrice: Int) -> Int {
-        return Self.RATE_MULTIPLIER * givenPrice / buyPrice
+        return Self.rateMultiplier * givenPrice / buyPrice
     }
 
     /// 주어진 가격으로부터 가능한 rate 범위 계산
@@ -481,8 +481,8 @@ final class TurnipPricePredictor {
         rateMin: Double,
         rateMax: Double
     ) -> Bool {
-        var rateMinInt = Int(rateMin * Double(Self.RATE_MULTIPLIER))
-        var rateMaxInt = Int(rateMax * Double(Self.RATE_MULTIPLIER))
+        var rateMinInt = Int(rateMin * Double(Self.rateMultiplier))
+        var rateMaxInt = Int(rateMax * Double(Self.rateMultiplier))
 
         let rateRange = (min: rateMinInt, max: rateMaxInt)
 
@@ -538,8 +538,8 @@ final class TurnipPricePredictor {
                 break
             }
 
-            let rateMinInt = Int(minRate * Double(Self.RATE_MULTIPLIER))
-            let rateMaxInt = Int(maxRate * Double(Self.RATE_MULTIPLIER))
+            let rateMinInt = Int(minRate * Double(Self.rateMultiplier))
+            let rateMaxInt = Int(maxRate * Double(Self.rateMultiplier))
 
             var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
             var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
@@ -577,8 +577,8 @@ final class TurnipPricePredictor {
         sellPrices[work++] = intceil(randfloat(rate_min, rate) * basePrice) - 1;
         */
 
-        let rateMinInt = Int(rateMin * Double(Self.RATE_MULTIPLIER))
-        let rateMaxInt = Int(rateMax * Double(Self.RATE_MULTIPLIER))
+        let rateMinInt = Int(rateMin * Double(Self.rateMultiplier))
+        let rateMaxInt = Int(rateMax * Double(Self.rateMultiplier))
 
         // 중간값 (피크)
         var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
