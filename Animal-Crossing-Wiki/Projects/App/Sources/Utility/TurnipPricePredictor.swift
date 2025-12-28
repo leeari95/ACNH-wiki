@@ -314,14 +314,6 @@ final class TurnipPricePredictor {
     ) -> Bool {
         // 입력값이 있으면 그 값 사용
         if let givenPrice = givenPrices[index] {
-            let predictedMin = intCeil(rateMin * Double(basePrice))
-            let predictedMax = intCeil(rateMax * Double(basePrice))
-
-            // 입력값이 예측 범위를 벗어나면 이 패턴은 불가능
-            if givenPrice < predictedMin - 5 || givenPrice > predictedMax + 5 {
-                return false
-            }
-
             minPrices[index] = givenPrice
             maxPrices[index] = givenPrice
         } else {
