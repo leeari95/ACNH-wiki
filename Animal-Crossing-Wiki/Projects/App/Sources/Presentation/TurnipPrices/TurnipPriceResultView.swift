@@ -8,44 +8,6 @@
 import SwiftUI
 import Charts
 
-// MARK: - Chart Data Model
-
-struct TurnipPriceRangeData: Identifiable {
-    let id = UUID()
-    let day: String
-    let dayOrder: Int
-    let period: String
-    let minPrice: Int
-    let maxPrice: Int
-    let basePrice: Int
-
-    var avgPrice: Int {
-        (minPrice + maxPrice) / 2
-    }
-
-    var avgRatio: Float {
-        Float(avgPrice) / Float(basePrice)
-    }
-
-    var isUserInput: Bool {
-        minPrice == maxPrice
-    }
-
-    var color: SwiftUI.Color {
-        if avgRatio >= 2.0 {
-            return .green
-        } else if avgRatio >= 1.0 {
-            return SwiftUI.Color(uiColor: .catalogBar)
-        } else if avgRatio >= 0.8 {
-            return .orange
-        } else {
-            return .red
-        }
-    }
-}
-
-// MARK: - Main View
-
 struct TurnipPriceResultView: View {
     let basePrice: Int
     let pattern: TurnipPricePattern
@@ -361,33 +323,4 @@ private struct PriceLabel: View {
             .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
             .cornerRadius(cornerRadius)
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    let sampleMinPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]] = [
-        .monday: [.am: 90, .pm: 85],
-        .tuesday: [.am: 80, .pm: 130],
-        .wednesday: [.am: 170, .pm: 480],
-        .thursday: [.am: 130, .pm: 85],
-        .friday: [.am: 60, .pm: 55],
-        .saturday: [.am: 50, .pm: 45]
-    ]
-
-    let sampleMaxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]] = [
-        .monday: [.am: 100, .pm: 100],
-        .tuesday: [.am: 95, .pm: 150],
-        .wednesday: [.am: 190, .pm: 520],
-        .thursday: [.am: 150, .pm: 105],
-        .friday: [.am: 80, .pm: 75],
-        .saturday: [.am: 70, .pm: 65]
-    ]
-
-    return TurnipPriceResultView(
-        basePrice: 100,
-        pattern: .largespike,
-        minPrices: sampleMinPrices,
-        maxPrices: sampleMaxPrices
-    )
 }
