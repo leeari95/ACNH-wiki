@@ -50,10 +50,11 @@ final class TurnipPriceResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
+        setUpBackgroundDismissGesture()
     }
 
     private func setUpViews() {
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
 
         addChild(hostingController)
         view.addSubview(hostingController.view)
@@ -66,5 +67,21 @@ final class TurnipPriceResultViewController: UIViewController {
             hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+
+    private func setUpBackgroundDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc
+    private func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: view)
+        let hostingViewFrame = hostingController.view.frame
+
+        if !hostingViewFrame.contains(location) {
+            dismiss(animated: true)
+        }
     }
 }

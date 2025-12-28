@@ -83,27 +83,11 @@ struct TurnipPriceResultView: View {
     }
 
     var body: some View {
-        ZStack {
-            dismissableBackgroundView
-
-            contentView
-                .frame(maxWidth: 500)
-                .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
-                .cornerRadius(20)
-                .padding(.horizontal, 20)
-        }
-    }
-}
-
-// MARK: - Background
-
-private extension TurnipPriceResultView {
-    var dismissableBackgroundView: some View {
-        SwiftUI.Color.clear
-            .ignoresSafeArea()
-            .onTapGesture {
-                dismiss()
-            }
+        contentView
+            .frame(maxWidth: 500)
+            .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
+            .cornerRadius(20)
+            .padding(.horizontal, 20)
     }
 }
 
