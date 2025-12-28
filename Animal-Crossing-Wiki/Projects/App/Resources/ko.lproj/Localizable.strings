@@ -1538,6 +1538,12 @@
 "am" = "오전";
 "pm" = "오후";
 
+// MARK: - FirstBuySelectionView
+"firstBuyTitle" = "첫 구매 여부";
+"firstBuyDescription" = "무파니한테 처음 무를 사는 건가요?";
+"yes" = "예";
+"no" = "아니오";
+
 // MARK: - TurnipPricesSectionsView
 "turnipPatternSectionTitle" = "저번주 가격 패턴을 골라주세요";
 "turnipPriceSectionTitle" = "각 요일의 무 판매가를 입력하세요.";

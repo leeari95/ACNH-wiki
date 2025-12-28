@@ -1533,6 +1533,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "am" = "AM";
 "pm" = "PM";
 
+// MARK: - FirstBuySelectionView
+"firstBuyTitle" = "First Time";
+"firstBuyDescription" = "Is this your first time buying turnips from Daisy Mae?";
+"yes" = "Yes";
+"no" = "No";
+
 // MARK: - TurnipPricesSectionsView
 "turnipPatternSectionTitle" = "Please select last week's price pattern";
 "turnipPriceSectionTitle" = "Enter the turnip selling price for each day.";
