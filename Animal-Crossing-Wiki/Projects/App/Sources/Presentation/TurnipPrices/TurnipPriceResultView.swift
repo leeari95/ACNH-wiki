@@ -27,7 +27,6 @@ struct TurnipPriceRangeData: Identifiable {
         Float(avgPrice) / Float(basePrice)
     }
 
-    /// 사용자 입력값인지 여부 (min == max)
     var isUserInput: Bool {
         minPrice == maxPrice
     }
@@ -45,6 +44,8 @@ struct TurnipPriceRangeData: Identifiable {
     }
 }
 
+// MARK: - Main View
+
 struct TurnipPriceResultView: View {
     let basePrice: Int
     let pattern: TurnipPricePattern
@@ -52,7 +53,6 @@ struct TurnipPriceResultView: View {
     let maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
     @Environment(\.dismiss) private var dismiss
 
-    // Chart 데이터 생성
     private var chartData: [TurnipPriceRangeData] {
         TurnipPricesReactor.DayOfWeek.allCases.enumerated().flatMap { index, day in
             [
@@ -76,201 +76,305 @@ struct TurnipPriceResultView: View {
         }
     }
 
-    // Y축 최대값 계산
     private var maxYValue: Int {
         let maxPrice = chartData.map { $0.maxPrice }.max() ?? 0
-        // 여유를 두기 위해 10% 추가하고 10 단위로 올림
         let buffer = Int(Double(maxPrice) * 0.1)
         return ((maxPrice + buffer) / 10 + 1) * 10
     }
 
     var body: some View {
         ZStack {
-            // 배경
-            SwiftUI.Color.clear
-                .ignoresSafeArea()
-                .onTapGesture {
-                    dismiss()
-                }
+            dismissableBackgroundView
 
-            // 메인 컨텐츠
-            VStack(spacing: 0) {
-                // 헤더
-                HStack {
-                    Text("무 가격 예측 결과")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(SwiftUI.Color(uiColor: .acText))
+            contentView
+                .frame(maxWidth: 500)
+                .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
+                .cornerRadius(20)
+                .padding(.horizontal, 20)
+        }
+    }
+}
 
-                    Spacer()
+// MARK: - Background
 
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(SwiftUI.Color(uiColor: .catalogBar).opacity(0.6))
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 20)
-
-                // 패턴 및 구매가 정보
-                HStack(spacing: 20) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("패턴")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
-                        Text(pattern.displayText)
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(SwiftUI.Color(uiColor: .acText))
-                    }
-
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("일요일 구매가")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
-                        Text("\(basePrice) 벨")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(SwiftUI.Color(uiColor: .catalogBar))
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 20)
-
-                // 차트
-                ScrollView(.horizontal, showsIndicators: false) {
-                    Chart {
-                        ForEach(chartData) { data in
-                            if data.isUserInput {
-                                // 사용자 입력값: 0부터 입력값까지 막대그래프
-                                RectangleMark(
-                                    x: .value("요일", "\(data.day)\n\(data.period)"),
-                                    yStart: .value("시작", 0),
-                                    yEnd: .value("입력값", data.minPrice),
-                                    width: 35
-                                )
-                                .foregroundStyle(data.color.opacity(0.7))
-
-                                // 입력값 포인트 및 라벨
-                                PointMark(
-                                    x: .value("요일", "\(data.day)\n\(data.period)"),
-                                    y: .value("입력값", data.minPrice)
-                                )
-                                .symbol(.circle)
-                                .symbolSize(60)
-                                .foregroundStyle(data.color)
-                                .annotation(position: .top, spacing: 4) {
-                                    Text("\(data.minPrice)")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(data.color)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
-                                        .cornerRadius(6)
-                                }
-                            } else {
-                                // 예측값: 범위 막대 + min/max 마커
-                                // 최소~최대 범위 막대
-                                RectangleMark(
-                                    x: .value("요일", "\(data.day)\n\(data.period)"),
-                                    yStart: .value("최소", data.minPrice),
-                                    yEnd: .value("최대", data.maxPrice),
-                                    width: 35
-                                )
-                                .foregroundStyle(data.color)
-
-                                // 최대값 포인트 및 라벨
-                                PointMark(
-                                    x: .value("요일", "\(data.day)\n\(data.period)"),
-                                    y: .value("최대", data.maxPrice)
-                                )
-                                .symbol(.circle)
-                                .symbolSize(40)
-                                .foregroundStyle(SwiftUI.Color.green.opacity(0.7))
-                                .annotation(position: .top, spacing: 2) {
-                                    Text("최대 \(data.maxPrice)")
-                                        .font(.system(size: 9, weight: .bold))
-                                        .foregroundColor(.green)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
-                                        .cornerRadius(4)
-                                }
-
-                                // 최소값 포인트 및 라벨
-                                PointMark(
-                                    x: .value("요일", "\(data.day)\n\(data.period)"),
-                                    y: .value("최소", data.minPrice)
-                                )
-                                .symbol(.diamond)
-                                .symbolSize(50)
-                                .foregroundStyle(SwiftUI.Color.red.opacity(0.8))
-                                .annotation(position: .bottom, spacing: 4) {
-                                    Text("최소 \(data.minPrice)")
-                                        .font(.system(size: 9, weight: .bold))
-                                        .foregroundColor(.red)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
-                                        .cornerRadius(4)
-                                }
-                            }
-                        }
-
-                        // 기준선 (구매가)
-                        RuleMark(y: .value("구매가", basePrice))
-                            .foregroundStyle(SwiftUI.Color(uiColor: .catalogBar).opacity(0.5))
-                            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
-                            .annotation(position: .trailing, alignment: .center) {
-                                Text("구매가: \(basePrice)")
-                                    .font(.system(size: 10, weight: .medium))
-                                    .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.8))
-                                    .padding(.horizontal, 4)
-                                    .padding(.vertical, 2)
-                                    .background(SwiftUI.Color(uiColor: .acBackground))
-                            }
-                    }
-                    .chartXAxis {
-                        AxisMarks { value in
-                            AxisGridLine()
-                            AxisValueLabel {
-                                if let label = value.as(String.self) {
-                                    Text(label)
-                                        .font(.system(size: 8, weight: .medium))
-                                        .foregroundColor(SwiftUI.Color(uiColor: .acText))
-                                        .lineLimit(2)
-                                        .multilineTextAlignment(.center)
-                                }
-                            }
-                        }
-                    }
-                    .chartYScale(domain: 0...maxYValue)
-                    .chartYAxis {
-                        AxisMarks(values: .automatic) { value in
-                            AxisGridLine()
-                            AxisValueLabel {
-                                if let intValue = value.as(Int.self) {
-                                    Text("\(intValue)")
-                                        .font(.system(size: 10))
-                                        .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
-                                }
-                            }
-                        }
-                    }
-                    .frame(width: 600, height: 350)
-                    .padding(.vertical, 20)
-                    .padding(.trailing, 40)
-                }
-                .padding(.horizontal, 24)
+private extension TurnipPriceResultView {
+    var dismissableBackgroundView: some View {
+        SwiftUI.Color.clear
+            .ignoresSafeArea()
+            .onTapGesture {
+                dismiss()
             }
-            .frame(maxWidth: 500)
-            .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
-            .cornerRadius(20)
-            .padding(.horizontal, 20)
+    }
+}
+
+// MARK: - Content
+
+private extension TurnipPriceResultView {
+    var contentView: some View {
+        VStack(spacing: 0) {
+            headerView
+            priceInfoView
+            chartScrollView
         }
     }
 
-    private func dayLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
+    var headerView: some View {
+        HStack {
+            Text("무 가격 예측 결과")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText))
+
+            Spacer()
+
+            closeButton
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 20)
+    }
+
+    var closeButton: some View {
+        Button(action: { dismiss() }) {
+            Image(systemName: "xmark.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar).opacity(0.6))
+        }
+    }
+
+    var priceInfoView: some View {
+        HStack(spacing: 20) {
+            PatternInfoView(pattern: pattern)
+            Spacer()
+            BasePriceInfoView(basePrice: basePrice)
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 20)
+    }
+}
+
+// MARK: - Info Views
+
+private struct PatternInfoView: View {
+    let pattern: TurnipPricePattern
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("패턴")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
+            Text(pattern.displayText)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText))
+        }
+    }
+}
+
+private struct BasePriceInfoView: View {
+    let basePrice: Int
+
+    var body: some View {
+        VStack(alignment: .trailing, spacing: 4) {
+            Text("일요일 구매가")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
+            Text("\(basePrice) 벨")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar))
+        }
+    }
+}
+
+// MARK: - Chart
+
+private extension TurnipPriceResultView {
+    var chartScrollView: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            priceChart
+                .frame(width: 600, height: 350)
+                .padding(.vertical, 20)
+                .padding(.trailing, 40)
+        }
+        .padding(.horizontal, 24)
+    }
+
+    var priceChart: some View {
+        Chart {
+            ForEach(chartData) { data in
+                if data.isUserInput {
+                    userInputChartMarks(for: data)
+                } else {
+                    predictionChartMarks(for: data)
+                }
+            }
+
+            basePriceRuleMark
+        }
+        .chartXAxis { chartXAxis }
+        .chartYScale(domain: 0...maxYValue)
+        .chartYAxis { chartYAxis }
+    }
+
+    var basePriceRuleMark: some ChartContent {
+        RuleMark(y: .value("구매가", basePrice))
+            .foregroundStyle(SwiftUI.Color(uiColor: .catalogBar).opacity(0.5))
+            .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
+            .annotation(position: .trailing, alignment: .center) {
+                Text("구매가: \(basePrice)")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.8))
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
+                    .background(SwiftUI.Color(uiColor: .acBackground))
+            }
+    }
+
+    @AxisContentBuilder
+    var chartXAxis: some AxisContent {
+        AxisMarks { value in
+            AxisGridLine()
+            AxisValueLabel {
+                if let label = value.as(String.self) {
+                    Text(label)
+                        .font(.system(size: 8, weight: .medium))
+                        .foregroundColor(SwiftUI.Color(uiColor: .acText))
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                }
+            }
+        }
+    }
+
+    @AxisContentBuilder
+    var chartYAxis: some AxisContent {
+        AxisMarks(values: .automatic) { value in
+            AxisGridLine()
+            AxisValueLabel {
+                if let intValue = value.as(Int.self) {
+                    Text("\(intValue)")
+                        .font(.system(size: 10))
+                        .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Chart Marks
+
+private extension TurnipPriceResultView {
+    @ChartContentBuilder
+    func userInputChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
+        userInputBarMark(for: data)
+        userInputPointMark(for: data)
+    }
+
+    func userInputBarMark(for data: TurnipPriceRangeData) -> some ChartContent {
+        RectangleMark(
+            x: .value("요일", "\(data.day)\n\(data.period)"),
+            yStart: .value("시작", 0),
+            yEnd: .value("입력값", data.minPrice),
+            width: 35
+        )
+        .foregroundStyle(data.color.opacity(0.7))
+    }
+
+    func userInputPointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+        PointMark(
+            x: .value("요일", "\(data.day)\n\(data.period)"),
+            y: .value("입력값", data.minPrice)
+        )
+        .symbol(.circle)
+        .symbolSize(60)
+        .foregroundStyle(data.color)
+        .annotation(position: .top, spacing: 4) {
+            PriceLabel(
+                price: data.minPrice,
+                color: data.color,
+                fontSize: 10,
+                cornerRadius: 6
+            )
+        }
+    }
+
+    @ChartContentBuilder
+    func predictionChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
+        predictionRangeMark(for: data)
+        maxPricePointMark(for: data)
+        minPricePointMark(for: data)
+    }
+
+    func predictionRangeMark(for data: TurnipPriceRangeData) -> some ChartContent {
+        RectangleMark(
+            x: .value("요일", "\(data.day)\n\(data.period)"),
+            yStart: .value("최소", data.minPrice),
+            yEnd: .value("최대", data.maxPrice),
+            width: 35
+        )
+        .foregroundStyle(data.color)
+    }
+
+    func maxPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+        PointMark(
+            x: .value("요일", "\(data.day)\n\(data.period)"),
+            y: .value("최대", data.maxPrice)
+        )
+        .symbol(.circle)
+        .symbolSize(40)
+        .foregroundStyle(SwiftUI.Color.green.opacity(0.7))
+        .annotation(position: .top, spacing: 2) {
+            PriceLabel(
+                price: data.maxPrice,
+                color: .green,
+                prefix: "최대 ",
+                fontSize: 9,
+                cornerRadius: 4
+            )
+        }
+    }
+
+    func minPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+        PointMark(
+            x: .value("요일", "\(data.day)\n\(data.period)"),
+            y: .value("최소", data.minPrice)
+        )
+        .symbol(.diamond)
+        .symbolSize(50)
+        .foregroundStyle(SwiftUI.Color.red.opacity(0.8))
+        .annotation(position: .bottom, spacing: 4) {
+            PriceLabel(
+                price: data.minPrice,
+                color: .red,
+                prefix: "최소 ",
+                fontSize: 9,
+                cornerRadius: 4
+            )
+        }
+    }
+}
+
+// MARK: - Supporting Views
+
+private struct PriceLabel: View {
+    let price: Int
+    let color: SwiftUI.Color
+    var prefix: String = ""
+    let fontSize: CGFloat
+    let cornerRadius: CGFloat
+
+    var body: some View {
+        Text("\(prefix)\(price)")
+            .font(.system(size: fontSize, weight: .bold))
+            .foregroundColor(color)
+            .padding(.horizontal, fontSize > 9 ? 8 : 6)
+            .padding(.vertical, fontSize > 9 ? 4 : 2)
+            .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
+            .cornerRadius(cornerRadius)
+    }
+}
+
+// MARK: - Helper Methods
+
+private extension TurnipPriceResultView {
+    func dayLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
         switch day {
         case .monday: return "monday".localized
         case .tuesday: return "tuesday".localized
@@ -281,7 +385,7 @@ struct TurnipPriceResultView: View {
         }
     }
 
-    private func dayShortLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
+    func dayShortLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
         switch day {
         case .monday: return "mondayShort".localized
         case .tuesday: return "tuesdayShort".localized
