@@ -18,6 +18,16 @@ final class TurnipPricePredictor {
         let pattern: TurnipPricePattern
     }
 
+    // MARK: - Constants
+
+    /// Rate를 정수로 다루기 위한 승수 (JavaScript와 동일)
+    private static let RATE_MULTIPLIER = 10000
+
+    /// 입력값 검증 시 허용 오차
+    private let fudgeFactor = 5
+
+    // MARK: - Properties
+
     private let basePrice: Int
     private let givenPrices: [Int?]  // 14개 (입력된 가격, 없으면 nil)
     private let selectedPattern: TurnipPricePattern?
@@ -106,52 +116,71 @@ final class TurnipPricePredictor {
         var work = 2
 
         // High Phase 1
-        for _ in 0..<highPhase1Len {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 0.9, rateMax: 1.4) {
-                return nil
-            }
-            work += 1
+        if !generateIndividualRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: highPhase1Len,
+            rateMin: 0.9,
+            rateMax: 1.4
+        ) {
+            return nil
         }
+        work += highPhase1Len
 
         // Dec Phase 1
-        // rate = randfloat(0.8, 0.6)
-        // 각 단계마다: rate -= 0.04; rate -= randfloat(0, 0.06)
-        // 즉, 매번 0.04~0.1씩 감소
-        for i in 0..<decPhase1Len {
-            let minRate = max(0.0, 0.6 - Double(i) * 0.1)  // 최소: 0.6에서 시작, 매번 0.1 감소
-            let maxRate = max(0.0, 0.8 - Double(i) * 0.04) // 최대: 0.8에서 시작, 매번 0.04 감소
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
-                return nil
-            }
-            work += 1
+        if !generateDecreasingRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: decPhase1Len,
+            startRateMin: 0.6,
+            startRateMax: 0.8,
+            rateDecayMin: 0.04,
+            rateDecayMax: 0.1
+        ) {
+            return nil
         }
+        work += decPhase1Len
 
         // High Phase 2
-        for _ in 0..<highPhase2Len {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 0.9, rateMax: 1.4) {
-                return nil
-            }
-            work += 1
+        if !generateIndividualRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: highPhase2Len,
+            rateMin: 0.9,
+            rateMax: 1.4
+        ) {
+            return nil
         }
+        work += highPhase2Len
 
         // Dec Phase 2
-        // rate = randfloat(0.8, 0.6)
-        // 각 단계마다: rate -= 0.04; rate -= randfloat(0, 0.06)
-        for i in 0..<decPhase2Len {
-            let minRate = max(0.0, 0.6 - Double(i) * 0.1)  // 최소: 0.6에서 시작, 매번 0.1 감소
-            let maxRate = max(0.0, 0.8 - Double(i) * 0.04) // 최대: 0.8에서 시작, 매번 0.04 감소
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
-                return nil
-            }
-            work += 1
+        if !generateDecreasingRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: decPhase2Len,
+            startRateMin: 0.6,
+            startRateMax: 0.8,
+            rateDecayMin: 0.04,
+            rateDecayMax: 0.1
+        ) {
+            return nil
         }
+        work += decPhase2Len
 
         // High Phase 3
-        for _ in 0..<highPhase3Len {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 0.9, rateMax: 1.4) {
-                return nil
-            }
-            work += 1
+        if !generateIndividualRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: highPhase3Len,
+            rateMin: 0.9,
+            rateMax: 1.4
+        ) {
+            return nil
         }
 
         return PredictionResult(minPrices: minPrices, maxPrices: maxPrices, pattern: .fluctuating)
@@ -185,40 +214,54 @@ final class TurnipPricePredictor {
         var work = 2
 
         // 피크 전 하락
-        // rate = randfloat(0.9, 0.85)
-        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
-        // 즉, 매번 0.03~0.05씩 감소
-        for i in 0..<(peakStart - 2) {
-            let minRate = max(0.0, 0.85 - Double(i) * 0.05) // 최소: 0.85에서 시작, 매번 0.05 감소
-            let maxRate = max(0.0, 0.9 - Double(i) * 0.03)  // 최대: 0.9에서 시작, 매번 0.03 감소
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
-                return nil
-            }
-            work += 1
+        if !generateDecreasingRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: peakStart - 2,
+            startRateMin: 0.85,
+            startRateMax: 0.9,
+            rateDecayMin: 0.03,
+            rateDecayMax: 0.05
+        ) {
+            return nil
         }
+        work = peakStart
 
         // 급등 구간 (5단계)
-        let spikeRates: [(Double, Double)] = [
-            (0.9, 1.4),   // 1단계
-            (1.4, 2.0),   // 2단계
-            (2.0, 6.0),   // 3단계 - 피크!
-            (1.4, 2.0),   // 4단계
-            (0.9, 1.4)    // 5단계
-        ]
+        let minRandoms: [Double] = [0.9, 1.4, 2.0, 1.4, 0.9]
+        let maxRandoms: [Double] = [1.4, 2.0, 6.0, 2.0, 1.4]
 
-        for (rateMin, rateMax) in spikeRates {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: rateMin, rateMax: rateMax) {
+        for i in 0..<5 {
+            if work >= 14 {
+                break
+            }
+
+            if !generateIndividualRandomPrice(
+                minPrices: &minPrices,
+                maxPrices: &maxPrices,
+                start: work,
+                length: 1,
+                rateMin: minRandoms[i],
+                rateMax: maxRandoms[i]
+            ) {
                 return nil
             }
             work += 1
         }
 
         // 피크 후 랜덤 하락
-        while work < 14 {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 0.4, rateMax: 0.9) {
+        if work < 14 {
+            if !generateIndividualRandomPrice(
+                minPrices: &minPrices,
+                maxPrices: &maxPrices,
+                start: work,
+                length: 14 - work,
+                rateMin: 0.4,
+                rateMax: 0.9
+            ) {
                 return nil
             }
-            work += 1
         }
 
         return PredictionResult(minPrices: minPrices, maxPrices: maxPrices, pattern: .largespike)
@@ -237,15 +280,17 @@ final class TurnipPricePredictor {
         maxPrices[1] = basePrice
 
         // 지속적 하락 (12단계)
-        // rate = randfloat(0.9, 0.85)
-        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
-        // 즉, 매번 0.03~0.05씩 감소
-        for i in 0..<12 {
-            let minRate = max(0.0, 0.85 - Double(i) * 0.05) // 최소: 0.85에서 시작, 매번 0.05 감소
-            let maxRate = max(0.0, 0.9 - Double(i) * 0.03)  // 최대: 0.9에서 시작, 매번 0.03 감소
-            if !setPrice(&minPrices, &maxPrices, i + 2, rateMin: minRate, rateMax: maxRate) {
-                return []
-            }
+        if !generateDecreasingRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: 2,
+            length: 12,
+            startRateMin: 0.85,
+            startRateMax: 0.9,
+            rateDecayMin: 0.03,
+            rateDecayMax: 0.05
+        ) {
+            return []
         }
 
         return [PredictionResult(minPrices: minPrices, maxPrices: maxPrices, pattern: .decreasing)]
@@ -279,73 +324,66 @@ final class TurnipPricePredictor {
         var work = 2
 
         // 피크 전 하락
-        // rate = randfloat(0.9, 0.4)
-        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
-        // 즉, 매번 0.03~0.05씩 감소
-        for i in 0..<(peakStart - 2) {
-            let minRate = max(0.0, 0.4 - Double(i) * 0.05) // 최소: 0.4에서 시작, 매번 0.05 감소
-            let maxRate = max(0.0, 0.9 - Double(i) * 0.03) // 최대: 0.9에서 시작, 매번 0.03 감소
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
-                return nil
-            }
-            work += 1
+        if !generateDecreasingRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: peakStart - 2,
+            startRateMin: 0.4,
+            startRateMax: 0.9,
+            rateDecayMin: 0.03,
+            rateDecayMax: 0.05
+        ) {
+            return nil
         }
+        work = peakStart
 
         // 작은 상승 (5단계)
         // 1-2단계: 0.9~1.4
-        for _ in 0..<2 {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 0.9, rateMax: 1.4) {
-                return nil
-            }
-            work += 1
+        if !generateIndividualRandomPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            length: 2,
+            rateMin: 0.9,
+            rateMax: 1.4
+        ) {
+            return nil
         }
+        work += 2
 
-        // 3-5단계: 피크 (1.4~2.0)
-        for _ in 0..<3 {
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: 1.4, rateMax: 2.0) {
-                return nil
-            }
-            work += 1
+        // 3-5단계: 피크 (1.4~2.0) - generate_peak_price 사용
+        if !generatePeakPrice(
+            minPrices: &minPrices,
+            maxPrices: &maxPrices,
+            start: work,
+            rateMin: 1.4,
+            rateMax: 2.0
+        ) {
+            return nil
         }
+        work += 3
 
         // 피크 후 하락
-        // rate = randfloat(0.9, 0.4)
-        // 각 단계마다: rate -= 0.03; rate -= randfloat(0, 0.02)
-        let remaining = 14 - work
-        for i in 0..<remaining {
-            let minRate = max(0.0, 0.4 - Double(i) * 0.05) // 최소: 0.4에서 시작, 매번 0.05 감소
-            let maxRate = max(0.0, 0.9 - Double(i) * 0.03) // 최대: 0.9에서 시작, 매번 0.03 감소
-            if !setPrice(&minPrices, &maxPrices, work, rateMin: minRate, rateMax: maxRate) {
+        if work < 14 {
+            if !generateDecreasingRandomPrice(
+                minPrices: &minPrices,
+                maxPrices: &maxPrices,
+                start: work,
+                length: 14 - work,
+                startRateMin: 0.4,
+                startRateMax: 0.9,
+                rateDecayMin: 0.03,
+                rateDecayMax: 0.05
+            ) {
                 return nil
             }
-            work += 1
         }
 
         return PredictionResult(minPrices: minPrices, maxPrices: maxPrices, pattern: .smallspike)
     }
 
     // MARK: - Helper Methods
-
-    /// 가격 설정 및 입력값 검증
-    private func setPrice(
-        _ minPrices: inout [Int],
-        _ maxPrices: inout [Int],
-        _ index: Int,
-        rateMin: Double,
-        rateMax: Double
-    ) -> Bool {
-        // 입력값이 있으면 그 값 사용
-        if let givenPrice = givenPrices[index] {
-            minPrices[index] = givenPrice
-            maxPrices[index] = givenPrice
-        } else {
-            // 입력값이 없으면 범위 계산
-            minPrices[index] = intCeil(rateMin * Double(basePrice))
-            maxPrices[index] = intCeil(rateMax * Double(basePrice))
-        }
-
-        return true
-    }
 
     /// 여러 결과를 통합하여 전체 min/max 계산
     private func mergeResults(_ results: [PredictionResult]) -> PredictionResult {
@@ -386,5 +424,195 @@ final class TurnipPricePredictor {
     /// intceil 구현 (게임과 동일)
     private func intCeil(_ value: Double) -> Int {
         return Int((value + 0.99999).rounded(.down))
+    }
+
+    // MARK: - Utility Functions (JavaScript 호환)
+
+    /// rate를 사용하여 가격 계산 (RATE_MULTIPLIER 적용)
+    private func getPrice(rate: Int, basePrice: Int) -> Int {
+        return intCeil(Double(rate) * Double(basePrice) / Double(Self.RATE_MULTIPLIER))
+    }
+
+    /// 주어진 가격으로부터 최소 rate 역산
+    private func minimumRateFromGivenAndBase(givenPrice: Int, buyPrice: Int) -> Int {
+        return Self.RATE_MULTIPLIER * (givenPrice - 1) / buyPrice
+    }
+
+    /// 주어진 가격으로부터 최대 rate 역산
+    private func maximumRateFromGivenAndBase(givenPrice: Int, buyPrice: Int) -> Int {
+        return Self.RATE_MULTIPLIER * givenPrice / buyPrice
+    }
+
+    /// 주어진 가격으로부터 가능한 rate 범위 계산
+    private func rateRangeFromGivenAndBase(givenPrice: Int, buyPrice: Int) -> (min: Int, max: Int) {
+        return (
+            min: minimumRateFromGivenAndBase(givenPrice: givenPrice, buyPrice: buyPrice),
+            max: maximumRateFromGivenAndBase(givenPrice: givenPrice, buyPrice: buyPrice)
+        )
+    }
+
+    /// 두 범위의 교집합 계산
+    private func rangeIntersect(_ range1: (min: Int, max: Int), _ range2: (min: Int, max: Int)) -> (min: Int, max: Int)? {
+        if range1.min > range2.max || range1.max < range2.min {
+            return nil
+        }
+        return (min: max(range1.min, range2.min), max: min(range1.max, range2.max))
+    }
+
+    /// 범위의 길이 계산
+    private func rangeLength(_ range: (min: Int, max: Int)) -> Int {
+        return range.max - range.min
+    }
+
+    /// 값을 min~max 범위로 제한
+    private func clamp(_ value: Int, min: Int, max: Int) -> Int {
+        return Swift.max(min, Swift.min(value, max))
+    }
+
+    // MARK: - Pattern Generation Helper Methods
+
+    /// 개별 랜덤 가격 생성 (JavaScript의 generate_individual_random_price)
+    /// - Returns: 조건부 확률 (0이면 패턴 불가능)
+    private func generateIndividualRandomPrice(
+        minPrices: inout [Int],
+        maxPrices: inout [Int],
+        start: Int,
+        length: Int,
+        rateMin: Double,
+        rateMax: Double
+    ) -> Bool {
+        var rateMinInt = Int(rateMin * Double(Self.RATE_MULTIPLIER))
+        var rateMaxInt = Int(rateMax * Double(Self.RATE_MULTIPLIER))
+
+        let rateRange = (min: rateMinInt, max: rateMaxInt)
+
+        for i in start..<(start + length) {
+            var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
+            var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
+
+            if let givenPrice = givenPrices[i] {
+                // 입력값이 예측 범위를 벗어나면 이 패턴은 불가능
+                if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
+                    return false
+                }
+
+                // 입력값에서 가능한 rate 범위 역산
+                let clampedPrice = clamp(givenPrice, min: minPred, max: maxPred)
+                let realRateRange = rateRangeFromGivenAndBase(givenPrice: clampedPrice, buyPrice: basePrice)
+
+                // 교집합이 없으면 불가능
+                guard rangeIntersect(rateRange, realRateRange) != nil else {
+                    return false
+                }
+
+                minPred = givenPrice
+                maxPred = givenPrice
+            }
+
+            minPrices[i] = minPred
+            maxPrices[i] = maxPred
+        }
+
+        return true
+    }
+
+    /// 하락 랜덤 가격 생성 (JavaScript의 generate_decreasing_random_price)
+    /// - Returns: 조건부 확률 (0이면 패턴 불가능)
+    private func generateDecreasingRandomPrice(
+        minPrices: inout [Int],
+        maxPrices: inout [Int],
+        start: Int,
+        length: Int,
+        startRateMin: Double,
+        startRateMax: Double,
+        rateDecayMin: Double,
+        rateDecayMax: Double
+    ) -> Bool {
+        // 각 단계마다 누적 감소
+        for i in 0..<length {
+            let index = start + i
+            let minRate = startRateMin - Double(i) * rateDecayMax
+            let maxRate = startRateMax - Double(i) * rateDecayMin
+
+            if minRate < 0 || maxRate < 0 {
+                break
+            }
+
+            let rateMinInt = Int(minRate * Double(Self.RATE_MULTIPLIER))
+            let rateMaxInt = Int(maxRate * Double(Self.RATE_MULTIPLIER))
+
+            var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
+            var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
+
+            if let givenPrice = givenPrices[index] {
+                // 입력값이 예측 범위를 벗어나면 이 패턴은 불가능
+                if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
+                    return false
+                }
+
+                minPred = givenPrice
+                maxPred = givenPrice
+            }
+
+            minPrices[index] = minPred
+            maxPrices[index] = maxPred
+        }
+
+        return true
+    }
+
+    /// 피크 가격 생성 (JavaScript의 generate_peak_price)
+    /// - Returns: 조건부 확률 (0이면 패턴 불가능)
+    private func generatePeakPrice(
+        minPrices: inout [Int],
+        maxPrices: inout [Int],
+        start: Int,
+        rateMin: Double,
+        rateMax: Double
+    ) -> Bool {
+        /*
+        이 메서드는 다음 패턴을 생성:
+        sellPrices[work++] = intceil(randfloat(rate_min, rate) * basePrice) - 1;
+        sellPrices[work++] = intceil(rate * basePrice);
+        sellPrices[work++] = intceil(randfloat(rate_min, rate) * basePrice) - 1;
+        */
+
+        let rateMinInt = Int(rateMin * Double(Self.RATE_MULTIPLIER))
+        let rateMaxInt = Int(rateMax * Double(Self.RATE_MULTIPLIER))
+
+        // 중간값 (피크)
+        var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
+        var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
+
+        if let givenPrice = givenPrices[start + 1] {
+            if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
+                return false
+            }
+            minPred = givenPrice
+            maxPred = givenPrice
+        }
+
+        minPrices[start + 1] = minPred
+        maxPrices[start + 1] = maxPred
+
+        // 왼쪽과 오른쪽 (피크보다 1 낮음)
+        for offset in [0, 2] {
+            let index = start + offset
+            var minPred = getPrice(rate: rateMinInt, basePrice: basePrice) - 1
+            var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice) - 1
+
+            if let givenPrice = givenPrices[index] {
+                if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
+                    return false
+                }
+                minPred = givenPrice
+                maxPred = givenPrice
+            }
+
+            minPrices[index] = minPred
+            maxPrices[index] = maxPred
+        }
+
+        return true
     }
 }
