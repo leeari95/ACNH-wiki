@@ -218,8 +218,8 @@ final class TurnipPricePredictor {
     /// Rate를 정수로 다루기 위한 승수 (JavaScript와 동일)
     private static let rateMultiplier = 10000
 
-    /// 입력값 검증 시 허용 오차
-    private let fudgeFactor = 5
+    /// 입력값 검증 시 허용 오차 (JavaScript처럼 동적으로 증가)
+    private var fudgeFactor = 0
 
     // MARK: - Properties
 
@@ -235,30 +235,45 @@ final class TurnipPricePredictor {
 
     /// 가격 예측 실행
     func predict() -> PredictionResult {
-        // 패턴별 결과 생성
-        let patterns: [TurnipPricePattern] = selectedPattern != nil
-            ? [selectedPattern!]
-            : [.fluctuating, .largespike, .decreasing, .smallspike]
-
+        // JavaScript처럼 fudge_factor를 0부터 증가시키며 시도
         var allResults: [PredictionResult] = []
 
-        for pattern in patterns {
-            switch pattern {
-            case .fluctuating:
-                allResults.append(contentsOf: generatePattern0())
-            case .largespike:
-                allResults.append(contentsOf: generatePattern1())
-            case .decreasing:
-                allResults.append(contentsOf: generatePattern2())
-            case .smallspike:
-                allResults.append(contentsOf: generatePattern3())
-            case .unknown:
-                break
+        for factor in 0...5 {
+            self.fudgeFactor = factor
+
+            // 패턴별 결과 생성
+            let patterns: [TurnipPricePattern] = selectedPattern != nil
+                ? [selectedPattern!]
+                : [.fluctuating, .largespike, .decreasing, .smallspike]
+
+            var factorResults: [PredictionResult] = []
+
+            for pattern in patterns {
+                let patternResults: [PredictionResult]
+                switch pattern {
+                case .fluctuating:
+                    patternResults = generatePattern0()
+                case .largespike:
+                    patternResults = generatePattern1()
+                case .decreasing:
+                    patternResults = generatePattern2()
+                case .smallspike:
+                    patternResults = generatePattern3()
+                case .unknown:
+                    patternResults = []
+                }
+                factorResults.append(contentsOf: patternResults)
+            }
+
+            if !factorResults.isEmpty {
+                allResults = factorResults
+                break  // JavaScript처럼 결과가 나오면 중단
             }
         }
 
         // 모든 결과의 min/max 통합
-        return mergeResults(allResults)
+        let finalResult = mergeResults(allResults)
+        return finalResult
     }
 
     // MARK: - Pattern Generators
@@ -273,7 +288,7 @@ final class TurnipPricePredictor {
             let decPhase2Len = 5 - decPhase1Len
             for highPhase1Len in 0...6 {
                 let highPhase23Len = 7 - highPhase1Len
-                for highPhase3Len in 0...highPhase23Len {
+                for highPhase3Len in 0..<highPhase23Len {  // JavaScript와 동일하게 < 사용
                     let highPhase2Len = highPhase23Len - highPhase3Len
 
                     if let result = generatePattern0WithLengths(
