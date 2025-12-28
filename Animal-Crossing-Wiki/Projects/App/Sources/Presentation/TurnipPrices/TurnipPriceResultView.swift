@@ -27,6 +27,11 @@ struct TurnipPriceRangeData: Identifiable {
         Float(avgPrice) / Float(basePrice)
     }
 
+    /// 사용자 입력값인지 여부 (min == max)
+    var isUserInput: Bool {
+        minPrice == maxPrice
+    }
+
     var color: SwiftUI.Color {
         if avgRatio >= 2.0 {
             return .green
@@ -69,6 +74,14 @@ struct TurnipPriceResultView: View {
                 )
             ]
         }
+    }
+
+    // Y축 최대값 계산
+    private var maxYValue: Int {
+        let maxPrice = chartData.map { $0.maxPrice }.max() ?? 0
+        // 여유를 두기 위해 10% 추가하고 10 단위로 올림
+        let buffer = Int(Double(maxPrice) * 0.1)
+        return ((maxPrice + buffer) / 10 + 1) * 10
     }
 
     var body: some View {
@@ -128,65 +141,79 @@ struct TurnipPriceResultView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     Chart {
                         ForEach(chartData) { data in
-                            // 범위 배경 (min~max)
-                            RectangleMark(
-                                x: .value("요일", "\(data.day)\n\(data.period)"),
-                                yStart: .value("최소", data.minPrice),
-                                yEnd: .value("최대", data.maxPrice),
-                                width: 35
-                            )
-                            .foregroundStyle(data.color.opacity(0.2))
+                            if data.isUserInput {
+                                // 사용자 입력값: 0부터 입력값까지 막대그래프
+                                RectangleMark(
+                                    x: .value("요일", "\(data.day)\n\(data.period)"),
+                                    yStart: .value("시작", 0),
+                                    yEnd: .value("입력값", data.minPrice),
+                                    width: 35
+                                )
+                                .foregroundStyle(data.color.opacity(0.7))
 
-                            // 평균값 막대
-                            BarMark(
-                                x: .value("요일", "\(data.day)\n\(data.period)"),
-                                y: .value("평균", data.avgPrice),
-                                width: 20
-                            )
-                            .foregroundStyle(data.color)
+                                // 입력값 포인트 및 라벨
+                                PointMark(
+                                    x: .value("요일", "\(data.day)\n\(data.period)"),
+                                    y: .value("입력값", data.minPrice)
+                                )
+                                .symbol(.circle)
+                                .symbolSize(60)
+                                .foregroundStyle(data.color)
+                                .annotation(position: .top, spacing: 4) {
+                                    Text("\(data.minPrice)")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(data.color)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
+                                        .cornerRadius(6)
+                                }
+                            } else {
+                                // 예측값: 범위 막대 + min/max 마커
+                                // 최소~최대 범위 막대
+                                RectangleMark(
+                                    x: .value("요일", "\(data.day)\n\(data.period)"),
+                                    yStart: .value("최소", data.minPrice),
+                                    yEnd: .value("최대", data.maxPrice),
+                                    width: 35
+                                )
+                                .foregroundStyle(data.color)
 
-                            // 최대값 포인트 및 라벨
-                            PointMark(
-                                x: .value("요일", "\(data.day)\n\(data.period)"),
-                                y: .value("최대", data.maxPrice)
-                            )
-                            .symbol(.circle)
-                            .symbolSize(40)
-                            .foregroundStyle(SwiftUI.Color.green.opacity(0.7))
-                            .annotation(position: .top, spacing: 2) {
-                                Text("최대 \(data.maxPrice)")
-                                    .font(.system(size: 9, weight: .bold))
-                                    .foregroundColor(.green)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
-                                    .cornerRadius(4)
-                            }
+                                // 최대값 포인트 및 라벨
+                                PointMark(
+                                    x: .value("요일", "\(data.day)\n\(data.period)"),
+                                    y: .value("최대", data.maxPrice)
+                                )
+                                .symbol(.circle)
+                                .symbolSize(40)
+                                .foregroundStyle(SwiftUI.Color.green.opacity(0.7))
+                                .annotation(position: .top, spacing: 2) {
+                                    Text("최대 \(data.maxPrice)")
+                                        .font(.system(size: 9, weight: .bold))
+                                        .foregroundColor(.green)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
+                                        .cornerRadius(4)
+                                }
 
-                            // 최소값 포인트 및 라벨
-                            PointMark(
-                                x: .value("요일", "\(data.day)\n\(data.period)"),
-                                y: .value("최소", data.minPrice)
-                            )
-                            .symbol(.diamond)
-                            .symbolSize(50)
-                            .foregroundStyle(SwiftUI.Color.red.opacity(0.8))
-                            .annotation(position: .bottom, spacing: 4) {
-                                VStack(alignment: .center, spacing: 2) {
+                                // 최소값 포인트 및 라벨
+                                PointMark(
+                                    x: .value("요일", "\(data.day)\n\(data.period)"),
+                                    y: .value("최소", data.minPrice)
+                                )
+                                .symbol(.diamond)
+                                .symbolSize(50)
+                                .foregroundStyle(SwiftUI.Color.red.opacity(0.8))
+                                .annotation(position: .bottom, spacing: 4) {
                                     Text("최소 \(data.minPrice)")
                                         .font(.system(size: 9, weight: .bold))
                                         .foregroundColor(.red)
-                                    if data.minPrice != data.maxPrice {
-                                        Text("범위: \(data.maxPrice - data.minPrice)")
-                                            .font(.system(size: 7))
-                                            .foregroundColor(.gray)
-                                    }
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
+                                        .cornerRadius(4)
                                 }
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 3)
-                                .background(SwiftUI.Color.white.opacity(0.95))
-                                .cornerRadius(4)
-                                .shadow(radius: 2)
                             }
                         }
 
@@ -217,6 +244,7 @@ struct TurnipPriceResultView: View {
                             }
                         }
                     }
+                    .chartYScale(domain: 0...maxYValue)
                     .chartYAxis {
                         AxisMarks(values: .automatic) { value in
                             AxisGridLine()
