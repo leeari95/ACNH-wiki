@@ -283,12 +283,12 @@ struct TurnipPriceResultView: View {
 
     private func dayShortLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
         switch day {
-        case .monday: return "월"
-        case .tuesday: return "화"
-        case .wednesday: return "수"
-        case .thursday: return "목"
-        case .friday: return "금"
-        case .saturday: return "토"
+        case .monday: return "mondayShort".localized
+        case .tuesday: return "tuesdayShort".localized
+        case .wednesday: return "wednesdayShort".localized
+        case .thursday: return "thursdayShort".localized
+        case .friday: return "fridayShort".localized
+        case .saturday: return "saturdayShort".localized
         }
     }
 }
