@@ -38,7 +38,8 @@ final class TurnipPricesViewController: UIViewController {
             .map { TurnipPricesReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
 
         setUpHostingController()
     }
