@@ -66,7 +66,7 @@ final class TurnipPricesReactor: Reactor {
     }
 
     let initialState: State
-    var coordinator: TurnipPricesCoordinator?
+    weak var coordinator: TurnipPricesCoordinator?
 
     init(coordinator: TurnipPricesCoordinator, state: State = State()) {
         self.coordinator = coordinator
