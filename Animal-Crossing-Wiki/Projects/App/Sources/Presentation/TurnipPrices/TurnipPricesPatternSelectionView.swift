@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum TurnipPricePattern: CaseIterable {
-    case unknown
-    case fluctuating
-    case largespike
-    case smallspike
-    case decreasing
+enum TurnipPricePattern: Int, CaseIterable {
+    case unknown = -1
+    case fluctuating = 0
+    case largespike = 1
+    case decreasing = 2
+    case smallspike = 3
 
     var displayText: String {
         switch self {
@@ -33,6 +33,7 @@ enum TurnipPricePattern: CaseIterable {
 struct TurnipPricesPatternSelectionView: View {
     @State private var selectedPattern: TurnipPricePattern = .unknown
     @State private var showingPatternSelection = false
+    var onPatternSelected: ((TurnipPricePattern) -> Void)?
 
     var body: some View {
         HStack {
@@ -64,6 +65,7 @@ struct TurnipPricesPatternSelectionView: View {
             ForEach(TurnipPricePattern.allCases, id: \.self) { pattern in
                 Button(pattern.displayText) {
                     selectedPattern = pattern
+                    onPatternSelected?(pattern)
                 }
             }
         }
