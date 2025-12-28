@@ -10,24 +10,29 @@ import Charts
 
 // MARK: - Chart Data Model
 
-struct TurnipPriceData: Identifiable {
+struct TurnipPriceRangeData: Identifiable {
     let id = UUID()
     let day: String
     let dayOrder: Int
     let period: String
-    let price: Int
+    let minPrice: Int
+    let maxPrice: Int
     let basePrice: Int
 
-    var ratio: Float {
-        Float(price) / Float(basePrice)
+    var avgPrice: Int {
+        (minPrice + maxPrice) / 2
+    }
+
+    var avgRatio: Float {
+        Float(avgPrice) / Float(basePrice)
     }
 
     var color: SwiftUI.Color {
-        if ratio >= 2.0 {
+        if avgRatio >= 2.0 {
             return .green
-        } else if ratio >= 1.0 {
+        } else if avgRatio >= 1.0 {
             return SwiftUI.Color(uiColor: .catalogBar)
-        } else if ratio >= 0.8 {
+        } else if avgRatio >= 0.8 {
             return .orange
         } else {
             return .red
@@ -38,25 +43,28 @@ struct TurnipPriceData: Identifiable {
 struct TurnipPriceResultView: View {
     let basePrice: Int
     let pattern: TurnipPricePattern
-    let prices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    let minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    let maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
     @Environment(\.dismiss) private var dismiss
 
     // Chart 데이터 생성
-    private var chartData: [TurnipPriceData] {
+    private var chartData: [TurnipPriceRangeData] {
         TurnipPricesReactor.DayOfWeek.allCases.enumerated().flatMap { index, day in
             [
-                TurnipPriceData(
+                TurnipPriceRangeData(
                     day: dayShortLabel(day),
                     dayOrder: index,
                     period: "AM",
-                    price: prices[day]?[.am] ?? 0,
+                    minPrice: minPrices[day]?[.am] ?? 0,
+                    maxPrice: maxPrices[day]?[.am] ?? 0,
                     basePrice: basePrice
                 ),
-                TurnipPriceData(
+                TurnipPriceRangeData(
                     day: dayShortLabel(day),
                     dayOrder: index,
                     period: "PM",
-                    price: prices[day]?[.pm] ?? 0,
+                    minPrice: minPrices[day]?[.pm] ?? 0,
+                    maxPrice: maxPrices[day]?[.pm] ?? 0,
                     basePrice: basePrice
                 )
             ]
@@ -66,7 +74,7 @@ struct TurnipPriceResultView: View {
     var body: some View {
         ZStack {
             // 배경
-            SwiftUI.Color.black.opacity(0.4)
+            SwiftUI.Color.clear
                 .ignoresSafeArea()
                 .onTapGesture {
                     dismiss()
@@ -120,15 +128,65 @@ struct TurnipPriceResultView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     Chart {
                         ForEach(chartData) { data in
+                            // 범위 배경 (min~max)
+                            RectangleMark(
+                                x: .value("요일", "\(data.day)\n\(data.period)"),
+                                yStart: .value("최소", data.minPrice),
+                                yEnd: .value("최대", data.maxPrice),
+                                width: 35
+                            )
+                            .foregroundStyle(data.color.opacity(0.2))
+
+                            // 평균값 막대
                             BarMark(
                                 x: .value("요일", "\(data.day)\n\(data.period)"),
-                                y: .value("가격", data.price)
+                                y: .value("평균", data.avgPrice),
+                                width: 20
                             )
                             .foregroundStyle(data.color)
-                            .annotation(position: .top) {
-                                Text("\(data.price)")
-                                    .font(.system(size: 9, weight: .medium))
-                                    .foregroundColor(SwiftUI.Color(uiColor: .acText))
+
+                            // 최대값 포인트 및 라벨
+                            PointMark(
+                                x: .value("요일", "\(data.day)\n\(data.period)"),
+                                y: .value("최대", data.maxPrice)
+                            )
+                            .symbol(.circle)
+                            .symbolSize(40)
+                            .foregroundStyle(SwiftUI.Color.green.opacity(0.7))
+                            .annotation(position: .top, spacing: 2) {
+                                Text("최대 \(data.maxPrice)")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundColor(.green)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
+                                    .cornerRadius(4)
+                            }
+
+                            // 최소값 포인트 및 라벨
+                            PointMark(
+                                x: .value("요일", "\(data.day)\n\(data.period)"),
+                                y: .value("최소", data.minPrice)
+                            )
+                            .symbol(.diamond)
+                            .symbolSize(50)
+                            .foregroundStyle(SwiftUI.Color.red.opacity(0.8))
+                            .annotation(position: .bottom, spacing: 4) {
+                                VStack(alignment: .center, spacing: 2) {
+                                    Text("최소 \(data.minPrice)")
+                                        .font(.system(size: 9, weight: .bold))
+                                        .foregroundColor(.red)
+                                    if data.minPrice != data.maxPrice {
+                                        Text("범위: \(data.maxPrice - data.minPrice)")
+                                            .font(.system(size: 7))
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 3)
+                                .background(SwiftUI.Color.white.opacity(0.95))
+                                .cornerRadius(4)
+                                .shadow(radius: 2)
                             }
                         }
 
@@ -173,13 +231,14 @@ struct TurnipPriceResultView: View {
                     }
                     .frame(width: 600, height: 350)
                     .padding(.vertical, 20)
+                    .padding(.trailing, 40)
                 }
                 .padding(.horizontal, 24)
             }
             .frame(maxWidth: 500)
-            .background(SwiftUI.Color(uiColor: .acBackground))
+            .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
             .cornerRadius(20)
-            .padding(.horizontal, 30)
+            .padding(.horizontal, 20)
         }
     }
 
@@ -209,18 +268,28 @@ struct TurnipPriceResultView: View {
 // MARK: - Preview
 
 #Preview {
-    let samplePrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]] = [
-        .monday: [.am: 95, .pm: 92],
-        .tuesday: [.am: 88, .pm: 140],
-        .wednesday: [.am: 180, .pm: 500],
-        .thursday: [.am: 140, .pm: 95],
-        .friday: [.am: 70, .pm: 65],
-        .saturday: [.am: 60, .pm: 55]
+    let sampleMinPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]] = [
+        .monday: [.am: 90, .pm: 85],
+        .tuesday: [.am: 80, .pm: 130],
+        .wednesday: [.am: 170, .pm: 480],
+        .thursday: [.am: 130, .pm: 85],
+        .friday: [.am: 60, .pm: 55],
+        .saturday: [.am: 50, .pm: 45]
+    ]
+
+    let sampleMaxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]] = [
+        .monday: [.am: 100, .pm: 100],
+        .tuesday: [.am: 95, .pm: 150],
+        .wednesday: [.am: 190, .pm: 520],
+        .thursday: [.am: 150, .pm: 105],
+        .friday: [.am: 80, .pm: 75],
+        .saturday: [.am: 70, .pm: 65]
     ]
 
     return TurnipPriceResultView(
         basePrice: 100,
         pattern: .largespike,
-        prices: samplePrices
+        minPrices: sampleMinPrices,
+        maxPrices: sampleMaxPrices
     )
 }

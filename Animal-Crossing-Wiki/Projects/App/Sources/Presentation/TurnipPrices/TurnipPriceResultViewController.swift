@@ -12,23 +12,31 @@ final class TurnipPriceResultViewController: UIViewController {
 
     private let basePrice: Int
     private let pattern: TurnipPricePattern
-    private let prices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    private let minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    private let maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
 
     private lazy var hostingController: UIHostingController<TurnipPriceResultView> = {
         let view = TurnipPriceResultView(
             basePrice: basePrice,
             pattern: pattern,
-            prices: prices
+            minPrices: minPrices,
+            maxPrices: maxPrices
         )
         let controller = UIHostingController(rootView: view)
         controller.view.backgroundColor = .clear
         return controller
     }()
 
-    init(basePrice: Int, pattern: TurnipPricePattern, prices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]) {
+    init(
+        basePrice: Int,
+        pattern: TurnipPricePattern,
+        minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]],
+        maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    ) {
         self.basePrice = basePrice
         self.pattern = pattern
-        self.prices = prices
+        self.minPrices = minPrices
+        self.maxPrices = maxPrices
         super.init(nibName: nil, bundle: nil)
 
         // Alert 스타일 설정
