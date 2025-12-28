@@ -7,6 +7,201 @@
 
 import Foundation
 
+// MARK: - Probability Density Function
+
+/// Rate의 확률 밀도 함수 (PDF)
+/// JavaScript 구현과 동일한 확률 기반 예측을 위한 클래스
+final class PDF {
+    /// 값의 시작점 (포함)
+    private(set) var valueStart: Int
+    /// 값의 끝점 (제외)
+    private(set) var valueEnd: Int
+    /// 각 정수 범위의 확률 배열
+    private(set) var prob: [Double]
+
+    /// PDF 초기화
+    /// - Parameters:
+    ///   - start: 시작 값 (실수 가능)
+    ///   - end: 끝 값 (실수 가능)
+    ///   - uniform: true면 균등 분포로 초기화
+    init(start: Double, end: Double, uniform: Bool = true) {
+        self.valueStart = Int(floor(start))
+        self.valueEnd = Int(ceil(end))
+        let range = (start, end)
+        let totalLength = end - start
+
+        self.prob = Array(repeating: 0.0, count: valueEnd - valueStart)
+
+        if uniform {
+            for i in 0..<prob.count {
+                let rangeOfI = rangeOf(idx: i)
+                let intersectLen = rangeIntersectLength(rangeOfI, range)
+                prob[i] = intersectLen / totalLength
+            }
+        }
+    }
+
+    /// 주어진 인덱스의 범위 계산
+    /// - Parameter idx: prob 배열의 인덱스
+    /// - Returns: [idx, idx+1) 범위
+    private func rangeOf(idx: Int) -> (Double, Double) {
+        let start = Double(valueStart + idx)
+        let end = Double(valueStart + idx + 1)
+        return (start, end)
+    }
+
+    /// 최소값 반환
+    func minValue() -> Int {
+        return valueStart
+    }
+
+    /// 최대값 반환
+    func maxValue() -> Int {
+        return valueEnd
+    }
+
+    /// 확률 정규화 (합이 1이 되도록)
+    /// - Returns: 정규화 전 총 확률
+    @discardableResult
+    func normalize() -> Double {
+        let totalProbability = floatSum(prob)
+        guard totalProbability > 0 else { return 0 }
+        for i in 0..<prob.count {
+            prob[i] /= totalProbability
+        }
+        return totalProbability
+    }
+
+    /// PDF를 특정 범위로 제한
+    /// - Parameter range: 제한할 범위 (min, max)
+    /// - Returns: 이 범위에 속할 확률
+    func rangeLimit(_ range: (min: Double, max: Double)) -> Double {
+        var start = max(range.min, Double(minValue()))
+        var end = min(range.max, Double(maxValue()))
+
+        if start >= end {
+            // 무효한 범위 - PDF를 비움
+            valueStart = 0
+            valueEnd = 0
+            prob = []
+            return 0
+        }
+
+        start = floor(start)
+        end = ceil(end)
+
+        let startIdx = Int(start) - valueStart
+        let endIdx = Int(end) - valueStart
+
+        for i in startIdx..<endIdx {
+            let rangeOfI = rangeOf(idx: i)
+            let intersectLen = rangeIntersectLength(rangeOfI, range)
+            prob[i] *= intersectLen
+        }
+
+        prob = Array(prob[startIdx..<endIdx])
+        valueStart = Int(start)
+        valueEnd = Int(end)
+
+        return normalize()
+    }
+
+    /// PDF를 decay (감소) - 균등 분포 [decayMin, decayMax]만큼 빼기
+    /// - Parameters:
+    ///   - decayMin: 최소 감소량
+    ///   - decayMax: 최대 감소량
+    func decay(decayMin: Int, decayMax: Int) {
+        let rateDecayMin = decayMin
+        let rateDecayMax = decayMax
+
+        // Prefix sum 계산
+        let prefix = prefixFloatSum(prob)
+        let maxX = prob.count
+        let maxY = rateDecayMax - rateDecayMin
+
+        var newProb = Array(repeating: 0.0, count: prob.count + maxY)
+
+        for i in 0..<newProb.count {
+            let left = max(0, i - maxY)
+            let right = min(maxX - 1, i)
+
+            // Prefix sum을 사용하여 범위 합 계산
+            var numbersToSum: [Double] = [
+                prefix[right + 1].sum,
+                prefix[right + 1].error,
+                -prefix[left].sum,
+                -prefix[left].error
+            ]
+
+            // 엔드포인트 보정
+            if left == i - maxY {
+                numbersToSum.append(-prob[left] / 2)
+            }
+            if right == i {
+                numbersToSum.append(-prob[right] / 2)
+            }
+
+            newProb[i] = floatSum(numbersToSum) / Double(maxY)
+        }
+
+        prob = newProb
+        valueStart -= rateDecayMax
+        valueEnd -= rateDecayMin
+    }
+
+    // MARK: - Helper Functions
+
+    /// 두 범위의 교집합 길이 계산
+    private func rangeIntersectLength(_ range1: (Double, Double), _ range2: (Double, Double)) -> Double {
+        if range1.0 > range2.1 || range1.1 < range2.0 {
+            return 0
+        }
+        let intersectStart = max(range1.0, range2.0)
+        let intersectEnd = min(range1.1, range2.1)
+        return intersectEnd - intersectStart
+    }
+
+    /// Kahan-Babuska 알고리즘을 사용한 정확한 부동소수점 합계
+    private func floatSum(_ input: [Double]) -> Double {
+        var sum = 0.0
+        var c = 0.0  // "lost bits" of sum
+
+        for current in input {
+            let t = sum + current
+            if abs(sum) >= abs(current) {
+                c += (sum - t) + current
+            } else {
+                c += (current - t) + sum
+            }
+            sum = t
+        }
+
+        return sum + c
+    }
+
+    /// Prefix sum with error tracking
+    private func prefixFloatSum(_ input: [Double]) -> [(sum: Double, error: Double)] {
+        var prefixSum: [(sum: Double, error: Double)] = [(0, 0)]
+        var sum = 0.0
+        var c = 0.0
+
+        for current in input {
+            let t = sum + current
+            if abs(sum) >= abs(current) {
+                c += (sum - t) + current
+            } else {
+                c += (current - t) + sum
+            }
+            sum = t
+            prefixSum.append((sum, c))
+        }
+
+        return prefixSum
+    }
+}
+
+// MARK: - Turnip Price Predictor
+
 /// 무 가격 예측기 - 확률 기반 접근
 /// ac-nh-turnip-prices 프로젝트의 JavaScript 구현을 Swift로 포팅
 final class TurnipPricePredictor {
@@ -115,6 +310,8 @@ final class TurnipPricePredictor {
 
         var work = 2
 
+        var probability = 1.0
+
         // High Phase 1
         if !generateIndividualRandomPrice(
             minPrices: &minPrices,
@@ -129,7 +326,7 @@ final class TurnipPricePredictor {
         work += highPhase1Len
 
         // Dec Phase 1
-        if !generateDecreasingRandomPrice(
+        probability *= generateDecreasingRandomPrice(
             minPrices: &minPrices,
             maxPrices: &maxPrices,
             start: work,
@@ -138,7 +335,8 @@ final class TurnipPricePredictor {
             startRateMax: 0.8,
             rateDecayMin: 0.04,
             rateDecayMax: 0.1
-        ) {
+        )
+        if probability == 0 {
             return nil
         }
         work += decPhase1Len
@@ -157,7 +355,7 @@ final class TurnipPricePredictor {
         work += highPhase2Len
 
         // Dec Phase 2
-        if !generateDecreasingRandomPrice(
+        probability *= generateDecreasingRandomPrice(
             minPrices: &minPrices,
             maxPrices: &maxPrices,
             start: work,
@@ -166,7 +364,8 @@ final class TurnipPricePredictor {
             startRateMax: 0.8,
             rateDecayMin: 0.04,
             rateDecayMax: 0.1
-        ) {
+        )
+        if probability == 0 {
             return nil
         }
         work += decPhase2Len
@@ -212,9 +411,10 @@ final class TurnipPricePredictor {
         maxPrices[1] = basePrice
 
         var work = 2
+        var probability = 1.0
 
         // 피크 전 하락
-        if !generateDecreasingRandomPrice(
+        probability *= generateDecreasingRandomPrice(
             minPrices: &minPrices,
             maxPrices: &maxPrices,
             start: work,
@@ -223,7 +423,8 @@ final class TurnipPricePredictor {
             startRateMax: 0.9,
             rateDecayMin: 0.03,
             rateDecayMax: 0.05
-        ) {
+        )
+        if probability == 0 {
             return nil
         }
         work = peakStart
@@ -280,7 +481,7 @@ final class TurnipPricePredictor {
         maxPrices[1] = basePrice
 
         // 지속적 하락 (12단계)
-        if !generateDecreasingRandomPrice(
+        let probability = generateDecreasingRandomPrice(
             minPrices: &minPrices,
             maxPrices: &maxPrices,
             start: 2,
@@ -289,7 +490,9 @@ final class TurnipPricePredictor {
             startRateMax: 0.9,
             rateDecayMin: 0.03,
             rateDecayMax: 0.05
-        ) {
+        )
+
+        if probability == 0 {
             return []
         }
 
@@ -322,9 +525,10 @@ final class TurnipPricePredictor {
         maxPrices[1] = basePrice
 
         var work = 2
+        var probability = 1.0
 
         // 피크 전 하락
-        if !generateDecreasingRandomPrice(
+        probability *= generateDecreasingRandomPrice(
             minPrices: &minPrices,
             maxPrices: &maxPrices,
             start: work,
@@ -333,7 +537,8 @@ final class TurnipPricePredictor {
             startRateMax: 0.9,
             rateDecayMin: 0.03,
             rateDecayMax: 0.05
-        ) {
+        )
+        if probability == 0 {
             return nil
         }
         work = peakStart
@@ -366,7 +571,7 @@ final class TurnipPricePredictor {
 
         // 피크 후 하락
         if work < 14 {
-            if !generateDecreasingRandomPrice(
+            probability *= generateDecreasingRandomPrice(
                 minPrices: &minPrices,
                 maxPrices: &maxPrices,
                 start: work,
@@ -375,7 +580,8 @@ final class TurnipPricePredictor {
                 startRateMax: 0.9,
                 rateDecayMin: 0.03,
                 rateDecayMax: 0.05
-            ) {
+            )
+            if probability == 0 {
                 return nil
             }
         }
@@ -527,38 +733,52 @@ final class TurnipPricePredictor {
         startRateMax: Double,
         rateDecayMin: Double,
         rateDecayMax: Double
-    ) -> Bool {
-        // 각 단계마다 누적 감소
-        for i in 0..<length {
-            let index = start + i
-            let minRate = startRateMin - Double(i) * rateDecayMax
-            let maxRate = startRateMax - Double(i) * rateDecayMin
+    ) -> Double {
+        let rateMin = startRateMin * Double(Self.rateMultiplier)
+        let rateMax = startRateMax * Double(Self.rateMultiplier)
+        let decayMin = Int(rateDecayMin * Double(Self.rateMultiplier))
+        let decayMax = Int(rateDecayMax * Double(Self.rateMultiplier))
 
-            if minRate < 0 || maxRate < 0 {
-                break
-            }
+        let buyPrice = basePrice
+        var ratePdf = PDF(start: rateMin, end: rateMax)
+        var prob = 1.0
 
-            let rateMinInt = Int(minRate * Double(Self.rateMultiplier))
-            let rateMaxInt = Int(maxRate * Double(Self.rateMultiplier))
+        for i in start..<(start + length) {
+            var minPred = getPrice(rate: ratePdf.minValue(), basePrice: buyPrice)
+            var maxPred = getPrice(rate: ratePdf.maxValue(), basePrice: buyPrice)
 
-            var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
-            var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
-
-            if let givenPrice = givenPrices[index] {
-                // 입력값이 예측 범위를 벗어나면 이 패턴은 불가능
+            if let givenPrice = givenPrices[i] {
                 if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
-                    return false
+                    return 0  // 패턴 불가능
+                }
+
+                // 입력값으로부터 가능한 rate 범위 역산
+                let clampedPrice = clamp(givenPrice, min: minPred, max: maxPred)
+                let realRateRange = rateRangeFromGivenAndBase(givenPrice: clampedPrice, buyPrice: buyPrice)
+
+                // PDF 범위를 제한하고 확률 곱하기
+                let rangeProb = ratePdf.rangeLimit((
+                    min: Double(realRateRange.min),
+                    max: Double(realRateRange.max)
+                ))
+                prob *= rangeProb
+
+                if prob == 0 {
+                    return 0
                 }
 
                 minPred = givenPrice
                 maxPred = givenPrice
             }
 
-            minPrices[index] = minPred
-            maxPrices[index] = maxPred
+            minPrices[i] = minPred
+            maxPrices[i] = maxPred
+
+            // 다음 단계로 decay
+            ratePdf.decay(decayMin: decayMin, decayMax: decayMax)
         }
 
-        return true
+        return prob
     }
 
     /// 피크 가격 생성 (JavaScript의 generate_peak_price)
