@@ -89,12 +89,8 @@ struct TurnipPriceResultView: View {
             .cornerRadius(20)
             .padding(.horizontal, 20)
     }
-}
 
-// MARK: - Content
-
-private extension TurnipPriceResultView {
-    var contentView: some View {
+    private var contentView: some View {
         VStack(spacing: 0) {
             headerView
             priceInfoView
@@ -102,9 +98,9 @@ private extension TurnipPriceResultView {
         }
     }
 
-    var headerView: some View {
+    private var headerView: some View {
         HStack {
-            Text("무 가격 예측 결과")
+            Text("turnipPriceResultTitle".localized)
                 .font(.system(size: 20, weight: .bold))
                 .foregroundColor(SwiftUI.Color(uiColor: .acText))
 
@@ -116,7 +112,7 @@ private extension TurnipPriceResultView {
         .padding(.vertical, 20)
     }
 
-    var closeButton: some View {
+    private var closeButton: some View {
         Button(action: { dismiss() }) {
             Image(systemName: "xmark.circle.fill")
                 .font(.system(size: 24))
@@ -124,7 +120,7 @@ private extension TurnipPriceResultView {
         }
     }
 
-    var priceInfoView: some View {
+    private var priceInfoView: some View {
         HStack(spacing: 20) {
             PatternInfoView(pattern: pattern)
             Spacer()
@@ -133,44 +129,8 @@ private extension TurnipPriceResultView {
         .padding(.horizontal, 24)
         .padding(.bottom, 20)
     }
-}
 
-// MARK: - Info Views
-
-private struct PatternInfoView: View {
-    let pattern: TurnipPricePattern
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("패턴")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
-            Text(pattern.displayText)
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(SwiftUI.Color(uiColor: .acText))
-        }
-    }
-}
-
-private struct BasePriceInfoView: View {
-    let basePrice: Int
-
-    var body: some View {
-        VStack(alignment: .trailing, spacing: 4) {
-            Text("일요일 구매가")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
-            Text("\(basePrice) 벨")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar))
-        }
-    }
-}
-
-// MARK: - Chart
-
-private extension TurnipPriceResultView {
-    var chartScrollView: some View {
+    private var chartScrollView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             priceChart
                 .frame(width: 600, height: 350)
@@ -180,7 +140,7 @@ private extension TurnipPriceResultView {
         .padding(.horizontal, 24)
     }
 
-    var priceChart: some View {
+    private var priceChart: some View {
         Chart {
             ForEach(chartData) { data in
                 if data.isUserInput {
@@ -197,12 +157,12 @@ private extension TurnipPriceResultView {
         .chartYAxis { chartYAxis }
     }
 
-    var basePriceRuleMark: some ChartContent {
-        RuleMark(y: .value("구매가", basePrice))
+    private var basePriceRuleMark: some ChartContent {
+        RuleMark(y: .value("purchasePriceLabel".localized, basePrice))
             .foregroundStyle(SwiftUI.Color(uiColor: .catalogBar).opacity(0.5))
             .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
             .annotation(position: .trailing, alignment: .center) {
-                Text("구매가: \(basePrice)")
+                Text("\("purchasePriceLabel".localized): \(basePrice)")
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.8))
                     .padding(.horizontal, 4)
@@ -212,7 +172,7 @@ private extension TurnipPriceResultView {
     }
 
     @AxisContentBuilder
-    var chartXAxis: some AxisContent {
+    private var chartXAxis: some AxisContent {
         AxisMarks { value in
             AxisGridLine()
             AxisValueLabel {
@@ -228,7 +188,7 @@ private extension TurnipPriceResultView {
     }
 
     @AxisContentBuilder
-    var chartYAxis: some AxisContent {
+    private var chartYAxis: some AxisContent {
         AxisMarks(values: .automatic) { value in
             AxisGridLine()
             AxisValueLabel {
@@ -240,18 +200,14 @@ private extension TurnipPriceResultView {
             }
         }
     }
-}
 
-// MARK: - Chart Marks
-
-private extension TurnipPriceResultView {
     @ChartContentBuilder
-    func userInputChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func userInputChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
         userInputBarMark(for: data)
         userInputPointMark(for: data)
     }
 
-    func userInputBarMark(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func userInputBarMark(for data: TurnipPriceRangeData) -> some ChartContent {
         RectangleMark(
             x: .value("요일", "\(data.day)\n\(data.period)"),
             yStart: .value("시작", 0),
@@ -261,7 +217,7 @@ private extension TurnipPriceResultView {
         .foregroundStyle(data.color.opacity(0.7))
     }
 
-    func userInputPointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func userInputPointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
             x: .value("요일", "\(data.day)\n\(data.period)"),
             y: .value("입력값", data.minPrice)
@@ -280,26 +236,26 @@ private extension TurnipPriceResultView {
     }
 
     @ChartContentBuilder
-    func predictionChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func predictionChartMarks(for data: TurnipPriceRangeData) -> some ChartContent {
         predictionRangeMark(for: data)
         maxPricePointMark(for: data)
         minPricePointMark(for: data)
     }
 
-    func predictionRangeMark(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func predictionRangeMark(for data: TurnipPriceRangeData) -> some ChartContent {
         RectangleMark(
             x: .value("요일", "\(data.day)\n\(data.period)"),
-            yStart: .value("최소", data.minPrice),
-            yEnd: .value("최대", data.maxPrice),
+            yStart: .value("minLabel".localized, data.minPrice),
+            yEnd: .value("maxLabel".localized, data.maxPrice),
             width: 35
         )
         .foregroundStyle(data.color)
     }
 
-    func maxPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func maxPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
             x: .value("요일", "\(data.day)\n\(data.period)"),
-            y: .value("최대", data.maxPrice)
+            y: .value("maxLabel".localized, data.maxPrice)
         )
         .symbol(.circle)
         .symbolSize(40)
@@ -308,17 +264,17 @@ private extension TurnipPriceResultView {
             PriceLabel(
                 price: data.maxPrice,
                 color: .green,
-                prefix: "최대 ",
+                prefix: "\("maxLabel".localized) ",
                 fontSize: 9,
                 cornerRadius: 4
             )
         }
     }
 
-    func minPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
+    private func minPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
             x: .value("요일", "\(data.day)\n\(data.period)"),
-            y: .value("최소", data.minPrice)
+            y: .value("minLabel".localized, data.minPrice)
         )
         .symbol(.diamond)
         .symbolSize(50)
@@ -327,15 +283,67 @@ private extension TurnipPriceResultView {
             PriceLabel(
                 price: data.minPrice,
                 color: .red,
-                prefix: "최소 ",
+                prefix: "\("minLabel".localized) ",
                 fontSize: 9,
                 cornerRadius: 4
             )
         }
     }
+
+    private func dayLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
+        switch day {
+        case .monday: return "monday".localized
+        case .tuesday: return "tuesday".localized
+        case .wednesday: return "wednesday".localized
+        case .thursday: return "thursday".localized
+        case .friday: return "friday".localized
+        case .saturday: return "saturday".localized
+        }
+    }
+
+    private func dayShortLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
+        switch day {
+        case .monday: return "mondayShort".localized
+        case .tuesday: return "tuesdayShort".localized
+        case .wednesday: return "wednesdayShort".localized
+        case .thursday: return "thursdayShort".localized
+        case .friday: return "fridayShort".localized
+        case .saturday: return "saturdayShort".localized
+        }
+    }
 }
 
-// MARK: - Supporting Views
+// MARK: - Info Views
+
+private struct PatternInfoView: View {
+    let pattern: TurnipPricePattern
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("pattern".localized)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
+            Text(pattern.displayText)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText))
+        }
+    }
+}
+
+private struct BasePriceInfoView: View {
+    let basePrice: Int
+
+    var body: some View {
+        VStack(alignment: .trailing, spacing: 4) {
+            Text("sundayPurchasePrice".localized)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
+            Text("\(basePrice) \("bellUnit".localized)")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar))
+        }
+    }
+}
 
 private struct PriceLabel: View {
     let price: Int
@@ -352,32 +360,6 @@ private struct PriceLabel: View {
             .padding(.vertical, fontSize > 9 ? 4 : 2)
             .background(SwiftUI.Color(uiColor: .acBackground).opacity(0.95))
             .cornerRadius(cornerRadius)
-    }
-}
-
-// MARK: - Helper Methods
-
-private extension TurnipPriceResultView {
-    func dayLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
-        switch day {
-        case .monday: return "monday".localized
-        case .tuesday: return "tuesday".localized
-        case .wednesday: return "wednesday".localized
-        case .thursday: return "thursday".localized
-        case .friday: return "friday".localized
-        case .saturday: return "saturday".localized
-        }
-    }
-
-    func dayShortLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
-        switch day {
-        case .monday: return "mondayShort".localized
-        case .tuesday: return "tuesdayShort".localized
-        case .wednesday: return "wednesdayShort".localized
-        case .thursday: return "thursdayShort".localized
-        case .friday: return "fridayShort".localized
-        case .saturday: return "saturdayShort".localized
-        }
     }
 }
 

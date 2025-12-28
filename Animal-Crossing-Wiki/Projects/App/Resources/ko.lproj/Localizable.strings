@@ -1557,3 +1557,12 @@
 "selectTurnipPricePattern" = "무 가격 패턴을 선택하세요";
 "turnipReset" = "초기화";
 "showResults" = "결과보기";
+
+// MARK: - TurnipPriceResultView
+"turnipPriceResultTitle" = "무 가격 예측 결과";
+"pattern" = "패턴";
+"sundayPurchasePrice" = "일요일 구매가";
+"bellUnit" = "벨";
+"purchasePriceLabel" = "구매가";
+"maxLabel" = "최대";
+"minLabel" = "최소";
