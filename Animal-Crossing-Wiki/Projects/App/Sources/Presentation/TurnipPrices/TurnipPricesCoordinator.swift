@@ -10,6 +10,7 @@ import UIKit
 final class TurnipPricesCoordinator: Coordinator {
 
     enum Route {
+        case showResult(basePrice: Int, pattern: TurnipPricePattern, prices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]])
     }
 
     var type: CoordinatorType = .turnipPrices
@@ -29,7 +30,27 @@ final class TurnipPricesCoordinator: Coordinator {
 
     func transition(for route: Route) {
         switch route {
-            
+        case .showResult(let basePrice, let pattern, let prices):
+            showResultViewController(basePrice: basePrice, pattern: pattern, prices: prices)
+        }
+    }
+
+    private func showResultViewController(
+        basePrice: Int,
+        pattern: TurnipPricePattern,
+        prices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
+    ) {
+        let resultVC = TurnipPriceResultViewController(
+            basePrice: basePrice,
+            pattern: pattern,
+            prices: prices
+        )
+
+        // 현재 표시 중인 ViewController에서 present
+        if let topViewController = rootViewController.topViewController {
+            topViewController.present(resultVC, animated: true)
+        } else {
+            rootViewController.present(resultVC, animated: true)
         }
     }
 
