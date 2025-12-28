@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TurnipPricesSectionsView: View {
+    let reactor: TurnipPricesReactor
+
     var body: some View {
         ScrollView {
             VStack(spacing: .zero) {
@@ -15,7 +17,11 @@ struct TurnipPricesSectionsView: View {
                     title: "turnipPatternSectionTitle".localized,
                     iconName: "checkmark.circle.dotted"
                 ) {
-                    TurnipPricesPatternSelectionView()
+                    TurnipPricesPatternSelectionView(
+                        onPatternSelected: { pattern in
+                            reactor.action.onNext(.selectPattern(pattern))
+                        }
+                    )
                 }
                 .padding(.bottom, 25)
 
@@ -23,7 +29,14 @@ struct TurnipPricesSectionsView: View {
                     title: "turnipPriceSectionTitle".localized,
                     iconName: "pencil"
                 ) {
-                    TurnipPricesInputView()
+                    TurnipPricesInputView(
+                        onSundayPriceChanged: { price in
+                            reactor.action.onNext(.updateSundayPrice(price))
+                        },
+                        onPriceChanged: { day, period, price in
+                            reactor.action.onNext(.updatePrice(day: day, period: period, price: price))
+                        }
+                    )
                 }
                 .padding(.bottom, 14)
 
@@ -34,9 +47,12 @@ struct TurnipPricesSectionsView: View {
                         .fill(SwiftUI.Color(uiColor: .catalogBackground))
                         .frame(width: 72)
                         .overlay {
-                            Text("reset".localized)
+                            Text("turnipReset".localized)
                                 .foregroundColor(SwiftUI.Color(uiColor: .acText))
                                 .font(.system(size: 14, weight: .bold))
+                        }
+                        .onTapGesture {
+                            // TODO: 초기화 기능 추가
                         }
 
                     RoundedRectangle(cornerRadius: 14)
@@ -46,6 +62,9 @@ struct TurnipPricesSectionsView: View {
                             Text("showResults".localized)
                                 .foregroundColor(SwiftUI.Color.black)
                                 .font(.system(size: 14, weight: .bold))
+                        }
+                        .onTapGesture {
+                            reactor.action.onNext(.calculate)
                         }
                 }
                 .frame(height: 36)

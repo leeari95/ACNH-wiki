@@ -23,6 +23,9 @@ struct TurnipPricesInputView: View {
     @State var saturdayAM: String = ""
     @State var saturdayPM: String = ""
 
+    var onSundayPriceChanged: ((String) -> Void)?
+    var onPriceChanged: ((TurnipPricesReactor.DayOfWeek, TurnipPricesReactor.Period, String) -> Void)?
+
     var body: some View {
         VStack(spacing: 15) {
             // 일요일
@@ -46,22 +49,25 @@ struct TurnipPricesInputView: View {
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 16)
+                        .onChange(of: sunday) { newValue in
+                            onSundayPriceChanged?(newValue)
+                        }
                     }
             }
 
-            dayRow(label: "monday".localized, amBinding: $mondayAM, pmBinding: $mondayPM)
-            dayRow(label: "tuesday".localized, amBinding: $tuesdayAM, pmBinding: $tuesdayPM)
-            dayRow(label: "wednesday".localized, amBinding: $wednesdayAM, pmBinding: $wednesdayPM)
-            dayRow(label: "thursday".localized, amBinding: $thursdayAM, pmBinding: $thursdayPM)
-            dayRow(label: "friday".localized, amBinding: $fridayAM, pmBinding: $fridayPM)
-            dayRow(label: "saturday".localized, amBinding: $saturdayAM, pmBinding: $saturdayPM)
+            dayRow(label: "monday".localized, day: .monday, amBinding: $mondayAM, pmBinding: $mondayPM)
+            dayRow(label: "tuesday".localized, day: .tuesday, amBinding: $tuesdayAM, pmBinding: $tuesdayPM)
+            dayRow(label: "wednesday".localized, day: .wednesday, amBinding: $wednesdayAM, pmBinding: $wednesdayPM)
+            dayRow(label: "thursday".localized, day: .thursday, amBinding: $thursdayAM, pmBinding: $thursdayPM)
+            dayRow(label: "friday".localized, day: .friday, amBinding: $fridayAM, pmBinding: $fridayPM)
+            dayRow(label: "saturday".localized, day: .saturday, amBinding: $saturdayAM, pmBinding: $saturdayPM)
         }
         .padding(.vertical, 5)
         .padding(.horizontal, 6)
     }
 
     @ViewBuilder
-    private func dayRow(label: String, amBinding: Binding<String>, pmBinding: Binding<String>) -> some View {
+    private func dayRow(label: String, day: TurnipPricesReactor.DayOfWeek, amBinding: Binding<String>, pmBinding: Binding<String>) -> some View {
         HStack(spacing: 30) {
             Text(label)
                 .font(.system(size: 17, weight: .semibold))
@@ -82,6 +88,9 @@ struct TurnipPricesInputView: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
+                    .onChange(of: amBinding.wrappedValue) { newValue in
+                        onPriceChanged?(day, .am, newValue)
+                    }
                 }
 
             RoundedRectangle(cornerRadius: 14)
@@ -100,6 +109,9 @@ struct TurnipPricesInputView: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
+                    .onChange(of: pmBinding.wrappedValue) { newValue in
+                        onPriceChanged?(day, .pm, newValue)
+                    }
                 }
         }
     }

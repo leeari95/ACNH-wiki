@@ -12,16 +12,19 @@ import SwiftUI
 final class TurnipPricesViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
+    private var reactor: TurnipPricesReactor?
 
-    private lazy var hostingController: UIHostingController<TurnipPricesSectionsView> = {
-        let controller = UIHostingController(rootView: TurnipPricesSectionsView())
+    private lazy var hostingController: UIHostingController<TurnipPricesSectionsView>? = {
+        guard let reactor = reactor else { return nil }
+        let controller = UIHostingController(rootView: TurnipPricesSectionsView(reactor: reactor))
         controller.view.backgroundColor = .clear
         return controller
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpViews()
+        setUpNavigationItem()
+        view.backgroundColor = .acBackground
     }
 
     private func setUpNavigationItem() {
@@ -29,16 +32,19 @@ final class TurnipPricesViewController: UIViewController {
     }
 
     func bind(to reactor: TurnipPricesReactor) {
+        self.reactor = reactor
+
         self.rx.viewDidLoad
             .map { TurnipPricesReactor.Action.fetch }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
+
+        setUpHostingController()
     }
 
-    private func setUpViews() {
-        setUpNavigationItem()
-        view.backgroundColor = .acBackground
+    private func setUpHostingController() {
+        guard let hostingController = hostingController else { return }
 
         addChild(hostingController)
         view.addSubviews(hostingController.view)
