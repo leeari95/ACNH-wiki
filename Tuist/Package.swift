@@ -17,7 +17,9 @@ import PackageDescription
             "RxDataSources": .framework,
             "ReactorKit": .framework,
             "RxCocoaRuntime" : .framework,
-            "RxRelay" : .framework
+            "RxRelay" : .framework,
+            "RxTest" : .framework,
+            "RxBlocking" : .framework
         ],
         baseSettings: .settings(
             base: [

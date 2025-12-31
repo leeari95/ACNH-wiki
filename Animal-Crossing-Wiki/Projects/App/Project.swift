@@ -10,6 +10,12 @@ let dependencies: [TargetDependency] = [
     .SPM.FirebaseCrashlytics
 ]
 
+let testDependencies: [TargetDependency] = [
+    .target(name: "ACNH-wiki"),
+    .SPM.RxTest,
+    .SPM.RxBlocking
+]
+
 let appPrivacyInfo: PrivacyManifest = .privacyManifest(
     tracking: false,
     trackingDomains: [],
@@ -53,7 +59,7 @@ let schemes: [Scheme] = [
         name: "ACNH-wiki",
         shared: true,
         buildAction: .buildAction(targets: ["ACNH-wiki"]),
-        testAction: nil,
+        testAction: .testAction(targets: ["ACNH-wikiTests"]),
         runAction: .runAction(
             configuration: .debug,
             executable: "ACNH-wiki",
@@ -93,11 +99,21 @@ let project = Project(
             coreDataModels: [
                 CoreDataModel.coreDataModel("Sources/CoreDataStorage/CoreDataStorage.xcdatamodeld")
             ]
+        ),
+        .target(
+            name: "ACNH-wikiTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "leeari.NookPortalPlus.tests",
+            deploymentTargets: .iOS("16.0"),
+            infoPlist: .default,
+            sources: ["Tests/**"],
+            dependencies: testDependencies
         )
     ],
     schemes: schemes,
     additionalFiles: [
         .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/Base.xcconfig")),
         .glob(pattern: .relativeToRoot("Animal-Crossing-Wiki/Configurations/TargetVersion.xcconfig"))
-    ],
+    ]
 )
