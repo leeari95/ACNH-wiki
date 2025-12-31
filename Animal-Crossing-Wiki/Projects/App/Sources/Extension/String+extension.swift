@@ -27,7 +27,7 @@ extension String {
     var isChosung: Bool {
         var isChosung = false
         for char in self {
-            if 0 < hangul.filter({ $0.contains(char)}).count {
+            if !hangul.filter({ $0.contains(char)}).isEmpty {
                 isChosung = true
             } else {
                 isChosung = false

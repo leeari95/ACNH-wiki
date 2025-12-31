@@ -59,11 +59,33 @@ struct MiscellaneousResponseDTO: Decodable {
 }
 
 extension MiscellaneousResponseDTO: DomainConvertible {
+
+    private static let flowerPatterns: [String] = [
+        "cosmos", "rose", "tulip", "lily", "lilies", "pansy", "pansies",
+        "hyacinth", "windflower", "mum", "lily-of-the-valley"
+    ]
+
+    private var isFlower: Bool {
+        guard tag.lowercased() == "plants" else { return false }
+        let lowercasedName = name.lowercased()
+        return Self.flowerPatterns.contains { lowercasedName.contains($0) }
+    }
+
     func toDomain() -> Item {
         let image = image ?? variations?.first?.image
+
+        let category: Category
+        if foodPower != nil {
+            category = .cooking
+        } else if isFlower {
+            category = .flowers
+        } else {
+            category = .miscellaneous
+        }
+
         return Item(
             name: name,
-            category: .miscellaneous,
+            category: category,
             image: image,
             diy: diy,
             bodyCustomize: bodyCustomize,

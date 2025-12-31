@@ -300,7 +300,7 @@ final class ItemsReactor: Reactor {
         }
     }
 
-    private func setUpUserItem() ->  Observable<[Item]> {
+    private func setUpUserItem() -> Observable<[Item]> {
         switch mode {
         case .all:
             return Items.shared.itemList
