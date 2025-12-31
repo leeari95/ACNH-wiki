@@ -20,6 +20,7 @@ final class AppCoordinator: Coordinator {
     }
 
     func start() {
+        showTutorialIfNeeded()
         // iPad에서도 하단 탭바 사용
         if #available(iOS 18.0, *) {
             rootViewController.mode = .tabBar
@@ -57,6 +58,19 @@ final class AppCoordinator: Coordinator {
         viewController.tabBarItem = tabBarItem
 
         rootViewController.addChild(viewController)
+    }
+
+    private func showTutorialIfNeeded() {
+        guard TutorialReactor.shouldShowTutorial() else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let tutorialVC = TutorialViewController()
+            let reactor = TutorialReactor()
+            tutorialVC.bind(to: reactor)
+            tutorialVC.modalPresentationStyle = .fullScreen
+            self.rootViewController.present(tutorialVC, animated: true)
+        }
     }
 }
 

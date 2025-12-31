@@ -28,4 +28,5 @@ enum CoordinatorType {
     case animals
     case catalog
     case collection
+    case tutorial
 }
