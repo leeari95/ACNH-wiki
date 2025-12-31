@@ -11,13 +11,30 @@ import RxCocoa
 
 final class TutorialViewController: UIViewController {
 
+    // MARK: - Types
+
+    struct PageContent {
+        let imageName: String
+        let title: String
+        let description: String
+    }
+
+    // MARK: - Constants
+
+    static let pageContents: [PageContent] = [
+        PageContent(imageName: "leaf.fill", title: "Tutorial.welcome.title".localized, description: "Tutorial.welcome.description".localized),
+        PageContent(imageName: "book.fill", title: "Tutorial.catalog.title".localized, description: "Tutorial.catalog.description".localized),
+        PageContent(imageName: "heart.fill", title: "Tutorial.collection.title".localized, description: "Tutorial.collection.description".localized),
+        PageContent(imageName: "checkmark.seal.fill", title: "Tutorial.tasks.title".localized, description: "Tutorial.tasks.description".localized),
+        PageContent(imageName: "gearshape.fill", title: "Tutorial.settings.title".localized, description: "Tutorial.settings.description".localized)
+    ]
+
     // MARK: - Properties
 
     private let disposeBag = DisposeBag()
-    private var reactor: TutorialReactor?
+    private let reactor: TutorialReactor
 
     private var pages: [TutorialPageViewController] = []
-    private var currentIndex: Int = 0
 
     // MARK: - UI Components
 
@@ -60,12 +77,24 @@ final class TutorialViewController: UIViewController {
         return button
     }()
 
+    // MARK: - Initialization
+
+    init(reactor: TutorialReactor) {
+        self.reactor = reactor
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
         setUpPages()
+        bind()
     }
 
     // MARK: - Setup
@@ -102,15 +131,7 @@ final class TutorialViewController: UIViewController {
     }
 
     private func setUpPages() {
-        let pageContents: [(imageName: String, title: String, description: String)] = [
-            ("leaf.fill", "Tutorial.welcome.title".localized, "Tutorial.welcome.description".localized),
-            ("book.fill", "Tutorial.catalog.title".localized, "Tutorial.catalog.description".localized),
-            ("heart.fill", "Tutorial.collection.title".localized, "Tutorial.collection.description".localized),
-            ("checkmark.seal.fill", "Tutorial.tasks.title".localized, "Tutorial.tasks.description".localized),
-            ("gearshape.fill", "Tutorial.settings.title".localized, "Tutorial.settings.description".localized)
-        ]
-
-        pages = pageContents.enumerated().map { index, content in
+        pages = Self.pageContents.enumerated().map { index, content in
             TutorialPageViewController(
                 imageName: content.imageName,
                 titleText: content.title,
@@ -129,9 +150,7 @@ final class TutorialViewController: UIViewController {
 
     // MARK: - Binding
 
-    func bind(to reactor: TutorialReactor) {
-        self.reactor = reactor
-
+    private func bind() {
         // Skip button action
         skipButton.rx.tap
             .map { TutorialReactor.Action.skip }
@@ -140,24 +159,28 @@ final class TutorialViewController: UIViewController {
 
         // Next button action
         nextButton.rx.tap
-            .subscribe(onNext: { [weak self] in
+            .map { TutorialReactor.Action.nextPage }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        // State binding - currentPage (이전 페이지와 현재 페이지를 함께 추적하여 방향 결정)
+        reactor.state
+            .map { $0.currentPage }
+            .distinctUntilChanged()
+            .scan((previous: 0, current: 0)) { accumulated, newValue in
+                (previous: accumulated.current, current: newValue)
+            }
+            .skip(1) // 초기 상태 스킵 (setUpPages에서 이미 첫 페이지 설정됨)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] pageChange in
                 guard let self = self else { return }
-                if self.currentIndex < self.pages.count - 1 {
-                    self.currentIndex += 1
-                    self.pageViewController.setViewControllers(
-                        [self.pages[self.currentIndex]],
-                        direction: .forward,
-                        animated: true
-                    )
-                    self.pageControl.currentPage = self.currentIndex
-                    self.updateButtonTitle()
-                } else {
-                    reactor.action.onNext(.complete)
-                }
+                self.navigateToPage(from: pageChange.previous, to: pageChange.current)
+                self.pageControl.currentPage = pageChange.current
+                self.updateButtonTitle(for: pageChange.current)
             })
             .disposed(by: disposeBag)
 
-        // State binding
+        // State binding - isCompleted
         reactor.state
             .map { $0.isCompleted }
             .distinctUntilChanged()
@@ -169,8 +192,23 @@ final class TutorialViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    private func updateButtonTitle() {
-        let isLastPage = currentIndex == pages.count - 1
+    private func navigateToPage(from previousPage: Int, to currentPage: Int) {
+        guard currentPage >= 0, currentPage < pages.count else { return }
+        // 스와이프로 이미 페이지가 변경된 경우, 불필요한 애니메이션 방지
+        guard let currentVC = pageViewController.viewControllers?.first as? TutorialPageViewController,
+              currentVC.pageIndex != currentPage else {
+            return
+        }
+        let direction: UIPageViewController.NavigationDirection = currentPage > previousPage ? .forward : .reverse
+        pageViewController.setViewControllers(
+            [pages[currentPage]],
+            direction: direction,
+            animated: true
+        )
+    }
+
+    private func updateButtonTitle(for pageIndex: Int) {
+        let isLastPage = pageIndex == pages.count - 1
         let title = isLastPage ? "Tutorial.start".localized : "Tutorial.next".localized
         nextButton.setTitle(title, for: .normal)
     }
@@ -217,8 +255,7 @@ extension TutorialViewController: UIPageViewControllerDelegate {
               let currentVC = pageViewController.viewControllers?.first as? TutorialPageViewController else {
             return
         }
-        currentIndex = currentVC.pageIndex
-        pageControl.currentPage = currentIndex
-        updateButtonTitle()
+        // 스와이프로 페이지 변경 시 Reactor에 상태 업데이트
+        reactor.action.onNext(.setCurrentPage(currentVC.pageIndex))
     }
 }

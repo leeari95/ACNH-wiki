@@ -45,7 +45,7 @@ final class TutorialPageViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title1).bold()
+        label.font = .preferredFont(for: .title1, weight: .bold)
         label.textColor = .acText
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -118,16 +118,5 @@ final class TutorialPageViewController: UIViewController {
         iconImageView.image = UIImage(systemName: imageName)
         titleLabel.text = titleText
         descriptionLabel.text = descriptionText
-    }
-}
-
-// MARK: - UIFont Extension
-
-private extension UIFont {
-    func bold() -> UIFont {
-        guard let descriptor = fontDescriptor.withSymbolicTraits(.traitBold) else {
-            return self
-        }
-        return UIFont(descriptor: descriptor, size: pointSize)
     }
 }
