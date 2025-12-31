@@ -39,9 +39,18 @@ struct OtherResponseDTO: Decodable {
 
 extension OtherResponseDTO : DomainConvertible {
     func toDomain() -> Item {
+        let category: Category
+        if foodPower != nil {
+            category = .cooking
+        } else if tag.lowercased() == "flower" {
+            category = .flowers
+        } else {
+            category = .other
+        }
+
         return Item(
             name: name,
-            category: .other,
+            category: category,
             iconImage: inventoryImage,
             image: storageImage ?? inventoryImage,
             diy: diy,

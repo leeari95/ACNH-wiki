@@ -61,9 +61,19 @@ struct MiscellaneousResponseDTO: Decodable {
 extension MiscellaneousResponseDTO: DomainConvertible {
     func toDomain() -> Item {
         let image = image ?? variations?.first?.image
+
+        let category: Category
+        if foodPower != nil {
+            category = .cooking
+        } else if tag.lowercased() == "flower" {
+            category = .flowers
+        } else {
+            category = .miscellaneous
+        }
+
         return Item(
             name: name,
-            category: .miscellaneous,
+            category: category,
             image: image,
             diy: diy,
             bodyCustomize: bodyCustomize,

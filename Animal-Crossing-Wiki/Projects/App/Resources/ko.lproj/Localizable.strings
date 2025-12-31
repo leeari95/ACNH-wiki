@@ -156,6 +156,8 @@
 "Gyroids" = "토용";
 "Villager" = "마을주민";
 "Tools" = "도구";
+"Cooking" = "요리";
+"Flowers" = "꽃";
 
 // MARK: - ItemsViewController
 "To catch now" = "아직 늦지 않았어요!";
