@@ -20,15 +20,12 @@ final class EventCalendarSectionReactor: Reactor {
 
     struct State {
         var events: [ACNHEvent] = []
-        var ongoingEvents: [ACNHEvent] = []
-        var upcomingEvents: [ACNHEvent] = []
     }
 
     let initialState: State
-    private let coordinator: DashboardCoordinator
 
     init(coordinator: DashboardCoordinator) {
-        self.coordinator = coordinator
+        // coordinator is reserved for future use (e.g., event detail navigation)
         self.initialState = State()
     }
 
@@ -45,8 +42,6 @@ final class EventCalendarSectionReactor: Reactor {
         switch mutation {
         case .setEvents(let events):
             newState.events = events
-            newState.ongoingEvents = events.filter { $0.isOngoing }
-            newState.upcomingEvents = events.filter { $0.isUpcoming && !$0.isOngoing }
         }
         return newState
     }

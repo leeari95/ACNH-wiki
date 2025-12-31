@@ -21,30 +21,19 @@ struct ACNHEvent: Equatable {
         let currentMonth = calendar.component(.month, from: today)
         let currentDay = calendar.component(.day, from: today)
 
+        let currentDayOfYear = currentMonth * 100 + currentDay
+        let startDayOfYear = startDate.month * 100 + startDate.day
+
         if let endDate = endDate {
-            // Range event
-            if startDate.month == endDate.month {
-                // Same month
-                return currentMonth == startDate.month &&
-                       currentDay >= startDate.day &&
-                       currentDay <= endDate.day
-            } else if startDate.month < endDate.month {
-                // Different months (same year logic)
-                if currentMonth == startDate.month {
-                    return currentDay >= startDate.day
-                } else if currentMonth == endDate.month {
-                    return currentDay <= endDate.day
-                } else {
-                    return currentMonth > startDate.month && currentMonth < endDate.month
-                }
+            let endDayOfYear = endDate.month * 100 + endDate.day
+
+            if startDate.month <= endDate.month {
+                // Same year range (e.g., 4/1 - 4/12 or 6/1 - 8/31)
+                return currentDayOfYear >= startDayOfYear && currentDayOfYear <= endDayOfYear
             } else {
-                // Year wrap (e.g., December to January)
-                if currentMonth >= startDate.month {
-                    return currentDay >= startDate.day || currentMonth > startDate.month
-                } else if currentMonth <= endDate.month {
-                    return currentDay <= endDate.day || currentMonth < endDate.month
-                }
-                return false
+                // Year wrap (e.g., 12/11 - 2/24)
+                // Event is ongoing if current date is after start OR before end
+                return currentDayOfYear >= startDayOfYear || currentDayOfYear <= endDayOfYear
             }
         } else {
             // Single day event
@@ -100,6 +89,8 @@ struct EventDate: Equatable {
     let day: Int
 
     init(month: Int, day: Int) {
+        precondition((1...12).contains(month), "Month must be between 1 and 12")
+        precondition((1...31).contains(day), "Day must be between 1 and 31")
         self.month = month
         self.day = day
     }
@@ -116,8 +107,7 @@ enum EventType: String, CaseIterable {
 // MARK: - Static Event Data
 extension ACNHEvent {
 
-    static var allEvents: [ACNHEvent] {
-        return [
+    static let allEvents: [ACNHEvent] = [
             // Fishing Tournaments (2nd Saturday of each month)
             ACNHEvent(
                 id: "fishing_tournament_jan",
@@ -331,10 +321,18 @@ extension ACNHEvent {
                 endDate: EventDate(month: 2, day: 24),
                 eventType: .seasonal
             )
-        ]
-    }
+    ]
 
     static var currentAndUpcomingEvents: [ACNHEvent] {
+        let calendar = Calendar.current
+        let currentMonth = calendar.component(.month, from: Date())
+
+        // Helper function to calculate relative distance from current month
+        func relativeMonthDistance(for month: Int) -> Int {
+            let distance = month - currentMonth
+            return distance >= 0 ? distance : distance + 12
+        }
+
         let sortedEvents = allEvents.sorted { event1, event2 in
             // Ongoing events first
             if event1.isOngoing && !event2.isOngoing {
@@ -343,9 +341,12 @@ extension ACNHEvent {
                 return false
             }
 
-            // Then sort by date
-            if event1.startDate.month != event2.startDate.month {
-                return event1.startDate.month < event2.startDate.month
+            // Sort by relative distance from current month
+            let distance1 = relativeMonthDistance(for: event1.startDate.month)
+            let distance2 = relativeMonthDistance(for: event2.startDate.month)
+
+            if distance1 != distance2 {
+                return distance1 < distance2
             }
             return event1.startDate.day < event2.startDate.day
         }
@@ -358,15 +359,17 @@ extension ACNHEvent {
         let currentMonth = calendar.component(.month, from: Date())
 
         return allEvents.filter { event in
-            if event.startDate.month == currentMonth {
+            // Single day event in current month
+            if event.startDate.month == currentMonth && event.endDate == nil {
                 return true
             }
+
             if let endDate = event.endDate {
-                if event.startDate.month <= currentMonth && endDate.month >= currentMonth {
-                    return true
-                }
-                // Year wrap case
-                if event.startDate.month > endDate.month {
+                if event.startDate.month <= endDate.month {
+                    // Same year range (e.g., 4/1 - 4/12 or 6/1 - 8/31)
+                    return currentMonth >= event.startDate.month && currentMonth <= endDate.month
+                } else {
+                    // Year wrap case (e.g., 12/11 - 2/24)
                     return currentMonth >= event.startDate.month || currentMonth <= endDate.month
                 }
             }

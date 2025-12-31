@@ -11,7 +11,12 @@ import RxSwift
 final class EventCalendarView: UIView {
 
     private let disposeBag = DisposeBag()
-    private var heightConstraint: NSLayoutConstraint!
+
+    private lazy var heightConstraint: NSLayoutConstraint = {
+        let constraint = heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+        constraint.priority = .defaultHigh
+        return constraint
+    }()
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -34,9 +39,6 @@ final class EventCalendarView: UIView {
     private func configure() {
         addSubviews(stackView, emptyLabel)
 
-        heightConstraint = heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
-        heightConstraint.priority = .defaultHigh
-
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -54,6 +56,7 @@ final class EventCalendarView: UIView {
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.events }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] events in
                 self?.updateUI(with: events)
@@ -91,6 +94,7 @@ final class EventCalendarView: UIView {
         nameLabel.text = event.name.localized
         nameLabel.textColor = event.isOngoing ? .acText : .acSecondaryText
         nameLabel.font = .preferredFont(for: .callout, weight: event.isOngoing ? .semibold : .regular)
+        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         let dateLabel = UILabel()
         dateLabel.text = event.dateDisplayString
@@ -100,7 +104,7 @@ final class EventCalendarView: UIView {
 
         let statusLabel = UILabel()
         if event.isOngoing {
-            statusLabel.text = "Ongoing".localized
+            statusLabel.text = " \("Ongoing".localized) "
             statusLabel.textColor = .acNavigationBarTint
             statusLabel.font = .preferredFont(for: .caption2, weight: .bold)
             statusLabel.backgroundColor = .acNavigationBarTint.withAlphaComponent(0.2)
@@ -146,7 +150,7 @@ extension EventCalendarView {
 
     convenience init(_ reactor: EventCalendarSectionReactor) {
         self.init(frame: .zero)
-        bind(to: reactor)
         configure()
+        bind(to: reactor)
     }
 }
