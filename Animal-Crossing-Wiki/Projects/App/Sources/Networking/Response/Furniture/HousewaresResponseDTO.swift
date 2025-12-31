@@ -85,10 +85,18 @@ struct FurnitureTranslations: Decodable {
     }
 }
 
-enum Catalog: String, Codable {
+enum Catalog: String, Codable, CaseIterable {
     case forSale = "For sale"
     case notForSale = "Not for sale"
     case seasonal = "Seasonal"
+
+    var localizedName: String {
+        rawValue.localized
+    }
+
+    static func from(localizedString: String) -> Catalog? {
+        allCases.first { $0.localizedName == localizedString }
+    }
 }
 
 enum ExchangeCurrency: String, Codable {
