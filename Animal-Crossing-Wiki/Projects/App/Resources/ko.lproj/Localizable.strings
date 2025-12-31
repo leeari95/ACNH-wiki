@@ -1524,3 +1524,19 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+
+// MARK: - Tutorial
+"Tutorial.skip" = "건너뛰기";
+"Tutorial.next" = "다음";
+"Tutorial.start" = "시작하기";
+"Tutorial.welcome.title" = "동물의 숲 위키에 오신 것을 환영합니다!";
+"Tutorial.welcome.description" = "모여봐요 동물의 숲의 모든 정보를 한 곳에서 확인하세요. 아이템, 주민, 수집품 등 다양한 정보를 제공합니다.";
+"Tutorial.catalog.title" = "카탈로그";
+"Tutorial.catalog.description" = "가구, 옷, 레시피 등 게임 내 모든 아이템을 검색하고 상세 정보를 확인할 수 있습니다.";
+"Tutorial.collection.title" = "수집 기능";
+"Tutorial.collection.description" = "보유한 아이템을 체크하고 수집 현황을 한눈에 파악하세요. 놓친 아이템도 쉽게 확인할 수 있습니다.";
+"Tutorial.tasks.title" = "일일 할일";
+"Tutorial.tasks.description" = "매일 해야 할 일들을 체크리스트로 관리하세요. 바위 캐기, 화석 찾기 등 일일 미션을 놓치지 마세요.";
+"Tutorial.settings.title" = "설정";
+"Tutorial.settings.description" = "섬 정보와 반구를 설정하면 현재 시즌에 맞는 정보를 받아볼 수 있습니다.";

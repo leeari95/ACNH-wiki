@@ -1519,3 +1519,19 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+
+// MARK: - Tutorial
+"Tutorial.skip" = "Skip";
+"Tutorial.next" = "Next";
+"Tutorial.start" = "Get Started";
+"Tutorial.welcome.title" = "Welcome to Animal Crossing Wiki!";
+"Tutorial.welcome.description" = "Find all information about Animal Crossing: New Horizons in one place. We provide details about items, villagers, collectibles, and more.";
+"Tutorial.catalog.title" = "Catalog";
+"Tutorial.catalog.description" = "Search for all in-game items including furniture, clothing, recipes, and view detailed information.";
+"Tutorial.collection.title" = "Collection";
+"Tutorial.collection.description" = "Track your owned items and see your collection progress at a glance. Easily find items you might have missed.";
+"Tutorial.tasks.title" = "Daily Tasks";
+"Tutorial.tasks.description" = "Manage your daily tasks with a checklist. Never miss daily missions like hitting rocks or finding fossils.";
+"Tutorial.settings.title" = "Settings";
+"Tutorial.settings.description" = "Set your island info and hemisphere to receive season-appropriate information.";

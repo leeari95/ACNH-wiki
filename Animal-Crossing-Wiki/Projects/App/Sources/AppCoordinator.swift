@@ -48,6 +48,9 @@ final class AppCoordinator: Coordinator {
         collectionCoordinator.setUpParent(to: self)
         addViewController(collectionCoordinator.rootViewController, title: "Collection".localized, icon: "icon-cardboard-tabbar")
         childCoordinators.append(collectionCoordinator)
+
+        // 탭바 설정 후 튜토리얼 표시 (view hierarchy가 완전히 설정된 후)
+        showTutorialIfNeeded()
     }
 
     private func addViewController(_ viewController: UIViewController, title: String, icon: String) {
@@ -57,6 +60,19 @@ final class AppCoordinator: Coordinator {
         viewController.tabBarItem = tabBarItem
 
         rootViewController.addChild(viewController)
+    }
+
+    private func showTutorialIfNeeded() {
+        guard TutorialReactor.shouldShowTutorial() else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let totalPages = TutorialViewController.pageContents.count
+            let reactor = TutorialReactor(totalPages: totalPages)
+            let tutorialVC = TutorialViewController(reactor: reactor)
+            tutorialVC.modalPresentationStyle = .fullScreen
+            self.rootViewController.present(tutorialVC, animated: true)
+        }
     }
 }
 
