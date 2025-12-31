@@ -30,16 +30,26 @@ struct DefaultAPIProvider: APIProvider {
         )
     }
 
-    private let networkMonitor: NetworkMonitor
+    private let networkMonitor: NetworkMonitoring
     private let configuration: RetryConfiguration
 
     // MARK: - Initialization
     init(
-        networkMonitor: NetworkMonitor = .shared,
+        networkMonitor: NetworkMonitoring = NetworkMonitor.shared,
         configuration: RetryConfiguration = .default
     ) {
         self.networkMonitor = networkMonitor
         self.configuration = configuration
+    }
+
+    // MARK: - Backoff Calculation
+
+    /// 지수 백오프 지연 시간 계산 (RetryConfiguration 사용)
+    private func calculateBackoffDelay(retryCount: Int) -> TimeInterval {
+        let exponentialDelay = configuration.baseDelay * pow(2.0, Double(retryCount))
+        // 무작위 지터(jitter) 추가로 thundering herd 문제 방지
+        let jitter = Double.random(in: 0...0.5) * exponentialDelay
+        return min(exponentialDelay + jitter, configuration.maxDelay)
     }
 
     // MARK: - APIProvider
@@ -81,6 +91,9 @@ struct DefaultAPIProvider: APIProvider {
     }
 
     /// 네트워크 연결이 없을 때 처리
+    /// - Note: enableAutoRetryOnReconnect가 true인 경우, 요청을 대기열에 추가하고 네트워크 복구 시 자동으로 재시도합니다.
+    ///         이 경우 completion은 재시도 후 결과로만 호출됩니다.
+    ///         enableAutoRetryOnReconnect가 false인 경우, 즉시 networkUnavailable 에러로 completion을 호출합니다.
     private func handleNetworkUnavailable<T: APIRequest>(
         _ request: T,
         completion: @escaping (Result<T.Response, Error>) -> Void
@@ -88,18 +101,30 @@ struct DefaultAPIProvider: APIProvider {
         os_log(
             .info,
             log: .default,
-            "Network unavailable - enqueueing request for retry: %@",
+            "Network unavailable - %@: %@",
+            configuration.enableAutoRetryOnReconnect ? "enqueueing request for retry" : "failing immediately",
             String(describing: T.self)
         )
 
         if configuration.enableAutoRetryOnReconnect {
             // 네트워크 복구 시 자동 재시도를 위해 대기 큐에 추가
-            networkMonitor.enqueuePendingRequest(maxRetries: configuration.maxRetries) { [self] in
-                self.request(request, completion: completion)
-            }
+            // completion은 재시도 후에만 호출됨 (이중 호출 방지)
+            // Note: struct이므로 캡처 시 self의 복사본이 사용됨
+            let provider = self
+            networkMonitor.enqueuePendingRequest(
+                maxRetries: configuration.maxRetries,
+                onExecute: {
+                    provider.request(request, completion: completion)
+                },
+                onFailure: { error in
+                    // 대기 요청이 만료되거나 재시도 횟수를 초과한 경우
+                    completion(.failure(error))
+                }
+            )
+        } else {
+            // 자동 재시도가 비활성화된 경우에만 즉시 에러 반환
+            completion(.failure(APIError.networkUnavailable))
         }
-
-        completion(.failure(APIError.networkUnavailable))
     }
 
     /// 요청 실패 처리
@@ -125,10 +150,11 @@ struct DefaultAPIProvider: APIProvider {
 
         logFailure(request: request, error: error, retryCount: retryCount, willRetry: true)
 
-        // 지수 백오프 적용
+        // 지수 백오프 적용 (RetryConfiguration의 설정 사용)
         let delay = calculateBackoffDelay(retryCount: retryCount)
 
-        DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+        // 메인 스레드에서 completion이 호출되도록 보장
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.requestWithRetry(request, retryCount: retryCount + 1, completion: completion)
         }
     }
@@ -141,14 +167,19 @@ struct DefaultAPIProvider: APIProvider {
     }
 
     /// AFError를 APIError로 변환
+    /// - Note: 재시도 가능한 에러를 적절히 분류하여 재시도 로직이 동작하도록 합니다.
     private func mapToAPIError(_ error: AFError) -> APIError? {
         switch error {
         case .sessionTaskFailed(let urlError as URLError):
             switch urlError.code {
-            case .notConnectedToInternet, .networkConnectionLost, .cannotConnectToHost:
+            case .notConnectedToInternet, .networkConnectionLost, .cannotConnectToHost,
+                 .dataNotAllowed, .internationalRoamingOff:
                 return .networkUnavailable
             case .timedOut:
                 return .statusCode(code: 408, message: "Request Timeout")
+            case .dnsLookupFailed, .cannotFindHost:
+                // DNS 문제는 일시적일 수 있으므로 재시도 가능
+                return .networkUnavailable
             default:
                 return nil
             }
@@ -159,17 +190,21 @@ struct DefaultAPIProvider: APIProvider {
             }
             return nil
 
+        case .responseSerializationFailed:
+            // 응답 직렬화 실패는 서버 문제일 수 있으므로 재시도 가능하도록 500으로 처리
+            // 단, 반복적인 실패를 피하기 위해 재시도는 제한됨
+            return .statusCode(code: 500, message: "Response Serialization Failed")
+
+        case .requestRetryFailed(let retryError, _):
+            // 재시도 자체가 실패한 경우, 원래 에러를 기반으로 처리
+            if let afError = retryError.asAFError {
+                return mapToAPIError(afError)
+            }
+            return nil
+
         default:
             return nil
         }
-    }
-
-    /// 지수 백오프 지연 시간 계산
-    private func calculateBackoffDelay(retryCount: Int) -> TimeInterval {
-        let exponentialDelay = configuration.baseDelay * pow(2.0, Double(retryCount))
-        // 무작위 지터(jitter) 추가로 thundering herd 문제 방지
-        let jitter = Double.random(in: 0...0.5) * exponentialDelay
-        return min(exponentialDelay + jitter, configuration.maxDelay)
     }
 
     /// 실패 로그 기록

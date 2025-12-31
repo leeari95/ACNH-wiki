@@ -10,16 +10,44 @@ import Network
 import RxSwift
 import RxRelay
 
+// MARK: - Protocol
+
+/// 네트워크 모니터링 인터페이스 (테스트 용이성을 위한 프로토콜)
+protocol NetworkMonitoring {
+    var connectionStatus: Observable<NetworkMonitor.ConnectionStatus> { get }
+    var isConnected: Bool { get }
+    var isConnectionStatusKnown: Bool { get }
+    var pendingRequestCount: Observable<Int> { get }
+
+    func startMonitoring()
+    func stopMonitoring()
+    func restartMonitoring()
+
+    @discardableResult
+    func enqueuePendingRequest(
+        maxRetries: Int?,
+        onExecute: @escaping () -> Void,
+        onFailure: @escaping (Error) -> Void
+    ) -> UUID
+
+    func removePendingRequest(id: UUID)
+    func clearPendingRequests()
+    func calculateBackoffDelay(retryCount: Int) -> TimeInterval
+}
+
+// MARK: - NetworkMonitor
+
 /// 네트워크 연결 상태를 모니터링하고, 실패한 요청을 자동 재시도하는 기능을 제공합니다.
-final class NetworkMonitor {
+final class NetworkMonitor: NetworkMonitoring {
 
     // MARK: - Singleton
     static let shared = NetworkMonitor()
 
     // MARK: - Types
-    enum ConnectionStatus {
+    enum ConnectionStatus: Equatable {
         case connected
         case disconnected
+        case unknown
 
         var isConnected: Bool {
             self == .connected
@@ -28,7 +56,8 @@ final class NetworkMonitor {
 
     struct PendingRequest {
         let id: UUID
-        let execute: () -> Void
+        let onExecute: () -> Void
+        let onFailure: (Error) -> Void
         let createdAt: Date
         let retryCount: Int
         let maxRetries: Int
@@ -36,7 +65,8 @@ final class NetworkMonitor {
         func incrementRetry() -> PendingRequest {
             PendingRequest(
                 id: id,
-                execute: execute,
+                onExecute: onExecute,
+                onFailure: onFailure,
                 createdAt: createdAt,
                 retryCount: retryCount + 1,
                 maxRetries: maxRetries
@@ -44,12 +74,29 @@ final class NetworkMonitor {
         }
     }
 
+    /// 대기 요청 만료 에러
+    enum PendingRequestError: LocalizedError {
+        case expired
+        case maxRetriesExceeded
+
+        var errorDescription: String? {
+            switch self {
+            case .expired:
+                return NSLocalizedString("network_monitor_request_expired", comment: "Request expired while waiting for network")
+            case .maxRetriesExceeded:
+                return NSLocalizedString("network_monitor_max_retries", comment: "Maximum retry count exceeded")
+            }
+        }
+    }
+
     // MARK: - Properties
-    private let monitor: NWPathMonitor
+    private var monitor: NWPathMonitor
     private let monitorQueue = DispatchQueue(label: "com.animal-crossing-wiki.network-monitor", qos: .utility)
+    private let pendingRequestsLock = NSLock()
     private let disposeBag = DisposeBag()
 
-    private let connectionStatusRelay = BehaviorRelay<ConnectionStatus>(value: .connected)
+    /// 초기값을 unknown으로 설정하여 실제 상태가 확인되기 전까지 연결 상태를 알 수 없음을 표시
+    private let connectionStatusRelay = BehaviorRelay<ConnectionStatus>(value: .unknown)
     private let pendingRequestsRelay = BehaviorRelay<[PendingRequest]>(value: [])
 
     /// 현재 네트워크 연결 상태
@@ -58,8 +105,17 @@ final class NetworkMonitor {
     }
 
     /// 현재 연결 상태 (동기)
+    /// - Note: 상태가 unknown인 경우 true를 반환하여 낙관적으로 요청을 시도합니다.
+    ///         실제 네트워크가 없으면 요청 실패 시 재시도 로직이 처리합니다.
     var isConnected: Bool {
-        connectionStatusRelay.value.isConnected
+        let status = connectionStatusRelay.value
+        // unknown 상태에서는 낙관적으로 연결됨으로 간주
+        return status == .connected || status == .unknown
+    }
+
+    /// 연결 상태가 확인되었는지 여부
+    var isConnectionStatusKnown: Bool {
+        connectionStatusRelay.value != .unknown
     }
 
     /// 대기 중인 요청 수
@@ -89,12 +145,34 @@ final class NetworkMonitor {
     private let configuration: Configuration
 
     // MARK: - Initialization
-    private init(configuration: Configuration = .default) {
+
+    /// 싱글톤용 private 초기화 (자동으로 모니터링 시작)
+    private init() {
+        self.configuration = .default
+        self.monitor = NWPathMonitor()
+
+        setupMonitoring()
+        setupConnectionRecoveryHandler()
+
+        // 싱글톤 초기화 시 자동으로 모니터링 시작
+        startMonitoring()
+    }
+
+    /// 테스트용 초기화 메서드
+    /// - Note: 테스트 환경에서만 사용하세요. 프로덕션에서는 NetworkMonitor.shared를 사용하세요.
+    /// - Parameters:
+    ///   - configuration: 네트워크 모니터 설정
+    ///   - autoStart: 자동으로 모니터링을 시작할지 여부 (기본값: true)
+    internal init(configuration: Configuration, autoStart: Bool = true) {
         self.configuration = configuration
         self.monitor = NWPathMonitor()
 
         setupMonitoring()
         setupConnectionRecoveryHandler()
+
+        if autoStart {
+            startMonitoring()
+        }
     }
 
     // MARK: - Public Methods
@@ -109,23 +187,38 @@ final class NetworkMonitor {
         monitor.cancel()
     }
 
+    /// 네트워크 모니터링을 재시작합니다.
+    /// NWPathMonitor는 cancel() 후 재사용이 불가능하므로 새 인스턴스를 생성합니다.
+    func restartMonitoring() {
+        monitor.cancel()
+        monitor = NWPathMonitor()
+        setupMonitoring()
+        startMonitoring()
+    }
+
     /// 실패한 요청을 대기 큐에 추가합니다.
     /// - Parameters:
-    ///   - execute: 재시도할 요청 클로저
     ///   - maxRetries: 최대 재시도 횟수 (기본값: Configuration의 maxRetries)
+    ///   - onExecute: 재시도할 요청 클로저
+    ///   - onFailure: 요청이 만료되거나 재시도 횟수를 초과했을 때 호출되는 실패 콜백
     /// - Returns: 요청 ID
     @discardableResult
     func enqueuePendingRequest(
         maxRetries: Int? = nil,
-        execute: @escaping () -> Void
+        onExecute: @escaping () -> Void,
+        onFailure: @escaping (Error) -> Void
     ) -> UUID {
         let request = PendingRequest(
             id: UUID(),
-            execute: execute,
+            onExecute: onExecute,
+            onFailure: onFailure,
             createdAt: Date(),
             retryCount: 0,
             maxRetries: maxRetries ?? configuration.maxRetries
         )
+
+        pendingRequestsLock.lock()
+        defer { pendingRequestsLock.unlock() }
 
         var requests = pendingRequestsRelay.value
         requests.append(request)
@@ -137,6 +230,9 @@ final class NetworkMonitor {
     /// 특정 요청을 대기 큐에서 제거합니다.
     /// - Parameter id: 제거할 요청의 ID
     func removePendingRequest(id: UUID) {
+        pendingRequestsLock.lock()
+        defer { pendingRequestsLock.unlock() }
+
         var requests = pendingRequestsRelay.value
         requests.removeAll { $0.id == id }
         pendingRequestsRelay.accept(requests)
@@ -144,6 +240,9 @@ final class NetworkMonitor {
 
     /// 모든 대기 요청을 제거합니다.
     func clearPendingRequests() {
+        pendingRequestsLock.lock()
+        defer { pendingRequestsLock.unlock() }
+
         pendingRequestsRelay.accept([])
     }
 
@@ -181,33 +280,63 @@ final class NetworkMonitor {
     }
 
     private func processPendingRequests() {
+        pendingRequestsLock.lock()
         let requests = pendingRequestsRelay.value
-        let validRequests = filterExpiredRequests(requests)
-
-        guard !validRequests.isEmpty else {
-            pendingRequestsRelay.accept([])
-            return
-        }
-
+        let (validRequests, expiredRequests) = partitionRequests(requests)
         // 대기 큐 초기화
         pendingRequestsRelay.accept([])
+        pendingRequestsLock.unlock()
+
+        // 만료된 요청들에 대해 onFailure 콜백 호출
+        for request in expiredRequests {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                let error = self.determineFailureReason(for: request)
+                request.onFailure(error)
+            }
+        }
+
+        guard !validRequests.isEmpty else { return }
 
         // 각 요청을 지수 백오프로 재시도
         for (index, request) in validRequests.enumerated() {
             let delay = calculateBackoffDelay(retryCount: request.retryCount)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + delay + Double(index) * 0.1) {
-                request.execute()
+                request.onExecute()
             }
         }
     }
 
-    private func filterExpiredRequests(_ requests: [PendingRequest]) -> [PendingRequest] {
+    /// 요청을 유효한 것과 만료된 것으로 분류합니다.
+    private func partitionRequests(_ requests: [PendingRequest]) -> (valid: [PendingRequest], expired: [PendingRequest]) {
         let now = Date()
-        return requests.filter { request in
+        var valid: [PendingRequest] = []
+        var expired: [PendingRequest] = []
+
+        for request in requests {
             let isNotExpired = now.timeIntervalSince(request.createdAt) < configuration.requestTimeout
             let hasRetriesLeft = request.retryCount < request.maxRetries
-            return isNotExpired && hasRetriesLeft
-        }.map { $0.incrementRetry() }
+
+            if isNotExpired && hasRetriesLeft {
+                valid.append(request.incrementRetry())
+            } else {
+                expired.append(request)
+            }
+        }
+
+        return (valid, expired)
+    }
+
+    /// 요청 실패 이유를 결정합니다.
+    private func determineFailureReason(for request: PendingRequest) -> PendingRequestError {
+        let now = Date()
+        let isExpired = now.timeIntervalSince(request.createdAt) >= configuration.requestTimeout
+
+        if isExpired {
+            return .expired
+        } else {
+            return .maxRetriesExceeded
+        }
     }
 }
