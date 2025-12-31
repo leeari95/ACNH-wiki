@@ -15,6 +15,7 @@
 
 // MARK: - etc
 "cancel" = "Cancel";
+"ok" = "OK";
 "setting" = "Setting";
 
 // MARK: - DashboardViewContrller - section title
@@ -64,13 +65,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";
 
 // MARK: - TaskEditViewController
-"Today's Tasks" = "Today's Tasks";
+// "Today's Tasks" key is already defined above
 
 // MARK: - DailyTask - tasks
 "Hit rocks" = "Hit rocks";
 "Find fossils" = "Find fossils";
 "Find furniture" = "Find furniture";
-"Obtain DIY from vilager" = "Obtain DIY from vilager";
+"Obtain DIY from vilager" = "Obtain DIY from villager";
 "Find bottle message" = "Find bottle message";
 "Find buried bell" = "Find buried bell";
 "Cut down trees" = "Cut down trees";
@@ -120,7 +121,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Game patch data" = "Game patch data";
 
 // MARK: - CollectionProgressViewController
-"Collection Progress" = "Collection Progress";
+// "Collection Progress" key is already defined above
 
 // MARK: - Category
 "fishes" = "Fishes";
@@ -415,7 +416,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Luna" = "Luna";
 "Nook Miles Redemption" = "Nook Miles Redemption";
 "Nook's Cranny" = "Nook's Cranny";
-"Nook's Cranny" = "Nook's Cranny";
 "Nook Shopping Daily Selection" = "Nook Shopping Daily Selection";
 "Nook Shopping Promotion" = "Nook Shopping Promotion";
 "Nook Shopping Seasonal" = "Nook Shopping Seasonal";
@@ -510,7 +510,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Digging up clams" = "Digging up clams";
 "All villagers (while stung)" = "All villagers (while stung)";
-"Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Niko" = "Niko";
 "K.K. concert" = "K.K. concert";
 "Lottie" = "Lottie";
@@ -670,16 +669,16 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "work bench" = "Work Bench";
 "playground" = "Playground";
 "supplies" = "Supplies";
-"desk" = "fesk";
+"desk" = "Desk";
 "kiki & lala" = "Kiki & Lala";
 "chest" = "Chest";
 "sports" = "Sports";
 "plants" = "Plants";
 "cinnamoroll" = "Cinnamoroll";
-"seasonal fecor" = "Seasonal Decor";
+"seasonal decor" = "Seasonal Decor";
 "bathtub" = "Bathtub";
 "shop" = "Shop";
-"home sppliances" = "Home Appliances";
+"home appliances" = "Home Appliances";
 "fan" = "Fan";
 "sofa" = "Sofa";
 "easter" = "Easter";
@@ -1177,7 +1176,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 
 
 // MARK: - ItemOtherInfoView
-"Catalog" = "Catalog";
+// "Catalog" key is already defined above
 "For sale" = "For sale";
 "Not for sale" = "Not for sale";
 "Seasonal" = "Seasonal";

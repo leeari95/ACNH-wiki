@@ -61,7 +61,7 @@ extension UIViewController {
                 }
             )
             alert.addAction(
-                UIAlertAction(title: "OK".localized, style: .default) { _ in
+                UIAlertAction(title: "ok".localized, style: .default) { _ in
                     alert.dismiss(animated: true)
                     observer.onNext(true)
                     observer.onCompleted()

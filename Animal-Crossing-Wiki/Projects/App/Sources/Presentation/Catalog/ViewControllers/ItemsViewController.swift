@@ -99,7 +99,7 @@ final class ItemsViewController: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search...".localized
+        searchController.searchBar.placeholder = "search".localized
         if mode != .user {
             searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
             searchController.searchBar.showsScopeBar = true
@@ -249,10 +249,10 @@ final class ItemsViewController: UIViewController {
         }
         currentSelected = keyword
         if let category = category, Category.critters.contains(category) {
-            navigationItem.title = "To catch now".localized
+            navigationItem.title = "to_catch_now".localized
         } else {
             currentSelected[.month] = nil
-            navigationItem.title = "Currently Available".localized
+            navigationItem.title = "currently_available".localized
         }
         searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
     }

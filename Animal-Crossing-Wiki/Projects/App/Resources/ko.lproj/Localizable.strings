@@ -15,6 +15,7 @@
 
 // MARK: - etc
 "cancel" = "취소";
+"ok" = "확인";
 "setting" = "앱 기본 설정";
 
 // MARK: - DashboardViewContrller - section title
@@ -66,7 +67,7 @@
 "Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 
 // MARK: - TaskEditViewController
-"Today's Tasks" = "오늘의 할일";
+// "Today's Tasks" key is already defined above
 
 // MARK: - DailyTask - tasks
 "Hit rocks" = "바위 캐기";
@@ -95,6 +96,7 @@
 
 // MARK: - Fruit
 "apple" = "사과";
+"orange" = "오렌지";
 "pear" = "배";
 "cherry" = "체리";
 "peach" = "복숭아";
@@ -122,7 +124,7 @@
 "Game patch data" = "게임 데이터 버전";
 
 // MARK: - CollectionProgressViewController
-"Collection Progress" = "수집 현황";
+// "Collection Progress" key is already defined above
 
 // MARK: - Category
 "fishes" = "물고기";
@@ -260,7 +262,7 @@
 
 // MARK: - time
 "11 PM – 4 PM" = "오후 11시 – 오후 4시";
-"11 PM – 8 AM" = "오후 11시 – 오후 8시";
+"11 PM – 8 AM" = "오후 11시 – 오전 8시";
 "4 AM – 5 PM" = "오전 4시 – 오후 5시";
 "4 AM – 9 PM" = "오전 4시 – 오후 9시";
 "4 AM – 7 PM" = "오전 4시 – 오후 7시";
@@ -277,7 +279,7 @@
 "8 AM – 5 PM" = "오전 8시 – 오후 5시";
 "8 AM – 7 PM" = "오전 8시 – 오후 7시";
 "9 AM – 4 PM" = "오전 9시 – 오후 4시";
-"9 PM – 4 AM" = "오후 9시 – 오후 4시";
+"9 PM – 4 AM" = "오후 9시 – 오전 4시";
 "All day" = "하루종일";
 
 // MARK: - NPCViewController
@@ -400,7 +402,7 @@
 "when you check some items, they'll be displayed here." = "아이템에 체크하면 여기에 표시됩니다.";
 
 // MARK: - Source
-"Birthday" = "생일";
+// "Birthday" key is already defined above
 "Brewster" = "마스터";
 "C.J." = "저스틴";
 "Crafting" = "제작";
@@ -817,7 +819,7 @@
 "grassland" = "목초지";
 "iron" = "아이언";
 "iron parquet" = "철판";
-"japanese" = "일본어";
+"japanese" = "일본풍";
 "kitchen floors" = "주방 바닥";
 "luxury" = "럭셔리";
 "machine floor" = "기계 바닥";
@@ -1046,7 +1048,7 @@
 "wooden-block toy" = "나무블록 장난감";
 "wristwatch" = "손목시계";
 "gears" = "톱니바퀴";
-"bama bear" = "중간 곰인형";
+"mama bear" = "중간 곰인형";
 "papa bear" = "큰 곰인형";
 "campfire" = "모닥불";
 "drinking fountain" = "음수대";
