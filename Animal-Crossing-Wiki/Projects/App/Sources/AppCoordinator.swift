@@ -29,13 +29,13 @@ final class AppCoordinator: Coordinator {
         let dashboardCoordinator = DashboardCoordinator()
         dashboardCoordinator.start()
         dashboardCoordinator.setUpParent(to: self)
-        addViewController(dashboardCoordinator.rootViewController, title: "Dashboard".localized, icon: "icon-bells-tabbar")
+        addViewController(dashboardCoordinator.rootViewController, title: "dashboard".localized, icon: "icon-bells-tabbar")
         childCoordinators.append(dashboardCoordinator)
 
         let catalogCoordinator = CatalogCoordinator()
         catalogCoordinator.start()
         catalogCoordinator.setUpParent(to: self)
-        addViewController(catalogCoordinator.rootViewController, title: "Catalog".localized, icon: "icon-leaf-tabbar")
+        addViewController(catalogCoordinator.rootViewController, title: "catalog".localized, icon: "icon-leaf-tabbar")
         childCoordinators.append(catalogCoordinator)
 
         let animalsCoordinator = AnimalsCoordinator()
@@ -46,7 +46,7 @@ final class AppCoordinator: Coordinator {
         let collectionCoordinator = CollectionCoordinator()
         collectionCoordinator.start()
         collectionCoordinator.setUpParent(to: self)
-        addViewController(collectionCoordinator.rootViewController, title: "Collection".localized, icon: "icon-cardboard-tabbar")
+        addViewController(collectionCoordinator.rootViewController, title: "collection".localized, icon: "icon-cardboard-tabbar")
         childCoordinators.append(collectionCoordinator)
     }
 

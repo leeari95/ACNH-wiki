@@ -53,8 +53,8 @@ extension VillagerDetailView {
         profileImage.setImage(with: villager.photoImage)
 
         let items: [(title: String, value: String)] = [
-            ("Personality".localized, villager.personality.rawValue.lowercased().localized.capitalized),
-            ("Gender".localized, villager.gender.rawValue.lowercased().localized.capitalized),
+            ("personality".localized, villager.personality.rawValue.lowercased().localized.capitalized),
+            ("gender".localized, villager.gender.rawValue.lowercased().localized.capitalized),
             ("Hobby".localized, villager.hobby.rawValue.lowercased().localized.capitalized),
             ("Birthday".localized, villager.birthday),
             ("Type".localized, villager.subtype.rawValue),

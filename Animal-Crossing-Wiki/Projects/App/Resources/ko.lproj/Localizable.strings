@@ -7,15 +7,15 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "대시보드";
-"Catalog" = "카탈로그";
+"dashboard" = "대시보드";
+"catalog" = "카탈로그";
 "villagers" = "마을주민";
-"Collection" = "수집품";
+"collection" = "수집품";
 "animals" = "동물";
 
 // MARK: - etc
-"Cancel" = "취소";
-"Setting" = "앱 기본 설정";
+"cancel" = "취소";
+"setting" = "앱 기본 설정";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "나의 섬 정보";
@@ -34,11 +34,11 @@
 "REPUTATION" = "섬 평판";
 
 // MARK: - TodaysTasksView
-"Edit" = "편집";
-"Reset" = "초기화";
+"edit" = "편집";
+"reset" = "초기화";
 
 // MARK: - VillagersView
-"Reset" = "초기화";
+// "reset" key is already defined above
 "vilagerEmpty" = "오늘은 어떤 주민과 대화를 나누셨나요?
 대화했거나, 선물을 주었던 마을 주민들을 찾아
 마을 주민 페이지에서 집모양 아이콘을 눌러서
@@ -47,7 +47,7 @@
 
 // MARK: - PreferencesViewController
 "island" = "섬 정보";
-"Preferences" = "기본 설정";
+"preferences" = "기본 설정";
 "App Settings" = "앱 설정";
 
 // MARK: - PreferencesView
@@ -100,12 +100,12 @@
 "peach" = "복숭아";
 
 // MARK: - Hemisphere
-"North" = "북반구";
-"South" = "남반구";
+"north" = "북반구";
+"south" = "남반구";
 
 // MARK: - AboutViewController
-"About" = "앱 정보";
-"Version" = "Version";
+"about" = "앱 정보";
+"version" = "Version";
 "The app" = "The app";
 "Credit / Thanks" = "Credit / Thanks";
 
@@ -125,11 +125,11 @@
 "Collection Progress" = "수집 현황";
 
 // MARK: - Category
-"Fishes" = "물고기";
-"Sea Creatures" = "해산물";
-"Bugs" = "곤충";
-"Fossils" = "화석";
-"Art" = "미술품";
+"fishes" = "물고기";
+"sea_creatures" = "해산물";
+"bugs" = "곤충";
+"fossils" = "화석";
+"art" = "미술품";
 "Housewares" = "가구";
 "Miscellaneous" = "잡화";
 "Wall mounted" = "벽걸이";
@@ -158,12 +158,12 @@
 "Tools" = "도구";
 
 // MARK: - ItemsViewController
-"To catch now" = "아직 늦지 않았어요!";
-"Currently Available" = "오늘 수집하러 가볼까요?";
-"Search..." = "검색어를 입력해주세요. (초성 가능)";
-"All" = "전체";
-"Month" = "월별";
-"Name" = "이름";
+"to_catch_now" = "아직 늦지 않았어요!";
+"currently_available" = "오늘 수집하러 가볼까요?";
+"search" = "검색어를 입력해주세요. (초성 가능)";
+"all" = "전체";
+"month" = "월별";
+"name" = "이름";
 "Sell" = "판매가격";
 "All Select" = "모두 선택";
 "Collected" = "획득";
@@ -286,9 +286,9 @@
 "Tap the npc's heart button and it will appear here." = "NPC의 하트 모양 버튼을 누르면 여기에 표시됩니다.";
 
 // MARK: - VillagersViewController
-"All" = "전체";
-"Personality" = "성격";
-"Gender" = "성별";
+// "all" key is already defined above
+"personality" = "성격";
+"gender" = "성별";
 "Type" = "타입";
 "Species" = "종족";
 "Liked" = "좋아하는 주민";

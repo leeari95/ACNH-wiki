@@ -28,12 +28,12 @@ final class ItemsViewController: UIViewController {
 
         var title: String {
             switch self {
-            case .all: return "All".localized
-            case .month: return "Month".localized
-            case .name: return "Name".localized
+            case .all: return "all".localized
+            case .month: return "month".localized
+            case .name: return "name".localized
             case .sell: return "Sell".localized
             case .allSelect: return "All Select".localized
-            case .reset: return "Reset".localized
+            case .reset: return "reset".localized
             }
         }
 
@@ -44,12 +44,12 @@ final class ItemsViewController: UIViewController {
 
         static func transform(localized: String) -> Self {
             switch localized {
-            case "All".localized: return .all
-            case "Month".localized: return .month
-            case "Name".localized: return .name
+            case "all".localized: return .all
+            case "month".localized: return .month
+            case "name".localized: return .name
             case "Sell".localized: return .sell
             case "All Select".localized: return .allSelect
-            case "Reset".localized: return .reset
+            case "reset".localized: return .reset
             default: return .all
             }
         }

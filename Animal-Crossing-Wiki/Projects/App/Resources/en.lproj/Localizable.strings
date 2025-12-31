@@ -7,15 +7,15 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "Dashboard";
-"Catalog" = "Catalog";
+"dashboard" = "Dashboard";
+"catalog" = "Catalog";
 "villagers" = "Villagers";
-"Collection" = "Collection";
+"collection" = "Collection";
 "animals" = "Animals";
 
 // MARK: - etc
-"Cancel" = "Cancel";
-"Setting" = "Setting";
+"cancel" = "Cancel";
+"setting" = "Setting";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "My Island";
@@ -34,18 +34,18 @@
 "REPUTATION" = "REPUTATION";
 
 // MARK: - TodaysTasksView
-"Edit" = "Edit";
-"Reset" = "Reset";
+"edit" = "Edit";
+"reset" = "Reset";
 
 // MARK: - VillagersView
-"Reset" = "Reset";
+// "reset" key is already defined above
 "vilagerEmpty" = "Who have you talked to today?
 Find the villagers you have visited and tap the home icon on the villager's page to keep track.";
 "tip" = "Long press on a villager to see more info about them.";
 
 // MARK: - PreferencesViewController
 "island" = "island";
-"Preferences" = "Preferences";
+"preferences" = "Preferences";
 "App Settings" = "App Settings";
 
 // MARK: - PreferencesView
@@ -98,12 +98,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Peach" = "Peach";
 
 // MARK: - Hemisphere
-"North" = "North";
-"South" = "South";
+"north" = "North";
+"south" = "South";
 
 // MARK: - AboutViewController
-"About" = "About";
-"Version" = "Version";
+"about" = "About";
+"version" = "Version";
 "The app" = "The app";
 "Credit / Thanks" = "Credit / Thanks";
 
@@ -123,11 +123,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Collection Progress" = "Collection Progress";
 
 // MARK: - Category
-"Fishes" = "Fishes";
-"Sea Creatures" = "Sea Creatures";
-"Bugs" = "Bugs";
-"Fossils" = "Fossils";
-"Art" = "Art";
+"fishes" = "Fishes";
+"sea_creatures" = "Sea Creatures";
+"bugs" = "Bugs";
+"fossils" = "Fossils";
+"art" = "Art";
 "Housewares" = "Housewares";
 "Miscellaneous" = "Miscellaneous";
 "Wall mounted" = "Wall mounted";
@@ -156,12 +156,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Tools" = "Tools";
 
 // MARK: - ItemsViewController
-"To catch now" = "To catch now";
-"Currently Available" = "Currently Available";
-"Search..." = "Search...";
-"All" = "All";
-"Month" = "Month";
-"Name" = "Name";
+"to_catch_now" = "To catch now";
+"currently_available" = "Currently Available";
+"search" = "Search...";
+"all" = "All";
+"month" = "Month";
+"name" = "Name";
 "Sell" = "Sell";
 "All Select" = "All Select";
 "Collected" = "Collected";
@@ -282,9 +282,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Tap the npc's heart button and it will appear here." = "Tap the npc's heart button and it will appear here.";
 
 // MARK: - VillagersViewController
-"All" = "All";
-"Personality" = "Personality";
-"Gender" = "Gender";
+// "all" key is already defined above
+"personality" = "Personality";
+"gender" = "Gender";
 "Type" = "Type";
 "Species" = "Species";
 "Liked" = "Liked";
