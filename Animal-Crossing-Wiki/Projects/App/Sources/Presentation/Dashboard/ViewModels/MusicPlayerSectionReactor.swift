@@ -20,12 +20,14 @@ final class MusicPlayerSectionReactor: Reactor {
         case setCurrentSong(Item?)
         case setIsPlaying(Bool)
         case setProgress(Float)
+        case setSongsAvailable(Bool)
     }
 
     struct State {
         var currentSong: Item?
         var isPlaying: Bool = false
         var progress: Float = 0
+        var isSongsAvailable: Bool = false
     }
 
     let initialState: State = State()
@@ -45,11 +47,15 @@ final class MusicPlayerSectionReactor: Reactor {
         let progressMutation = musicPlayerManager.songProgress
             .map { Mutation.setProgress($0) }
 
+        let songsAvailableMutation = musicPlayerManager.songList
+            .map { Mutation.setSongsAvailable(!$0.isEmpty) }
+
         return Observable.merge(
             mutation,
             currentSongMutation,
             isPlayingMutation,
-            progressMutation
+            progressMutation,
+            songsAvailableMutation
         )
     }
 
@@ -78,6 +84,8 @@ final class MusicPlayerSectionReactor: Reactor {
             newState.isPlaying = isPlaying
         case .setProgress(let progress):
             newState.progress = progress
+        case .setSongsAvailable(let isAvailable):
+            newState.isSongsAvailable = isAvailable
         }
         return newState
     }

@@ -7,10 +7,12 @@
 
 import UIKit
 import RxSwift
+import Kingfisher
 
 final class MusicPlayerSectionView: UIView {
 
     private let disposeBag = DisposeBag()
+    private let emptyStateTapGesture = UITapGestureRecognizer()
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView()
@@ -107,24 +109,31 @@ final class MusicPlayerSectionView: UIView {
         return progressView
     }()
 
-    private lazy var emptyStateView: UIView = {
-        let view = UIView()
-        view.isHidden = true
-
+    private lazy var emptyStateLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tap to start playing K.K. songs".localized
+        label.text = "Loading songs...".localized
         label.font = .preferredFont(forTextStyle: .footnote)
         label.textColor = .secondaryLabel
         label.textAlignment = .center
         label.numberOfLines = 0
+        return label
+    }()
 
-        view.addSubviews(label)
+    private lazy var emptyStateView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+
+        view.addSubviews(emptyStateLabel)
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyStateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyStateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+
+        // 제스처는 초기에 비활성화하고, 곡 목록이 로드되면 활성화됨
+        emptyStateTapGesture.isEnabled = false
+        view.addGestureRecognizer(emptyStateTapGesture)
 
         return view
     }()
@@ -162,7 +171,8 @@ final class MusicPlayerSectionView: UIView {
             emptyStateView.leadingAnchor.constraint(equalTo: leadingAnchor),
             emptyStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
             emptyStateView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            emptyStateView.heightAnchor.constraint(equalToConstant: 60)
+            // contentView의 높이(albumCover 60 + spacing 12 + progressView 4 = 76)와 일치시킴
+            emptyStateView.heightAnchor.constraint(equalToConstant: 76)
         ])
     }
 
@@ -183,9 +193,7 @@ final class MusicPlayerSectionView: UIView {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
-        let tapGesture = UITapGestureRecognizer()
-        emptyStateView.addGestureRecognizer(tapGesture)
-        tapGesture.rx.event
+        emptyStateTapGesture.rx.event
             .map { _ in MusicPlayerSectionReactor.Action.playPauseTapped }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -196,6 +204,8 @@ final class MusicPlayerSectionView: UIView {
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] song in
+                // 이전 이미지 다운로드 취소
+                self?.albumCoverImageView.kf.cancelDownloadTask()
                 if let song = song {
                     self?.songTitleLabel.text = song.translations.localizedName()
                     self?.albumCoverImageView.setImage(with: song.image ?? "")
@@ -225,9 +235,25 @@ final class MusicPlayerSectionView: UIView {
         reactor.state
             .map { $0.progress }
             .distinctUntilChanged()
+            .scan((previous: Float(0), current: Float(0))) { acc, new in
+                (previous: acc.current, current: new)
+            }
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] progress in
-                self?.progressView.setProgress(progress, animated: true)
+            .subscribe(onNext: { [weak self] progressPair in
+                // 곡이 변경되어 progress가 크게 감소할 때는 애니메이션 없이 리셋
+                let shouldAnimate = progressPair.current >= progressPair.previous
+                self?.progressView.setProgress(progressPair.current, animated: shouldAnimate)
+            }).disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.isSongsAvailable }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] isAvailable in
+                self?.emptyStateTapGesture.isEnabled = isAvailable
+                self?.emptyStateLabel.text = isAvailable
+                    ? "Tap to start playing K.K. songs".localized
+                    : "Loading songs...".localized
             }).disposed(by: disposeBag)
     }
 }
