@@ -24,7 +24,33 @@ struct DailyTaskEntry: TimelineEntry {
     }
 
     var allCompleted: Bool {
-        completedCount == totalCount
+        completedCount == totalCount && totalCount > 0
+    }
+
+    /// 진행률 값 (0.0 ~ 1.0)
+    var progressValue: CGFloat {
+        guard totalCount > 0 else { return 0 }
+        return CGFloat(completedCount) / CGFloat(totalCount)
+    }
+
+    /// 진행률에 따른 색상
+    var progressColor: Color {
+        if allCompleted {
+            return .green
+        } else if progressValue > 0.5 {
+            return .orange
+        } else {
+            return .accentColor
+        }
+    }
+
+    /// 상태 텍스트
+    var statusText: String {
+        if allCompleted {
+            return "All tasks completed!"
+        } else {
+            return "\(totalCount - completedCount) tasks remaining"
+        }
     }
 }
 
@@ -63,7 +89,8 @@ struct DailyTaskProvider: TimelineProvider {
 
         // 자정에 타임라인 갱신 (일일 할일 리셋)
         let calendar = Calendar.current
-        let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: currentDate)!)
+        let nextDay = calendar.date(byAdding: .day, value: 1, to: currentDate) ?? currentDate.addingTimeInterval(86400)
+        let tomorrow = calendar.startOfDay(for: nextDay)
 
         let timeline = Timeline(entries: [entry], policy: .after(tomorrow))
         completion(timeline)
@@ -114,10 +141,9 @@ struct SmallDailyTaskView: View {
                     .stroke(Color.gray.opacity(0.3), lineWidth: 8)
 
                 Circle()
-                    .trim(from: 0, to: progressValue)
-                    .stroke(progressColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                    .trim(from: 0, to: entry.progressValue)
+                    .stroke(entry.progressColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                     .rotationEffect(.degrees(-90))
-                    .animation(.easeInOut, value: progressValue)
 
                 VStack(spacing: 2) {
                     Text("\(entry.completedCount)")
@@ -134,36 +160,13 @@ struct SmallDailyTaskView: View {
             Spacer()
 
             // Status Text
-            Text(statusText)
+            Text(entry.statusText)
                 .font(.caption2)
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
-    }
-
-    private var progressValue: CGFloat {
-        guard entry.totalCount > 0 else { return 0 }
-        return CGFloat(entry.completedCount) / CGFloat(entry.totalCount)
-    }
-
-    private var progressColor: Color {
-        if entry.allCompleted {
-            return .green
-        } else if progressValue > 0.5 {
-            return .orange
-        } else {
-            return .accentColor
-        }
-    }
-
-    private var statusText: String {
-        if entry.allCompleted {
-            return "All tasks completed!"
-        } else {
-            return "\(entry.totalCount - entry.completedCount) tasks remaining"
-        }
+        .widgetBackground()
     }
 }
 
@@ -191,8 +194,8 @@ struct MediumDailyTaskView: View {
                         .stroke(Color.gray.opacity(0.3), lineWidth: 6)
 
                     Circle()
-                        .trim(from: 0, to: progressValue)
-                        .stroke(progressColor, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                        .trim(from: 0, to: entry.progressValue)
+                        .stroke(entry.progressColor, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                         .rotationEffect(.degrees(-90))
 
                     VStack(spacing: 0) {
@@ -223,22 +226,7 @@ struct MediumDailyTaskView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
-    }
-
-    private var progressValue: CGFloat {
-        guard entry.totalCount > 0 else { return 0 }
-        return CGFloat(entry.completedCount) / CGFloat(entry.totalCount)
-    }
-
-    private var progressColor: Color {
-        if entry.allCompleted {
-            return .green
-        } else if progressValue > 0.5 {
-            return .orange
-        } else {
-            return .accentColor
-        }
+        .widgetBackground()
     }
 }
 
@@ -271,8 +259,8 @@ struct LargeDailyTaskView: View {
                     .fontWeight(.bold)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(progressColor.opacity(0.2))
-                    .foregroundColor(progressColor)
+                    .background(entry.progressColor.opacity(0.2))
+                    .foregroundColor(entry.progressColor)
                     .clipShape(Capsule())
             }
 
@@ -300,17 +288,7 @@ struct LargeDailyTaskView: View {
             }
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
-    }
-
-    private var progressColor: Color {
-        if entry.allCompleted {
-            return .green
-        } else if CGFloat(entry.completedCount) / CGFloat(entry.totalCount) > 0.5 {
-            return .orange
-        } else {
-            return .accentColor
-        }
+        .widgetBackground()
     }
 }
 
@@ -374,6 +352,7 @@ struct DailyTaskWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyTaskProvider()) { entry in
             DailyTaskWidgetEntryView(entry: entry)
+                .widgetURL(SharedDataManager.DeepLink.dailyTasks)
         }
         .configurationDisplayName("Daily Tasks")
         .description("Track your daily Animal Crossing tasks at a glance.")

@@ -6,10 +6,19 @@
 //
 
 import Foundation
+import WidgetKit
+import os.log
 
 /// App Group을 통해 메인 앱과 위젯 간 데이터를 공유하는 매니저
 /// 메인 앱에서 데이터 변경 시 이 매니저를 통해 UserDefaults에 저장하고,
 /// 위젯에서는 이 데이터를 읽어와 표시합니다.
+///
+/// # 사용법
+/// 메인 앱에서 데이터 변경 시:
+/// ```swift
+/// SharedDataManager.shared.saveDailyTasks(tasks)
+/// // 위젯이 자동으로 갱신됩니다.
+/// ```
 final class SharedDataManager {
 
     // MARK: - Constants
@@ -17,6 +26,19 @@ final class SharedDataManager {
     /// App Group Identifier
     /// 실제 사용 시 Apple Developer Portal에서 생성한 App Group ID로 변경 필요
     static let appGroupIdentifier = "group.leeari.NookPortalPlus"
+
+    /// Widget Kind 상수
+    enum WidgetKind {
+        static let dailyTask = "DailyTaskWidget"
+        static let collectionProgress = "CollectionProgressWidget"
+    }
+
+    /// 위젯 딥링크 URL
+    /// 메인 앱에서 이 URL 스킴을 처리하여 해당 화면으로 이동해야 합니다.
+    enum DeepLink {
+        static let dailyTasks = URL(string: "acnh://dailytasks")!
+        static let collection = URL(string: "acnh://collection")!
+    }
 
     /// UserDefaults Keys
     private enum Keys {
@@ -34,11 +56,17 @@ final class SharedDataManager {
     // MARK: - Properties
 
     private let userDefaults: UserDefaults?
+    private let logger = Logger(subsystem: "leeari.NookPortalPlus.Widget", category: "SharedDataManager")
 
     // MARK: - Initialization
 
     private init() {
         userDefaults = UserDefaults(suiteName: SharedDataManager.appGroupIdentifier)
+        #if DEBUG
+        if userDefaults == nil {
+            assertionFailure("SharedDataManager: App Group UserDefaults 초기화 실패. App Group ID를 확인하세요: \(SharedDataManager.appGroupIdentifier)")
+        }
+        #endif
     }
 
     // MARK: - Daily Tasks
@@ -61,6 +89,8 @@ final class SharedDataManager {
     }
 
     /// 일일 할일 목록 저장
+    /// - Parameter tasks: 저장할 일일 할일 목록
+    /// - Note: 저장 후 DailyTaskWidget 타임라인이 자동으로 갱신됩니다.
     func saveDailyTasks(_ tasks: [WidgetDailyTask]) {
         guard let userDefaults = userDefaults else { return }
 
@@ -68,8 +98,9 @@ final class SharedDataManager {
             let data = try JSONEncoder().encode(tasks)
             userDefaults.set(data, forKey: Keys.dailyTasks)
             userDefaults.set(Date(), forKey: Keys.lastUpdated)
+            WidgetCenter.shared.reloadTimelines(ofKind: WidgetKind.dailyTask)
         } catch {
-            print("Failed to encode daily tasks: \(error)")
+            logger.error("Failed to encode daily tasks: \(error.localizedDescription)")
         }
     }
 
@@ -83,7 +114,7 @@ final class SharedDataManager {
         do {
             return try JSONDecoder().decode([WidgetDailyTask].self, from: data)
         } catch {
-            print("Failed to decode daily tasks: \(error)")
+            logger.error("Failed to decode daily tasks: \(error.localizedDescription)")
             return Self.sampleDailyTasks
         }
     }
@@ -114,6 +145,8 @@ final class SharedDataManager {
     }
 
     /// 수집 진행률 저장
+    /// - Parameter progress: 저장할 수집 진행률 목록
+    /// - Note: 저장 후 CollectionProgressWidget 타임라인이 자동으로 갱신됩니다.
     func saveCollectionProgress(_ progress: [WidgetCollectionProgress]) {
         guard let userDefaults = userDefaults else { return }
 
@@ -121,8 +154,9 @@ final class SharedDataManager {
             let data = try JSONEncoder().encode(progress)
             userDefaults.set(data, forKey: Keys.collectionProgress)
             userDefaults.set(Date(), forKey: Keys.lastUpdated)
+            WidgetCenter.shared.reloadTimelines(ofKind: WidgetKind.collectionProgress)
         } catch {
-            print("Failed to encode collection progress: \(error)")
+            logger.error("Failed to encode collection progress: \(error.localizedDescription)")
         }
     }
 
@@ -136,7 +170,7 @@ final class SharedDataManager {
         do {
             return try JSONDecoder().decode([WidgetCollectionProgress].self, from: data)
         } catch {
-            print("Failed to decode collection progress: \(error)")
+            logger.error("Failed to decode collection progress: \(error.localizedDescription)")
             return Self.sampleCollectionProgress
         }
     }

@@ -68,7 +68,7 @@ struct CollectionProgressProvider: TimelineProvider {
         )
 
         // 1시간마다 타임라인 갱신
-        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate)!
+        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: currentDate) ?? currentDate.addingTimeInterval(3600)
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         completion(timeline)
     }
@@ -147,7 +147,7 @@ struct SmallCollectionProgressView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
+        .widgetBackground()
     }
 }
 
@@ -208,7 +208,7 @@ struct MediumCollectionProgressView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
+        .widgetBackground()
     }
 }
 
@@ -269,7 +269,35 @@ struct LargeCollectionProgressView: View {
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding()
-        .containerBackground(.fill.tertiary, for: .widget)
+        .widgetBackground()
+    }
+}
+
+// MARK: - Collection Category Styling
+
+/// 컬렉션 카테고리 ID 기반 스타일링
+/// categoryName 대신 id를 사용하여 로컬라이제이션에 안전하게 대응
+private enum CollectionCategoryStyle {
+    static func color(for categoryId: String) -> Color {
+        switch categoryId {
+        case "fishes": return .blue
+        case "bugs": return .orange
+        case "seaCreatures": return .cyan
+        case "fossils": return .brown
+        case "art": return .purple
+        default: return .green
+        }
+    }
+
+    static func icon(for categoryId: String) -> String {
+        switch categoryId {
+        case "fishes": return "drop.fill"
+        case "bugs": return "ant.fill"
+        case "seaCreatures": return "tortoise.fill"
+        case "fossils": return "leaf.fill"
+        case "art": return "paintpalette.fill"
+        default: return "star.fill"
+        }
     }
 }
 
@@ -282,10 +310,10 @@ struct CollectionRowView: View {
         HStack(spacing: 8) {
             // Category Icon (placeholder - 실제로는 앱 에셋 사용)
             Circle()
-                .fill(categoryColor)
+                .fill(CollectionCategoryStyle.color(for: collection.id))
                 .frame(width: 20, height: 20)
                 .overlay(
-                    Image(systemName: categoryIcon)
+                    Image(systemName: CollectionCategoryStyle.icon(for: collection.id))
                         .font(.system(size: 10))
                         .foregroundColor(.white)
                 )
@@ -303,7 +331,7 @@ struct CollectionRowView: View {
                         .fill(Color.gray.opacity(0.3))
 
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(categoryColor)
+                        .fill(CollectionCategoryStyle.color(for: collection.id))
                         .frame(width: geometry.size.width * collection.progress)
                 }
             }
@@ -315,32 +343,14 @@ struct CollectionRowView: View {
                 .frame(width: 30, alignment: .trailing)
         }
     }
-
-    private var categoryColor: Color {
-        switch collection.categoryName {
-        case "Fishes": return .blue
-        case "Bugs": return .orange
-        case "Sea Creatures": return .cyan
-        case "Fossils": return .brown
-        case "Art": return .purple
-        default: return .green
-        }
-    }
-
-    private var categoryIcon: String {
-        switch collection.categoryName {
-        case "Fishes": return "drop.fill"
-        case "Bugs": return "ant.fill"
-        case "Sea Creatures": return "tortoise.fill"
-        case "Fossils": return "leaf.fill"
-        case "Art": return "paintpalette.fill"
-        default: return "star.fill"
-        }
-    }
 }
 
 struct LargeCollectionCardView: View {
     let collection: SharedDataManager.WidgetCollectionProgress
+
+    private var categoryColor: Color {
+        CollectionCategoryStyle.color(for: collection.id)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -349,7 +359,7 @@ struct LargeCollectionCardView: View {
                     .fill(categoryColor)
                     .frame(width: 24, height: 24)
                     .overlay(
-                        Image(systemName: categoryIcon)
+                        Image(systemName: CollectionCategoryStyle.icon(for: collection.id))
                             .font(.system(size: 12))
                             .foregroundColor(.white)
                     )
@@ -398,28 +408,6 @@ struct LargeCollectionCardView: View {
         .background(Color.gray.opacity(0.1))
         .cornerRadius(10)
     }
-
-    private var categoryColor: Color {
-        switch collection.categoryName {
-        case "Fishes": return .blue
-        case "Bugs": return .orange
-        case "Sea Creatures": return .cyan
-        case "Fossils": return .brown
-        case "Art": return .purple
-        default: return .green
-        }
-    }
-
-    private var categoryIcon: String {
-        switch collection.categoryName {
-        case "Fishes": return "drop.fill"
-        case "Bugs": return "ant.fill"
-        case "Sea Creatures": return "tortoise.fill"
-        case "Fossils": return "leaf.fill"
-        case "Art": return "paintpalette.fill"
-        default: return "star.fill"
-        }
-    }
 }
 
 // MARK: - Widget Configuration
@@ -430,6 +418,7 @@ struct CollectionProgressWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: CollectionProgressProvider()) { entry in
             CollectionProgressWidgetEntryView(entry: entry)
+                .widgetURL(SharedDataManager.DeepLink.collection)
         }
         .configurationDisplayName("Collection Progress")
         .description("Track your museum collection progress at a glance.")
