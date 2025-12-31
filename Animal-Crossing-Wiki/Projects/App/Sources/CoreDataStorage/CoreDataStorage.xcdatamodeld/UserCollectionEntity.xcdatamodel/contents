@@ -79,6 +79,14 @@
         <attribute name="translations" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSDictionary"/>
         <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="npcLike" inverseEntity="UserCollectionEntity"/>
     </entity>
+    <entity name="TurnipPriceEntity" representedClassName="TurnipPriceEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="buyPrice" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="prices" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
+        <attribute name="weekStartDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="turnipPrices" inverseEntity="UserCollectionEntity"/>
+    </entity>
     <entity name="UserCollectionEntity" representedClassName="UserCollectionEntity" syncable="YES" codeGenerationType="class">
         <attribute name="hemisphere" optional="YES" attributeType="String"/>
         <attribute name="islandFruit" optional="YES" attributeType="String"/>
@@ -88,6 +96,7 @@
         <relationship name="critters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="userColletion" inverseEntity="ItemEntity"/>
         <relationship name="dailyTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyTaskEntity" inverseName="userCollection" inverseEntity="DailyTaskEntity"/>
         <relationship name="npcLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NPCLikeEntity" inverseName="userCollection" inverseEntity="NPCLikeEntity"/>
+        <relationship name="turnipPrices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TurnipPriceEntity" inverseName="userCollection" inverseEntity="TurnipPriceEntity"/>
         <relationship name="villagersHouse" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersHouseEntity" inverseName="userCollection" inverseEntity="VillagersHouseEntity"/>
         <relationship name="villagersLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersLikeEntity" inverseName="userCollection" inverseEntity="VillagersLikeEntity"/>
     </entity>

@@ -13,11 +13,13 @@ final class DashboardReactor: Reactor {
     enum Menu: String {
         case about = "About"
         case setting = "Setting"
+        case turnipCalculator = "Turnip Calculator"
 
         static func transform(localized: String) -> String? {
             switch localized {
             case Menu.about.rawValue.localized: return Menu.about.rawValue
             case Menu.setting.rawValue.localized: return Menu.setting.rawValue
+            case Menu.turnipCalculator.rawValue.localized: return Menu.turnipCalculator.rawValue
             default: return nil
             }
         }
@@ -56,6 +58,8 @@ final class DashboardReactor: Reactor {
                 coordinator?.transition(for: .about)
             case .setting:
                 coordinator?.transition(for: .setting)
+            case .turnipCalculator:
+                coordinator?.transition(for: .turnipCalculator)
             default: break
             }
         }

@@ -22,6 +22,7 @@ final class DashboardCoordinator: Coordinator {
         case item(category: Category)
         case itemDetail(item: Item)
         case keyword(title: String, keyword: Keyword)
+        case turnipCalculator
         case pop
         case dismiss
     }
@@ -134,6 +135,12 @@ final class DashboardCoordinator: Coordinator {
             let viewController = ItemsViewController()
             viewController.bind(to: ItemsReactor(coordinator: self, mode: .keyword(title: title, category: keyword)))
             rootViewController.pushViewController(viewController, animated: true)
+
+        case .turnipCalculator:
+            let viewController = TurnipCalculatorViewController()
+            viewController.reactor = TurnipCalculatorReactor(coordinator: self)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            rootViewController.present(navigationController, animated: true)
 
         case .pop:
             rootViewController.visibleViewController?.navigationController?.popViewController(animated: true)
