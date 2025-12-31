@@ -71,6 +71,7 @@ extension ItemEntity {
             "concept": item.concepts?.map { $0.rawValue } ?? [],
             "tag": item.tag.map { [$0] } ?? []
         ] as NSDictionary
+        self.checkedVariants = item.checkedVariants.map { Array($0) } as NSArray?
     }
 
     func toKeyword() -> [Keyword: [String]] {
@@ -141,7 +142,8 @@ extension ItemEntity {
             doorDeco: doorDeco,
             musicURL: musicURL,
             themes: themes as? [String],
-            styles: (styles as? [String])?.compactMap { Style(rawValue: $0) }
+            styles: (styles as? [String])?.compactMap { Style(rawValue: $0) },
+            checkedVariants: (checkedVariants as? [String]).map { Set($0) }
         )
     }
 }

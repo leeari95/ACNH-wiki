@@ -50,6 +50,22 @@ final class CoreDataItemsStorage: ItemsStorage {
         }
     }
 
+    func updateVariants(_ item: Item) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                if let index = items.firstIndex(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    let existingItem = items[index]
+                    existingItem.checkedVariants = item.checkedVariants.map { Array($0) } as NSArray?
+                    context.saveContext()
+                }
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+
     func updates(_ items: [Item]) {
         coreDataStorage.performBackgroundTask { context in
             do {

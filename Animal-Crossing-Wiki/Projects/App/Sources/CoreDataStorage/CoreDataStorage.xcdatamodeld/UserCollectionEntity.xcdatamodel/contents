@@ -65,6 +65,7 @@
         <attribute name="vision" optional="YES" attributeType="String"/>
         <attribute name="weather" optional="YES" attributeType="String"/>
         <attribute name="whereHow" optional="YES" attributeType="String"/>
+        <attribute name="checkedVariants" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="NSArray"/>
         <relationship name="userColletion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="critters" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="NPCLikeEntity" representedClassName="NPCLikeEntity" syncable="YES" codeGenerationType="class">
