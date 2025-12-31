@@ -25,14 +25,14 @@ final class AppSettingView: UIView {
 
     private lazy var hapticSwitch: UISwitch = {
         let hapticSwitch = UISwitch()
-        hapticSwitch.isOn = HapticManager.shared.mode == .on ? true : false
+        hapticSwitch.isOn = HapticManager.shared.mode == .on
         hapticSwitch.setContentHuggingPriority(.required, for: .horizontal)
         return hapticSwitch
     }()
 
     private lazy var notificationSwitch: UISwitch = {
         let notificationSwitch = UISwitch()
-        notificationSwitch.isOn = NotificationManager.shared.mode == .on ? true : false
+        notificationSwitch.isOn = NotificationManager.shared.mode == .on
         notificationSwitch.setContentHuggingPriority(.required, for: .horizontal)
         return notificationSwitch
     }()
@@ -74,10 +74,12 @@ final class AppSettingView: UIView {
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.currentHapticState }
+            .distinctUntilChanged()
             .bind(to: hapticSwitch.rx.isOn)
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.currentNotificationState }
+            .distinctUntilChanged()
             .bind(to: notificationSwitch.rx.isOn)
             .disposed(by: disposeBag)
     }
@@ -86,7 +88,7 @@ final class AppSettingView: UIView {
 extension AppSettingView {
     convenience init(reactor: AppSettingReactor) {
         self.init(frame: .zero)
-        bind(to: reactor)
         configure()
+        bind(to: reactor)
     }
 }

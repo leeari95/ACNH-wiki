@@ -1,5 +1,5 @@
 //
-//  AppSettingsViewModel.swift
+//  AppSettingReactor.swift
 //  Animal-Crossing-Wiki
 //
 //  Created by Ari on 2022/07/12.
@@ -7,6 +7,7 @@
 
 import Foundation
 import ReactorKit
+import RxSwift
 
 final class AppSettingReactor: Reactor {
 
@@ -30,6 +31,7 @@ final class AppSettingReactor: Reactor {
     let initialState: State
     private let storage: UserInfoStorage
     private let coordinator: DashboardCoordinator
+    private let disposeBag = DisposeBag()
 
     init(coordinator: DashboardCoordinator, state: State = State(), storage: UserInfoStorage = CoreDataUserInfoStorage()) {
         self.coordinator = coordinator
@@ -56,45 +58,59 @@ final class AppSettingReactor: Reactor {
     }
 
     private func handleNotificationToggle() -> Observable<Mutation> {
-        return Observable.create { observer in
-            let notificationManager = NotificationManager.shared
+        let notificationManager = NotificationManager.shared
 
-            if notificationManager.mode == .on {
-                notificationManager.toggle()
-                observer.onNext(.setNotificationState(false))
-                observer.onCompleted()
-            } else {
-                notificationManager.checkAuthorizationStatus { status in
-                    switch status {
-                    case .authorized:
-                        notificationManager.toggle()
-                        observer.onNext(.setNotificationState(true))
-                        observer.onCompleted()
+        if notificationManager.mode == .on {
+            notificationManager.toggle()
+            return Observable.just(.setNotificationState(false))
+        }
 
-                    case .notDetermined:
-                        notificationManager.requestAuthorization { granted in
-                            if granted {
-                                notificationManager.setMode(.on)
-                                observer.onNext(.setNotificationState(true))
-                            } else {
-                                observer.onNext(.setNotificationState(false))
-                            }
-                            observer.onCompleted()
+        return Observable.create { [weak self] observer in
+            notificationManager.checkAuthorizationStatus { status in
+                switch status {
+                case .authorized:
+                    notificationManager.toggle()
+                    observer.onNext(.setNotificationState(true))
+                    observer.onCompleted()
+
+                case .notDetermined:
+                    notificationManager.requestAuthorization { granted in
+                        if granted {
+                            notificationManager.setMode(.on)
+                            observer.onNext(.setNotificationState(true))
+                        } else {
+                            observer.onNext(.setNotificationState(false))
                         }
-
-                    case .denied:
-                        observer.onNext(.setNotificationState(false))
-                        observer.onCompleted()
-
-                    default:
-                        observer.onNext(.setNotificationState(false))
                         observer.onCompleted()
                     }
+
+                case .denied:
+                    self?.showNotificationPermissionDeniedAlert()
+                    observer.onNext(.setNotificationState(false))
+                    observer.onCompleted()
+
+                default:
+                    observer.onNext(.setNotificationState(false))
+                    observer.onCompleted()
                 }
             }
 
             return Disposables.create()
         }
+    }
+
+    private func showNotificationPermissionDeniedAlert() {
+        coordinator
+            .showAlert(
+                title: "Notification permission denied".localized,
+                message: "Please enable notification permission in Settings.".localized
+            )
+            .take(1)
+            .filter { $0 }
+            .subscribe(onNext: { [weak self] _ in
+                self?.coordinator.openAppSettings()
+            })
+            .disposed(by: disposeBag)
     }
 
     func reduce(state: State, mutation: Mutation) -> State {

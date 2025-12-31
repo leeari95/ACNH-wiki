@@ -143,6 +143,10 @@ final class NotificationManager {
         identifier: String
     ) {
         guard mode == .on else { return }
+        guard timeInterval > 0 else {
+            debugPrint("Invalid timeInterval: \(timeInterval). Must be greater than 0.")
+            return
+        }
 
         let content = UNMutableNotificationContent()
         content.title = title
