@@ -199,7 +199,7 @@ extension Category: Comparable {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.sortOrder == rhs.sortOrder
+        return lhs.rawValue == rhs.rawValue
     }
 
     static func < (lhs: Self, rhs: Self) -> Bool {

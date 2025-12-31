@@ -38,11 +38,23 @@ struct OtherResponseDTO: Decodable {
 }
 
 extension OtherResponseDTO : DomainConvertible {
+
+    private static let flowerPatterns: [String] = [
+        "cosmos", "rose", "tulip", "lily", "lilies", "pansy", "pansies",
+        "hyacinth", "windflower", "mum", "lily-of-the-valley"
+    ]
+
+    private var isFlower: Bool {
+        guard tag.lowercased() == "plants" else { return false }
+        let lowercasedName = name.lowercased()
+        return Self.flowerPatterns.contains { lowercasedName.contains($0) }
+    }
+
     func toDomain() -> Item {
         let category: Category
         if foodPower != nil {
             category = .cooking
-        } else if tag.lowercased() == "flower" {
+        } else if isFlower {
             category = .flowers
         } else {
             category = .other
