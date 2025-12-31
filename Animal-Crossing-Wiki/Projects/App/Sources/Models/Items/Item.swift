@@ -72,6 +72,8 @@ struct Item {
     var styles: [Style]?
     
     var soundType: SoundType?
+
+    var checkedVariants: Set<String>?
 }
 
 extension Item {

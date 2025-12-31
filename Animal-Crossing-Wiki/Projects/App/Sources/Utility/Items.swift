@@ -410,6 +410,16 @@ extension Items {
         userItems.accept(currentUserItems)
     }
 
+    func updateItemVariants(_ item: Item) {
+        var currentUserItems = userItems.value
+        var items = currentUserItems[item.category] ?? []
+        if let index = items.firstIndex(of: item) {
+            items[index] = item
+            currentUserItems[item.category] = items
+            userItems.accept(currentUserItems)
+        }
+    }
+
     func itemFilter(keyword: String, category: Keyword) -> [Item] {
         let items = allItems.value
         return items

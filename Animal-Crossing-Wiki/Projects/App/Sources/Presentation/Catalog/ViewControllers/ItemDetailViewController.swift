@@ -105,6 +105,24 @@ final class ItemDetailViewController: UIViewController {
             .subscribe(onNext: { [weak self]  image in
                 self?.itemDetailInfoView?.changeImage(image)
             }).disposed(by: disposeBag)
+
+        itemVariantsColorView?.didTapVariantCheck
+            .map { ItemDetailReactor.Action.checkVariant($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        itemVariantsPatternView?.didTapVariantCheck
+            .map { ItemDetailReactor.Action.checkVariant($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.checkedVariants }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] checkedVariants in
+                self?.itemVariantsColorView?.updateCheckedVariants(checkedVariants)
+                self?.itemVariantsPatternView?.updateCheckedVariants(checkedVariants)
+            }).disposed(by: disposeBag)
     }
 
     private func setUpSection(in item: Item) {

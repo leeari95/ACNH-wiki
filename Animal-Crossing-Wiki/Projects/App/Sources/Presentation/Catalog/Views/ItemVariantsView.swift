@@ -19,6 +19,9 @@ final class ItemVariantsView: UIView {
     private let disposeBag = DisposeBag()
     private var mode: Mode = .color
     private let cellImage = BehaviorRelay<UIImage?>(value: nil)
+    private let variantCheckTapped = PublishRelay<String>()
+    private var variations: [Variant] = []
+    private var checkedVariants: Set<String> = []
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -35,6 +38,7 @@ final class ItemVariantsView: UIView {
     convenience init(item: [Variant], mode: Mode) {
         self.init(frame: .zero)
         self.mode = mode
+        self.variations = item
         configure()
         setUpItems(by: item)
     }
@@ -59,9 +63,16 @@ final class ItemVariantsView: UIView {
         Observable.just(variations)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
             ) { [weak self] _, item, cell in
-                let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
+                guard let self = self else { return }
+                let name = (self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
                 ?? item.variation?.localized
-                cell.setUp(imageURL: item.image, name: name)
+                let isChecked = self.checkedVariants.contains(item.variantId)
+                cell.setUp(imageURL: item.image, name: name, isChecked: isChecked)
+
+                cell.checkboxTapped
+                    .subscribe(onNext: { [weak self] in
+                        self?.variantCheckTapped.accept(item.variantId)
+                    }).disposed(by: cell.disposeBag)
             }.disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
@@ -70,11 +81,20 @@ final class ItemVariantsView: UIView {
                 self?.cellImage.accept(cell?.imageView.image)
             }).disposed(by: disposeBag)
     }
+
+    func updateCheckedVariants(_ checkedVariants: Set<String>) {
+        self.checkedVariants = checkedVariants
+        collectionView.reloadData()
+    }
 }
 
 extension ItemVariantsView {
 
     var didTapImage: Observable<UIImage?> {
         return cellImage.asObservable()
+    }
+
+    var didTapVariantCheck: Observable<String> {
+        return variantCheckTapped.asObservable()
     }
 }

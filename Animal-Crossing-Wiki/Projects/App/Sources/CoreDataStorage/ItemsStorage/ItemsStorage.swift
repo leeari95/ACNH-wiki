@@ -14,4 +14,5 @@ protocol ItemsStorage {
     func update(_ item: Item)
     func updates(_ items: [Item])
     func reset(category: Category)
+    func updateVariants(_ item: Item)
 }
