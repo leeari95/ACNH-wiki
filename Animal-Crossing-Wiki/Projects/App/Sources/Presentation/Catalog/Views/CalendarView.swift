@@ -35,9 +35,7 @@ final class CalendarView: UIView {
     }
 
     private var currentMonth: Int {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM"
-        return Int(formatter.string(from: Date())) ?? 1
+        return Int(DateFormatters.monthNumber.string(from: Date())) ?? 1
     }
 
     private lazy var backgroundStackView: UIStackView = {
