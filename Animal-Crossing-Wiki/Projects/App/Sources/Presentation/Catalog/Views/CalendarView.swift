@@ -9,33 +9,19 @@ import UIKit
 
 final class CalendarView: UIView {
 
-    private let months = [
-        [
-            Calendar.current.shortMonthSymbols[0],
-            Calendar.current.shortMonthSymbols[1],
-            Calendar.current.shortMonthSymbols[2],
-            Calendar.current.shortMonthSymbols[3]
-        ],
-        [
-            Calendar.current.shortMonthSymbols[4],
-            Calendar.current.shortMonthSymbols[5],
-            Calendar.current.shortMonthSymbols[6],
-            Calendar.current.shortMonthSymbols[7]
-        ],
-        [
-            Calendar.current.shortMonthSymbols[8],
-            Calendar.current.shortMonthSymbols[9],
-            Calendar.current.shortMonthSymbols[10],
-            Calendar.current.shortMonthSymbols[11]
-        ]
-    ]
+    private let months: [[String]] = {
+        let symbols = Calendar.current.shortMonthSymbols
+        return stride(from: 0, to: 12, by: 4).map { start in
+            Array(symbols[start..<start + 4])
+        }
+    }()
 
     private var flatMonths: [String] {
         months.flatMap { $0 }
     }
 
     private var currentMonth: Int {
-        return Int(DateFormatters.monthNumber.string(from: Date())) ?? 1
+        Calendar.current.component(.month, from: Date())
     }
 
     private lazy var backgroundStackView: UIStackView = {
