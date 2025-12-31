@@ -1519,3 +1519,23 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+
+// MARK: - Accessibility
+"checked" = "Checked";
+"unchecked" = "Unchecked";
+"double_tap_to_toggle_check" = "Double tap to toggle check status";
+"item_checked" = "Item checked";
+"item_unchecked" = "Item unchecked";
+"acquired" = "Acquired";
+"not_acquired" = "Not acquired";
+"double_tap_to_toggle_acquisition" = "Double tap to toggle acquisition status";
+"item_acquired" = "Item acquired";
+"item_not_acquired" = "Item not acquired";
+"liked" = "Liked";
+"resident" = "Resident";
+"double_tap_for_details" = "Double tap for details";
+"added_to_favorites" = "Added to favorites";
+"removed_from_favorites" = "Removed from favorites";
+"added_to_residents" = "Added to residents";
+"removed_from_residents" = "Removed from residents";

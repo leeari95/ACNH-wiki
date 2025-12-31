@@ -1524,3 +1524,23 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+
+// MARK: - Accessibility
+"checked" = "체크됨";
+"unchecked" = "체크 안됨";
+"double_tap_to_toggle_check" = "두 번 탭하여 체크 상태 전환";
+"item_checked" = "아이템 체크됨";
+"item_unchecked" = "아이템 체크 해제됨";
+"acquired" = "보유 중";
+"not_acquired" = "미보유";
+"double_tap_to_toggle_acquisition" = "두 번 탭하여 보유 상태 전환";
+"item_acquired" = "아이템 보유 등록됨";
+"item_not_acquired" = "아이템 보유 해제됨";
+"liked" = "좋아요";
+"resident" = "거주 중";
+"double_tap_for_details" = "두 번 탭하여 상세 정보 보기";
+"added_to_favorites" = "좋아요 추가됨";
+"removed_from_favorites" = "좋아요 해제됨";
+"added_to_residents" = "거주자로 등록됨";
+"removed_from_residents" = "거주자에서 해제됨";
