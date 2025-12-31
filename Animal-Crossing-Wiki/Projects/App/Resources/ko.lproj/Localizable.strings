@@ -1524,3 +1524,10 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+
+// MARK: - CurrentCreaturesView
+"Current Creatures" = "현재 출현 생물";
+"currentCreaturesEmpty" = "현재 시간에는 잡을 수 있는 생물이 없습니다.";
+"currentCreaturesCount" = "현재 %d종의 생물을 잡을 수 있습니다";
+"All" = "전체";
