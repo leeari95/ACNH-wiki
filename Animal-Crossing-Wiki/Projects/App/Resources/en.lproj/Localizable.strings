@@ -1519,3 +1519,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+// MARK: - CollectionStatisticsView
+"Collection Statistics" = "Collection Statistics";
+"Total Collection" = "Total Collection";
+"Museum" = "Museum";
+"Furniture" = "Furniture";
+"Clothing" = "Clothing";

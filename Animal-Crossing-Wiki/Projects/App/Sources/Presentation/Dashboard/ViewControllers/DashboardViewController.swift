@@ -62,6 +62,7 @@ final class DashboardViewController: UIViewController {
         tasksVM: TodaysTasksSectionReactor,
         villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionReactor,
+        statisticsVM: CollectionStatisticsSectionReactor,
         fixeVisitdNPCListVM: NpcsSectionReactor,
         randomVisitNPCListVM: NpcsSectionReactor
     ) {
@@ -85,6 +86,11 @@ final class DashboardViewController: UIViewController {
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )
+        let statisticsSection = SectionView(
+            title: "Collection Statistics".localized,
+            iconName: "chart.bar.fill",
+            contentView: CollectionStatisticsView(viewModel: statisticsVM)
+        )
         let randomVisitResidentsSectionView = SectionView(
             title: "Residents who can visit randomly on weekdays".localized,
             iconName: "bubbles.and.sparkles.fill",
@@ -96,10 +102,11 @@ final class DashboardViewController: UIViewController {
             contentView: NpcsView(fixeVisitdNPCListVM)
         )
         sectionsScrollView.addSection(userInfoSection,
-                                      tasksSection, 
-                                      villagersSection, 
-                                      progressSection, 
-                                      randomVisitResidentsSectionView, 
+                                      tasksSection,
+                                      villagersSection,
+                                      progressSection,
+                                      statisticsSection,
+                                      randomVisitResidentsSectionView,
                                       fixedVisitResidentsSectionView)
     }
 
