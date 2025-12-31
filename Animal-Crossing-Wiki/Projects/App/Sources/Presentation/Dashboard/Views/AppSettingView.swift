@@ -25,9 +25,16 @@ final class AppSettingView: UIView {
 
     private lazy var hapticSwitch: UISwitch = {
         let hapticSwitch = UISwitch()
-        hapticSwitch.isOn = HapticManager.shared.mode == .on ? true : false
+        hapticSwitch.isOn = HapticManager.shared.mode == .on
         hapticSwitch.setContentHuggingPriority(.required, for: .horizontal)
         return hapticSwitch
+    }()
+
+    private lazy var notificationSwitch: UISwitch = {
+        let notificationSwitch = UISwitch()
+        notificationSwitch.isOn = NotificationManager.shared.mode == .on
+        notificationSwitch.setContentHuggingPriority(.required, for: .horizontal)
+        return notificationSwitch
     }()
 
     private func configure() {
@@ -42,6 +49,7 @@ final class AppSettingView: UIView {
         let resetView = InfoContentView(title: "Data reset".localized)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            InfoContentView(title: "Rare creature notification".localized, contentView: notificationSwitch),
             resetView
         )
         resetView.addGestureRecognizer(resetTapGesture)
@@ -49,7 +57,13 @@ final class AppSettingView: UIView {
 
     func bind(to reactor: AppSettingReactor) {
         hapticSwitch.rx.controlEvent(.valueChanged)
-            .map { AppSettingReactor.Action.toggleSwitch }
+            .map { AppSettingReactor.Action.toggleHaptic }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+
+        notificationSwitch.rx.controlEvent(.valueChanged)
+            .map { AppSettingReactor.Action.toggleNotification }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
@@ -60,7 +74,13 @@ final class AppSettingView: UIView {
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.currentHapticState }
+            .distinctUntilChanged()
             .bind(to: hapticSwitch.rx.isOn)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.currentNotificationState }
+            .distinctUntilChanged()
+            .bind(to: notificationSwitch.rx.isOn)
             .disposed(by: disposeBag)
     }
 }
@@ -68,7 +88,7 @@ final class AppSettingView: UIView {
 extension AppSettingView {
     convenience init(reactor: AppSettingReactor) {
         self.init(frame: .zero)
-        bind(to: reactor)
         configure()
+        bind(to: reactor)
     }
 }
