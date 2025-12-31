@@ -17,7 +17,6 @@ final class CollectionProgressSectionReactor: Reactor {
 
     enum Mutation {
         case setLoadingState(_ isLoading: Bool)
-        case progress
     }
 
     struct State {
@@ -35,19 +34,17 @@ final class CollectionProgressSectionReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetch:
-            let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
-            return loadingState
+            return Items.shared.isLoading.map { Mutation.setLoadingState($0) }
 
         case .didTapSection:
-            return Observable.just(Mutation.progress)
+            coordinator.transition(for: .progress)
+            return Observable.empty()
         }
     }
 
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
-        case .progress:
-            coordinator.transition(for: .progress)
         case .setLoadingState(let isLoading):
             newState.isLoading = isLoading
         }

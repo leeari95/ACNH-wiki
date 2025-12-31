@@ -127,12 +127,28 @@ enum Category: String, CaseIterable {
         ]
     }
 
+    /// Museum/Progress categories - used for collection progress and statistics
     static func progress() -> [Category] {
         [.fishes, .bugs, .seaCreatures, .fossils, .art]
     }
 
+    /// Alias for progress() - museum categories for collection statistics
+    static func museum() -> [Category] {
+        progress()
+    }
+
     static var critters: [Category] {
         [.fishes, .seaCreatures, .bugs]
+    }
+
+    /// Furniture/Interior categories for collection statistics
+    static func interior() -> [Category] {
+        [.housewares, .miscellaneous, .wallMounted, .ceilingDecor, .wallpaper, .floors, .rugs, .other]
+    }
+
+    /// Clothing categories for collection statistics
+    static func clothing() -> [Category] {
+        [.tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit]
     }
 
     static func furniture() -> [Category] {
@@ -144,7 +160,7 @@ enum Category: String, CaseIterable {
             .reactions, .gyroids
         ]
     }
-    
+
     static func animals() -> [Category] {
         [.npc, .villager]
     }

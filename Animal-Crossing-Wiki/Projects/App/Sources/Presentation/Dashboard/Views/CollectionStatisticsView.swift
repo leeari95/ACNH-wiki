@@ -11,6 +11,7 @@ import RxSwift
 final class CollectionStatisticsView: UIView {
 
     private let disposeBag = DisposeBag()
+    private lazy var tapGesture = UITapGestureRecognizer()
 
     // MARK: - UI Components
 
@@ -81,18 +82,16 @@ final class CollectionStatisticsView: UIView {
     // MARK: - Binding
 
     private func bind(to reactor: CollectionStatisticsSectionReactor) {
-        let tap = UITapGestureRecognizer()
-        addGestureRecognizer(tap)
+        addGestureRecognizer(tapGesture)
 
         Observable.just(CollectionStatisticsSectionReactor.Action.fetch)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
-        tap.rx.event
+        tapGesture.rx.event
             .map { _ in CollectionStatisticsSectionReactor.Action.didTapSection }
-            .subscribe(onNext: { action in
-                reactor.action.onNext(action)
-            }).disposed(by: disposeBag)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         reactor.state.map { $0.isLoading }
             .bind(to: activityIndicator.rx.isAnimating)
@@ -112,25 +111,21 @@ final class CollectionStatisticsView: UIView {
                 self?.updateCategoryGrid(with: statistics)
             }).disposed(by: disposeBag)
 
-        Items.shared.count()
-            .map { $0.isEmpty }
+        reactor.state.map { $0.isEmpty }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isEmpty in
                 self?.emptyView.isHidden = !isEmpty
-                if isEmpty {
-                    self?.removeGestureRecognizer(tap)
-                } else {
-                    self?.addGestureRecognizer(tap)
-                }
+                self?.tapGesture.isEnabled = !isEmpty
             }).disposed(by: disposeBag)
     }
+
+    private static let maxDisplayedCategoriesPerSection = 4
 
     private func updateCategoryGrid(with statistics: [CollectionStatisticsSectionReactor.CategoryStatistics]) {
         categoryGridView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        // Group museum categories (first 5)
-        let museumCategories: [Category] = [.fishes, .bugs, .seaCreatures, .fossils, .art]
-        let museumStats = statistics.filter { museumCategories.contains($0.category) }
-
+        let museumStats = statistics.filter { Category.museum().contains($0.category) }
         if !museumStats.isEmpty {
             let museumSection = createCategorySection(
                 title: "Museum".localized,
@@ -139,32 +134,20 @@ final class CollectionStatisticsView: UIView {
             categoryGridView.addArrangedSubview(museumSection)
         }
 
-        // Furniture categories
-        let furnitureCategories: [Category] = [
-            .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
-            .wallpaper, .floors, .rugs, .other
-        ]
-        let furnitureStats = statistics.filter { furnitureCategories.contains($0.category) }
-
-        if !furnitureStats.isEmpty {
-            let furnitureSection = createCategorySection(
+        let interiorStats = statistics.filter { Category.interior().contains($0.category) }
+        if !interiorStats.isEmpty {
+            let interiorSection = createCategorySection(
                 title: "Furniture".localized,
-                statistics: Array(furnitureStats.prefix(4))
+                statistics: Array(interiorStats.prefix(Self.maxDisplayedCategoriesPerSection))
             )
-            categoryGridView.addArrangedSubview(furnitureSection)
+            categoryGridView.addArrangedSubview(interiorSection)
         }
 
-        // Clothing categories
-        let clothingCategories: [Category] = [
-            .tops, .bottoms, .dressUp, .headwear, .accessories,
-            .socks, .shoes, .bags, .umbrellas, .wetSuit
-        ]
-        let clothingStats = statistics.filter { clothingCategories.contains($0.category) }
-
+        let clothingStats = statistics.filter { Category.clothing().contains($0.category) }
         if !clothingStats.isEmpty {
             let clothingSection = createCategorySection(
                 title: "Clothing".localized,
-                statistics: Array(clothingStats.prefix(4))
+                statistics: Array(clothingStats.prefix(Self.maxDisplayedCategoriesPerSection))
             )
             categoryGridView.addArrangedSubview(clothingSection)
         }

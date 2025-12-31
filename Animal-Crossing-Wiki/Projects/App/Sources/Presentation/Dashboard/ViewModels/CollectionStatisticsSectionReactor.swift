@@ -8,6 +8,26 @@
 import Foundation
 import ReactorKit
 
+// MARK: - ProgressCalculatable Protocol
+
+protocol ProgressCalculatable {
+    var collectedCount: Int { get }
+    var totalCount: Int { get }
+}
+
+extension ProgressCalculatable {
+    var progressRate: Float {
+        guard totalCount > 0 else { return 0 }
+        return Float(collectedCount) / Float(totalCount)
+    }
+
+    var progressPercentage: Int {
+        Int(progressRate * 100)
+    }
+}
+
+// MARK: - CollectionStatisticsSectionReactor
+
 final class CollectionStatisticsSectionReactor: Reactor {
 
     enum Action {
@@ -19,35 +39,18 @@ final class CollectionStatisticsSectionReactor: Reactor {
         case setLoadingState(_ isLoading: Bool)
         case setStatistics(_ statistics: [CategoryStatistics])
         case setTotalProgress(_ progress: TotalProgress)
+        case setIsEmpty(_ isEmpty: Bool)
     }
 
-    struct CategoryStatistics: Equatable {
+    struct CategoryStatistics: Equatable, ProgressCalculatable {
         let category: Category
         let collectedCount: Int
         let totalCount: Int
-
-        var progressRate: Float {
-            guard totalCount > 0 else { return 0 }
-            return Float(collectedCount) / Float(totalCount)
-        }
-
-        var progressPercentage: Int {
-            Int(progressRate * 100)
-        }
     }
 
-    struct TotalProgress: Equatable {
+    struct TotalProgress: Equatable, ProgressCalculatable {
         let collectedCount: Int
         let totalCount: Int
-
-        var progressRate: Float {
-            guard totalCount > 0 else { return 0 }
-            return Float(collectedCount) / Float(totalCount)
-        }
-
-        var progressPercentage: Int {
-            Int(progressRate * 100)
-        }
 
         static var empty: TotalProgress {
             TotalProgress(collectedCount: 0, totalCount: 0)
@@ -58,10 +61,11 @@ final class CollectionStatisticsSectionReactor: Reactor {
         var isLoading: Bool = true
         var statistics: [CategoryStatistics] = []
         var totalProgress: TotalProgress = .empty
+        var isEmpty: Bool = false
     }
 
     let initialState: State
-    var coordinator: DashboardCoordinator
+    let coordinator: DashboardCoordinator
 
     init(coordinator: DashboardCoordinator, state: State = State()) {
         self.coordinator = coordinator
@@ -72,6 +76,9 @@ final class CollectionStatisticsSectionReactor: Reactor {
         switch action {
         case .fetch:
             let loadingState = Items.shared.isLoading.map { Mutation.setLoadingState($0) }
+
+            let emptyState = Items.shared.count()
+                .map { Mutation.setIsEmpty($0.isEmpty) }
 
             let statistics = Observable.combineLatest(Items.shared.itemList, Items.shared.count())
                 .map { [weak self] userItems, itemsCount -> [Mutation] in
@@ -91,7 +98,7 @@ final class CollectionStatisticsSectionReactor: Reactor {
                 }
                 .flatMap { Observable.from($0) }
 
-            return Observable.merge(loadingState, statistics)
+            return Observable.merge(loadingState, emptyState, statistics)
 
         case .didTapSection:
             coordinator.transition(for: .progress)
@@ -108,6 +115,8 @@ final class CollectionStatisticsSectionReactor: Reactor {
             newState.statistics = statistics
         case .setTotalProgress(let progress):
             newState.totalProgress = progress
+        case .setIsEmpty(let isEmpty):
+            newState.isEmpty = isEmpty
         }
         return newState
     }
