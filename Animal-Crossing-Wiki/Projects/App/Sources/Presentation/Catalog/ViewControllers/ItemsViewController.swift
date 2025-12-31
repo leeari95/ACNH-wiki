@@ -23,6 +23,7 @@ final class ItemsViewController: UIViewController {
         case month
         case name
         case sell
+        case catalog
         case allSelect
         case reset
 
@@ -32,6 +33,7 @@ final class ItemsViewController: UIViewController {
             case .month: return "Month".localized
             case .name: return "Name".localized
             case .sell: return "Sell".localized
+            case .catalog: return "Catalog".localized
             case .allSelect: return "All Select".localized
             case .reset: return "Reset".localized
             }
@@ -48,6 +50,7 @@ final class ItemsViewController: UIViewController {
             case "Month".localized: return .month
             case "Name".localized: return .name
             case "Sell".localized: return .sell
+            case "Catalog".localized: return .catalog
             case "All Select".localized: return .allSelect
             case "Reset".localized: return .reset
             default: return .all
@@ -390,7 +393,40 @@ extension ItemsViewController {
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
         }
+
+        // Catalog Filter Menu
+        if let category = category, !Category.critters.contains(category) {
+            filterMenuList.append(createCatalogFilterMenu())
+        }
+
         return filterMenuList
+    }
+
+    private func createCatalogFilterMenu() -> UIMenu {
+        let catalogOptions = [
+            "For sale".localized,
+            "Not for sale".localized,
+            "Seasonal".localized
+        ]
+
+        let actionHandler: (UIAction) -> Void = { [weak self] action in
+            let menu = Menu.catalog
+            self?.currentSelected[menu] = action.title
+            self?.currentSelected[Menu.all] = nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
+        }
+
+        let catalogActions = catalogOptions.map { UIAction(title: $0, handler: actionHandler) }
+        catalogActions.forEach { action in
+            let menu = Menu.catalog
+            if currentSelected[menu] == action.title {
+                action.state = .on
+                action.attributes = .disabled
+            }
+        }
+
+        let catalogMenuTitle = currentSelected[.catalog] ?? Menu.catalog.title
+        return UIMenu(title: catalogMenuTitle, children: catalogActions)
     }
 
     private func createCheckMenu() -> UIMenu {
