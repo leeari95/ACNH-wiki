@@ -95,7 +95,8 @@ extension TurnipPrice {
 
     /// 구매 가격 대비 비율 계산
     func priceRatio(at index: Int) -> Double? {
-        guard let buyPrice = buyPrice, buyPrice > 0,
+        guard index >= 0 && index < 12,
+              let buyPrice = buyPrice, buyPrice > 0,
               let sellPrice = prices[index] else { return nil }
         return Double(sellPrice) / Double(buyPrice)
     }
@@ -104,8 +105,10 @@ extension TurnipPrice {
 // MARK: - Date Extension for Week
 extension Date {
     /// 주의 시작일 (일요일) 반환
+    /// 동물의 숲에서 무는 일요일에 구매하므로, 명시적으로 일요일을 주 시작으로 설정
     var startOfWeek: Date {
-        let calendar = Calendar.current
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 1 // 1 = Sunday
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)
         return calendar.date(from: components) ?? self
     }

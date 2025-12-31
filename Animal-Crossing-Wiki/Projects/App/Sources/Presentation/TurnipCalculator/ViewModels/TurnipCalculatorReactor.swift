@@ -70,12 +70,28 @@ final class TurnipCalculatorReactor: Reactor {
             return updatePriceAndPredict(updatedTurnip)
 
         case .clearAll:
-            let newTurnip = TurnipPrice(weekStartDate: Date().startOfWeek)
-            return Observable.concat([
-                Observable.just(Mutation.setTurnipPrice(newTurnip)),
-                Observable.just(Mutation.setPredictions([])),
-                Observable.just(Mutation.setExpectedRange(min: 0, max: 0))
-            ])
+            let newTurnip = TurnipPrice(
+                id: currentState.turnipPrice.id,
+                weekStartDate: Date().startOfWeek
+            )
+            // 저장소에 초기화된 데이터를 반영하고 UI 업데이트
+            return storage.updatePrice(newTurnip)
+                .asObservable()
+                .flatMap { _ -> Observable<Mutation> in
+                    return Observable.concat([
+                        Observable.just(Mutation.setTurnipPrice(newTurnip)),
+                        Observable.just(Mutation.setPredictions([])),
+                        Observable.just(Mutation.setExpectedRange(min: 0, max: 0))
+                    ])
+                }
+                .catch { _ in
+                    // 저장 실패해도 UI는 초기화
+                    return Observable.concat([
+                        Observable.just(Mutation.setTurnipPrice(newTurnip)),
+                        Observable.just(Mutation.setPredictions([])),
+                        Observable.just(Mutation.setExpectedRange(min: 0, max: 0))
+                    ])
+                }
 
         case .save:
             return saveCurrentPrice()
@@ -149,14 +165,20 @@ final class TurnipCalculatorReactor: Reactor {
         let predictions = TurnipPricePredictor.predict(turnipPrice: turnipPrice)
         let range = TurnipPricePredictor.getExpectedPriceRange(turnipPrice: turnipPrice)
 
-        // 자동 저장
-        storage.updatePrice(turnipPrice)
-
-        return Observable.concat([
+        // 먼저 UI 업데이트 후 백그라운드에서 저장
+        let uiMutations = Observable.concat([
             Observable.just(Mutation.setTurnipPrice(turnipPrice)),
             Observable.just(Mutation.setPredictions(predictions)),
             Observable.just(Mutation.setExpectedRange(min: range?.min ?? 0, max: range?.max ?? 0))
         ])
+
+        // 저장은 UI 업데이트와 별도로 수행 (fire-and-forget이지만 구독은 함)
+        let saveMutation = storage.updatePrice(turnipPrice)
+            .asObservable()
+            .flatMap { _ -> Observable<Mutation> in .empty() }
+            .catch { _ -> Observable<Mutation> in .empty() }
+
+        return Observable.merge(uiMutations, saveMutation)
     }
 
     private func saveCurrentPrice() -> Observable<Mutation> {

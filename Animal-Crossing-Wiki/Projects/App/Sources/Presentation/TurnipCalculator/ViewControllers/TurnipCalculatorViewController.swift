@@ -34,11 +34,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
 
     private lazy var summaryView = TurnipSummaryView()
 
-    private lazy var buyPriceSection: UIView = {
-        let view = createSectionView(title: "Sunday Buy Price".localized)
-        return view
-    }()
-
     private lazy var buyPriceTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
@@ -50,11 +45,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
         return textField
     }()
 
-    private lazy var priceInputSection: UIView = {
-        let view = createSectionView(title: "Weekly Prices".localized)
-        return view
-    }()
-
     private lazy var priceTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(TurnipPriceInputCell.self, forCellReuseIdentifier: TurnipPriceInputCell.reuseIdentifier)
@@ -63,11 +53,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
         tableView.isScrollEnabled = false
         tableView.rowHeight = 52
         return tableView
-    }()
-
-    private lazy var predictionSection: UIView = {
-        let view = createSectionView(title: "Pattern Predictions".localized)
-        return view
     }()
 
     private lazy var predictionStackView: UIStackView = {
@@ -86,7 +71,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
     }()
 
     private var priceInputRelay = PublishRelay<(Int, String?)>()
-    private var buyPriceRelay = PublishRelay<String?>()
 
     // MARK: - Lifecycle
 
@@ -172,26 +156,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
         dismiss(animated: true)
     }
 
-    private func createSectionView(title: String) -> UIView {
-        let container = UIView()
-
-        let titleLabel = UILabel()
-        titleLabel.text = title
-        titleLabel.font = .preferredFont(for: .headline, weight: .bold)
-        titleLabel.textColor = .acText
-
-        container.addSubviews(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor)
-        ])
-
-        return container
-    }
-
     private func createSectionContainer(title: String, content: UIView) -> UIView {
         let container = UIView()
 
@@ -275,23 +239,30 @@ final class TurnipCalculatorViewController: UIViewController, View {
             })
             .disposed(by: disposeBag)
 
-        // Set up table view
+        // Set up table view with reactive data binding
         setUpTableView(reactor: reactor)
     }
 
     private func setUpTableView(reactor: TurnipCalculatorReactor) {
-        let dayLabels = TurnipPrice.dayLabels
+        typealias PriceItem = (dayLabel: String, price: Int?, index: Int)
 
-        Observable.just(dayLabels)
+        // 상태 변경 시마다 테이블 뷰 데이터를 갱신하는 Observable 생성
+        reactor.state.map { $0.turnipPrice.prices }
+            .distinctUntilChanged()
+            .map { prices -> [PriceItem] in
+                let dayLabels = TurnipPrice.dayLabels
+                return dayLabels.enumerated().map { index, dayLabel in
+                    (dayLabel: dayLabel, price: prices[safe: index] ?? nil, index: index)
+                }
+            }
             .bind(to: priceTableView.rx.items(
                 cellIdentifier: TurnipPriceInputCell.reuseIdentifier,
                 cellType: TurnipPriceInputCell.self
-            )) { [weak self] index, dayLabel, cell in
-                let price = reactor.currentState.turnipPrice.prices[safe: index] ?? nil
+            )) { [weak self] _, item, cell in
                 cell.configure(
-                    dayLabel: dayLabel,
-                    price: price,
-                    index: index
+                    dayLabel: item.dayLabel,
+                    price: item.price,
+                    index: item.index
                 ) { idx, priceText in
                     self?.priceInputRelay.accept((idx, priceText))
                 }
@@ -305,8 +276,7 @@ final class TurnipCalculatorViewController: UIViewController, View {
         } else {
             buyPriceTextField.text = nil
         }
-
-        priceTableView.reloadData()
+        // 테이블뷰는 Rx 바인딩을 통해 자동 업데이트되므로 reloadData 호출 불필요
     }
 
     private func updatePredictions(_ predictions: [TurnipPrediction]) {

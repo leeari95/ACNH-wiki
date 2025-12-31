@@ -44,12 +44,12 @@ struct TurnipPricePredictor {
 
         // 각 패턴에 대한 확률 및 예상 가격 범위 계산
         let fluctuatingPrediction = analyzeFluctuating(buyPrice: buyPrice, ratios: ratios)
-        let largSpikePrediction = analyzeLargeSpike(buyPrice: buyPrice, ratios: ratios)
+        let largeSpikePrediction = analyzeLargeSpike(buyPrice: buyPrice, ratios: ratios)
         let decreasingPrediction = analyzeDecreasing(buyPrice: buyPrice, ratios: ratios)
         let smallSpikePrediction = analyzeSmallSpike(buyPrice: buyPrice, ratios: ratios)
 
         predictions.append(fluctuatingPrediction)
-        predictions.append(largSpikePrediction)
+        predictions.append(largeSpikePrediction)
         predictions.append(decreasingPrediction)
         predictions.append(smallSpikePrediction)
 

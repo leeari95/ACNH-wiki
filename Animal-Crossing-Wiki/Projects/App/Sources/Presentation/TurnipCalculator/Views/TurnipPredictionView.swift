@@ -61,7 +61,7 @@ final class TurnipPredictionView: UIView {
         backgroundColor = .acBackground
         layer.cornerRadius = 12
         layer.borderWidth = 1
-        layer.borderColor = UIColor.acSecondaryBackground.cgColor
+        updateBorderColor()
 
         let headerStack = UIStackView(arrangedSubviews: [patternLabel, probabilityLabel])
         headerStack.axis = .horizontal
@@ -82,6 +82,17 @@ final class TurnipPredictionView: UIView {
             mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateBorderColor()
+        }
+    }
+
+    private func updateBorderColor() {
+        layer.borderColor = UIColor.acSecondaryBackground.cgColor
     }
 
     func configure(with prediction: TurnipPrediction) {

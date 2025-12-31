@@ -10,6 +10,7 @@ import CoreData
 
 enum CoreDataStorageError: LocalizedError {
     case readError(Error)
+    case saveError(Error)
     case notFound
     case categoryNotFound
 
@@ -17,6 +18,8 @@ enum CoreDataStorageError: LocalizedError {
         switch self {
         case .readError(let error):
             return "⛔️ 데이터 불러오기 실패\n에러내용: \(error.localizedDescription)"
+        case .saveError(let error):
+            return "⛔️ 데이터 저장 실패\n에러내용: \(error.localizedDescription)"
         case .notFound:
             return "⛔️ 데이터를 찾지 못했습니다."
         case .categoryNotFound:
