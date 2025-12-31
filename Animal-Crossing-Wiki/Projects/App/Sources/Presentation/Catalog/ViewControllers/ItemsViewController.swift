@@ -385,7 +385,7 @@ extension ItemsViewController {
                 }
             }
             let monthMenuTitle = currentSelected[.month] != nil ?
-            (DateFormatter().monthSymbols[(Int(currentSelected[.month] ?? "1") ?? 1) - 1]) :
+            (Calendar.current.monthSymbols[(Int(currentSelected[.month] ?? "1") ?? 1) - 1]) :
             Menu.month.title.localized
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
