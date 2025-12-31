@@ -16,6 +16,8 @@ final class VillagersCell: UICollectionViewCell {
     private var isLiked: Bool = false
     private var isResident: Bool = false
     private var isNPC: Bool = false
+    private var hasReceivedInitialLikeState: Bool = false
+    private var hasReceivedInitialResidentState: Bool = false
 
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -40,6 +42,31 @@ final class VillagersCell: UICollectionViewCell {
         accessibilityTraits = .button
         likeButton.isAccessibilityElement = false
         houseButton.isAccessibilityElement = false
+        updateAccessibilityCustomActions()
+    }
+
+    private func updateAccessibilityCustomActions() {
+        var actions: [UIAccessibilityCustomAction] = []
+
+        // 좋아요 토글 액션
+        let likeActionName = isLiked ? "remove_from_favorites".localized : "add_to_favorites".localized
+        let likeAction = UIAccessibilityCustomAction(name: likeActionName) { [weak self] _ in
+            self?.likeButton.sendActions(for: .touchUpInside)
+            return true
+        }
+        actions.append(likeAction)
+
+        // 거주자 토글 액션 (NPC가 아닌 경우에만)
+        if !isNPC {
+            let residentActionName = isResident ? "remove_from_residents".localized : "add_to_residents".localized
+            let residentAction = UIAccessibilityCustomAction(name: residentActionName) { [weak self] _ in
+                self?.houseButton.sendActions(for: .touchUpInside)
+                return true
+            }
+            actions.append(residentAction)
+        }
+
+        accessibilityCustomActions = actions
     }
 
     private func updateAccessibilityLabel() {
@@ -76,6 +103,8 @@ final class VillagersCell: UICollectionViewCell {
         isLiked = false
         isResident = false
         isNPC = false
+        hasReceivedInitialLikeState = false
+        hasReceivedInitialResidentState = false
         updateAccessibilityLabel()
     }
     
@@ -126,14 +155,20 @@ final class VillagersCell: UICollectionViewCell {
             .subscribe(onNext: { [weak self] isLiked in
                 guard let self = self else { return }
                 let previousState = self.isLiked
+                let isInitialState = !self.hasReceivedInitialLikeState
+                self.hasReceivedInitialLikeState = true
                 self.isLiked = isLiked
                 self.updateAccessibilityLabel()
+                self.updateAccessibilityCustomActions()
                 self.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
 
-                // 좋아요 상태 변경 시 접근성 알림
-                if previousState != isLiked {
-                    let announcement = isLiked ? "added_to_favorites".localized : "removed_from_favorites".localized
-                    UIAccessibility.post(notification: .announcement, argument: announcement)
+                // 좋아요 상태 변경 시 접근성 알림 (초기 로딩 시에는 알림하지 않음)
+                if !isInitialState && previousState != isLiked {
+                    self.announceAccessibilityChange(
+                        isAdded: isLiked,
+                        addedKey: "added_to_favorites",
+                        removedKey: "removed_from_favorites"
+                    )
                 }
             }).disposed(by: disposeBag)
 
@@ -143,14 +178,20 @@ final class VillagersCell: UICollectionViewCell {
             .subscribe(onNext: { [weak self] isResident in
                 guard let self = self else { return }
                 let previousState = self.isResident
+                let isInitialState = !self.hasReceivedInitialResidentState
+                self.hasReceivedInitialResidentState = true
                 self.isResident = isResident
                 self.updateAccessibilityLabel()
+                self.updateAccessibilityCustomActions()
                 self.houseButton.setImage(UIImage(systemName: isResident ? "house.fill" : "house"), for: .normal)
 
-                // 거주 상태 변경 시 접근성 알림
-                if previousState != isResident {
-                    let announcement = isResident ? "added_to_residents".localized : "removed_from_residents".localized
-                    UIAccessibility.post(notification: .announcement, argument: announcement)
+                // 거주 상태 변경 시 접근성 알림 (초기 로딩 시에는 알림하지 않음)
+                if !isInitialState && previousState != isResident {
+                    self.announceAccessibilityChange(
+                        isAdded: isResident,
+                        addedKey: "added_to_residents",
+                        removedKey: "removed_from_residents"
+                    )
                 }
             }).disposed(by: disposeBag)
     }
@@ -172,16 +213,28 @@ final class VillagersCell: UICollectionViewCell {
             .subscribe(onNext: { [weak self] isLiked in
                 guard let self = self else { return }
                 let previousState = self.isLiked
+                let isInitialState = !self.hasReceivedInitialLikeState
+                self.hasReceivedInitialLikeState = true
                 self.isLiked = isLiked
                 self.updateAccessibilityLabel()
+                self.updateAccessibilityCustomActions()
                 self.likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
 
-                // 좋아요 상태 변경 시 접근성 알림
-                if previousState != isLiked {
-                    let announcement = isLiked ? "added_to_favorites".localized : "removed_from_favorites".localized
-                    UIAccessibility.post(notification: .announcement, argument: announcement)
+                // 좋아요 상태 변경 시 접근성 알림 (초기 로딩 시에는 알림하지 않음)
+                if !isInitialState && previousState != isLiked {
+                    self.announceAccessibilityChange(
+                        isAdded: isLiked,
+                        addedKey: "added_to_favorites",
+                        removedKey: "removed_from_favorites"
+                    )
                 }
             }).disposed(by: disposeBag)
     }
 
+    // MARK: - Accessibility Helpers
+
+    private func announceAccessibilityChange(isAdded: Bool, addedKey: String, removedKey: String) {
+        let announcement = isAdded ? addedKey.localized : removedKey.localized
+        UIAccessibility.post(notification: .announcement, argument: announcement)
+    }
 }

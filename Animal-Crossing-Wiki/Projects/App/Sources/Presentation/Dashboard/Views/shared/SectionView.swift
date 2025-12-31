@@ -56,9 +56,10 @@ extension SectionView {
         headerView.accessibilityLabel = title
         headerView.accessibilityTraits = .header
 
-        // 컨테이너뷰는 접근성 컨테이너로 설정
-        containerView.accessibilityElements = [contentView]
+        // 컨테이너뷰는 자식 요소들을 그룹화하여 탐색 순서를 개선
         containerView.shouldGroupAccessibilityChildren = true
+        // contentView 내부의 접근성 요소들이 자연스럽게 노출되도록 함
+        containerView.isAccessibilityElement = false
     }
 
     private func configureHeader() {

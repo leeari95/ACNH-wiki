@@ -1544,3 +1544,10 @@
 "removed_from_favorites" = "좋아요 해제됨";
 "added_to_residents" = "거주자로 등록됨";
 "removed_from_residents" = "거주자에서 해제됨";
+"add_to_favorites" = "좋아요 추가";
+"remove_from_favorites" = "좋아요 해제";
+"add_to_residents" = "거주자로 등록";
+"remove_from_residents" = "거주자에서 해제";
+"toggle_acquisition" = "보유 상태 전환";
+"add_acquisition" = "보유 등록";
+"remove_acquisition" = "보유 해제";

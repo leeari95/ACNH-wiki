@@ -132,6 +132,7 @@ final class NpcsView: UIView {
             ) { _, npcInfo, cell in
                 let (npc, isChecked) = npcInfo
                 cell.setImage(url: npc.iconImage)
+                cell.setAccessibilityInfo(name: npc.translations.localizedName(), isChecked: isChecked)
                 cell.setChecked(isChecked)
             }.disposed(by: disposeBag)
 

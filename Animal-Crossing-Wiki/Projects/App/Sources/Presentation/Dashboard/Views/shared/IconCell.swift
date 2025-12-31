@@ -63,7 +63,14 @@ final class IconCell: UICollectionViewCell {
     }
 
     func toggle() {
-        self.imageView.alpha = imageView.alpha == 1 ? 0.5 : 1
+        let wasChecked = imageView.alpha == 1
+        self.imageView.alpha = wasChecked ? 0.5 : 1
+        isItemChecked = !wasChecked
+        updateAccessibilityLabel()
+
+        // 토글 시 접근성 알림
+        let announcement = isItemChecked ? "item_checked".localized : "item_unchecked".localized
+        UIAccessibility.post(notification: .announcement, argument: announcement)
     }
 
     func removeCheckMark() {

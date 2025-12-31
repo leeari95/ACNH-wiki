@@ -132,6 +132,7 @@ final class VillagersView: UIView {
             ) { _, villagerInfo, cell in
                 let (villager, isChecked) = villagerInfo
                 cell.setImage(url: villager.iconImage)
+                cell.setAccessibilityInfo(name: villager.translations.localizedName(), isChecked: isChecked)
                 cell.setChecked(isChecked)
             }.disposed(by: disposeBag)
 

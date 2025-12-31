@@ -13,6 +13,7 @@ final class CatalogCell: UICollectionViewCell {
     private var disposeBag = DisposeBag()
     private var itemName: String?
     private var isItemAcquired: Bool = false
+    private var hasReceivedInitialAcquiredState: Bool = false
 
     @IBOutlet private weak var backgroundStackView: UIStackView!
     @IBOutlet private weak var iconImageView: UIImageView!
@@ -44,6 +45,16 @@ final class CatalogCell: UICollectionViewCell {
         isAccessibilityElement = true
         accessibilityTraits = .button
         checkButton.isAccessibilityElement = false
+        updateAccessibilityCustomActions()
+    }
+
+    private func updateAccessibilityCustomActions() {
+        let actionName = isItemAcquired ? "remove_acquisition".localized : "add_acquisition".localized
+        let toggleAction = UIAccessibilityCustomAction(name: actionName) { [weak self] _ in
+            self?.checkButton.sendActions(for: .touchUpInside)
+            return true
+        }
+        accessibilityCustomActions = [toggleAction]
     }
 
     override func prepareForReuse() {
@@ -63,6 +74,7 @@ final class CatalogCell: UICollectionViewCell {
         )
         itemName = nil
         isItemAcquired = false
+        hasReceivedInitialAcquiredState = false
         updateAccessibilityLabel()
     }
 
@@ -110,8 +122,11 @@ final class CatalogCell: UICollectionViewCell {
             .subscribe(onNext: { [weak self] isAcquired in
                 guard let self = self else { return }
                 let previousState = self.isItemAcquired
+                let isInitialState = !self.hasReceivedInitialAcquiredState
+                self.hasReceivedInitialAcquiredState = true
                 self.isItemAcquired = isAcquired
                 self.updateAccessibilityLabel()
+                self.updateAccessibilityCustomActions()
 
                 let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
                 self.checkButton.setImage(
@@ -122,8 +137,8 @@ final class CatalogCell: UICollectionViewCell {
                     for: .normal
                 )
 
-                // 체크 상태 변경 시 접근성 알림
-                if previousState != isAcquired {
+                // 체크 상태 변경 시 접근성 알림 (초기 로딩 시에는 알림하지 않음)
+                if !isInitialState && previousState != isAcquired {
                     let announcement = isAcquired ? "item_acquired".localized : "item_not_acquired".localized
                     UIAccessibility.post(notification: .announcement, argument: announcement)
                 }

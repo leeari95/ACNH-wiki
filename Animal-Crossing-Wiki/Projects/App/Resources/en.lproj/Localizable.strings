@@ -1539,3 +1539,10 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "removed_from_favorites" = "Removed from favorites";
 "added_to_residents" = "Added to residents";
 "removed_from_residents" = "Removed from residents";
+"add_to_favorites" = "Add to favorites";
+"remove_from_favorites" = "Remove from favorites";
+"add_to_residents" = "Add to residents";
+"remove_from_residents" = "Remove from residents";
+"toggle_acquisition" = "Toggle acquisition";
+"add_acquisition" = "Mark as acquired";
+"remove_acquisition" = "Remove from acquired";
