@@ -30,6 +30,13 @@ final class AppSettingView: UIView {
         return hapticSwitch
     }()
 
+    private lazy var notificationSwitch: UISwitch = {
+        let notificationSwitch = UISwitch()
+        notificationSwitch.isOn = NotificationManager.shared.mode == .on ? true : false
+        notificationSwitch.setContentHuggingPriority(.required, for: .horizontal)
+        return notificationSwitch
+    }()
+
     private func configure() {
         addSubviews(backgroundStackView)
 
@@ -42,6 +49,7 @@ final class AppSettingView: UIView {
         let resetView = InfoContentView(title: "Data reset".localized)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            InfoContentView(title: "Rare creature notification".localized, contentView: notificationSwitch),
             resetView
         )
         resetView.addGestureRecognizer(resetTapGesture)
@@ -49,7 +57,13 @@ final class AppSettingView: UIView {
 
     func bind(to reactor: AppSettingReactor) {
         hapticSwitch.rx.controlEvent(.valueChanged)
-            .map { AppSettingReactor.Action.toggleSwitch }
+            .map { AppSettingReactor.Action.toggleHaptic }
+            .subscribe(onNext: { action in
+                reactor.action.onNext(action)
+            }).disposed(by: disposeBag)
+
+        notificationSwitch.rx.controlEvent(.valueChanged)
+            .map { AppSettingReactor.Action.toggleNotification }
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
@@ -61,6 +75,10 @@ final class AppSettingView: UIView {
 
         reactor.state.map { $0.currentHapticState }
             .bind(to: hapticSwitch.rx.isOn)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.currentNotificationState }
+            .bind(to: notificationSwitch.rx.isOn)
             .disposed(by: disposeBag)
     }
 }
