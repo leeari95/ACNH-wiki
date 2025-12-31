@@ -84,13 +84,13 @@ final class TodaysTasksSectionReactorTests: XCTestCase {
         name: String = "Test Task",
         icon: String = "Inv167",
         amount: Int = 3,
-        progressList: [Bool]? = nil
+        isCompleted: Bool = false
     ) -> DailyTask {
+        // Use the existing convenience initializer that properly creates progressList
         DailyTask(
-            id: UUID(),
             name: name,
             icon: icon,
-            progressList: progressList ?? Array(repeating: false, count: amount),
+            isCompleted: isCompleted,
             amount: amount,
             createdDate: Date()
         )
@@ -302,23 +302,3 @@ final class TodaysTasksSectionReactorTests: XCTestCase {
     }
 }
 
-// MARK: - DailyTask Extension for Testing
-
-extension DailyTask {
-    init(
-        id: UUID,
-        name: String,
-        icon: String,
-        progressList: [Bool],
-        amount: Int,
-        createdDate: Date
-    ) {
-        self.init(
-            name: name,
-            icon: icon,
-            isCompleted: false,
-            amount: amount,
-            createdDate: createdDate
-        )
-    }
-}
