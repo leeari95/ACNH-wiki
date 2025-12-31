@@ -63,7 +63,8 @@ final class DashboardViewController: UIViewController {
         villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionReactor,
         fixeVisitdNPCListVM: NpcsSectionReactor,
-        randomVisitNPCListVM: NpcsSectionReactor
+        randomVisitNPCListVM: NpcsSectionReactor,
+        eventCalendarVM: EventCalendarSectionReactor
     ) {
         let userInfoSection = SectionView(
             title: "My Island".localized,
@@ -95,11 +96,17 @@ final class DashboardViewController: UIViewController {
             iconName: "pin.fill",
             contentView: NpcsView(fixeVisitdNPCListVM)
         )
+        let eventCalendarSection = SectionView(
+            title: "Event Calendar".localized,
+            iconName: "calendar",
+            contentView: EventCalendarView(eventCalendarVM)
+        )
         sectionsScrollView.addSection(userInfoSection,
-                                      tasksSection, 
-                                      villagersSection, 
-                                      progressSection, 
-                                      randomVisitResidentsSectionView, 
+                                      tasksSection,
+                                      eventCalendarSection,
+                                      villagersSection,
+                                      progressSection,
+                                      randomVisitResidentsSectionView,
                                       fixedVisitResidentsSectionView)
     }
 

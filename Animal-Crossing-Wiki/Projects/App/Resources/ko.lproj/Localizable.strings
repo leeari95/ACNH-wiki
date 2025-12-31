@@ -1524,3 +1524,29 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+// MARK: - Event Calendar
+"Event Calendar" = "이벤트 캘린더";
+"No events this month" = "이번 달에는 이벤트가 없습니다";
+"Ongoing" = "진행 중";
+
+// MARK: - Event Names
+"Fishing Tournament" = "낚시 대회";
+"Bug-Off" = "곤충 채집 대회";
+"New Year's Day" = "새해 첫날";
+"Countdown" = "카운트다운";
+"Festivale" = "카니발";
+"Shamrock Day" = "삼잎클로버 데이";
+"Bunny Day" = "부활절";
+"Nature Day" = "자연의 날";
+"May Day" = "메이 데이";
+"International Museum Day" = "세계 박물관의 날";
+"Wedding Season" = "웨딩 시즌";
+"Fireworks Show" = "불꽃놀이 축제";
+"Halloween" = "할로윈";
+"Turkey Day" = "추수감사절";
+"Toy Day" = "토이 데이";
+"Cherry Blossom Season" = "벚꽃 시즌";
+"Mushroom Season" = "버섯 시즌";
+"Maple Leaf Season" = "단풍잎 시즌";
+"Snowflake Season" = "눈꽃 시즌";

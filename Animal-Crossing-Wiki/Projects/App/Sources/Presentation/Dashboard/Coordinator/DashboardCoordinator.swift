@@ -46,7 +46,8 @@ final class DashboardCoordinator: Coordinator {
             villagersVM: VillagersSectionReactor(coordinator: self),
             progressVM: CollectionProgressSectionReactor(coordinator: self),
             fixeVisitdNPCListVM: NpcsSectionReactor(state: .init(), mode: .fixedVisit, coordinator: self),
-            randomVisitNPCListVM: NpcsSectionReactor(state: .init(), mode: .randomVisit, coordinator: self)
+            randomVisitNPCListVM: NpcsSectionReactor(state: .init(), mode: .randomVisit, coordinator: self),
+            eventCalendarVM: EventCalendarSectionReactor(coordinator: self)
         )
         rootViewController.addChild(viewController)
     }

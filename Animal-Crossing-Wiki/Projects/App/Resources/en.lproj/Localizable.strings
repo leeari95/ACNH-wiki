@@ -1519,3 +1519,29 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+// MARK: - Event Calendar
+"Event Calendar" = "Event Calendar";
+"No events this month" = "No events this month";
+"Ongoing" = "Ongoing";
+
+// MARK: - Event Names
+"Fishing Tournament" = "Fishing Tournament";
+"Bug-Off" = "Bug-Off";
+"New Year's Day" = "New Year's Day";
+"Countdown" = "Countdown";
+"Festivale" = "Festivale";
+"Shamrock Day" = "Shamrock Day";
+"Bunny Day" = "Bunny Day";
+"Nature Day" = "Nature Day";
+"May Day" = "May Day";
+"International Museum Day" = "International Museum Day";
+"Wedding Season" = "Wedding Season";
+"Fireworks Show" = "Fireworks Show";
+"Halloween" = "Halloween";
+"Turkey Day" = "Turkey Day";
+"Toy Day" = "Toy Day";
+"Cherry Blossom Season" = "Cherry Blossom Season";
+"Mushroom Season" = "Mushroom Season";
+"Maple Leaf Season" = "Maple Leaf Season";
+"Snowflake Season" = "Snowflake Season";
