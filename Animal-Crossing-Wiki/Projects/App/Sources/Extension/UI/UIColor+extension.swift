@@ -50,14 +50,14 @@ enum AssetColor: String, CaseIterable {
     case acText = "ACText"
     case acSecondaryText = "ACSecondaryText"
 
-    // MARK: - Navigation Colors
+    // MARK: - Navigation & Tab Bar Colors
     case acNavigationBarTint = "ACNavigationBarTint"
+    case acTabBarTint = "catalog-text"  // TabBar와 Catalog에서 동일한 색상 사용
 
     // MARK: - Catalog Colors
     case catalogBar = "catalog-bar"
     case catalogBackground = "catalog-background"
     case catalogSelected = "catalog-selected"
-    case catalogText = "catalog-text"
 
     /// Asset Catalog에서 해당 색상을 로드합니다.
     /// - Parameter fallback: 색상을 찾지 못했을 때 반환할 기본 색상
@@ -67,7 +67,20 @@ enum AssetColor: String, CaseIterable {
     }
 
     /// 디버그 빌드에서 색상 리소스 유효성을 검증합니다.
-    /// 앱 시작 시 호출하여 누락된 색상 리소스를 조기에 발견할 수 있습니다.
+    ///
+    /// ## 사용 방법
+    /// AppDelegate 또는 SceneDelegate의 초기화 시점에 호출하세요:
+    /// ```swift
+    /// func application(_ application: UIApplication,
+    ///                  didFinishLaunchingWithOptions launchOptions: ...) -> Bool {
+    ///     #if DEBUG
+    ///     AssetColor.validateAllColors()
+    ///     #endif
+    ///     return true
+    /// }
+    /// ```
+    ///
+    /// - Note: 누락된 색상 리소스가 있으면 디버그 빌드에서 assertionFailure가 발생합니다.
     static func validateAllColors() {
         #if DEBUG
         for color in Self.allCases {
@@ -83,15 +96,15 @@ enum AssetColor: String, CaseIterable {
 extension UIColor {
     // MARK: - Background Colors
     class var acHeaderBackground: UIColor {
-        AssetColor.acHeaderBackground.color(fallback: .clear)
+        AssetColor.acHeaderBackground.color(fallback: .systemBackground)
     }
 
     class var acBackground: UIColor {
-        AssetColor.acBackground.color(fallback: .clear)
+        AssetColor.acBackground.color(fallback: .systemBackground)
     }
 
     class var acSecondaryBackground: UIColor {
-        AssetColor.acSecondaryBackground.color(fallback: .clear)
+        AssetColor.acSecondaryBackground.color(fallback: .secondarySystemBackground)
     }
 
     // MARK: - Text Colors
@@ -100,28 +113,34 @@ extension UIColor {
     }
 
     class var acSecondaryText: UIColor {
-        AssetColor.acSecondaryText.color(fallback: .systemGray)
+        AssetColor.acSecondaryText.color(fallback: .secondaryLabel)
     }
 
     // MARK: - Navigation Colors
     class var acNavigationBarTint: UIColor {
-        AssetColor.acNavigationBarTint.color(fallback: .clear)
+        AssetColor.acNavigationBarTint.color(fallback: .systemBlue)
     }
 
     // MARK: - Catalog Colors
     class var catalogBar: UIColor {
-        AssetColor.catalogBar.color(fallback: .clear)
+        AssetColor.catalogBar.color(fallback: .systemBackground)
     }
 
     class var catalogBackground: UIColor {
-        AssetColor.catalogBackground.color(fallback: .clear)
+        AssetColor.catalogBackground.color(fallback: .systemBackground)
     }
 
     class var catalogSelected: UIColor {
-        AssetColor.catalogSelected.color(fallback: .clear)
+        AssetColor.catalogSelected.color(fallback: .systemFill)
     }
 
+    // MARK: - Tab Bar Colors
     class var acTabBarTint: UIColor {
-        AssetColor.catalogText.color(fallback: .label)
+        AssetColor.acTabBarTint.color(fallback: .label)
+    }
+
+    // MARK: - Launch Screen Colors
+    class var launchBackground: UIColor {
+        AssetColor.launchBackground.color(fallback: .systemBackground)
     }
 }
