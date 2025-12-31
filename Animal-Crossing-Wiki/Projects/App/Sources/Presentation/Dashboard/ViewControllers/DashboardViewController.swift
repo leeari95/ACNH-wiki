@@ -63,7 +63,8 @@ final class DashboardViewController: UIViewController {
         villagersVM: VillagersSectionReactor,
         progressVM: CollectionProgressSectionReactor,
         fixeVisitdNPCListVM: NpcsSectionReactor,
-        randomVisitNPCListVM: NpcsSectionReactor
+        randomVisitNPCListVM: NpcsSectionReactor,
+        musicPlayerVM: MusicPlayerSectionReactor
     ) {
         let userInfoSection = SectionView(
             title: "My Island".localized,
@@ -85,6 +86,11 @@ final class DashboardViewController: UIViewController {
             iconName: "chart.pie.fill",
             contentView: CollectionProgressView(viewModel: progressVM)
         )
+        let musicPlayerSection = SectionView(
+            title: "Now Playing".localized,
+            iconName: "music.note",
+            contentView: MusicPlayerSectionView(musicPlayerVM)
+        )
         let randomVisitResidentsSectionView = SectionView(
             title: "Residents who can visit randomly on weekdays".localized,
             iconName: "bubbles.and.sparkles.fill",
@@ -96,10 +102,11 @@ final class DashboardViewController: UIViewController {
             contentView: NpcsView(fixeVisitdNPCListVM)
         )
         sectionsScrollView.addSection(userInfoSection,
-                                      tasksSection, 
-                                      villagersSection, 
-                                      progressSection, 
-                                      randomVisitResidentsSectionView, 
+                                      tasksSection,
+                                      villagersSection,
+                                      progressSection,
+                                      musicPlayerSection,
+                                      randomVisitResidentsSectionView,
                                       fixedVisitResidentsSectionView)
     }
 
