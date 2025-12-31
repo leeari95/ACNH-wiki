@@ -148,6 +148,17 @@ enum Category: String, CaseIterable {
     static func animals() -> [Category] {
         [.npc, .villager]
     }
+
+    /// catalog 속성을 가진 카테고리 (가구, 의류 등)
+    /// - 제외: critters, fossils, art, recipes, reactions, photos, other (catalog 속성 없음)
+    static var catalogFilterable: [Category] {
+        [
+            .housewares, .miscellaneous, .wallMounted, .ceilingDecor,
+            .wallpaper, .floors, .rugs, .songs, .fencing,
+            .tops, .bottoms, .dressUp, .headwear, .accessories, .socks, .shoes, .bags, .umbrellas, .wetSuit,
+            .tools, .gyroids
+        ]
+    }
 }
 
 extension Category: Comparable {

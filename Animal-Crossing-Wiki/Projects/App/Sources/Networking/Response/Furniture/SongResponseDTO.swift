@@ -48,6 +48,7 @@ extension SongResponseDTO: DomainConvertible {
             buy: buy,
             sources: sources,
             sourceNotes: sourceNotes,
+            catalog: catalog,
             musicURL: musicURL ?? ""
         )
     }
@@ -63,6 +64,7 @@ extension Item {
         buy: Int?,
         sources: [String],
         sourceNotes: [String]?,
+        catalog: Catalog?,
         musicURL: String
     ) {
         self.name = name
@@ -73,6 +75,7 @@ extension Item {
         self.buy = buy
         self.sources = sources
         self.sourceNotes = sourceNotes
+        self.catalog = catalog
         self.colors = []
         self.genuine = true
         self.musicURL = musicURL

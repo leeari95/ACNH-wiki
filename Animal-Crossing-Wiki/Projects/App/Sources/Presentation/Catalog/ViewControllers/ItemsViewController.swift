@@ -394,8 +394,8 @@ extension ItemsViewController {
             filterMenuList.append(monthsMenu)
         }
 
-        // Catalog Filter Menu
-        if let category = category, !Category.critters.contains(category) {
+        // Catalog Filter Menu - catalog 속성이 있는 카테고리에만 표시
+        if let category = category, Category.catalogFilterable.contains(category) {
             filterMenuList.append(createCatalogFilterMenu())
         }
 
@@ -403,12 +403,6 @@ extension ItemsViewController {
     }
 
     private func createCatalogFilterMenu() -> UIMenu {
-        let catalogOptions = [
-            "For sale".localized,
-            "Not for sale".localized,
-            "Seasonal".localized
-        ]
-
         let actionHandler: (UIAction) -> Void = { [weak self] action in
             let menu = Menu.catalog
             self?.currentSelected[menu] = action.title
@@ -416,7 +410,9 @@ extension ItemsViewController {
             self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
         }
 
-        let catalogActions = catalogOptions.map { UIAction(title: $0, handler: actionHandler) }
+        let catalogActions = Catalog.allCases.map { catalog in
+            UIAction(title: catalog.localizedName, handler: actionHandler)
+        }
         catalogActions.forEach { action in
             let menu = Menu.catalog
             if currentSelected[menu] == action.title {
@@ -425,7 +421,7 @@ extension ItemsViewController {
             }
         }
 
-        let catalogMenuTitle = currentSelected[.catalog] ?? Menu.catalog.title
+        let catalogMenuTitle = currentSelected[.catalog] ?? Menu.catalog.title.localized
         return UIMenu(title: catalogMenuTitle, children: catalogActions)
     }
 

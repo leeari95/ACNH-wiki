@@ -248,7 +248,9 @@ final class ItemsReactor: Reactor {
                         $0.sell < $1.sell : $0.sell > $1.sell
                     }
             case .catalog:
-                let catalogValue = catalogTypeFromLocalizedString(value)
+                guard let catalogValue = Catalog.from(localizedString: value) else {
+                    continue
+                }
                 filteredItems = (filteredItems.isEmpty ? items : filteredItems).filter {
                     $0.catalog == catalogValue
                 }
@@ -367,14 +369,4 @@ final class ItemsReactor: Reactor {
         }
     }
 
-    private func catalogTypeFromLocalizedString(_ localizedString: String) -> Catalog? {
-        if localizedString == "For sale".localized {
-            return .forSale
-        } else if localizedString == "Not for sale".localized {
-            return .notForSale
-        } else if localizedString == "Seasonal".localized {
-            return .seasonal
-        }
-        return nil
-    }
 }
