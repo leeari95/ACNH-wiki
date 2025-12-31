@@ -188,14 +188,9 @@ extension Category: Comparable {
         case .wetSuit: return 28
         case .reactions: return 29
         case .gyroids: return 30
-    
-        case .villager: return 0
-        case .npc: return 1
+        case .villager: return 31
+        case .npc: return 32
         }
-    }
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.sortOrder == rhs.sortOrder
     }
 
     static func < (lhs: Self, rhs: Self) -> Bool {
