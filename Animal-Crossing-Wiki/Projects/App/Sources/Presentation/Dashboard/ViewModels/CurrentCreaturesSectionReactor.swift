@@ -8,7 +8,6 @@
 import Foundation
 import ReactorKit
 import RxSwift
-import RxCocoa
 
 final class CurrentCreaturesSectionReactor: Reactor {
 
@@ -28,6 +27,12 @@ final class CurrentCreaturesSectionReactor: Reactor {
         var creatures: [Item] = []
         var filteredCreatures: [Item] = []
         var selectedCategory: Category?
+
+        /// Returns the creatures to display based on the current filter.
+        /// Use this property instead of checking selectedCategory manually.
+        var displayedCreatures: [Item] {
+            selectedCategory == nil ? creatures : filteredCreatures
+        }
     }
 
     let initialState: State = State()
@@ -44,10 +49,7 @@ final class CurrentCreaturesSectionReactor: Reactor {
                 .map { Mutation.setCreatures($0) }
 
         case .creatureTapped(let index):
-            let creatures = currentState.selectedCategory == nil
-                ? currentState.creatures
-                : currentState.filteredCreatures
-            guard let creature = creatures[safe: index] else {
+            guard let creature = currentState.displayedCreatures[safe: index] else {
                 return Observable.empty()
             }
             return Observable.just(Mutation.transition(route: .itemDetail(item: creature)))
@@ -89,8 +91,9 @@ final class CurrentCreaturesSectionReactor: Reactor {
         .map { [weak self] categories, hemisphere -> [Item] in
             guard let self = self else { return [] }
 
-            let currentMonth = Calendar.current.component(.month, from: Date())
-            let currentHour = Calendar.current.component(.hour, from: Date())
+            let now = Date()
+            let currentMonth = Calendar.current.component(.month, from: now)
+            let currentHour = Calendar.current.component(.hour, from: now)
 
             var currentCreatures: [Item] = []
 
@@ -180,6 +183,9 @@ final class CurrentCreaturesSectionReactor: Reactor {
         return hour
     }
 
+    /// Checks if the given hour falls within the specified time range.
+    /// The end time is exclusive (e.g., for "4 AM - 9 AM", 9:00 AM is NOT included).
+    /// This matches Animal Crossing's actual behavior where creatures disappear at the end time.
     private func isHourInRange(hour: Int, range: (start: Int, end: Int)) -> Bool {
         if range.start <= range.end {
             return hour >= range.start && hour < range.end

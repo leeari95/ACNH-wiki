@@ -62,11 +62,6 @@ final class CurrentCreaturesView: UIView {
         let label = UILabel(text: text, font: .preferredFont(forTextStyle: .footnote), color: .acText)
         label.numberOfLines = 0
         label.textAlignment = .center
-        addSubviews(label)
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        label.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         return label
     }()
 
@@ -83,9 +78,19 @@ final class CurrentCreaturesView: UIView {
         return button
     }
 
-    private func updateFilterButtonAppearance(_ selectedButton: UIButton) {
-        [allButton, fishButton, bugButton, seaCreatureButton].forEach { button in
-            button.isSelected = button == selectedButton
+    private func updateFilterButtonAppearance(for category: Category?) {
+        let buttons = [allButton, fishButton, bugButton, seaCreatureButton]
+        let selectedIndex: Int
+        switch category {
+        case nil: selectedIndex = 0
+        case .fishes: selectedIndex = 1
+        case .bugs: selectedIndex = 2
+        case .seaCreatures: selectedIndex = 3
+        default: selectedIndex = 0
+        }
+
+        buttons.enumerated().forEach { index, button in
+            button.isSelected = index == selectedIndex
             button.backgroundColor = button.isSelected
                 ? .acHeaderBackground
                 : .acText.withAlphaComponent(0.1)
@@ -98,7 +103,7 @@ final class CurrentCreaturesView: UIView {
     }
 
     private func configure() {
-        addSubviews(backgroundStackView)
+        addSubviews(backgroundStackView, emptyLabel)
 
         filterStackView.addArrangedSubviews(allButton, fishButton, bugButton, seaCreatureButton)
         backgroundStackView.addArrangedSubviews(filterStackView, collectionView, countLabel)
@@ -114,10 +119,14 @@ final class CurrentCreaturesView: UIView {
             filterStackView.leadingAnchor.constraint(equalTo: backgroundStackView.leadingAnchor),
             filterStackView.trailingAnchor.constraint(equalTo: backgroundStackView.trailingAnchor),
             collectionView.widthAnchor.constraint(equalTo: backgroundStackView.widthAnchor),
-            heightConstraint
+            heightConstraint,
+            emptyLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            emptyLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
 
-        updateFilterButtonAppearance(allButton)
+        updateFilterButtonAppearance(for: nil)
     }
 
     private func bind(to reactor: CurrentCreaturesSectionReactor) {
@@ -126,47 +135,33 @@ final class CurrentCreaturesView: UIView {
             .disposed(by: disposeBag)
 
         // Filter button bindings
-        allButton.rx.tap
-            .do(onNext: { [weak self] in
-                self?.updateFilterButtonAppearance(self?.allButton ?? UIButton())
-            })
-            .map { CurrentCreaturesSectionReactor.Action.filterChanged(category: nil) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+        let filterButtons: [(UIButton, Category?)] = [
+            (allButton, nil),
+            (fishButton, .fishes),
+            (bugButton, .bugs),
+            (seaCreatureButton, .seaCreatures)
+        ]
 
-        fishButton.rx.tap
-            .do(onNext: { [weak self] in
-                self?.updateFilterButtonAppearance(self?.fishButton ?? UIButton())
-            })
-            .map { CurrentCreaturesSectionReactor.Action.filterChanged(category: .fishes) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+        filterButtons.forEach { button, category in
+            button.rx.tap
+                .map { CurrentCreaturesSectionReactor.Action.filterChanged(category: category) }
+                .bind(to: reactor.action)
+                .disposed(by: disposeBag)
+        }
 
-        bugButton.rx.tap
-            .do(onNext: { [weak self] in
-                self?.updateFilterButtonAppearance(self?.bugButton ?? UIButton())
+        // Update filter button appearance based on state
+        reactor.state
+            .map { $0.selectedCategory }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] category in
+                self?.updateFilterButtonAppearance(for: category)
             })
-            .map { CurrentCreaturesSectionReactor.Action.filterChanged(category: .bugs) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-
-        seaCreatureButton.rx.tap
-            .do(onNext: { [weak self] in
-                self?.updateFilterButtonAppearance(self?.seaCreatureButton ?? UIButton())
-            })
-            .map { CurrentCreaturesSectionReactor.Action.filterChanged(category: .seaCreatures) }
-            .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
         // Collection view binding
         reactor.state
-            .map { state -> [Item] in
-                if state.selectedCategory == nil {
-                    return state.creatures
-                } else {
-                    return state.filteredCreatures
-                }
-            }
+            .map { $0.displayedCreatures }
             .bind(
                 to: collectionView.rx.items(
                     cellIdentifier: IconCell.className,
@@ -178,9 +173,9 @@ final class CurrentCreaturesView: UIView {
 
         // Empty state and count label
         reactor.state
+            .map { $0.displayedCreatures }
             .observe(on: MainScheduler.asyncInstance)
-            .subscribe(onNext: { [weak self] state in
-                let creatures = state.selectedCategory == nil ? state.creatures : state.filteredCreatures
+            .subscribe(onNext: { [weak self] creatures in
                 if creatures.isEmpty {
                     self?.emptyLabel.isHidden = false
                     self?.backgroundStackView.isHidden = true
