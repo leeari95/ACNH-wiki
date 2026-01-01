@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import CoreData
 
-final class CoreDataDailyTaskStorage: DailyTaskStorage {
+final class CoreDataDailyTaskStorage: DailyTaskStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -73,7 +73,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateDailyTask")
             }
         }
     }
@@ -90,7 +90,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "toggleTaskCompleted")
             }
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class CoreDataItemsStorage: ItemsStorage {
+final class CoreDataItemsStorage: ItemsStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -45,7 +45,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateItem")
             }
         }
     }
@@ -58,7 +58,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                 object.addToCritters(NSSet(array: newItems))
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateItems")
             }
         }
     }
@@ -71,7 +71,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                 object.removeFromCritters(NSSet(array: items.filter { $0.category == category.rawValue }))
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "resetCategory")
             }
         }
     }
