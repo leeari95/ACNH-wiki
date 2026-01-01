@@ -110,7 +110,9 @@ final class DashboardViewController: UIViewController {
                     return
                 }
                 owner.showSelectedItemAlert(
-                    [DashboardReactor.Menu.about.rawValue.localized, DashboardReactor.Menu.setting.rawValue.localized],
+                    [DashboardReactor.Menu.turnipCalculator.rawValue.localized,
+                     DashboardReactor.Menu.about.rawValue.localized,
+                     DashboardReactor.Menu.setting.rawValue.localized],
                     currentItem: nil
                 ).map { DashboardReactor.Action.selected(title: $0) }
                     .bind(to: reactor.action )
