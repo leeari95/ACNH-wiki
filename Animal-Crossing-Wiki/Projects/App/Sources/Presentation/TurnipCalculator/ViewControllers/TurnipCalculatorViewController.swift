@@ -247,14 +247,18 @@ final class TurnipCalculatorViewController: UIViewController, View {
         typealias PriceItem = (dayLabel: String, price: Int?, index: Int)
 
         // 상태 변경 시마다 테이블 뷰 데이터를 갱신하는 Observable 생성
-        reactor.state.map { $0.turnipPrice.prices }
+        let pricesObservable: Observable<[PriceItem]> = reactor.state
+            .map { $0.turnipPrice.prices }
             .distinctUntilChanged()
             .map { prices -> [PriceItem] in
                 let dayLabels = TurnipPrice.dayLabels
                 return dayLabels.enumerated().map { index, dayLabel in
-                    (dayLabel: dayLabel, price: prices[safe: index] ?? nil, index: index)
+                    let price: Int? = prices[safe: index] ?? nil
+                    return (dayLabel: dayLabel, price: price, index: index)
                 }
             }
+
+        pricesObservable
             .bind(to: priceTableView.rx.items(
                 cellIdentifier: TurnipPriceInputCell.reuseIdentifier,
                 cellType: TurnipPriceInputCell.self
