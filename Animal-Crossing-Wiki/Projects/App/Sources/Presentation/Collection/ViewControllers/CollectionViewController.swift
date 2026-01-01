@@ -44,7 +44,7 @@ final class CollectionViewController: UIViewController {
     }
 
     private func setUpNavigationItem() {
-        navigationItem.title = "Collection".localized
+        navigationItem.title = "collection".localized
     }
 
     func bind(to reactor: CollectionReactor) {

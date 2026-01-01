@@ -35,7 +35,7 @@ final class AboutViewController: UIViewController {
 
     private func setUpViews() {
         view.backgroundColor = .acBackground
-        navigationItem.title = "About".localized
+        navigationItem.title = "about".localized
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = cancelButton
 
