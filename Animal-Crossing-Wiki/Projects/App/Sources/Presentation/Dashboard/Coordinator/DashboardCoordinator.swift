@@ -45,6 +45,7 @@ final class DashboardCoordinator: Coordinator {
             tasksVM: TodaysTasksSectionReactor(coordinator: self),
             villagersVM: VillagersSectionReactor(coordinator: self),
             progressVM: CollectionProgressSectionReactor(coordinator: self),
+            statisticsVM: CollectionStatisticsSectionReactor(coordinator: self),
             fixeVisitdNPCListVM: NpcsSectionReactor(state: .init(), mode: .fixedVisit, coordinator: self),
             randomVisitNPCListVM: NpcsSectionReactor(state: .init(), mode: .randomVisit, coordinator: self)
         )
