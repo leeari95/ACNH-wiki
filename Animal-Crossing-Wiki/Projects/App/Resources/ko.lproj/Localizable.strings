@@ -1528,6 +1528,6 @@
 // MARK: - CollectionStatisticsView
 "Collection Statistics" = "수집 통계";
 "Total Collection" = "전체 수집률";
-"Museum" = "박물관";
+// "Museum" key is already defined above (as "museum")
 "Furniture" = "가구";
 "Clothing" = "의류";

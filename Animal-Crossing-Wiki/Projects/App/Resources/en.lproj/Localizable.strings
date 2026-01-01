@@ -1523,6 +1523,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 // MARK: - CollectionStatisticsView
 "Collection Statistics" = "Collection Statistics";
 "Total Collection" = "Total Collection";
-"Museum" = "Museum";
+// "Museum" key is already defined above (as "museum")
 "Furniture" = "Furniture";
 "Clothing" = "Clothing";
