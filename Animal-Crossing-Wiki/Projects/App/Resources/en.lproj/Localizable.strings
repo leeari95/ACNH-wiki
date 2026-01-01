@@ -177,7 +177,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "searching" = "Search";
 
 // MARK: - CatalogViewController
-"Catalog" = "Catalog";
+// "Catalog" key is already defined above (as "catalog")
 
 // MARK: - ItemDetailViewController
 "Seasonality" = "Seasonality";
@@ -352,8 +352,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Villager house" = "Villager house";
 
 // MARK: - VillagerDetailView
-"Personality" = "Personality";
-"Gender" = "Gender";
+// "Personality" and "Gender" keys are already defined above (as "personality" and "gender")
 "Hobby" = "Hobby";
 "Birthday" = "Birthday";
 "Type" = "Type";
@@ -398,7 +397,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 // MARK: - CollectionViewController
 "There are no collectibles." = "There are no collectibles.";
 "when you check some items, they'll be displayed here." = "when you check some items, they'll be displayed here.";
-"Collection" = "Collection";
+// "Collection" key is already defined above (as "collection")
 
 // MARK: - Source
 "Birthday" = "Birthday";

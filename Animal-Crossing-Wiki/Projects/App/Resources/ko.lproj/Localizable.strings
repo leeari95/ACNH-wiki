@@ -180,7 +180,7 @@
 "searching" = "검색하기";
 
 // MARK: - CatalogViewController
-"Catalog" = "카탈로그";
+// "Catalog" key is already defined above (as "catalog")
 
 // MARK: - ItemDetailViewController
 "Seasonality" = "출현 기간";
