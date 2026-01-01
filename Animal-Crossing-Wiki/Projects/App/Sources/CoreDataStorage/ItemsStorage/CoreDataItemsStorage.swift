@@ -15,6 +15,36 @@ final class CoreDataItemsStorage: ItemsStorage {
     init(coreDataStorage: CoreDataStorage = CoreDataStorage.shared) {
         self.coreDataStorage = coreDataStorage
     }
+    
+    private func updateItemInCoreData(
+        _ item: Item,
+        operation: @escaping (inout Item) -> Void,
+        shouldAddToCollection: ((Item) -> Bool)? = nil
+    ) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                if let existingItem = items.first(where: { $0.name == item.name && $0.genuine == item.genuine }) {
+                    object.removeFromCritters(existingItem)
+                }
+                
+                var updatedItem = item
+                operation(&updatedItem)
+                
+                let shouldAdd = shouldAddToCollection?(updatedItem) ?? true
+                if shouldAdd {
+                    let newItem = ItemEntity(updatedItem, context: context)
+                    object.addToCritters(newItem)
+                }
+                
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
 
     func fetch() -> Single<[Item]> {
         return Single.create { single in
@@ -73,6 +103,87 @@ final class CoreDataItemsStorage: ItemsStorage {
             } catch {
                 debugPrint(error)
             }
+        }
+    }
+    
+    func updateVariantCheck(itemName: String, variantId: String, isChecked: Bool) {
+        coreDataStorage.performBackgroundTask { context in
+            do {
+                let object = try self.coreDataStorage.getUserCollection(context)
+                let items = object.critters?.allObjects as? [ItemEntity] ?? []
+                
+                if let existingItem = items.first(where: { $0.name == itemName }) {
+                    var item = try existingItem.toDomain()
+                    var checkedVariants = item.checkedVariants ?? Set<String>()
+                    
+                    if isChecked {
+                        checkedVariants.insert(variantId)
+                    } else {
+                        checkedVariants.remove(variantId)
+                    }
+                    
+                    item.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
+                    
+                    object.removeFromCritters(existingItem)
+                    
+                    if let checkedVariants = item.checkedVariants, !checkedVariants.isEmpty {
+                        let newItem = ItemEntity(item, context: context)
+                        object.addToCritters(newItem)
+                    }
+                } else if isChecked {
+                }
+                
+                context.saveContext()
+            } catch {
+                debugPrint(error)
+            }
+        }
+    }
+    
+    func updateVariantCheck(item: Item, variantId: String, isChecked: Bool) {
+        updateItemInCoreData(item) { updatedItem in
+            var checkedVariants = updatedItem.checkedVariants ?? Set<String>()
+            
+            if isChecked {
+                checkedVariants.insert(variantId)
+            } else {
+                checkedVariants.remove(variantId)
+            }
+            
+            updatedItem.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
+        } shouldAddToCollection: { updatedItem in
+            return updatedItem.checkedVariants?.isEmpty == false
+        }
+    }
+    
+    func updateVariantCheckAndAcquire(item: Item, variantId: String, isChecked: Bool, shouldAcquire: Bool) {
+        updateItemInCoreData(item) { updatedItem in
+            var checkedVariants = updatedItem.checkedVariants ?? Set<String>()
+            
+            if isChecked {
+                checkedVariants.insert(variantId)
+            } else {
+                checkedVariants.remove(variantId)
+            }
+            
+            updatedItem.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
+        } shouldAddToCollection: { updatedItem in
+            let hasCheckedVariants = updatedItem.checkedVariants?.isEmpty == false
+            return shouldAcquire || hasCheckedVariants
+        }
+        
+        if shouldAcquire {
+            DispatchQueue.main.async {
+                Items.shared.updateItem(item)
+            }
+        }
+    }
+    
+    func clearVariantsAndUpdate(_ item: Item) {
+        updateItemInCoreData(item) { updatedItem in
+            updatedItem.checkedVariants = nil
+        } shouldAddToCollection: { _ in
+            return false
         }
     }
 }

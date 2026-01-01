@@ -105,6 +105,24 @@ final class ItemDetailViewController: UIViewController {
             .subscribe(onNext: { [weak self]  image in
                 self?.itemDetailInfoView?.changeImage(image)
             }).disposed(by: disposeBag)
+
+        itemVariantsColorView?.didCheckVariant
+            .subscribe(onNext: { (variantId, isChecked) in
+                reactor.action.onNext(.toggleVariantCheck(variantId, isChecked))
+            }).disposed(by: disposeBag)
+
+        itemVariantsPatternView?.didCheckVariant
+            .subscribe(onNext: { (variantId, isChecked) in
+                reactor.action.onNext(.toggleVariantCheck(variantId, isChecked))
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.item.checkedVariants }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] checkedVariants in
+                let checkedSet = checkedVariants ?? Set<String>()
+                self?.itemVariantsColorView?.updateCheckedVariants(checkedSet)
+                self?.itemVariantsPatternView?.updateCheckedVariants(checkedSet)
+            }).disposed(by: disposeBag)
     }
 
     private func setUpSection(in item: Item) {
@@ -133,8 +151,9 @@ final class ItemDetailViewController: UIViewController {
         guard Category.furniture().contains(item.category), item.variations != nil else {
             return
         }
-        itemVariantsColorView = ItemVariantsView(item: item.variationsWithColor, mode: .color)
-        itemVariantsPatternView = ItemVariantsView(item: item.variationsWithPattern, mode: .pattern)
+        let checkedVariants = item.checkedVariants ?? Set<String>()
+        itemVariantsColorView = ItemVariantsView(item: item.variationsWithColor, mode: .color, checkedVariants: checkedVariants)
+        itemVariantsPatternView = ItemVariantsView(item: item.variationsWithPattern, mode: .pattern, checkedVariants: checkedVariants)
 
         let isNoColor = item.variations?.compactMap { $0.filename }.filter { $0.suffix(2) == "_0" }.count ?? 1 <= 1
         let isNoPattern = item.patternCustomize == false
