@@ -46,7 +46,7 @@ final class PreferencesView: UIView {
     private lazy var startingFruitButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: Fruit.apple.imageName)?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         return button
@@ -144,7 +144,7 @@ extension PreferencesView {
 
     func updateFruit(_ fruit: Fruit) {
         let image = UIImage(named: fruit.imageName)?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
     }
