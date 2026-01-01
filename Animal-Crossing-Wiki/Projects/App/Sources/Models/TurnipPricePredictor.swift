@@ -134,32 +134,41 @@ struct TurnipPricePredictor {
             }
         }
 
-        let expectedPrices: [ClosedRange<Int>?] = (0..<12).map { index in
-            if index < 4 {
-                // 초반 감소
-                let min = Int(Double(buyPrice) * (0.4 - Double(index) * 0.05))
-                let max = Int(Double(buyPrice) * (0.9 - Double(index) * 0.03))
-                return max(min, 40)...max
-            } else if index < 7 {
-                // 스파이크 구간
-                let min = Int(Double(buyPrice) * 0.9)
-                let max = Int(Double(buyPrice) * 6.0)
-                return min...max
-            } else {
-                // 후반 감소
-                let min = Int(Double(buyPrice) * 0.4)
-                let max = Int(Double(buyPrice) * 0.9)
-                return min...max
-            }
-        }
+        let expectedPrices = makeLargeSpikeExpectedPrices(buyPrice: buyPrice)
 
         return TurnipPrediction(
             pattern: .largeSpikePattern,
-            probability: min(probability, 0.9),
+            probability: Swift.min(probability, 0.9),
             minPrice: Int(Double(buyPrice) * 0.4),
             maxPrice: Int(Double(buyPrice) * 6.0),
             expectedPrices: expectedPrices
         )
+    }
+
+    private static func makeLargeSpikeExpectedPrices(buyPrice: Int) -> [ClosedRange<Int>?] {
+        var result: [ClosedRange<Int>?] = []
+        for index in 0..<12 {
+            let range: ClosedRange<Int>
+            if index < 4 {
+                // 초반 감소
+                let minValue = Int(Double(buyPrice) * (0.4 - Double(index) * 0.05))
+                let maxValue = Int(Double(buyPrice) * (0.9 - Double(index) * 0.03))
+                let adjustedMin = Swift.max(minValue, 40)
+                range = adjustedMin...maxValue
+            } else if index < 7 {
+                // 스파이크 구간
+                let minValue = Int(Double(buyPrice) * 0.9)
+                let maxValue = Int(Double(buyPrice) * 6.0)
+                range = minValue...maxValue
+            } else {
+                // 후반 감소
+                let minValue = Int(Double(buyPrice) * 0.4)
+                let maxValue = Int(Double(buyPrice) * 0.9)
+                range = minValue...maxValue
+            }
+            result.append(range)
+        }
+        return result
     }
 
     /// 감소형 패턴 분석
@@ -178,19 +187,13 @@ struct TurnipPricePredictor {
             }
 
             if isDecreasing && validRatios.allSatisfy({ $0 < 1.0 }) {
-                probability = min(0.8, 0.3 + Double(validRatios.count) * 0.08)
+                probability = Swift.min(0.8, 0.3 + Double(validRatios.count) * 0.08)
             } else if !isDecreasing {
                 probability = 0.05
             }
         }
 
-        let expectedPrices: [ClosedRange<Int>?] = (0..<12).map { index in
-            let maxRatio = max(0.4, 0.9 - Double(index) * 0.04)
-            let minRatio = max(0.3, 0.85 - Double(index) * 0.05)
-            let min = Int(Double(buyPrice) * minRatio)
-            let max = Int(Double(buyPrice) * maxRatio)
-            return min...max
-        }
+        let expectedPrices = makeDecreasingExpectedPrices(buyPrice: buyPrice)
 
         return TurnipPrediction(
             pattern: .decreasing,
@@ -199,6 +202,18 @@ struct TurnipPricePredictor {
             maxPrice: Int(Double(buyPrice) * 0.9),
             expectedPrices: expectedPrices
         )
+    }
+
+    private static func makeDecreasingExpectedPrices(buyPrice: Int) -> [ClosedRange<Int>?] {
+        var result: [ClosedRange<Int>?] = []
+        for index in 0..<12 {
+            let maxRatio = Swift.max(0.4, 0.9 - Double(index) * 0.04)
+            let minRatio = Swift.max(0.3, 0.85 - Double(index) * 0.05)
+            let minValue = Int(Double(buyPrice) * minRatio)
+            let maxValue = Int(Double(buyPrice) * maxRatio)
+            result.append(minValue...maxValue)
+        }
+        return result
     }
 
     /// 4기형 (소폭등) 패턴 분석
@@ -223,32 +238,40 @@ struct TurnipPricePredictor {
             }
         }
 
-        let expectedPrices: [ClosedRange<Int>?] = (0..<12).map { index in
-            if index < 6 {
-                // 초반 감소
-                let min = Int(Double(buyPrice) * max(0.4, 0.9 - Double(index) * 0.08))
-                let max = Int(Double(buyPrice) * max(0.5, 0.95 - Double(index) * 0.06))
-                return min...max
-            } else if index < 9 {
-                // 소폭 상승 구간
-                let min = Int(Double(buyPrice) * 0.9)
-                let max = Int(Double(buyPrice) * 2.0)
-                return min...max
-            } else {
-                // 후반 감소
-                let min = Int(Double(buyPrice) * 0.4)
-                let max = Int(Double(buyPrice) * 0.9)
-                return min...max
-            }
-        }
+        let expectedPrices = makeSmallSpikeExpectedPrices(buyPrice: buyPrice)
 
         return TurnipPrediction(
             pattern: .smallSpike,
-            probability: min(probability, 0.9),
+            probability: Swift.min(probability, 0.9),
             minPrice: Int(Double(buyPrice) * 0.4),
             maxPrice: Int(Double(buyPrice) * 2.0),
             expectedPrices: expectedPrices
         )
+    }
+
+    private static func makeSmallSpikeExpectedPrices(buyPrice: Int) -> [ClosedRange<Int>?] {
+        var result: [ClosedRange<Int>?] = []
+        for index in 0..<12 {
+            let range: ClosedRange<Int>
+            if index < 6 {
+                // 초반 감소
+                let minValue = Int(Double(buyPrice) * Swift.max(0.4, 0.9 - Double(index) * 0.08))
+                let maxValue = Int(Double(buyPrice) * Swift.max(0.5, 0.95 - Double(index) * 0.06))
+                range = minValue...maxValue
+            } else if index < 9 {
+                // 소폭 상승 구간
+                let minValue = Int(Double(buyPrice) * 0.9)
+                let maxValue = Int(Double(buyPrice) * 2.0)
+                range = minValue...maxValue
+            } else {
+                // 후반 감소
+                let minValue = Int(Double(buyPrice) * 0.4)
+                let maxValue = Int(Double(buyPrice) * 0.9)
+                range = minValue...maxValue
+            }
+            result.append(range)
+        }
+        return result
     }
 
     // MARK: - Helper Methods
