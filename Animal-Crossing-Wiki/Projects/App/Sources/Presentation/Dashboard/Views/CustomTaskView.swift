@@ -107,7 +107,7 @@ extension CustomTaskView {
 
     func updateIcon(_ icon: String) {
         let image = UIImage(named: icon)?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         iconButton.setImage(image, for: .normal)
     }

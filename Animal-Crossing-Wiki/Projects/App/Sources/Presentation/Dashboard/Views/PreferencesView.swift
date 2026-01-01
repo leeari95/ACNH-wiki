@@ -144,7 +144,7 @@ extension PreferencesView {
 
     func updateFruit(_ fruit: Fruit) {
         let image = UIImage(named: fruit.imageName)?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         startingFruitButton.setImage(image, for: .normal)
     }
