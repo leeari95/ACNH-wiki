@@ -183,8 +183,12 @@ final class TurnipCalculatorViewController: UIViewController, View {
     // MARK: - Binding
 
     func bind(reactor: TurnipCalculatorReactor) {
-        // Input bindings
+        bindInputs(reactor: reactor)
+        bindOutputs(reactor: reactor)
+        setUpTableView(reactor: reactor)
+    }
 
+    private func bindInputs(reactor: TurnipCalculatorReactor) {
         // View did load
         Observable.just(Reactor.Action.viewDidLoad)
             .bind(to: reactor.action)
@@ -208,10 +212,15 @@ final class TurnipCalculatorViewController: UIViewController, View {
             .map { Reactor.Action.clearAll }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+    }
 
-        // Output bindings
+    private func bindOutputs(reactor: TurnipCalculatorReactor) {
+        bindTurnipPrice(reactor: reactor)
+        bindSummary(reactor: reactor)
+        bindPredictions(reactor: reactor)
+    }
 
-        // Turnip price
+    private func bindTurnipPrice(reactor: TurnipCalculatorReactor) {
         reactor.state.map { $0.turnipPrice }
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
@@ -219,20 +228,19 @@ final class TurnipCalculatorViewController: UIViewController, View {
                 self?.updatePriceInputs(turnipPrice: turnipPrice)
             })
             .disposed(by: disposeBag)
+    }
 
-        // Summary
+    private func bindSummary(reactor: TurnipCalculatorReactor) {
         reactor.state
-            .map { (min: $0.expectedMinPrice, max: $0.expectedMaxPrice) }
-            .distinctUntilChanged { (lhs, rhs) -> Bool in
-                return lhs.min == rhs.min && lhs.max == rhs.max
-            }
+            .map { ($0.expectedMinPrice, $0.expectedMaxPrice) }
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] result in
-                self?.summaryView.configure(minPrice: result.min, maxPrice: result.max)
+            .subscribe(onNext: { [weak self] (minPrice, maxPrice) in
+                self?.summaryView.configure(minPrice: minPrice, maxPrice: maxPrice)
             })
             .disposed(by: disposeBag)
+    }
 
-        // Predictions
+    private func bindPredictions(reactor: TurnipCalculatorReactor) {
         reactor.state.map { $0.predictions }
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
@@ -240,9 +248,6 @@ final class TurnipCalculatorViewController: UIViewController, View {
                 self?.updatePredictions(predictions)
             })
             .disposed(by: disposeBag)
-
-        // Set up table view with reactive data binding
-        setUpTableView(reactor: reactor)
     }
 
     private func setUpTableView(reactor: TurnipCalculatorReactor) {
