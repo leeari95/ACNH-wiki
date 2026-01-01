@@ -221,9 +221,13 @@ final class TurnipCalculatorViewController: UIViewController, View {
             .disposed(by: disposeBag)
 
         // Summary
-        reactor.state
-            .map { ($0.expectedMinPrice, $0.expectedMaxPrice) }
+        let summaryObservable = reactor.state
+            .map { state -> (Int?, Int?) in
+                return (state.expectedMinPrice, state.expectedMaxPrice)
+            }
             .distinctUntilChanged { $0.0 == $1.0 && $0.1 == $1.1 }
+
+        summaryObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] min, max in
                 self?.summaryView.configure(minPrice: min, maxPrice: max)
