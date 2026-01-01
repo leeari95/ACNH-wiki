@@ -383,7 +383,7 @@ extension CoreDataStorage {
     /// - Parameter block: 실행할 블록
     /// - Throws: CoreDataStorageError.storeNotReady - 스토어가 아직 로드되지 않은 경우
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        guard isStoreLoaded else {
+        if !isStoreLoaded {
             logger.warning("performBackgroundTask called before store is loaded. Waiting...")
             // 스토어 로드를 기다림 (최대 5초)
             guard waitForStoreLoad(timeout: 5.0) else {
