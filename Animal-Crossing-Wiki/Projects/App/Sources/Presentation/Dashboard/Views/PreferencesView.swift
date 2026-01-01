@@ -46,7 +46,7 @@ final class PreferencesView: UIView {
     private lazy var startingFruitButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: Fruit.apple.imageName)?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         return button

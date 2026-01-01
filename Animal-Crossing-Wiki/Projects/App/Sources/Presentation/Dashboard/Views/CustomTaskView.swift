@@ -41,7 +41,7 @@ final class CustomTaskView: UIView {
     private lazy var iconButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: "Inv7")?
-            .resizedImage(Size: CGSize(width: 30, height: 30))?
+            .resizedImage(Size: CGSize(width: 30, height: 30))
             .withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
         return button
