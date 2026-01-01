@@ -9,42 +9,42 @@ import UIKit
 
 extension UIColor {
     class var acHeaderBackground: UIColor {
-        return UIColor(named: "ACHeaderBackground") ?? .clear
+        return ACNHWikiAsset.acHeaderBackground.color
     }
 
     class var acBackground: UIColor {
-        return UIColor(named: "ACBackground") ?? .clear
+        return ACNHWikiAsset.acBackground.color
     }
 
     class var acSecondaryBackground: UIColor {
-        return UIColor(named: "ACSecondaryBackground") ?? .clear
+        return ACNHWikiAsset.acSecondaryBackground.color
     }
 
     class var acText: UIColor {
-        return UIColor(named: "ACText") ?? .label
+        return ACNHWikiAsset.acText.color
     }
 
     class var acSecondaryText: UIColor {
-        return UIColor(named: "ACSecondaryText") ?? .systemGray
+        return ACNHWikiAsset.acSecondaryText.color
     }
 
     class var acNavigationBarTint: UIColor {
-        return UIColor(named: "ACNavigationBarTint") ?? .clear
+        return ACNHWikiAsset.acNavigationBarTint.color
     }
 
     class var catalogBar: UIColor {
-        return UIColor(named: "catalog-bar") ?? .clear
+        return ACNHWikiAsset.catalogBar.color
     }
 
     class var catalogBackground: UIColor {
-        return UIColor(named: "catalog-background") ?? .clear
+        return ACNHWikiAsset.catalogBackground.color
     }
 
     class var catalogSelected: UIColor {
-        return UIColor(named: "catalog-selected") ?? .clear
+        return ACNHWikiAsset.catalogSelected.color
     }
 
     class var acTabBarTint: UIColor {
-        return UIColor(named: "catalog-text") ?? .label
+        return ACNHWikiAsset.catalogText.color
     }
 }
