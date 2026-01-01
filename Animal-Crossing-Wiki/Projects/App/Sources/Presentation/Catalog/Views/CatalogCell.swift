@@ -11,6 +11,9 @@ import RxSwift
 final class CatalogCell: UICollectionViewCell {
 
     private var disposeBag = DisposeBag()
+    private var itemName: String?
+    private var isItemAcquired: Bool = false
+    private var hasReceivedInitialAcquiredState: Bool = false
 
     @IBOutlet private weak var backgroundStackView: UIStackView!
     @IBOutlet private weak var iconImageView: UIImageView!
@@ -34,6 +37,24 @@ final class CatalogCell: UICollectionViewCell {
         contentView.backgroundColor = .acSecondaryBackground
         contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .bold)
+        nameLabel.adjustsFontForContentSizeCategory = true
+        setupAccessibility()
+    }
+
+    private func setupAccessibility() {
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+        checkButton.isAccessibilityElement = false
+        updateAccessibilityCustomActions()
+    }
+
+    private func updateAccessibilityCustomActions() {
+        let actionName = isItemAcquired ? "remove_acquisition".localized : "add_acquisition".localized
+        let toggleAction = UIAccessibilityCustomAction(name: actionName) { [weak self] _ in
+            self?.checkButton.sendActions(for: .touchUpInside)
+            return true
+        }
+        accessibilityCustomActions = [toggleAction]
     }
 
     override func prepareForReuse() {
@@ -51,6 +72,21 @@ final class CatalogCell: UICollectionViewCell {
             ),
             for: .normal
         )
+        itemName = nil
+        isItemAcquired = false
+        hasReceivedInitialAcquiredState = false
+        updateAccessibilityLabel()
+    }
+
+    private func updateAccessibilityLabel() {
+        guard let name = itemName else {
+            accessibilityLabel = nil
+            accessibilityHint = nil
+            return
+        }
+        let acquiredStatus = isItemAcquired ? "acquired".localized : "not_acquired".localized
+        accessibilityLabel = "\(name), \(acquiredStatus)"
+        accessibilityHint = "double_tap_to_toggle_acquisition".localized
     }
 
     private func configure() {
@@ -84,14 +120,28 @@ final class CatalogCell: UICollectionViewCell {
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isAcquired in
+                guard let self = self else { return }
+                let previousState = self.isItemAcquired
+                let isInitialState = !self.hasReceivedInitialAcquiredState
+                self.hasReceivedInitialAcquiredState = true
+                self.isItemAcquired = isAcquired
+                self.updateAccessibilityLabel()
+                self.updateAccessibilityCustomActions()
+
                 let config = UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .title2))
-                self?.checkButton.setImage(
+                self.checkButton.setImage(
                     UIImage(
                         systemName: isAcquired ? "checkmark.seal.fill" : "checkmark.seal",
                         withConfiguration: config
                     ),
                     for: .normal
                 )
+
+                // 체크 상태 변경 시 접근성 알림 (초기 로딩 시에는 알림하지 않음)
+                if !isInitialState && previousState != isAcquired {
+                    let announcement = isAcquired ? "item_acquired".localized : "item_not_acquired".localized
+                    UIAccessibility.post(notification: .announcement, argument: announcement)
+                }
             }).disposed(by: disposeBag)
     }
 }
@@ -100,7 +150,10 @@ extension CatalogCell {
 
     func setUp(_ item: Item) {
         setUpIconImage(item)
-        nameLabel.text = item.translations.localizedName()
+        let localizedName = item.translations.localizedName()
+        nameLabel.text = localizedName
+        itemName = localizedName
+        updateAccessibilityLabel()
         bind(reactor: CatalogCellReactor(item: item, category: item.category, state: .init(item: item, category: item.category)))
         var priceView: ItemBellsView
         switch item.category {

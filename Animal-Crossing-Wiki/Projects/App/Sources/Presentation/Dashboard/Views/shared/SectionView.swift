@@ -34,6 +34,7 @@ extension SectionView {
         headerView.setUp(title: title, iconName: iconName)
         setUpContent(contentView)
         configure()
+        setupAccessibility(title: title)
     }
 
     convenience init(title: String, category: Category, contentView: UIView) {
@@ -41,12 +42,24 @@ extension SectionView {
         headerView.setUp(title: title, category: category)
         setUpContent(contentView)
         configure()
+        setupAccessibility(title: title)
     }
 
     convenience init(contentView: UIView) {
         self.init(frame: .zero)
         setUpContent(contentView)
         configureContainer()
+    }
+
+    private func setupAccessibility(title: String) {
+        headerView.isAccessibilityElement = true
+        headerView.accessibilityLabel = title
+        headerView.accessibilityTraits = .header
+
+        // 컨테이너뷰는 자식 요소들을 그룹화하여 탐색 순서를 개선
+        containerView.shouldGroupAccessibilityChildren = true
+        // contentView 내부의 접근성 요소들이 자연스럽게 노출되도록 함
+        containerView.isAccessibilityElement = false
     }
 
     private func configureHeader() {

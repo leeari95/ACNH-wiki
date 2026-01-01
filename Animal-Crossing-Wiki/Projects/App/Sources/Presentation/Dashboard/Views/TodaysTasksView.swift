@@ -111,8 +111,10 @@ final class TodaysTasksView: UIView {
                     cellType: IconCell.self
                 )
             ) { _, item, cell in
+                let isCompleted = item.task.progressList[item.progressIndex]
                 cell.setImage(icon: item.task.icon)
-                item.task.progressList[item.progressIndex] ? cell.setAlpha(1) : cell.setAlpha(0.5)
+                cell.setAccessibilityInfo(name: item.task.name.localized, isChecked: isCompleted)
+                isCompleted ? cell.setAlpha(1) : cell.setAlpha(0.5)
             }.disposed(by: disposeBag)
 
         reactor.state.map { $0.tasks }
