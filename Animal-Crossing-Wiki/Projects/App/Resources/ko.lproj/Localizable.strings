@@ -1537,7 +1537,7 @@
 "double_tap_to_toggle_acquisition" = "두 번 탭하여 보유 상태 전환";
 "item_acquired" = "아이템 보유 등록됨";
 "item_not_acquired" = "아이템 보유 해제됨";
-"liked" = "좋아요";
+// "liked" key is already defined above (as "Liked")
 "resident" = "거주 중";
 "double_tap_for_details" = "두 번 탭하여 상세 정보 보기";
 "added_to_favorites" = "좋아요 추가됨";
