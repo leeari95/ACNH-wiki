@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class DashboardCoordinator: Coordinator {
+class DashboardCoordinator: Coordinator {
 
     enum Route {
         case setting
