@@ -17,6 +17,7 @@ final class TurnipPricesReactor: Reactor {
         case updateSundayPrice(String)
         case updatePrice(day: DayOfWeek, period: Period, price: String)
         case calculate
+        case reset
     }
 
     enum Mutation {
@@ -25,6 +26,7 @@ final class TurnipPricesReactor: Reactor {
         case setSundayPrice(String)
         case setPrice(day: DayOfWeek, period: Period, price: String)
         case setCalculatedResult(basePrice: Int, pattern: TurnipPricePattern, prices: [DayOfWeek: [Period: Int]])
+        case reset
     }
 
     struct State {
@@ -44,11 +46,11 @@ final class TurnipPricesReactor: Reactor {
         var calculatedPattern: TurnipPricePattern?
     }
 
-    enum DayOfWeek: CaseIterable {
+    enum DayOfWeek: String, CaseIterable, Codable {
         case monday, tuesday, wednesday, thursday, friday, saturday
     }
 
-    enum Period {
+    enum Period: String, Codable {
         case am, pm
     }
 
@@ -68,9 +70,16 @@ final class TurnipPricesReactor: Reactor {
     let initialState: State
     weak var coordinator: TurnipPricesCoordinator?
 
+    private enum UserDefaultsKey {
+        static let selectedPattern = "turnip.selectedPattern"
+        static let isFirstBuy = "turnip.isFirstBuy"
+        static let sundayPrice = "turnip.sundayPrice"
+        static let prices = "turnip.prices"
+    }
+
     init(coordinator: TurnipPricesCoordinator, state: State = State()) {
+        self.initialState = Self.loadState()
         self.coordinator = coordinator
-        self.initialState = state
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -92,6 +101,9 @@ final class TurnipPricesReactor: Reactor {
 
         case .calculate:
             return calculatePrices()
+
+        case .reset:
+            return .just(.reset)
         }
     }
 
@@ -114,6 +126,23 @@ final class TurnipPricesReactor: Reactor {
             newState.calculatedBasePrice = basePrice
             newState.calculatedPattern = pattern
             newState.calculatedPrices = prices
+
+        case .reset:
+            newState.selectedPattern = .unknown
+            newState.isFirstBuy = false
+            newState.sundayPrice = ""
+            newState.prices = [
+                .monday: [.am: "", .pm: ""],
+                .tuesday: [.am: "", .pm: ""],
+                .wednesday: [.am: "", .pm: ""],
+                .thursday: [.am: "", .pm: ""],
+                .friday: [.am: "", .pm: ""],
+                .saturday: [.am: "", .pm: ""]
+            ]
+            newState.calculatedPrices = [:]
+            newState.calculatedBasePrice = nil
+            newState.calculatedPattern = nil
+            Self.clearState()
         }
 
         return newState
@@ -161,6 +190,9 @@ final class TurnipPricesReactor: Reactor {
             minPrices: finalMinPrices,
             maxPrices: finalMaxPrices
         ))
+
+        // 결과 저장
+        saveState(currentState)
 
         return .just(.setCalculatedResult(
             basePrice: basePrice,
@@ -264,5 +296,45 @@ final class TurnipPricesReactor: Reactor {
 
         let baseIndex = 2 + (dayOffset * 2)  // 일요일 2개(0,1) 이후부터 시작
         return baseIndex + (period == .pm ? 1 : 0)
+    }
+
+    // MARK: - UserDefaults
+
+    private static func loadState() -> State {
+        var state = State()
+
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.selectedPattern) != nil {
+            let patternRaw = UserDefaults.standard.integer(forKey: UserDefaultsKey.selectedPattern)
+            if let pattern = TurnipPricePattern(rawValue: patternRaw) {
+                state.selectedPattern = pattern
+            }
+        }
+
+        state.isFirstBuy = UserDefaults.standard.bool(forKey: UserDefaultsKey.isFirstBuy)
+        state.sundayPrice = UserDefaults.standard.string(forKey: UserDefaultsKey.sundayPrice) ?? ""
+
+        if let data = UserDefaults.standard.data(forKey: UserDefaultsKey.prices),
+           let prices = try? JSONDecoder().decode([DayOfWeek: [Period: String]].self, from: data) {
+            state.prices = prices
+        }
+
+        return state
+    }
+
+    private func saveState(_ state: State) {
+        UserDefaults.standard.set(state.selectedPattern.rawValue, forKey: UserDefaultsKey.selectedPattern)
+        UserDefaults.standard.set(state.isFirstBuy, forKey: UserDefaultsKey.isFirstBuy)
+        UserDefaults.standard.set(state.sundayPrice, forKey: UserDefaultsKey.sundayPrice)
+
+        if let encoded = try? JSONEncoder().encode(state.prices) {
+            UserDefaults.standard.set(encoded, forKey: UserDefaultsKey.prices)
+        }
+    }
+
+    private static func clearState() {
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.selectedPattern)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.isFirstBuy)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.sundayPrice)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.prices)
     }
 }

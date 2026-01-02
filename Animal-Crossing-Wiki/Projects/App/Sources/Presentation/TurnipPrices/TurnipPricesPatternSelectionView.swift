@@ -31,15 +31,20 @@ enum TurnipPricePattern: Int, CaseIterable {
 }
 
 struct TurnipPricesPatternSelectionView: View {
-    @State private var selectedPattern: TurnipPricePattern = .unknown
+    @State private var selectedPattern: TurnipPricePattern
     @State private var showingPatternSelection = false
     var onPatternSelected: ((TurnipPricePattern) -> Void)?
+
+    init(selectedPattern: TurnipPricePattern = .unknown, onPatternSelected: ((TurnipPricePattern) -> Void)? = nil) {
+        _selectedPattern = State(initialValue: selectedPattern)
+        self.onPatternSelected = onPatternSelected
+    }
 
     var body: some View {
         HStack {
             Text("turnipPricePattern".localized)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
+                .foregroundStyle(SwiftUI.Color(uiColor: .acText))
 
             Spacer()
 
@@ -49,7 +54,7 @@ struct TurnipPricesPatternSelectionView: View {
                 .overlay {
                     Text(selectedPattern.displayText)
                         .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(SwiftUI.Color(uiColor: .acBackground))
+                        .foregroundStyle(SwiftUI.Color(uiColor: .black))
                 }
                 .onTapGesture {
                     showingPatternSelection = true

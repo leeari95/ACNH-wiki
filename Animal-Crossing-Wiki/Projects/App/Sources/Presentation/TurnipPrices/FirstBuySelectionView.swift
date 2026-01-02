@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct FirstBuySelectionView: View {
-    @State private var isFirstBuy: Bool = false
+    @State private var isFirstBuy: Bool
     var onFirstBuyChanged: ((Bool) -> Void)?
+
+    init(isFirstBuy: Bool = false, onFirstBuyChanged: ((Bool) -> Void)? = nil) {
+        _isFirstBuy = State(initialValue: isFirstBuy)
+        self.onFirstBuyChanged = onFirstBuyChanged
+    }
 
     var body: some View {
         HStack {
             Text("firstBuyTitle".localized)
                 .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
+                .foregroundStyle(SwiftUI.Color(uiColor: .acText))
             
             Spacer()
             
@@ -55,14 +60,14 @@ private struct RadioButton: View {
                 ZStack {
                     Circle()
                         .stroke(
-                            isSelected ? SwiftUI.Color(uiColor: .catalogBar) : SwiftUI.Color.white.opacity(0.3),
+                            isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText).opacity(0.3),
                             lineWidth: 2
                         )
                         .frame(width: 20, height: 20)
 
                     if isSelected {
                         Circle()
-                            .fill(SwiftUI.Color(uiColor: .catalogBar))
+                            .fill(SwiftUI.Color(uiColor: .catalogSelected))
                             .frame(width: 12, height: 12)
                     }
                 }
@@ -70,14 +75,14 @@ private struct RadioButton: View {
                 // 라벨
                 Text(title)
                     .font(.system(size: 14, weight: isSelected ? .bold : .regular))
-                    .foregroundStyle(isSelected ? SwiftUI.Color(uiColor: .catalogBar) : .white)
+                    .foregroundStyle(isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText))
                     .frame(width: 45)
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? SwiftUI.Color(uiColor: .catalogBar).opacity(0.2) : SwiftUI.Color.clear)
+                    .fill(isSelected ? SwiftUI.Color(uiColor: .catalogSelected).opacity(0.2) : SwiftUI.Color.clear)
             )
         }
     }

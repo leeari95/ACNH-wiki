@@ -9,29 +9,63 @@ import UIKit
 import SwiftUI
 
 struct TurnipPricesInputView: View {
-    @State var sunday: String = ""
-    @State var mondayAM: String = ""
-    @State var mondayPM: String = ""
-    @State var tuesdayAM: String = ""
-    @State var tuesdayPM: String = ""
-    @State var wednesdayAM: String = ""
-    @State var wednesdayPM: String = ""
-    @State var thursdayAM: String = ""
-    @State var thursdayPM: String = ""
-    @State var fridayAM: String = ""
-    @State var fridayPM: String = ""
-    @State var saturdayAM: String = ""
-    @State var saturdayPM: String = ""
+    @State var sunday: String
+    @State var mondayAM: String
+    @State var mondayPM: String
+    @State var tuesdayAM: String
+    @State var tuesdayPM: String
+    @State var wednesdayAM: String
+    @State var wednesdayPM: String
+    @State var thursdayAM: String
+    @State var thursdayPM: String
+    @State var fridayAM: String
+    @State var fridayPM: String
+    @State var saturdayAM: String
+    @State var saturdayPM: String
 
     var onSundayPriceChanged: ((String) -> Void)?
     var onPriceChanged: ((TurnipPricesReactor.DayOfWeek, TurnipPricesReactor.Period, String) -> Void)?
 
+    init(
+        sunday: String = "",
+        mondayAM: String = "",
+        mondayPM: String = "",
+        tuesdayAM: String = "",
+        tuesdayPM: String = "",
+        wednesdayAM: String = "",
+        wednesdayPM: String = "",
+        thursdayAM: String = "",
+        thursdayPM: String = "",
+        fridayAM: String = "",
+        fridayPM: String = "",
+        saturdayAM: String = "",
+        saturdayPM: String = "",
+        onSundayPriceChanged: ((String) -> Void)? = nil,
+        onPriceChanged: ((TurnipPricesReactor.DayOfWeek, TurnipPricesReactor.Period, String) -> Void)? = nil
+    ) {
+        _sunday = State(initialValue: sunday)
+        _mondayAM = State(initialValue: mondayAM)
+        _mondayPM = State(initialValue: mondayPM)
+        _tuesdayAM = State(initialValue: tuesdayAM)
+        _tuesdayPM = State(initialValue: tuesdayPM)
+        _wednesdayAM = State(initialValue: wednesdayAM)
+        _wednesdayPM = State(initialValue: wednesdayPM)
+        _thursdayAM = State(initialValue: thursdayAM)
+        _thursdayPM = State(initialValue: thursdayPM)
+        _fridayAM = State(initialValue: fridayAM)
+        _fridayPM = State(initialValue: fridayPM)
+        _saturdayAM = State(initialValue: saturdayAM)
+        _saturdayPM = State(initialValue: saturdayPM)
+        self.onSundayPriceChanged = onSundayPriceChanged
+        self.onPriceChanged = onPriceChanged
+    }
+
     var body: some View {
         VStack(spacing: 15) {
-            // 일요일
             HStack(spacing: 30) {
                 Text("sunday".localized)
                     .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(SwiftUI.Color(uiColor: .acText))
 
                 RoundedRectangle(cornerRadius: 14)
                     .fill(SwiftUI.Color(uiColor: .acBackground))
@@ -41,7 +75,7 @@ struct TurnipPricesInputView: View {
                             "",
                             text: $sunday,
                             prompt: Text("purchasePrice".localized)
-                                .foregroundColor(.white.opacity(0.3))
+                                .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.3))
                                 .font(.system(size: 17, weight: .regular))
                         )
                         .font(.system(size: 17, weight: .regular))
@@ -71,6 +105,7 @@ struct TurnipPricesInputView: View {
         HStack(spacing: 30) {
             Text(label)
                 .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(SwiftUI.Color(uiColor: .acText))
 
             RoundedRectangle(cornerRadius: 14)
                 .fill(SwiftUI.Color(uiColor: .acBackground))
@@ -80,7 +115,7 @@ struct TurnipPricesInputView: View {
                         "",
                         text: amBinding,
                         prompt: Text("am".localized)
-                            .foregroundColor(.white.opacity(0.3))
+                            .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.3))
                             .font(.system(size: 17, weight: .regular))
                     )
                     .font(.system(size: 17, weight: .regular))
@@ -101,7 +136,7 @@ struct TurnipPricesInputView: View {
                         "",
                         text: pmBinding,
                         prompt: Text("pm".localized)
-                            .foregroundColor(.white.opacity(0.3))
+                            .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.3))
                             .font(.system(size: 17, weight: .regular))
                     )
                     .font(.system(size: 17, weight: .regular))
