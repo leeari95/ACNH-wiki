@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TurnipPricesSectionsView: View {
     let reactor: TurnipPricesReactor
+    @State private var inputViewID = UUID()
 
     var body: some View {
         ScrollView {
@@ -18,6 +19,7 @@ struct TurnipPricesSectionsView: View {
                     iconName: "questionmark.circle"
                 ) {
                     FirstBuySelectionView(
+                        isFirstBuy: reactor.currentState.isFirstBuy,
                         onFirstBuyChanged: { isFirstBuy in
                             reactor.action.onNext(.updateFirstBuy(isFirstBuy))
                         }
@@ -30,6 +32,7 @@ struct TurnipPricesSectionsView: View {
                     iconName: "checkmark.circle.dotted"
                 ) {
                     TurnipPricesPatternSelectionView(
+                        selectedPattern: reactor.currentState.selectedPattern,
                         onPatternSelected: { pattern in
                             reactor.action.onNext(.selectPattern(pattern))
                         }
@@ -42,6 +45,19 @@ struct TurnipPricesSectionsView: View {
                     iconName: "pencil"
                 ) {
                     TurnipPricesInputView(
+                        sunday: reactor.currentState.sundayPrice,
+                        mondayAM: reactor.currentState.prices[.monday]?[.am] ?? "",
+                        mondayPM: reactor.currentState.prices[.monday]?[.pm] ?? "",
+                        tuesdayAM: reactor.currentState.prices[.tuesday]?[.am] ?? "",
+                        tuesdayPM: reactor.currentState.prices[.tuesday]?[.pm] ?? "",
+                        wednesdayAM: reactor.currentState.prices[.wednesday]?[.am] ?? "",
+                        wednesdayPM: reactor.currentState.prices[.wednesday]?[.pm] ?? "",
+                        thursdayAM: reactor.currentState.prices[.thursday]?[.am] ?? "",
+                        thursdayPM: reactor.currentState.prices[.thursday]?[.pm] ?? "",
+                        fridayAM: reactor.currentState.prices[.friday]?[.am] ?? "",
+                        fridayPM: reactor.currentState.prices[.friday]?[.pm] ?? "",
+                        saturdayAM: reactor.currentState.prices[.saturday]?[.am] ?? "",
+                        saturdayPM: reactor.currentState.prices[.saturday]?[.pm] ?? "",
                         onSundayPriceChanged: { price in
                             reactor.action.onNext(.updateSundayPrice(price))
                         },
@@ -49,40 +65,11 @@ struct TurnipPricesSectionsView: View {
                             reactor.action.onNext(.updatePrice(day: day, period: period, price: price))
                         }
                     )
+                    .id(inputViewID)
                 }
-                .padding(.bottom, 14)
-
-                HStack {
-                    Spacer()
-
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(SwiftUI.Color(uiColor: .catalogBackground))
-                        .frame(width: 72)
-                        .overlay {
-                            Text("turnipReset".localized)
-                                .foregroundColor(SwiftUI.Color(uiColor: .acText))
-                                .font(.system(size: 14, weight: .bold))
-                        }
-                        .onTapGesture {
-                            // TODO: 초기화 기능 추가
-                        }
-
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(SwiftUI.Color(uiColor: .catalogBar))
-                        .frame(width: 93)
-                        .overlay {
-                            Text("showResults".localized)
-                                .foregroundColor(SwiftUI.Color.black)
-                                .font(.system(size: 14, weight: .bold))
-                        }
-                        .onTapGesture {
-                            reactor.action.onNext(.calculate)
-                        }
-                }
-                .frame(height: 36)
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 60)
+            .padding(.bottom, 68)
         }
         .scrollIndicators(.hidden)
         .contentShape(Rectangle())
@@ -94,6 +81,54 @@ struct TurnipPricesSectionsView: View {
                 for: nil
             )
         }
+        .overlay(alignment: .bottom) {
+            buttonBar
+        }
         .background(SwiftUI.Color(uiColor: .acBackground))
+    }
+
+    private var buttonBar: some View {
+        HStack {
+            Spacer()
+
+            RoundedRectangle(cornerRadius: 14)
+                .fill(SwiftUI.Color(uiColor: .catalogBackground))
+                .frame(width: 72, height: 36)
+                .overlay {
+                    Text("turnipReset".localized)
+                        .foregroundColor(SwiftUI.Color(uiColor: .acText))
+                        .font(.system(size: 14, weight: .bold))
+                }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
+                    reactor.action.onNext(.reset)
+                    inputViewID = UUID()
+                }
+
+            RoundedRectangle(cornerRadius: 14)
+                .fill(SwiftUI.Color(uiColor: .catalogBar))
+                .frame(width: 93, height: 36)
+                .overlay {
+                    Text("showResults".localized)
+                        .foregroundColor(SwiftUI.Color.black)
+                        .font(.system(size: 14, weight: .bold))
+                }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
+                    reactor.action.onNext(.calculate)
+                }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
     }
 }
