@@ -14,6 +14,8 @@ struct TurnipPriceResultView: View {
     let minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
     let maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     private var chartData: [TurnipPriceRangeData] {
         TurnipPricesReactor.DayOfWeek.allCases.enumerated().flatMap { index, day in
@@ -44,12 +46,19 @@ struct TurnipPriceResultView: View {
         return ((maxPrice + buffer) / 10 + 1) * 10
     }
 
+    private var isLandscape: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .compact
+    }
+
+    private var isIPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
+
     var body: some View {
         contentView
-            .frame(maxWidth: 500)
             .background(SwiftUI.Color(uiColor: .acSecondaryBackground))
             .cornerRadius(20)
-            .padding(.horizontal, 20)
+            .padding(.all, 20)
     }
 
     private var contentView: some View {
@@ -78,7 +87,7 @@ struct TurnipPriceResultView: View {
         Button(action: { dismiss() }) {
             Image(systemName: "xmark.circle.fill")
                 .font(.system(size: 24))
-                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar).opacity(0.6))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText))
         }
     }
 
@@ -93,11 +102,23 @@ struct TurnipPriceResultView: View {
     }
 
     private var chartScrollView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        let chartWidth: CGFloat
+        let chartHeight: CGFloat
+
+        if isIPad || isLandscape {
+            let totalHorizontalPadding: CGFloat = 40 + 48 + 40
+            chartWidth = UIScreen.main.bounds.width - totalHorizontalPadding
+            chartHeight = isIPad ? 500 : UIScreen.main.bounds.height / (393 / 200)
+        } else {
+            chartWidth = UIScreen.main.bounds.width / (393 / 600)
+            chartHeight = UIScreen.main.bounds.height / (852 / 400)
+        }
+
+        return ScrollView(.horizontal, showsIndicators: false) {
             priceChart
-                .frame(width: 600, height: 350)
+                .frame(width: chartWidth, height: chartHeight)
                 .padding(.vertical, 20)
-                .padding(.trailing, 40)
+                .padding(.trailing, isIPad ? 0 : 40)
         }
         .padding(.horizontal, 24)
     }
@@ -115,7 +136,7 @@ struct TurnipPriceResultView: View {
             basePriceRuleMark
         }
         .chartXAxis { chartXAxis }
-        .chartYScale(domain: 0...maxYValue)
+        .chartYScale(domain: -50...maxYValue)
         .chartYAxis { chartYAxis }
     }
 
@@ -140,7 +161,7 @@ struct TurnipPriceResultView: View {
             AxisValueLabel {
                 if let label = value.as(String.self) {
                     Text(label)
-                        .font(.system(size: 8, weight: .medium))
+                        .font(.system(size: 10, weight: .medium))
                         .foregroundColor(SwiftUI.Color(uiColor: .acText))
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
@@ -174,7 +195,7 @@ struct TurnipPriceResultView: View {
             x: .value("요일", "\(data.day)\n\(data.period)"),
             yStart: .value("시작", 0),
             yEnd: .value("입력값", data.minPrice),
-            width: 35
+            width: 25
         )
         .foregroundStyle(data.color.opacity(0.7))
     }
@@ -209,7 +230,7 @@ struct TurnipPriceResultView: View {
             x: .value("요일", "\(data.day)\n\(data.period)"),
             yStart: .value("minLabel".localized, data.minPrice),
             yEnd: .value("maxLabel".localized, data.maxPrice),
-            width: 35
+            width: 25
         )
         .foregroundStyle(data.color)
     }
@@ -302,7 +323,7 @@ private struct BasePriceInfoView: View {
                 .foregroundColor(SwiftUI.Color(uiColor: .acText).opacity(0.6))
             Text("\(basePrice) \("bellUnit".localized)")
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(SwiftUI.Color(uiColor: .catalogBar))
+                .foregroundColor(SwiftUI.Color(uiColor: .acText))
         }
     }
 }
