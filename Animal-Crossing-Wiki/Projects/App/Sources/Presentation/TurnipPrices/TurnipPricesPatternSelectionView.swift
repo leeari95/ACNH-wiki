@@ -33,7 +33,7 @@ enum TurnipPricePattern: Int, CaseIterable {
 struct TurnipPricesPatternSelectionView: View {
     @State private var selectedPattern: TurnipPricePattern
     @State private var showingPatternSelection = false
-    var onPatternSelected: ((TurnipPricePattern) -> Void)?
+    private var onPatternSelected: ((TurnipPricePattern) -> Void)?
 
     init(selectedPattern: TurnipPricePattern = .unknown, onPatternSelected: ((TurnipPricePattern) -> Void)? = nil) {
         _selectedPattern = State(initialValue: selectedPattern)

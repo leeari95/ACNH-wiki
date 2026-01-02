@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FirstBuySelectionView: View {
     @State private var isFirstBuy: Bool
-    var onFirstBuyChanged: ((Bool) -> Void)?
+    private var onFirstBuyChanged: ((Bool) -> Void)?
 
     init(isFirstBuy: Bool = false, onFirstBuyChanged: ((Bool) -> Void)? = nil) {
         _isFirstBuy = State(initialValue: isFirstBuy)
