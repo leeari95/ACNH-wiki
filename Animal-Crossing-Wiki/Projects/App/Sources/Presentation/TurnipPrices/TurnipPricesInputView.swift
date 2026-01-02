@@ -23,8 +23,10 @@ struct TurnipPricesInputView: View {
     @State var saturdayAM: String
     @State var saturdayPM: String
 
-    var onSundayPriceChanged: ((String) -> Void)?
-    var onPriceChanged: ((TurnipPricesReactor.DayOfWeek, TurnipPricesReactor.Period, String) -> Void)?
+    private var onSundayPriceChanged: ((String) -> Void)?
+    private var onPriceChanged: ((TurnipPricesReactor.DayOfWeek, TurnipPricesReactor.Period, String) -> Void)?
+
+    // MARK: - Initialization
 
     init(
         sunday: String = "",
@@ -99,6 +101,8 @@ struct TurnipPricesInputView: View {
         .padding(.vertical, 5)
         .padding(.horizontal, 6)
     }
+
+    // MARK: - Private Methods
 
     @ViewBuilder
     private func dayRow(label: String, day: TurnipPricesReactor.DayOfWeek, amBinding: Binding<String>, pmBinding: Binding<String>) -> some View {

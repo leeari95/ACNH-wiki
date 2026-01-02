@@ -71,10 +71,10 @@ final class TurnipPricesReactor: Reactor {
     weak var coordinator: TurnipPricesCoordinator?
 
     private enum UserDefaultsKey {
-        static let selectedPattern = "turnip.selectedPattern"
-        static let isFirstBuy = "turnip.isFirstBuy"
-        static let sundayPrice = "turnip.sundayPrice"
-        static let prices = "turnip.prices"
+        static let selectedPattern = "ACNH.turnip.selectedPattern"
+        static let isFirstBuy = "ACNH.turnip.isFirstBuy"
+        static let sundayPrice = "ACNH.turnip.sundayPrice"
+        static let prices = "ACNH.turnip.prices"
     }
 
     init(coordinator: TurnipPricesCoordinator, state: State = State()) {
