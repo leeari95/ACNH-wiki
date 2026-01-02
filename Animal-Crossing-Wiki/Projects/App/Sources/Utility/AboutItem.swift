@@ -70,7 +70,7 @@ struct AboutItem {
             AboutItem(
                 icon: "tag",
                 title: "App version",
-                description: "2.0.1"
+                description: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
             ),
             AboutItem(
                 icon: "gamecontroller",
