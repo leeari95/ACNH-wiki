@@ -12,9 +12,7 @@ import SwiftUI
 final class DashboardViewController: UIViewController {
 
     private var dateString: String {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
-        return formatter.string(from: Date())
+        return DateFormatters.dashboardDate.string(from: Date())
     }
 
     private let disposeBag = DisposeBag()
