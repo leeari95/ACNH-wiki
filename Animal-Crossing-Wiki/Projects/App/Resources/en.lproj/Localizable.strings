@@ -1522,13 +1522,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
 
 // MARK: - TurnipPricesInputView
-"sunday" = "Sunday";
-"monday" = "Monday";
-"tuesday" = "Tuesday";
-"wednesday" = "Wednesday";
-"thursday" = "Thursday";
-"friday" = "Friday";
-"saturday" = "Saturday";
+"sunday" = "Sun";
+"monday" = "Mon";
+"tuesday" = "Tue";
+"wednesday" = "Wed";
+"thursday" = "Thu";
+"friday" = "Fri";
+"saturday" = "Sat";
 "purchasePrice" = "Purchase Price";
 "am" = "AM";
 "pm" = "PM";
@@ -1541,7 +1541,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 
 // MARK: - FirstBuySelectionView
 "firstBuyTitle" = "First Time";
-"firstBuyDescription" = "Is this your first time buying turnips from Daisy Mae?";
+"firstBuyDescription" = "First time buying turnips?";
 "yes" = "Yes";
 "no" = "No";
 
@@ -1558,7 +1558,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "pattern" = "Pattern";
 "sundayPurchasePrice" = "Sunday Purchase Price";
 "bellUnit" = "Bells";
-"purchasePriceLabel" = "Purchase Price";
+"purchasePriceLabel" = "Price";
 "maxLabel" = "Max";
 "minLabel" = "Min";
 "chartDayOfWeek" = "Day";

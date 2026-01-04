@@ -68,6 +68,7 @@ struct TurnipPricesInputView: View {
                 Text("sunday".localized)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(SwiftUI.Color(uiColor: .acText))
+                    .frame(width: 60, alignment: .leading)
 
                 RoundedRectangle(cornerRadius: 14)
                     .fill(SwiftUI.Color(uiColor: .acBackground))
@@ -115,6 +116,7 @@ struct TurnipPricesInputView: View {
             Text(label)
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(SwiftUI.Color(uiColor: .acText))
+                .frame(width: 60, alignment: .leading)
 
             RoundedRectangle(cornerRadius: 14)
                 .fill(SwiftUI.Color(uiColor: .acBackground))
