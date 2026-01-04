@@ -51,12 +51,12 @@ final class SeadRandom {
     }
 
     func getU32() -> UInt32 {
-        let n = context[0] ^ (context[0] << 11)
+        let number = context[0] ^ (context[0] << 11)
 
         context[0] = context[1]
         context[1] = context[2]
         context[2] = context[3]
-        context[3] = n ^ (n >> 8) ^ context[3] ^ (context[3] >> 19)
+        context[3] = number ^ (number >> 8) ^ context[3] ^ (context[3] >> 19)
 
         return context[3]
     }

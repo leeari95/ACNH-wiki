@@ -33,10 +33,10 @@ final class PDF {
         self.prob = Array(repeating: 0.0, count: valueEnd - valueStart)
 
         if uniform {
-            for i in 0..<prob.count {
-                let rangeOfI = rangeOf(idx: i)
+            for index in 0..<prob.count {
+                let rangeOfI = rangeOf(idx: index)
                 let intersectLen = rangeIntersectLength(rangeOfI, range)
-                prob[i] = intersectLen / totalLength
+                prob[index] = intersectLen / totalLength
             }
         }
     }
@@ -65,9 +65,11 @@ final class PDF {
     @discardableResult
     func normalize() -> Double {
         let totalProbability = floatSum(prob)
-        guard totalProbability > 0 else { return 0 }
-        for i in 0..<prob.count {
-            prob[i] /= totalProbability
+        guard totalProbability > 0 else {
+            return 0
+        }
+        for index in 0..<prob.count {
+            prob[index] /= totalProbability
         }
         return totalProbability
     }
@@ -93,10 +95,10 @@ final class PDF {
         let startIdx = Int(start) - valueStart
         let endIdx = Int(end) - valueStart
 
-        for i in startIdx..<endIdx {
-            let rangeOfI = rangeOf(idx: i)
+        for index in startIdx..<endIdx {
+            let rangeOfI = rangeOf(idx: index)
             let intersectLen = rangeIntersectLength(rangeOfI, range)
-            prob[i] *= intersectLen
+            prob[index] *= intersectLen
         }
 
         prob = Array(prob[startIdx..<endIdx])
@@ -121,9 +123,9 @@ final class PDF {
 
         var newProb = Array(repeating: 0.0, count: prob.count + maxY)
 
-        for i in 0..<newProb.count {
-            let left = max(0, i - maxY)
-            let right = min(maxX - 1, i)
+        for index in 0..<newProb.count {
+            let left = max(0, index - maxY)
+            let right = min(maxX - 1, index)
 
             // Prefix sum을 사용하여 범위 합 계산
             var numbersToSum: [Double] = [
@@ -134,14 +136,14 @@ final class PDF {
             ]
 
             // 엔드포인트 보정
-            if left == i - maxY {
+            if left == index - maxY {
                 numbersToSum.append(-prob[left] / 2)
             }
-            if right == i {
+            if right == index {
                 numbersToSum.append(-prob[right] / 2)
             }
 
-            newProb[i] = floatSum(numbersToSum) / Double(maxY)
+            newProb[index] = floatSum(numbersToSum) / Double(maxY)
         }
 
         prob = newProb
@@ -164,36 +166,36 @@ final class PDF {
     /// Kahan-Babuska 알고리즘을 사용한 정확한 부동소수점 합계
     private func floatSum(_ input: [Double]) -> Double {
         var sum = 0.0
-        var c = 0.0  // "lost bits" of sum
+        var count = 0.0  // "lost bits" of sum
 
         for current in input {
-            let t = sum + current
+            let tempSum = sum + current
             if abs(sum) >= abs(current) {
-                c += (sum - t) + current
+                count += (sum - tempSum) + current
             } else {
-                c += (current - t) + sum
+                count += (current - tempSum) + sum
             }
-            sum = t
+            sum = tempSum
         }
 
-        return sum + c
+        return sum + count
     }
 
     /// Prefix sum with error tracking
     private func prefixFloatSum(_ input: [Double]) -> [(sum: Double, error: Double)] {
         var prefixSum: [(sum: Double, error: Double)] = [(0, 0)]
         var sum = 0.0
-        var c = 0.0
+        var count = 0.0
 
         for current in input {
-            let t = sum + current
+            let tempSum = sum + current
             if abs(sum) >= abs(current) {
-                c += (sum - t) + current
+                count += (sum - tempSum) + current
             } else {
-                c += (current - t) + sum
+                count += (current - tempSum) + sum
             }
-            sum = t
-            prefixSum.append((sum, c))
+            sum = tempSum
+            prefixSum.append((sum, count))
         }
 
         return prefixSum
@@ -456,7 +458,7 @@ final class TurnipPricePredictor {
         let minRandoms: [Double] = [0.9, 1.4, 2.0, 1.4, 0.9]
         let maxRandoms: [Double] = [1.4, 2.0, 6.0, 2.0, 1.4]
 
-        for i in 0..<5 {
+        for index in 0..<5 {
             if work >= 14 {
                 break
             }
@@ -466,8 +468,8 @@ final class TurnipPricePredictor {
                 maxPrices: &maxPrices,
                 start: work,
                 length: 1,
-                rateMin: minRandoms[i],
-                rateMax: maxRandoms[i]
+                rateMin: minRandoms[index],
+                rateMax: maxRandoms[index]
             ) {
                 return nil
             }
@@ -630,10 +632,10 @@ final class TurnipPricePredictor {
         var mostCommonPattern: TurnipPricePattern = .unknown
 
         // 각 인덱스별로 모든 결과의 min/max 수집
-        for i in 0..<14 {
+        for index in 0..<14 {
             for result in results {
-                globalMin[i] = min(globalMin[i], result.minPrices[i])
-                globalMax[i] = max(globalMax[i], result.maxPrices[i])
+                globalMin[index] = min(globalMin[index], result.minPrices[index])
+                globalMax[index] = max(globalMax[index], result.maxPrices[index])
             }
         }
 
@@ -710,16 +712,16 @@ final class TurnipPricePredictor {
         rateMin: Double,
         rateMax: Double
     ) -> Bool {
-        var rateMinInt = Int(rateMin * Double(Self.rateMultiplier))
-        var rateMaxInt = Int(rateMax * Double(Self.rateMultiplier))
+        let rateMinInt = Int(rateMin * Double(Self.rateMultiplier))
+        let rateMaxInt = Int(rateMax * Double(Self.rateMultiplier))
 
         let rateRange = (min: rateMinInt, max: rateMaxInt)
 
-        for i in start..<(start + length) {
+        for index in start..<(start + length) {
             var minPred = getPrice(rate: rateMinInt, basePrice: basePrice)
             var maxPred = getPrice(rate: rateMaxInt, basePrice: basePrice)
 
-            if let givenPrice = givenPrices[i] {
+            if let givenPrice = givenPrices[index] {
                 // 입력값이 예측 범위를 벗어나면 이 패턴은 불가능
                 if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
                     return false
@@ -738,8 +740,8 @@ final class TurnipPricePredictor {
                 maxPred = givenPrice
             }
 
-            minPrices[i] = minPred
-            maxPrices[i] = maxPred
+            minPrices[index] = minPred
+            maxPrices[index] = maxPred
         }
 
         return true
@@ -763,14 +765,14 @@ final class TurnipPricePredictor {
         let decayMax = Int(rateDecayMax * Double(Self.rateMultiplier))
 
         let buyPrice = basePrice
-        var ratePdf = PDF(start: rateMin, end: rateMax)
+        let ratePdf = PDF(start: rateMin, end: rateMax)
         var prob = 1.0
 
-        for i in start..<(start + length) {
+        for index in start..<(start + length) {
             var minPred = getPrice(rate: ratePdf.minValue(), basePrice: buyPrice)
             var maxPred = getPrice(rate: ratePdf.maxValue(), basePrice: buyPrice)
 
-            if let givenPrice = givenPrices[i] {
+            if let givenPrice = givenPrices[index] {
                 if givenPrice < minPred - fudgeFactor || givenPrice > maxPred + fudgeFactor {
                     return 0  // 패턴 불가능
                 }
@@ -794,8 +796,8 @@ final class TurnipPricePredictor {
                 maxPred = givenPrice
             }
 
-            minPrices[i] = minPred
-            maxPrices[i] = maxPred
+            minPrices[index] = minPred
+            maxPrices[index] = maxPred
 
             // 다음 단계로 decay
             ratePdf.decay(decayMin: decayMin, decayMax: decayMax)

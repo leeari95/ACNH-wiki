@@ -15,7 +15,9 @@ final class TurnipPricesViewController: UIViewController {
     private var reactor: TurnipPricesReactor?
 
     private lazy var hostingController: UIHostingController<TurnipPricesSectionsView>? = {
-        guard let reactor = reactor else { return nil }
+        guard let reactor = reactor else {
+            return nil
+        }
         let controller = UIHostingController(rootView: TurnipPricesSectionsView(reactor: reactor))
         controller.view.backgroundColor = .clear
         return controller
@@ -45,7 +47,9 @@ final class TurnipPricesViewController: UIViewController {
     }
 
     private func setUpHostingController() {
-        guard let hostingController = hostingController else { return }
+        guard let hostingController = hostingController else {
+            return
+        }
 
         addChild(hostingController)
         view.addSubviews(hostingController.view)

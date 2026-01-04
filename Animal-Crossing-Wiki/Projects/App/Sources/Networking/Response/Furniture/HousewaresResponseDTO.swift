@@ -67,7 +67,7 @@ struct FurnitureTranslations: Decodable {
     }
 
     func localizedName() -> String {
-        guard let code = Locale.current.languageCode, let languageCode = LanguageCode(rawValue: code) else {
+        guard let code = Locale.current.language.languageCode?.identifier, let languageCode = LanguageCode(rawValue: code) else {
             return uSen
         }
         switch languageCode {

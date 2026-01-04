@@ -105,7 +105,12 @@ struct TurnipPricesInputView: View {
     // MARK: - Private Methods
 
     @ViewBuilder
-    private func dayRow(label: String, day: TurnipPricesReactor.DayOfWeek, amBinding: Binding<String>, pmBinding: Binding<String>) -> some View {
+    private func dayRow(
+        label: String,
+        day: TurnipPricesReactor.DayOfWeek,
+        amBinding: Binding<String>,
+        pmBinding: Binding<String>
+    ) -> some View {
         HStack(spacing: 30) {
             Text(label)
                 .font(.system(size: 17, weight: .semibold))

@@ -68,16 +68,48 @@ final class TurnipPriceCalculator {
 
         switch previous {
         case .fluctuating:
-            if chance < 20 { return .fluctuating } else if chance < 50 { return .largespike } else if chance < 65 { return .decreasing } else { return .smallspike }
+            if chance < 20 {
+                return .fluctuating
+            } else if chance < 50 {
+                return .largespike
+            } else if chance < 65 {
+                return .decreasing
+            } else {
+                return .smallspike
+            }
 
         case .largespike:
-            if chance < 50 { return .fluctuating } else if chance < 55 { return .largespike } else if chance < 75 { return .decreasing } else { return .smallspike }
-
+            if chance < 50 {
+                return .fluctuating
+            } else if chance < 55 {
+                return .largespike
+            } else if chance < 75 {
+                return .decreasing
+            } else {
+                return .smallspike
+            }
+            
         case .decreasing:
-            if chance < 25 { return .fluctuating } else if chance < 70 { return .largespike } else if chance < 75 { return .decreasing } else { return .smallspike }
-
+            if chance < 25 {
+                return .fluctuating
+            } else if chance < 70 {
+                return .largespike
+            } else if chance < 75 {
+                return .decreasing
+            } else {
+                return .smallspike
+            }
+            
         case .smallspike:
-            if chance < 45 { return .fluctuating } else if chance < 70 { return .largespike } else if chance < 85 { return .decreasing } else { return .smallspike }
+            if chance < 45 {
+                return .fluctuating
+            } else if chance < 70 {
+                return .largespike
+            } else if chance < 85 {
+                return .decreasing
+            } else {
+                return .smallspike
+            }
 
         case .unknown:
             return TurnipPricePattern(rawValue: rng.getInt(min: 0, max: 3)) ?? .fluctuating
