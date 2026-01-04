@@ -42,7 +42,7 @@ final class NpcsView: UIView {
 
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Reset".localized, for: .normal)
+        button.setTitle("reset".localized, for: .normal)
         button.setTitleColor(.acText, for: .normal)
         button.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
         button.backgroundColor = .acText.withAlphaComponent(0.2)
