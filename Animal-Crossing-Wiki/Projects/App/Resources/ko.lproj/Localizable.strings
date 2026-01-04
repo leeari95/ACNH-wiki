@@ -12,6 +12,7 @@
 "villagers" = "마을주민";
 "Collection" = "수집품";
 "animals" = "동물";
+"turnipPrices" = "무트코인";
 
 // MARK: - etc
 "Cancel" = "취소";
@@ -1524,3 +1525,60 @@
 "api_error_invalid_data" = "데이터가 유효하지 않습니다.";
 "api_error_invalid_url" = "URL이 잘못되었습니다.\nURL: %@";
 "api_error_parsing" = "JSON으로 파싱하는 도중 알 수 없는 오류가 발생했습니다.";
+
+// MARK: - TurnipPricesInputView
+"sunday" = "일요일";
+"monday" = "월요일";
+"tuesday" = "화요일";
+"wednesday" = "수요일";
+"thursday" = "목요일";
+"friday" = "금요일";
+"saturday" = "토요일";
+"purchasePrice" = "구매가격";
+"am" = "오전";
+"pm" = "오후";
+"mondayShort" = "월";
+"tuesdayShort" = "화";
+"wednesdayShort" = "수";
+"thursdayShort" = "목";
+"fridayShort" = "금";
+"saturdayShort" = "토";
+
+// MARK: - FirstBuySelectionView
+"firstBuyTitle" = "첫 구매 여부";
+"firstBuyDescription" = "무파니에게서 처음 무를 사는 건가요?";
+"yes" = "예";
+"no" = "아니오";
+
+// MARK: - TurnipPricesSectionsView
+"turnipPatternSectionTitle" = "저번주 가격 패턴을 골라주세요";
+"turnipPriceSectionTitle" = "각 요일의 무 판매가를 입력하세요.";
+"turnipPricePattern" = "무 가격 패턴";
+"selectTurnipPricePattern" = "무 가격 패턴을 선택하세요";
+"turnipReset" = "초기화";
+"showResults" = "결과보기";
+
+// MARK: - TurnipPriceResultView
+"turnipPriceResultTitle" = "무 가격 예측 결과";
+"pattern" = "패턴";
+"sundayPurchasePrice" = "일요일 구매가";
+"bellUnit" = "벨";
+"purchasePriceLabel" = "구매가";
+"maxLabel" = "최대";
+"minLabel" = "최소";
+"chartDayOfWeek" = "요일";
+"chartStart" = "시작";
+"chartInputValue" = "입력값";
+
+// MARK: - Validation
+"requiredInputTitle" = "필수 입력";
+"requiredSundayPriceMessage" = "일요일 구매가격을 입력해주세요.";
+"requiredMondayAMPriceMessage" = "월요일 오전 무가격을 입력해주세요.";
+"confirm" = "확인";
+
+// MARK: - Turnip Price Patterns
+"patternUnknown" = "❓ 모름";
+"patternFluctuating" = "📊 변동형";
+"patternLargespike" = "📈 큰폭 상승";
+"patternSmallspike" = "📉 작은폭 상승";
+"patternDecreasing" = "👎 계속 하락";

@@ -152,13 +152,13 @@ final class NpcsView: UIView {
             }).disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
+            .subscribe(onNext: { indexPath in
                 HapticManager.shared.selection()
                 reactor.action.onNext(.npcChecked(index: indexPath.item))
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
+            .subscribe(onNext: { _ in
                 reactor.action.onNext(.resetCheckedNpcs)
             }).disposed(by: disposeBag)
     }

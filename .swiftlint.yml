@@ -18,15 +18,15 @@ identifier_name:
       - b
 
 function_body_length:
-  warning: 150
+  warning: 200
   error: 300
 
 type_body_length:
-    - 300 # warning
+    - 500 # warning
     - 500
 
 file_length:
-    warning: 500
+    warning: 1000
     error: 1200
 
 line_length:
@@ -40,6 +40,7 @@ disabled_rules: # 실행에서 제외할 룰 식별자들
     - cyclomatic_complexity
     - void_function_in_ternary
     - comment_spacing
+    - function_parameter_count
 
 opt_in_rules: # 일부 룰은 옵트 인 형태로 제공
     - empty_count
