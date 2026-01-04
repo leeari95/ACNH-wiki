@@ -197,9 +197,9 @@ struct TurnipPriceResultView: View {
 
     private func userInputBarMark(for data: TurnipPriceRangeData) -> some ChartContent {
         RectangleMark(
-            x: .value("요일", "\(data.day)\n\(data.period)"),
-            yStart: .value("시작", 0),
-            yEnd: .value("입력값", data.minPrice),
+            x: .value("chartDayOfWeek".localized, "\(data.day)\n\(data.period)"),
+            yStart: .value("chartStart".localized, 0),
+            yEnd: .value("chartInputValue".localized, data.minPrice),
             width: 25
         )
         .foregroundStyle(data.color.opacity(0.7))
@@ -207,8 +207,8 @@ struct TurnipPriceResultView: View {
 
     private func userInputPointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
-            x: .value("요일", "\(data.day)\n\(data.period)"),
-            y: .value("입력값", data.minPrice)
+            x: .value("chartDayOfWeek".localized, "\(data.day)\n\(data.period)"),
+            y: .value("chartInputValue".localized, data.minPrice)
         )
         .symbol(.circle)
         .symbolSize(60)
@@ -232,7 +232,7 @@ struct TurnipPriceResultView: View {
 
     private func predictionRangeMark(for data: TurnipPriceRangeData) -> some ChartContent {
         RectangleMark(
-            x: .value("요일", "\(data.day)\n\(data.period)"),
+            x: .value("chartDayOfWeek".localized, "\(data.day)\n\(data.period)"),
             yStart: .value("minLabel".localized, data.minPrice),
             yEnd: .value("maxLabel".localized, data.maxPrice),
             width: 25
@@ -242,7 +242,7 @@ struct TurnipPriceResultView: View {
 
     private func maxPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
-            x: .value("요일", "\(data.day)\n\(data.period)"),
+            x: .value("chartDayOfWeek".localized, "\(data.day)\n\(data.period)"),
             y: .value("maxLabel".localized, data.maxPrice)
         )
         .symbol(.circle)
@@ -261,7 +261,7 @@ struct TurnipPriceResultView: View {
 
     private func minPricePointMark(for data: TurnipPriceRangeData) -> some ChartContent {
         PointMark(
-            x: .value("요일", "\(data.day)\n\(data.period)"),
+            x: .value("chartDayOfWeek".localized, "\(data.day)\n\(data.period)"),
             y: .value("minLabel".localized, data.minPrice)
         )
         .symbol(.diamond)

@@ -1566,6 +1566,9 @@
 "purchasePriceLabel" = "구매가";
 "maxLabel" = "최대";
 "minLabel" = "최소";
+"chartDayOfWeek" = "요일";
+"chartStart" = "시작";
+"chartInputValue" = "입력값";
 
 // MARK: - Validation
 "requiredInputTitle" = "필수 입력";
