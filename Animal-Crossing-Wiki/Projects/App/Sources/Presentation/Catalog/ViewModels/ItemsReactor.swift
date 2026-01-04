@@ -247,6 +247,13 @@ final class ItemsReactor: Reactor {
                         value == ItemsViewController.Menu.ascending ?
                         $0.sell < $1.sell : $0.sell > $1.sell
                     }
+            case .catalog:
+                guard let catalogValue = Catalog.from(localizedString: value) else {
+                    continue
+                }
+                filteredItems = (filteredItems.isEmpty ? items : filteredItems).filter {
+                    $0.catalog == catalogValue
+                }
             case .allSelect, .reset:
                 continue
             }
@@ -361,4 +368,5 @@ final class ItemsReactor: Reactor {
             return Disposables.create()
         }
     }
+
 }

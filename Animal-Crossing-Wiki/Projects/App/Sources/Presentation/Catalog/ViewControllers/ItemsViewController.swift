@@ -23,6 +23,7 @@ final class ItemsViewController: UIViewController {
         case month
         case name
         case sell
+        case catalog
         case allSelect
         case reset
 
@@ -32,6 +33,7 @@ final class ItemsViewController: UIViewController {
             case .month: return "Month".localized
             case .name: return "Name".localized
             case .sell: return "Sell".localized
+            case .catalog: return "Catalog".localized
             case .allSelect: return "All Select".localized
             case .reset: return "Reset".localized
             }
@@ -48,6 +50,7 @@ final class ItemsViewController: UIViewController {
             case "Month".localized: return .month
             case "Name".localized: return .name
             case "Sell".localized: return .sell
+            case "Catalog".localized: return .catalog
             case "All Select".localized: return .allSelect
             case "Reset".localized: return .reset
             default: return .all
@@ -262,7 +265,7 @@ final class ItemsViewController: UIViewController {
         view.addSubviews(collectionView, activityIndicator, emptyView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             activityIndicator.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -385,12 +388,41 @@ extension ItemsViewController {
                 }
             }
             let monthMenuTitle = currentSelected[.month] != nil ?
-            (DateFormatter().monthSymbols[(Int(currentSelected[.month] ?? "1") ?? 1) - 1]) :
+            (Calendar.current.monthSymbols[(Int(currentSelected[.month] ?? "1") ?? 1) - 1]) :
             Menu.month.title.localized
             let monthsMenu = UIMenu(title: monthMenuTitle, children: monthActions)
             filterMenuList.append(monthsMenu)
         }
+
+        // Catalog Filter Menu - catalog 속성이 있는 카테고리에만 표시
+        if let category = category, Category.catalogFilterable.contains(category) {
+            filterMenuList.append(createCatalogFilterMenu())
+        }
+
         return filterMenuList
+    }
+
+    private func createCatalogFilterMenu() -> UIMenu {
+        let actionHandler: (UIAction) -> Void = { [weak self] action in
+            let menu = Menu.catalog
+            self?.currentSelected[menu] = action.title
+            self?.currentSelected[Menu.all] = nil
+            self?.navigationItem.rightBarButtonItem?.menu = self?.createMoreMenu()
+        }
+
+        let catalogActions = Catalog.allCases.map { catalog in
+            UIAction(title: catalog.localizedName, handler: actionHandler)
+        }
+        catalogActions.forEach { action in
+            let menu = Menu.catalog
+            if currentSelected[menu] == action.title {
+                action.state = .on
+                action.attributes = .disabled
+            }
+        }
+
+        let catalogMenuTitle = currentSelected[.catalog] ?? Menu.catalog.title.localized
+        return UIMenu(title: catalogMenuTitle, children: catalogActions)
     }
 
     private func createCheckMenu() -> UIMenu {

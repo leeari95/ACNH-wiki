@@ -43,6 +43,12 @@ final class AppCoordinator: Coordinator {
         addViewController(animalsCoordinator.rootViewController, title: "animals".localized, icon: "icon-book-tabbar")
         childCoordinators.append(animalsCoordinator)
 
+        let turnipPricesCoordinator = TurnipPricesCoordinator()
+        turnipPricesCoordinator.start()
+        turnipPricesCoordinator.setUpParent(to: self)
+        addViewController(turnipPricesCoordinator.rootViewController, title: "turnipPrices".localized, icon: "icon-turnip-tabbar")
+        childCoordinators.append(turnipPricesCoordinator)
+
         let collectionCoordinator = CollectionCoordinator()
         collectionCoordinator.start()
         collectionCoordinator.setUpParent(to: self)

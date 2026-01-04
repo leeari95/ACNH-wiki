@@ -12,6 +12,7 @@
 "villagers" = "Villagers";
 "Collection" = "Collection";
 "animals" = "Animals";
+"turnipPrices" = "Turnip";
 
 // MARK: - etc
 "Cancel" = "Cancel";
@@ -1519,3 +1520,60 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "api_error_invalid_data" = "Invalid data.";
 "api_error_invalid_url" = "Invalid URL.\nURL: %@";
 "api_error_parsing" = "Unknown error occurred while parsing JSON.";
+
+// MARK: - TurnipPricesInputView
+"sunday" = "Sun";
+"monday" = "Mon";
+"tuesday" = "Tue";
+"wednesday" = "Wed";
+"thursday" = "Thu";
+"friday" = "Fri";
+"saturday" = "Sat";
+"purchasePrice" = "Purchase Price";
+"am" = "AM";
+"pm" = "PM";
+"mondayShort" = "Mon";
+"tuesdayShort" = "Tue";
+"wednesdayShort" = "Wed";
+"thursdayShort" = "Thu";
+"fridayShort" = "Fri";
+"saturdayShort" = "Sat";
+
+// MARK: - FirstBuySelectionView
+"firstBuyTitle" = "First Time";
+"firstBuyDescription" = "First time buying turnips?";
+"yes" = "Yes";
+"no" = "No";
+
+// MARK: - TurnipPricesSectionsView
+"turnipPatternSectionTitle" = "Please select last week's price pattern";
+"turnipPriceSectionTitle" = "Enter the turnip selling price for each day.";
+"turnipPricePattern" = "Price Pattern";
+"selectTurnipPricePattern" = "Select a price pattern";
+"turnipReset" = "Reset";
+"showResults" = "Results";
+
+// MARK: - TurnipPriceResultView
+"turnipPriceResultTitle" = "Turnip Price Prediction";
+"pattern" = "Pattern";
+"sundayPurchasePrice" = "Sunday Purchase Price";
+"bellUnit" = "Bells";
+"purchasePriceLabel" = "Price";
+"maxLabel" = "Max";
+"minLabel" = "Min";
+"chartDayOfWeek" = "Day";
+"chartStart" = "Start";
+"chartInputValue" = "Input";
+
+// MARK: - Validation
+"requiredInputTitle" = "Required Input";
+"requiredSundayPriceMessage" = "Please enter the Sunday purchase price.";
+"requiredMondayAMPriceMessage" = "Please enter the Monday AM turnip price.";
+"confirm" = "OK";
+
+// MARK: - Turnip Price Patterns
+"patternUnknown" = "❓ Unknown";
+"patternFluctuating" = "📊 Fluctuating";
+"patternLargespike" = "📈 Large Spike";
+"patternSmallspike" = "📉 Small Spike";
+"patternDecreasing" = "👎 Decreasing";

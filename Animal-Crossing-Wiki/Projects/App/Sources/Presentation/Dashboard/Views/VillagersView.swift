@@ -152,7 +152,7 @@ final class VillagersView: UIView {
             }).disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
+            .subscribe(onNext: { indexPath in
                 HapticManager.shared.selection()
                 if let villager = reactor.currentState.villagers[safe: indexPath.item] {
                     reactor.action.onNext(.villagersChecked(checked: villager))
@@ -160,7 +160,7 @@ final class VillagersView: UIView {
             }).disposed(by: disposeBag)
 
         resetButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
+            .subscribe(onNext: { _ in
                 reactor.action.onNext(.resetCheckedVillagers)
             }).disposed(by: disposeBag)
     }

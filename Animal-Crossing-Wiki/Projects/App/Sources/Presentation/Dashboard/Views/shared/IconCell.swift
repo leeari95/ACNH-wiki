@@ -40,7 +40,9 @@ final class IconCell: UICollectionViewCell {
 
     func setChecked(_ isChecked: Bool) {
         removeCheckMark()
-        guard isChecked else { return }
+        guard isChecked else {
+            return
+        }
         let checkImage = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
         checkImage.tintColor = .acHeaderBackground
         checkImage.backgroundColor = .white
