@@ -15,6 +15,13 @@ final class TurnipPriceResultViewController: UIViewController {
     private let minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
     private let maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
 
+    lazy var dimmingView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+
     private lazy var hostingController: UIHostingController<TurnipPriceResultView> = {
         let view = TurnipPriceResultView(
             basePrice: basePrice,
@@ -40,6 +47,7 @@ final class TurnipPriceResultViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         modalPresentationStyle = .overFullScreen
+        transitioningDelegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -63,5 +71,24 @@ final class TurnipPriceResultViewController: UIViewController {
             hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+
+extension TurnipPriceResultViewController: UIViewControllerTransitioningDelegate {
+
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return TurnipPricePresentationAnimator(isPresenting: true)
+    }
+
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return TurnipPricePresentationAnimator(isPresenting: false)
     }
 }
