@@ -17,15 +17,15 @@ enum TurnipPricePattern: Int, CaseIterable {
     var displayText: String {
         switch self {
         case .unknown:
-            return "❓ 모름"
+            return "patternUnknown".localized
         case .fluctuating:
-            return "📊 변동형"
+            return "patternFluctuating".localized
         case .largespike:
-            return "📈 큰폭 상승"
+            return "patternLargespike".localized
         case .smallspike:
-            return "📉 작은폭 상승"
+            return "patternSmallspike".localized
         case .decreasing:
-            return "👎 계속 하락"
+            return "patternDecreasing".localized
         }
     }
 }

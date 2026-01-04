@@ -1572,3 +1572,10 @@
 "requiredSundayPriceMessage" = "일요일 구매가격을 입력해주세요.";
 "requiredMondayAMPriceMessage" = "월요일 오전 무가격을 입력해주세요.";
 "confirm" = "확인";
+
+// MARK: - Turnip Price Patterns
+"patternUnknown" = "❓ 모름";
+"patternFluctuating" = "📊 변동형";
+"patternLargespike" = "📈 큰폭 상승";
+"patternSmallspike" = "📉 작은폭 상승";
+"patternDecreasing" = "👎 계속 하락";
