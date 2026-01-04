@@ -429,7 +429,7 @@ extension ItemsViewController {
         let allSelectAction = UIAction(
             title: Menu.allSelect.title,
             image: UIImage(systemName: "text.badge.checkmark")
-        ) { [weak self] action in
+        ) { [weak self] _ in
             guard let owner = self else {
                 return
             }
@@ -447,7 +447,7 @@ extension ItemsViewController {
         let resetAction = UIAction(
             title: Menu.reset.title,
             image: UIImage(systemName: "arrow.counterclockwise")
-        ) { [weak self] action in
+        ) { [weak self] _ in
             guard let owner = self else {
                 return
             }

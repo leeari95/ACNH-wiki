@@ -30,10 +30,6 @@ final class CategoryRow: UITableViewCell {
         itemCountLabel.text = nil
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
     func setUp(iconName: String, title: String, itemCount: Int) {
         iconImage.image = UIImage(named: iconName)
         titleLabel.text = title
