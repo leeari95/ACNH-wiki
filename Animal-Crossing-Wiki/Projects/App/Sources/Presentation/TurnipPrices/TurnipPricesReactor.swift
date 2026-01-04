@@ -153,12 +153,12 @@ final class TurnipPricesReactor: Reactor {
     private func calculatePrices() -> Observable<Mutation> {
         // 필수 입력값 검증
         guard let userBasePrice = Int(currentState.sundayPrice), userBasePrice > 0 else {
-            coordinator?.showValidationAlert(message: "requiredSundayPriceMessage".localized)
+            coordinator?.transition(for: .showValidationAlert(message: "requiredSundayPriceMessage".localized))
             return .empty()
         }
 
         guard let mondayAMPrice = Int(currentState.prices[.monday]?[.am] ?? ""), mondayAMPrice > 0 else {
-            coordinator?.showValidationAlert(message: "requiredMondayAMPriceMessage".localized)
+            coordinator?.transition(for: .showValidationAlert(message: "requiredMondayAMPriceMessage".localized))
             return .empty()
         }
 

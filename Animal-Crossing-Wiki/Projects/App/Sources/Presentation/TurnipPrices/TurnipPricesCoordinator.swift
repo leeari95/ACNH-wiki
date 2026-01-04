@@ -16,6 +16,7 @@ final class TurnipPricesCoordinator: Coordinator {
             minPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]],
             maxPrices: [TurnipPricesReactor.DayOfWeek: [TurnipPricesReactor.Period: Int]]
         )
+        case showValidationAlert(message: String)
     }
 
     var type: CoordinatorType = .turnipPrices
@@ -37,10 +38,12 @@ final class TurnipPricesCoordinator: Coordinator {
         switch route {
         case .showResult(let basePrice, let pattern, let minPrices, let maxPrices):
             showResultViewController(basePrice: basePrice, pattern: pattern, minPrices: minPrices, maxPrices: maxPrices)
+        case .showValidationAlert(let message):
+            showValidationAlert(message: message)
         }
     }
 
-    func showValidationAlert(message: String) {
+    private func showValidationAlert(message: String) {
         let alert = UIAlertController(
             title: "requiredInputTitle".localized,
             message: message,
