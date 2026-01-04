@@ -62,6 +62,14 @@ struct AboutItem {
                     string: "https://docs.google.com/spreadsheets/d/1mo7myqHry5r_TKvakvIhHbcEAEQpSiNoNQoIS8sMpvM/edit#gid=1397507627"
                 )
             )
+,
+            AboutItem(
+                icon: "heart.fill",
+                title: "Turnip Prophet",
+                url: URL(
+                    string: "https://github.com/mikebryant/ac-nh-turnip-prices"
+                )
+            )
         ]
     }
 
