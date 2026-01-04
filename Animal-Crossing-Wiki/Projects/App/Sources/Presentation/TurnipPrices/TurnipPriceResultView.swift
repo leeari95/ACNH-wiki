@@ -84,11 +84,16 @@ struct TurnipPriceResultView: View {
     }
 
     private var closeButton: some View {
-        Button(action: { dismiss() }) {
-            Image(systemName: "xmark.circle.fill")
-                .font(.system(size: 24))
-                .foregroundColor(SwiftUI.Color(uiColor: .acText))
-        }
+        Button(
+            action: {
+                dismiss()
+            },
+            label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundColor(SwiftUI.Color(uiColor: .acText))
+            }
+        )
     }
 
     private var priceInfoView: some View {
@@ -270,17 +275,6 @@ struct TurnipPriceResultView: View {
                 fontSize: 9,
                 cornerRadius: 4
             )
-        }
-    }
-
-    private func dayLabel(_ day: TurnipPricesReactor.DayOfWeek) -> String {
-        switch day {
-        case .monday: return "monday".localized
-        case .tuesday: return "tuesday".localized
-        case .wednesday: return "wednesday".localized
-        case .thursday: return "thursday".localized
-        case .friday: return "friday".localized
-        case .saturday: return "saturday".localized
         }
     }
 
