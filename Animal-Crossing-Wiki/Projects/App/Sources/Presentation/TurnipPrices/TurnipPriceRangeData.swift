@@ -21,7 +21,10 @@ struct TurnipPriceRangeData: Identifiable {
     }
 
     var avgRatio: Float {
-        Float(avgPrice) / Float(basePrice)
+        guard basePrice > 0 else {
+            return 0
+        }
+        return Float(avgPrice) / Float(basePrice)
     }
 
     var isUserInput: Bool {
