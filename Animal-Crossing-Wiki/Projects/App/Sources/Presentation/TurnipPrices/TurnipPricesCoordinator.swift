@@ -40,6 +40,21 @@ final class TurnipPricesCoordinator: Coordinator {
         }
     }
 
+    func showValidationAlert(message: String) {
+        let alert = UIAlertController(
+            title: "requiredInputTitle".localized,
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "confirm".localized, style: .default))
+
+        if let topViewController = rootViewController.topViewController {
+            topViewController.present(alert, animated: true)
+        } else {
+            rootViewController.present(alert, animated: true)
+        }
+    }
+
     private func showResultViewController(
         basePrice: Int,
         pattern: TurnipPricePattern,

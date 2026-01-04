@@ -1566,3 +1566,9 @@
 "purchasePriceLabel" = "구매가";
 "maxLabel" = "최대";
 "minLabel" = "최소";
+
+// MARK: - Validation
+"requiredInputTitle" = "필수 입력";
+"requiredSundayPriceMessage" = "일요일 구매가격을 입력해주세요.";
+"requiredMondayAMPriceMessage" = "월요일 오전 무가격을 입력해주세요.";
+"confirm" = "확인";

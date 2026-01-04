@@ -151,9 +151,19 @@ final class TurnipPricesReactor: Reactor {
     // MARK: - Private Methods
 
     private func calculatePrices() -> Observable<Mutation> {
+        // 필수 입력값 검증
+        guard let userBasePrice = Int(currentState.sundayPrice), userBasePrice > 0 else {
+            coordinator?.showValidationAlert(message: "requiredSundayPriceMessage".localized)
+            return .empty()
+        }
+
+        guard let mondayAMPrice = Int(currentState.prices[.monday]?[.am] ?? ""), mondayAMPrice > 0 else {
+            coordinator?.showValidationAlert(message: "requiredMondayAMPriceMessage".localized)
+            return .empty()
+        }
+
         // 사용자가 입력한 일요일 구매가
-        let userBasePrice = Int(currentState.sundayPrice)
-        let basePrice = userBasePrice ?? 100
+        let basePrice = userBasePrice
 
         // 사용자가 입력한 가격들 수집
         var userInputs: [UserInput] = []
