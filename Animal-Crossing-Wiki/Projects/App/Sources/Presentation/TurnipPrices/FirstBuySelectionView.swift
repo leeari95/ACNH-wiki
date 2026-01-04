@@ -56,27 +56,8 @@ private struct RadioButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                // 라디오 버튼 원
-                ZStack {
-                    Circle()
-                        .stroke(
-                            isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText).opacity(0.3),
-                            lineWidth: 2
-                        )
-                        .frame(width: 20, height: 20)
-
-                    if isSelected {
-                        Circle()
-                            .fill(SwiftUI.Color(uiColor: .catalogSelected))
-                            .frame(width: 12, height: 12)
-                    }
-                }
-
-                // 라벨
-                Text(title)
-                    .font(.system(size: 14, weight: isSelected ? .bold : .regular))
-                    .foregroundStyle(isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText))
-                    .frame(width: 45)
+                circleView
+                labelView
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
@@ -85,5 +66,29 @@ private struct RadioButton: View {
                     .fill(isSelected ? SwiftUI.Color(uiColor: .catalogSelected).opacity(0.2) : SwiftUI.Color.clear)
             )
         }
+    }
+
+    private var circleView: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                    isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText).opacity(0.3),
+                    lineWidth: 2
+                )
+                .frame(width: 20, height: 20)
+
+            if isSelected {
+                Circle()
+                    .fill(SwiftUI.Color(uiColor: .catalogSelected))
+                    .frame(width: 12, height: 12)
+            }
+        }
+    }
+
+    private var labelView: some View {
+        Text(title)
+            .font(.system(size: 14, weight: isSelected ? .bold : .regular))
+            .foregroundStyle(isSelected ? SwiftUI.Color(uiColor: .catalogSelected) : SwiftUI.Color(uiColor: .acText))
+            .frame(width: 45)
     }
 }
