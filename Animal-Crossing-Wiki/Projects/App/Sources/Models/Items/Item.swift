@@ -114,13 +114,13 @@ extension Item {
 
 extension Item: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.name == rhs.name && lhs.genuine  == rhs.genuine
+        return lhs.name == rhs.name && (lhs.genuine ?? false)  == (rhs.genuine ?? false)
     }
 }
 
 extension Item: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(name)
-        hasher.combine(genuine)
+        hasher.combine(genuine ?? false)
     }
 }
