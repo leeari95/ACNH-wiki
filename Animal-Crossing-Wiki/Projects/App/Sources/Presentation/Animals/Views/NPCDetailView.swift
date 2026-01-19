@@ -53,7 +53,7 @@ extension NPCDetailView {
         profileImage.setImage(with: npc.photoImage ?? npc.iconImage)
 
         let items: [(title: String, value: String)] = [
-            ("Gender".localized, npc.gender.rawValue.lowercased().localized.capitalized),
+            ("gender".localized, npc.gender.rawValue.lowercased().localized.capitalized),
             ("Birthday".localized, npc.birthday),
             ("Specie".localized, npc.species.lowercased().localized.capitalized)
         ]
