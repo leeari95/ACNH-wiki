@@ -14,6 +14,8 @@ enum APIError: LocalizedError {
     case invalidData
     case invalidURL(_ url: String)
     case parsingError
+    case networkUnavailable
+    case retryExhausted(originalError: Error)
 
     var errorDescription: String? {
         switch self {
@@ -29,6 +31,29 @@ enum APIError: LocalizedError {
             return String(format: NSLocalizedString("api_error_invalid_url", comment: "Invalid URL"), url)
         case .parsingError:
             return NSLocalizedString("api_error_parsing", comment: "JSON parsing error")
+        case .networkUnavailable:
+            return NSLocalizedString("api_error_network_unavailable", comment: "Network unavailable")
+        case .retryExhausted(let originalError):
+            return String(
+                format: NSLocalizedString("api_error_retry_exhausted", comment: "Retry exhausted"),
+                originalError.localizedDescription
+            )
+        }
+    }
+}
+
+// MARK: - Retry Helper
+extension APIError {
+    /// 재시도 가능한 에러인지 확인합니다.
+    var isRetryable: Bool {
+        switch self {
+        case .networkUnavailable:
+            return true
+        case .statusCode(let code, _):
+            // 5xx 서버 에러, 408 Request Timeout, 429 Too Many Requests는 재시도 가능
+            return (500...599).contains(code) || code == 408 || code == 429
+        default:
+            return false
         }
     }
 }
