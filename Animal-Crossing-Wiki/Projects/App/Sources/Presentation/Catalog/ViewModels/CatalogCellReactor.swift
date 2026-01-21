@@ -58,9 +58,24 @@ final class CatalogCellReactor: Reactor {
 
         case .check:
             HapticManager.shared.impact(style: .medium)
-            Items.shared.updateItem(item)
-            storage.update(item)
-            return .just(.setAcquired(currentState.isAcquired == true ? false : true))
+            
+            let isCurrentlyAcquired = currentState.isAcquired == true
+            let willBeAcquired = !isCurrentlyAcquired
+            
+            if willBeAcquired {
+                if let firstVariant = item.variationsWithColor.first {
+                    let firstVariantId = firstVariant.filename
+                    storage.updateVariantCheckAndAcquire(item: item, variantId: firstVariantId, isChecked: true, shouldAcquire: true)
+                } else {
+                    Items.shared.updateItem(item)
+                    storage.update(item)
+                }
+            } else {
+                Items.shared.updateItem(item)
+                storage.clearVariantsAndUpdate(item)
+            }
+            
+            return .just(.setAcquired(willBeAcquired))
         }
     }
 

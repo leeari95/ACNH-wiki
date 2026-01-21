@@ -15,6 +15,8 @@ final class ItemDetailReactor: Reactor {
         case check
         case didTapKeyword(_ keyword: String)
         case play
+        case toggleVariantCheck(_ variantId: String, _ isChecked: Bool)
+        case loadSavedVariants(_ checkedVariants: Set<String>)
     }
 
     enum Mutation {
@@ -22,10 +24,13 @@ final class ItemDetailReactor: Reactor {
         case updateAcquired
         case showKeywordList(title: String, keyword: Keyword)
         case showMusicPlayer
+        case updateVariantCheck(_ variantId: String, _ isChecked: Bool)
+        case clearAllVariants
+        case loadSavedVariants(_ checkedVariants: Set<String>)
     }
 
     struct State {
-        let item: Item
+        var item: Item
         var isAcquired: Bool = false
     }
 
@@ -36,7 +41,31 @@ final class ItemDetailReactor: Reactor {
     init(item: Item, coordinator: Coordinator?, storage: ItemsStorage = CoreDataItemsStorage()) {
         self.storage = storage
         self.coordinator = coordinator
+        
         self.initialState = State(item: item)
+        
+        Self.loadSavedVariants(for: item, storage: storage) { [weak self] checkedVariants in
+            guard let self = self else { return }
+            if let checkedVariants = checkedVariants {
+                self.action.onNext(.loadSavedVariants(checkedVariants))
+            }
+        }
+    }
+    
+    private static func loadSavedVariants(
+        for item: Item,
+        storage: ItemsStorage,
+        completion: @escaping (Set<String>?) -> Void
+    ) {
+        _ = storage.fetch().subscribe(
+            onSuccess: { items in
+                let savedItem = items.first { $0.name == item.name && $0.genuine == item.genuine }
+                completion(savedItem?.checkedVariants)
+            },
+            onFailure: { _ in
+                completion(nil)
+            }
+        )
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -60,9 +89,35 @@ final class ItemDetailReactor: Reactor {
 
         case .check:
             HapticManager.shared.impact(style: .medium)
-            Items.shared.updateItem(currentState.item)
-            storage.update(currentState.item)
-            return .just(.updateAcquired)
+            
+            if currentState.isAcquired {
+                var updatedItem = currentState.item
+                updatedItem.checkedVariants = nil
+                
+                Items.shared.updateItem(updatedItem)
+                storage.clearVariantsAndUpdate(updatedItem)
+                
+                return Observable.concat([
+                    .just(.clearAllVariants),
+                    .just(.updateAcquired)
+                ])
+            } else {
+                Items.shared.updateItem(currentState.item)
+                storage.update(currentState.item)
+                
+                if let firstVariant = currentState.item.variationsWithColor.first, 
+                   currentState.item.checkedVariants?.isEmpty != false {
+                    let firstVariantId = firstVariant.filename
+                    storage.updateVariantCheck(item: currentState.item, variantId: firstVariantId, isChecked: true)
+                    
+                    return Observable.concat([
+                        .just(.updateAcquired),
+                        .just(.updateVariantCheck(firstVariantId, true))
+                    ])
+                }
+                
+                return .just(.updateAcquired)
+            }
 
         case .didTapKeyword(let value):
             var keyword: Keyword = .tag
@@ -77,6 +132,24 @@ final class ItemDetailReactor: Reactor {
 
         case .play:
             return .just(.showMusicPlayer)
+            
+        case .toggleVariantCheck(let variantId, let isChecked):
+            let shouldAcquire = isChecked && !currentState.isAcquired
+            
+            if shouldAcquire {
+                HapticManager.shared.impact(style: .medium)
+                storage.updateVariantCheckAndAcquire(item: currentState.item, variantId: variantId, isChecked: isChecked, shouldAcquire: true)
+                return Observable.concat([
+                    .just(.updateVariantCheck(variantId, isChecked)),
+                    .just(.updateAcquired)
+                ])
+            } else {
+                storage.updateVariantCheck(item: currentState.item, variantId: variantId, isChecked: isChecked)
+                return .just(.updateVariantCheck(variantId, isChecked))
+            }
+            
+        case .loadSavedVariants(let checkedVariants):
+            return .just(.loadSavedVariants(checkedVariants))
         }
     }
 
@@ -110,6 +183,21 @@ final class ItemDetailReactor: Reactor {
                 coordinator?.showMusicPlayer()
             }
             MusicPlayerManager.shared.choice(currentState.item)
+            
+        case .updateVariantCheck(let variantId, let isChecked):
+            var currentCheckedVariants = newState.item.checkedVariants ?? Set<String>()
+            if isChecked {
+                currentCheckedVariants.insert(variantId)
+            } else {
+                currentCheckedVariants.remove(variantId)
+            }
+            newState.item.checkedVariants = currentCheckedVariants.isEmpty ? nil : currentCheckedVariants
+            
+        case .clearAllVariants:
+            newState.item.checkedVariants = nil
+            
+        case .loadSavedVariants(let checkedVariants):
+            newState.item.checkedVariants = checkedVariants.isEmpty ? nil : checkedVariants
         }
         return newState
     }
