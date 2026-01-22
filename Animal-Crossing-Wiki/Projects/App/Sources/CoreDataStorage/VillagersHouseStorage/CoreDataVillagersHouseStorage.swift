@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
+final class CoreDataVillagersHouseStorage: VillagersHouseStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -40,7 +40,7 @@ final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateVillagerHouse")
             }
         }
     }

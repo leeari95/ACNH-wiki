@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class CoreDataNPCLikeStorage: NPCLikeStorage {
+final class CoreDataNPCLikeStorage: NPCLikeStorage, ErrorHandling {
 
     private let coreDataStorage: CoreDataStorage
 
@@ -54,7 +54,7 @@ final class CoreDataNPCLikeStorage: NPCLikeStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                handleError(error, operation: "updateNPCLike")
             }
         }
     }

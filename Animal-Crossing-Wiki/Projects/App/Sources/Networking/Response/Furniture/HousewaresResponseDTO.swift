@@ -193,6 +193,8 @@ struct Variant: Decodable {
     let concepts: [Concept]?
     let patternTranslations: Translations?
     let soundType: SoundType?
+    
+    var isCollected: Bool = false
 
     func toKeyword() -> [String] {
         return (colors?.map { $0.rawValue } ?? []) + (concepts?.map { $0.rawValue } ?? [])
