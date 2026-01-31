@@ -705,6 +705,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "japanese style" = "Japanese Style";
 "animal" = "Animal";
 "haniwa" = "Haniwa";
+"splatoon" = "Splatoon";
+"lego" = "LEGO";
+"zelda" = "Zelda";
 
 // MARK: - Housewares - Concept
 "ancient" = "ancient";
