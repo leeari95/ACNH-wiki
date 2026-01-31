@@ -139,6 +139,9 @@ final class ItemDetailInfoView: UIView {
             } else if item.canExchangeNookPoints, let price = item.exchangePrice {
                 let price = ItemBellsView(mode: .point, price: price)
                 infoStackView.addArrangedSubviews(price)
+            } else if item.canExchangeHotelTickets, let price = item.exchangePrice {
+                let price = ItemBellsView(mode: .hotelTickets, price: price)
+                infoStackView.addArrangedSubviews(price)
             }
         case .reactions: return
         default: break

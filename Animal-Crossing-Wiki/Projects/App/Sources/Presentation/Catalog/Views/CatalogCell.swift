@@ -118,6 +118,8 @@ extension CatalogCell {
                 priceView = ItemBellsView(mode: .miles, price: price)
             } else if item.canExchangeNookPoints, let price = item.exchangePrice {
                 priceView = ItemBellsView(mode: .point, price: price)
+            } else if item.canExchangeHotelTickets, let price = item.exchangePrice {
+                priceView = ItemBellsView(mode: .hotelTickets, price: price)
             } else if !Category.critters.contains(item.category), let buy = item.buy, buy != -1 {
                 priceView = ItemBellsView(mode: .buy, price: buy)
             } else {

@@ -528,6 +528,8 @@
 "Redd's Co-op Raffle" = "여욱 노점";
 "Wilbur" = "로드리";
 "Kapp'n" = "갑돌";
+"Hotel Souvenir Shop" = "호텔 기념품 가게";
+"Slumber Islands" = "슬럼버 아일랜드";
 
 // MARK: - Source note
 "Source Note" = "메모";
@@ -1582,3 +1584,11 @@
 "patternLargespike" = "📈 큰폭 상승";
 "patternSmallspike" = "📉 작은폭 상승";
 "patternDecreasing" = "👎 계속 하락";
+
+// MARK: - Exchange Currency
+"Heart Crystals" = "하트 크리스탈";
+"Nook Miles" = "너굴 마일";
+"Poki" = "포키";
+"Nook Points" = "너굴 포인트";
+"Bells" = "벨";
+"Hotel Tickets" = "호텔 티켓";
