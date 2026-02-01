@@ -270,21 +270,45 @@ final class Items {
         completion: @escaping (T.Response) -> Void
     ) where T.Response: Collection {
         group.enter()
-        network.request(request) { result in
-            defer { group.leave() }
-            
-            switch result {
-            case .success(let response):
-                completion(response)
 
-            case .failure(let error):
-                os_log(
-                    .error,
-                    log: .default,
-                    "⛔️ %@ - 가져오는데 실패했습니다.\n에러내용: %@", String(describing: request), error.localizedDescription
-                )
-            }
-        }
+        network.request(request)
+            .retry(when: { [weak self] errors in
+                errors.enumerated().flatMap { attempt, error -> Observable<Int> in
+                    let maxRetries = 3
+                    if attempt >= maxRetries {
+                        os_log(
+                            .error,
+                            log: .default,
+                            "⛔️ %@ - 최대 재시도 횟수 초과. 가져오기 최종 실패\n에러: %@",
+                            String(describing: request), error.localizedDescription
+                        )
+                        return Observable.error(error)
+                    }
+
+                    let delay = Double(attempt + 1) * 2.0
+                    os_log(
+                        .error,
+                        log: .default,
+                        "⛔️ %@ - 가져오기 실패 (재시도 %d/%d, %0.1f초 후 재시도)\n에러: %@",
+                        String(describing: request), attempt + 1, maxRetries, delay, error.localizedDescription
+                    )
+
+                    return Observable<Int>.timer(
+                        .milliseconds(Int(delay * 1000)),
+                        scheduler: MainScheduler.instance
+                    )
+                }
+            })
+            .subscribe(
+                onSuccess: { response in
+                    group.leave()
+                    completion(response)
+                },
+                onFailure: { _ in
+                    group.leave()
+                }
+            )
+            .disposed(by: disposeBag)
     }
     
     private func updateAllItemList(by items: [Category: [Item]]) {
