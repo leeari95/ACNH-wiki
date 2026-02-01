@@ -49,6 +49,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            let viewContext = CoreDataStorage.shared.persistentContainer.viewContext
+            do {
+                try viewContext.save()
+            } catch {
+                debugPrint(error)
+            }
+
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        }
     }
 
 }
