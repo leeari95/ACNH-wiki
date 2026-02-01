@@ -65,6 +65,8 @@ struct WardrobeVariat: Decodable {
     let colors: [Color]
 
     func toVariat() -> Variant {
+        let generatedVariantId = "\(filename)_\(internalId)_0"
+
         return .init(
             image: closetImage ?? storageImage,
             variation: nil,
@@ -79,7 +81,7 @@ struct WardrobeVariat: Decodable {
             seasonEventExclusive: seasonEventExclusive,
             hhaCategory: nil,
             filename: filename,
-            variantId: "1_0_0",
+            variantId: generatedVariantId,
             internalId: internalId,
             variantTranslations: variantTranslations,
             colors: colors,
