@@ -16,17 +16,6 @@ final class CoreDataItemsStorage: ItemsStorage {
         self.coreDataStorage = coreDataStorage
     }
 
-    private func saveViewContext() {
-        DispatchQueue.main.async {
-            let viewContext = self.coreDataStorage.persistentContainer.viewContext
-            do {
-                try viewContext.save()
-            } catch {
-                debugPrint(error)
-            }
-        }
-    }
-
     func fetch() -> Single<[Item]> {
         return Single.create { single in
             self.coreDataStorage.performBackgroundTask { context in
@@ -56,7 +45,6 @@ final class CoreDataItemsStorage: ItemsStorage {
                 }
 
                 context.saveContext()
-                self.saveViewContext()
             } catch {
                 debugPrint(error)
             }

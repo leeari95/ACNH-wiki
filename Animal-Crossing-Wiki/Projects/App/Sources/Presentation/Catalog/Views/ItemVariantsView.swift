@@ -77,7 +77,6 @@ final class ItemVariantsView: UIView {
                 cell.setUp(imageURL: item.image, name: name, isCollected: isCollected, showCheckbox: showCheckbox)
 
                 cell.checkboxObservable
-                    .take(1)
                     .subscribe(onNext: { [weak self] isCollected in
                         self?.variantCollectionToggled.accept((item, isCollected))
                     })

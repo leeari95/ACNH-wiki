@@ -55,14 +55,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UIApplication.shared.endBackgroundTask(backgroundTaskID)
         }
 
+        // Background context 작업이 완료될 시간 제공
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let viewContext = CoreDataStorage.shared.persistentContainer.viewContext
-            do {
-                try viewContext.save()
-            } catch {
-                debugPrint(error)
-            }
-
             UIApplication.shared.endBackgroundTask(backgroundTaskID)
         }
     }

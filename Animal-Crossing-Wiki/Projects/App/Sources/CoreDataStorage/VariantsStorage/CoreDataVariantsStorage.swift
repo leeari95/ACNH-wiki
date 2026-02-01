@@ -16,17 +16,6 @@ final class CoreDataVariantsStorage: VariantsStorage {
         self.coreDataStorage = coreDataStorage
     }
 
-    private func saveViewContext() {
-        DispatchQueue.main.async {
-            let viewContext = self.coreDataStorage.persistentContainer.viewContext
-            do {
-                try viewContext.save()
-            } catch {
-                debugPrint(error)
-            }
-        }
-    }
-
     func fetch() -> Single<Set<String>> {
         return Single.create { single in
             self.coreDataStorage.performBackgroundTask { context in
@@ -89,7 +78,6 @@ final class CoreDataVariantsStorage: VariantsStorage {
                 let object = try self.coreDataStorage.getUserCollection(context)
                 let variants = object.variants?.allObjects as? [VariantCollectionEntity] ?? []
 
-                // Check if already exists
                 if variants.contains(where: { $0.variantId == variantId }) {
                     return
                 }
@@ -100,7 +88,6 @@ final class CoreDataVariantsStorage: VariantsStorage {
                 object.addToVariants(newVariant)
 
                 context.saveContext()
-                self.saveViewContext()
             } catch {
                 debugPrint(error)
             }
@@ -115,17 +102,8 @@ final class CoreDataVariantsStorage: VariantsStorage {
 
                 if let variant = variants.first(where: { $0.variantId == variantId }) {
                     object.removeFromVariants(variant)
-
+                    context.delete(variant)
                     context.saveContext()
-
-                    DispatchQueue.main.async {
-                        let viewContext = self.coreDataStorage.persistentContainer.viewContext
-                        do {
-                            try viewContext.save()
-                        } catch {
-                            debugPrint(error)
-                        }
-                    }
                 }
             } catch {
                 debugPrint(error)
@@ -142,10 +120,10 @@ final class CoreDataVariantsStorage: VariantsStorage {
 
                 variantsToRemove.forEach { variant in
                     object.removeFromVariants(variant)
+                    context.delete(variant)
                 }
 
                 context.saveContext()
-                self.saveViewContext()
             } catch {
                 debugPrint(error)
             }
