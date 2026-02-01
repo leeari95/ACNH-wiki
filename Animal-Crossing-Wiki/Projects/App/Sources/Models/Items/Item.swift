@@ -99,6 +99,10 @@ extension Item {
         exchangeCurrency == .poki || variations?.first?.exchangeCurrency == .poki
     }
 
+    var canExchangeHotelTickets: Bool {
+        exchangeCurrency == .hotelTickets || variations?.first?.exchangeCurrency == .hotelTickets
+    }
+
     var isCritters: Bool {
         Category.critters.contains(category)
     }
