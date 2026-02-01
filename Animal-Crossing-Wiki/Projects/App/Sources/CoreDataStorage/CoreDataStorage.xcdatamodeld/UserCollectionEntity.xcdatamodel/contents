@@ -88,8 +88,14 @@
         <relationship name="critters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ItemEntity" inverseName="userColletion" inverseEntity="ItemEntity"/>
         <relationship name="dailyTasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyTaskEntity" inverseName="userCollection" inverseEntity="DailyTaskEntity"/>
         <relationship name="npcLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NPCLikeEntity" inverseName="userCollection" inverseEntity="NPCLikeEntity"/>
+        <relationship name="variants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VariantCollectionEntity" inverseName="userCollection" inverseEntity="VariantCollectionEntity"/>
         <relationship name="villagersHouse" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersHouseEntity" inverseName="userCollection" inverseEntity="VillagersHouseEntity"/>
         <relationship name="villagersLike" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VillagersLikeEntity" inverseName="userCollection" inverseEntity="VillagersLikeEntity"/>
+    </entity>
+    <entity name="VariantCollectionEntity" representedClassName="VariantCollectionEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="itemName" optional="YES" attributeType="String"/>
+        <attribute name="variantId" attributeType="String"/>
+        <relationship name="userCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserCollectionEntity" inverseName="variants" inverseEntity="UserCollectionEntity"/>
     </entity>
     <entity name="VillagersHouseEntity" representedClassName="VillagersHouseEntity" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" attributeType="String"/>

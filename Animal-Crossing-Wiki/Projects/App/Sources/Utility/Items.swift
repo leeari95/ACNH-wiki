@@ -36,6 +36,7 @@ final class Items {
     private let currentDailyTasks = BehaviorRelay<[DailyTask]>(value: [])
     private let userItems = BehaviorRelay<[Category: [Item]]>(value: [:])
     private let songs = BehaviorRelay<[Item]>(value: [])
+    private let collectedVariants = BehaviorRelay<[String: Set<String>]>(value: [:])
 
     private(set) var materialsItemList: [String: Item] = [:]
     
@@ -89,6 +90,13 @@ final class Items {
                     userItems[item.category] = items
                 }
                 self.userItems.accept(userItems)
+            }, onFailure: { error in
+                debugPrint(error)
+            }).disposed(by: disposeBag)
+
+        CoreDataVariantsStorage().fetchAll()
+            .subscribe(onSuccess: { variantsByItem in
+                self.collectedVariants.accept(variantsByItem)
             }, onFailure: { error in
                 debugPrint(error)
             }).disposed(by: disposeBag)
@@ -342,6 +350,14 @@ extension Items {
         return userItems.asObservable()
     }
 
+    var variantList: Observable<[String: Set<String>]> {
+        return collectedVariants.asObservable()
+    }
+
+    func getCollectedVariants(for itemName: String) -> Set<String> {
+        return collectedVariants.value[itemName] ?? []
+    }
+
     func updateUserInfo(_ userInfo: UserInfo) {
         currentUserInfo.accept(userInfo)
     }
@@ -410,6 +426,25 @@ extension Items {
         userItems.accept(currentUserItems)
     }
 
+    func updateVariant(_ variantId: String, itemName: String, isAdding: Bool) {
+        var currentVariants = collectedVariants.value
+        var itemVariants = currentVariants[itemName] ?? []
+
+        if isAdding {
+            itemVariants.insert(variantId)
+        } else {
+            itemVariants.remove(variantId)
+        }
+
+        if itemVariants.isEmpty {
+            currentVariants.removeValue(forKey: itemName)
+        } else {
+            currentVariants[itemName] = itemVariants
+        }
+
+        collectedVariants.accept(currentVariants)
+    }
+
     func itemFilter(keyword: String, category: Keyword) -> [Item] {
         let items = allItems.value
         return items
@@ -428,6 +463,7 @@ extension Items {
         userItems.accept(resetItem)
         currentUserInfo.accept(UserInfo())
         currentDailyTasks.accept(DailyTask.tasks)
+        collectedVariants.accept([:])
     }
 
     func allCheckItem(category: Category) {

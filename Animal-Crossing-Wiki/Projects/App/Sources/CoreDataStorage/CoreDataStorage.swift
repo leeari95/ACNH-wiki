@@ -37,6 +37,11 @@ final class CoreDataStorage {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+
+        // Background context와 viewContext 자동 병합 설정
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
         return container
     }()
 
