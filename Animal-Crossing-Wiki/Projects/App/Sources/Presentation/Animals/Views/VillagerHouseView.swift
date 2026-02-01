@@ -22,7 +22,7 @@ final class VillagerHouseView: UIView {
         NSLayoutConstraint.activate([
             houseImageView.widthAnchor.constraint(equalToConstant: 300),
             height,
-            houseImageView.topAnchor.constraint(equalTo: topAnchor, constant: -40),
+            houseImageView.topAnchor.constraint(equalTo: topAnchor),
             houseImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             houseImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
