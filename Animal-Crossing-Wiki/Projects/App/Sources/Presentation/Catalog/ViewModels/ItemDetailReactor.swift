@@ -104,11 +104,10 @@ final class ItemDetailReactor: Reactor {
 
         case .fetchCollectedVariants:
             let itemName = currentState.item.name
-            return Items.shared.variantList
-                .take(1)
-                .map { variantsByItem in
-                    Mutation.setCollectedVariantIds(variantsByItem[itemName] ?? [])
-                }
+            return variantsStorage.fetchByItem(itemName)
+                .asObservable()
+                .map { Mutation.setCollectedVariantIds($0) }
+                .catchAndReturn(.setCollectedVariantIds([]))
 
         case .toggleVariantCollection(let variant):
             HapticManager.shared.impact(style: .medium)

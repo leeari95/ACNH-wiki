@@ -63,22 +63,24 @@ final class ItemVariantsView: UIView {
     }
 
     private func setUpItems(by variations: [Variant]) {
-        // collectedVariantIds의 변경을 감지하여 자동으로 cell 업데이트
         collectedVariantIds
             .map { _ in variations }
+            .observe(on: MainScheduler.instance)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
             ) { [weak self] _, item, cell in
-                guard let self = self else { return }
-                let name = (self.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
+                guard let owner = self else {
+                    return
+                }
+                let name = (owner.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
                 ?? item.variation?.lowercased().localized
-                let isCollected = self.collectedVariantIds.value.contains(item.variantId)
-                let showCheckbox = !self.isReformable
+                let isCollected = owner.collectedVariantIds.value.contains(item.variantId)
+                let showCheckbox = !owner.isReformable
 
                 cell.setUp(imageURL: item.image, name: name, isCollected: isCollected, showCheckbox: showCheckbox)
 
                 cell.checkboxObservable
-                    .subscribe(onNext: { [weak self] isCollected in
-                        self?.variantCollectionToggled.accept((item, isCollected))
+                    .subscribe(onNext: { [weak owner] isCollected in
+                        owner?.variantCollectionToggled.accept((item, isCollected))
                     })
                     .disposed(by: cell.disposeBag)
             }.disposed(by: disposeBag)
