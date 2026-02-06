@@ -105,6 +105,7 @@ enum ExchangeCurrency: String, Codable {
     case poki = "Poki"
     case nookPoints = "Nook Points"
     case bells = "Bells"
+    case hotelTickets = "Hotel Tickets"
 }
 
 enum HhaCategory: String, Codable {

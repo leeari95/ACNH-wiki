@@ -11,6 +11,7 @@ import RxSwift
 final class ItemDetailViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
+    private var reactor: ItemDetailReactor?
 
     private lazy var sectionsScrollView: SectionsScrollView = SectionsScrollView()
 
@@ -36,6 +37,13 @@ final class ItemDetailViewController: UIViewController {
         setUpViews()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 화면이 다시 나타날 때 수집 상태 갱신
+        reactor?.action.onNext(.fetch)
+        reactor?.action.onNext(.fetchCollectedVariants)
+    }
+
     private func setUpViews() {
         setUpNavigationItem()
         view.backgroundColor = .acBackground
@@ -56,6 +64,7 @@ final class ItemDetailViewController: UIViewController {
     }
 
     func bind(to reactor: ItemDetailReactor) {
+        self.reactor = reactor
         keywordView = ItemKeywordView(item: reactor.currentState.item)
         playerView = ItemPlayerView()
         navigationItem.title = reactor.currentState.item.translations.localizedName()
@@ -66,6 +75,11 @@ final class ItemDetailViewController: UIViewController {
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
+
+        self.rx.viewDidLoad
+            .map { ItemDetailReactor.Action.fetchCollectedVariants }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
         checkButton.rx.tap
             .map { ItemDetailReactor.Action.check }
@@ -105,6 +119,24 @@ final class ItemDetailViewController: UIViewController {
             .subscribe(onNext: { [weak self]  image in
                 self?.itemDetailInfoView?.changeImage(image)
             }).disposed(by: disposeBag)
+
+        itemVariantsColorView?.didToggleVariantCollection
+            .map { ItemDetailReactor.Action.toggleVariantCollection($0.0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        itemVariantsPatternView?.didToggleVariantCollection
+            .map { ItemDetailReactor.Action.toggleVariantCollection($0.0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.collectedVariantIds }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] collectedIds in
+                self?.itemVariantsColorView?.updateCollectedVariants(collectedIds)
+                self?.itemVariantsPatternView?.updateCollectedVariants(collectedIds)
+            }).disposed(by: disposeBag)
     }
 
     private func setUpSection(in item: Item) {
@@ -133,13 +165,24 @@ final class ItemDetailViewController: UIViewController {
         guard Category.furniture().contains(item.category), item.variations != nil else {
             return
         }
-        itemVariantsColorView = ItemVariantsView(item: item.variationsWithColor, mode: .color)
-        itemVariantsPatternView = ItemVariantsView(item: item.variationsWithPattern, mode: .pattern)
+        let canBodyCustomize = item.bodyCustomize == true
+        let canPatternCustomize = item.patternCustomize == true
+
+        itemVariantsColorView = ItemVariantsView(
+            item: item.variationsWithColor,
+            mode: .color,
+            collectedVariantIds: [],
+            isReformable: canBodyCustomize
+        )
+        itemVariantsPatternView = ItemVariantsView(
+            item: item.variationsWithPattern,
+            mode: .pattern,
+            collectedVariantIds: [],
+            isReformable: canPatternCustomize
+        )
 
         let isNoColor = item.variations?.compactMap { $0.filename }.filter { $0.suffix(2) == "_0" }.count ?? 1 <= 1
         let isNoPattern = item.patternCustomize == false
-        let canBodyCustomize = item.bodyCustomize == true
-        let canPatternCustomize = item.patternCustomize == true
         let bodyTitle = "\("Variants".localized) (\(canBodyCustomize ? "Reformable".localized : "Not reformed".localized))"
         let patternTitle = "\("Pattern".localized) (\(canPatternCustomize ? "Reformable".localized : "Not reformed".localized))"
 

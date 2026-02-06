@@ -29,18 +29,20 @@ final class CatalogCellReactor: Reactor {
     private let item: Item
     private let category: Category
     private let storage: ItemsStorage
+    private let variantsStorage: VariantsStorage
 
     init(
         item: Item,
         category: Category,
         state: State,
-        storage: ItemsStorage = CoreDataItemsStorage()
-
+        storage: ItemsStorage = CoreDataItemsStorage(),
+        variantsStorage: VariantsStorage = CoreDataVariantsStorage()
     ) {
         self.item = item
         self.category = category
         self.initialState = state
         self.storage = storage
+        self.variantsStorage = variantsStorage
     }
 
     func mutate(action: Action) -> Observable<Mutation> {
@@ -58,8 +60,23 @@ final class CatalogCellReactor: Reactor {
 
         case .check:
             HapticManager.shared.impact(style: .medium)
-            Items.shared.updateItem(item)
-            storage.update(item)
+            let willBeUncollected = currentState.isAcquired == true
+
+            if willBeUncollected {
+                let collectedVariants = Items.shared.getCollectedVariants(for: item.name)
+
+                variantsStorage.removeAll(for: item.name)
+                collectedVariants.forEach { variantId in
+                    Items.shared.updateVariant(variantId, itemName: item.name, isAdding: false)
+                }
+
+                Items.shared.updateItem(item)
+                storage.update(item)
+            } else {
+                Items.shared.updateItem(item)
+                storage.update(item)
+            }
+
             return .just(.setAcquired(currentState.isAcquired == true ? false : true))
         }
     }

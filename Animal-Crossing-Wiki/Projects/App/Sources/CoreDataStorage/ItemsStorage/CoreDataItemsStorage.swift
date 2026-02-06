@@ -43,6 +43,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                     let newItem = ItemEntity(item, context: context)
                     object.addToCritters(newItem)
                 }
+
                 context.saveContext()
             } catch {
                 debugPrint(error)
