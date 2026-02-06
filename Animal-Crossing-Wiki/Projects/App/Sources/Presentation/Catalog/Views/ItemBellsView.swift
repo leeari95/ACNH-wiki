@@ -9,7 +9,7 @@ import UIKit
 
 final class ItemBellsView: UIView {
     enum Mode {
-        case buy, sell, cj, flick, poki, miles, point
+        case buy, sell, cj, flick, poki, miles, point, hotelTickets
 
         var iconName: String {
             switch self {
@@ -20,6 +20,7 @@ final class ItemBellsView: UIView {
             case .poki: return "icon-poki"
             case .miles: return "icon-nookmiles"
             case .point: return "icon-nookpoint"
+            case .hotelTickets: return "icon-hoteltickets"
             }
         }
     }

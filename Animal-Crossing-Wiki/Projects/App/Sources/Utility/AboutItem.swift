@@ -83,7 +83,7 @@ struct AboutItem {
             AboutItem(
                 icon: "gamecontroller",
                 title: "Game patch data",
-                description: "2.0.0"
+                description: "3.0.0"
             )
         ]
     }

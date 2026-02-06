@@ -19,6 +19,10 @@ final class ItemVariantsView: UIView {
     private let disposeBag = DisposeBag()
     private var mode: Mode = .color
     private let cellImage = BehaviorRelay<UIImage?>(value: nil)
+    private let variantCollectionToggled = PublishRelay<(Variant, Bool)>()
+    private var variants: [Variant] = []
+    private let collectedVariantIds = BehaviorRelay<Set<String>>(value: [])
+    private var isReformable: Bool = false
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -32,9 +36,12 @@ final class ItemVariantsView: UIView {
         return collectionView
     }()
 
-    convenience init(item: [Variant], mode: Mode) {
+    convenience init(item: [Variant], mode: Mode, collectedVariantIds: Set<String> = [], isReformable: Bool) {
         self.init(frame: .zero)
         self.mode = mode
+        self.variants = item
+        self.collectedVariantIds.accept(collectedVariantIds)
+        self.isReformable = isReformable
         configure()
         setUpItems(by: item)
     }
@@ -56,12 +63,26 @@ final class ItemVariantsView: UIView {
     }
 
     private func setUpItems(by variations: [Variant]) {
-        Observable.just(variations)
+        collectedVariantIds
+            .map { _ in variations }
+            .observe(on: MainScheduler.instance)
             .bind(to: collectionView.rx.items(cellIdentifier: VariantCell.className, cellType: VariantCell.self)
             ) { [weak self] _, item, cell in
-                let name = (self?.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
-                ?? item.variation?.localized
-                cell.setUp(imageURL: item.image, name: name)
+                guard let owner = self else {
+                    return
+                }
+                let name = (owner.mode == .color ? item.variantTranslations?.localizedName() : item.patternTranslations?.localizedName())
+                ?? item.variation?.lowercased().localized
+                let isCollected = owner.collectedVariantIds.value.contains(item.variantId)
+                let showCheckbox = !owner.isReformable
+
+                cell.setUp(imageURL: item.image, name: name, isCollected: isCollected, showCheckbox: showCheckbox)
+
+                cell.checkboxObservable
+                    .subscribe(onNext: { [weak owner] isCollected in
+                        owner?.variantCollectionToggled.accept((item, isCollected))
+                    })
+                    .disposed(by: cell.disposeBag)
             }.disposed(by: disposeBag)
 
         collectionView.rx.itemSelected
@@ -70,11 +91,19 @@ final class ItemVariantsView: UIView {
                 self?.cellImage.accept(cell?.imageView.image)
             }).disposed(by: disposeBag)
     }
+
+    func updateCollectedVariants(_ collectedIds: Set<String>) {
+        self.collectedVariantIds.accept(collectedIds)
+    }
 }
 
 extension ItemVariantsView {
 
     var didTapImage: Observable<UIImage?> {
         return cellImage.asObservable()
+    }
+
+    var didToggleVariantCollection: Observable<(Variant, Bool)> {
+        return variantCollectionToggled.asObservable()
     }
 }
