@@ -21,7 +21,7 @@ final class CustomTaskView: UIView {
 
     private lazy var taskNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Name of the task".localized
+        textField.placeholder = ACNHWikiStrings.Localizable.nameOfTheTask
         textField.tintColor = .acText
         textField.textColor = .acText.withAlphaComponent(0.8)
         textField.borderStyle = .none
@@ -40,7 +40,7 @@ final class CustomTaskView: UIView {
 
     private lazy var iconButton: UIButton = {
         let button = UIButton(type: .system)
-        let image = UIImage(named: "Inv7")?
+        let image = ACNHWikiAsset.inv7.image
             .resizedImage(Size: CGSize(width: 30, height: 30))?
             .withRenderingMode(.alwaysOriginal)
         button.setImage(image, for: .normal)
@@ -73,9 +73,9 @@ final class CustomTaskView: UIView {
         }
 
         backgroundStackView.addArrangedSubviews(
-            InfoContentView(title: "Task Name".localized, contentView: taskNameTextField),
-            InfoContentView(title: "Icon".localized, contentView: iconButton),
-            InfoContentView(title: "Max amount".localized, contentView: maxAmountButton)
+            InfoContentView(title: ACNHWikiStrings.Localizable.taskName, contentView: taskNameTextField),
+            InfoContentView(title: ACNHWikiStrings.Localizable.icon, contentView: iconButton),
+            InfoContentView(title: ACNHWikiStrings.Localizable.maxAmount, contentView: maxAmountButton)
         )
     }
 }
