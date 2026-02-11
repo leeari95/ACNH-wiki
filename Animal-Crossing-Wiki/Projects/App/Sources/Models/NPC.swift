@@ -28,5 +28,5 @@ struct NPC {
 }
 
 extension NPC: Identifiable {
-    public var id: String { UUID().uuidString }
+    public var id: String { name }
 }
