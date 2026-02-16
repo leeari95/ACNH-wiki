@@ -29,13 +29,13 @@ final class ItemsViewController: UIViewController {
 
         var title: String {
             switch self {
-            case .all: return "All".localized
-            case .month: return "Month".localized
-            case .name: return "Name".localized
+            case .all: return "all".localized
+            case .month: return "month".localized
+            case .name: return "name".localized
             case .sell: return "Sell".localized
             case .catalog: return "Catalog".localized
             case .allSelect: return "All Select".localized
-            case .reset: return "Reset".localized
+            case .reset: return "reset".localized
             }
         }
 
@@ -46,13 +46,13 @@ final class ItemsViewController: UIViewController {
 
         static func transform(localized: String) -> Self {
             switch localized {
-            case "All".localized: return .all
-            case "Month".localized: return .month
-            case "Name".localized: return .name
+            case "all".localized: return .all
+            case "month".localized: return .month
+            case "name".localized: return .name
             case "Sell".localized: return .sell
             case "Catalog".localized: return .catalog
             case "All Select".localized: return .allSelect
-            case "Reset".localized: return .reset
+            case "reset".localized: return .reset
             default: return .all
             }
         }
@@ -102,7 +102,7 @@ final class ItemsViewController: UIViewController {
 
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search...".localized
+        searchController.searchBar.placeholder = "search".localized
         if mode != .user {
             searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.rawValue.localized }
             searchController.searchBar.showsScopeBar = true
@@ -252,10 +252,10 @@ final class ItemsViewController: UIViewController {
         }
         currentSelected = keyword
         if let category = category, Category.critters.contains(category) {
-            navigationItem.title = "To catch now".localized
+            navigationItem.title = "to_catch_now".localized
         } else {
             currentSelected[.month] = nil
-            navigationItem.title = "Currently Available".localized
+            navigationItem.title = "currently_available".localized
         }
         searchController.searchBar.rx.selectedScopeButtonIndex.onNext(1)
     }

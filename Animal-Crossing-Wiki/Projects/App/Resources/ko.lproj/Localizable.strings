@@ -7,16 +7,17 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "대시보드";
-"Catalog" = "카탈로그";
+"dashboard" = "대시보드";
+"catalog" = "카탈로그";
 "villagers" = "마을주민";
-"Collection" = "수집품";
+"collection" = "수집품";
 "animals" = "동물";
 "turnipPrices" = "무트코인";
 
 // MARK: - etc
-"Cancel" = "취소";
-"Setting" = "앱 기본 설정";
+"cancel" = "취소";
+"ok" = "확인";
+"setting" = "앱 기본 설정";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "나의 섬 정보";
@@ -35,11 +36,11 @@
 "REPUTATION" = "섬 평판";
 
 // MARK: - TodaysTasksView
-"Edit" = "편집";
-"Reset" = "초기화";
+"edit" = "편집";
+"reset" = "초기화";
 
 // MARK: - VillagersView
-"Reset" = "초기화";
+// "reset" key is already defined above
 "vilagerEmpty" = "오늘은 어떤 주민과 대화를 나누셨나요?
 대화했거나, 선물을 주었던 마을 주민들을 찾아
 마을 주민 페이지에서 집모양 아이콘을 눌러서
@@ -48,7 +49,7 @@
 
 // MARK: - PreferencesViewController
 "island" = "섬 정보";
-"Preferences" = "기본 설정";
+"preferences" = "기본 설정";
 "App Settings" = "앱 설정";
 
 // MARK: - PreferencesView
@@ -67,7 +68,7 @@
 "Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 
 // MARK: - TaskEditViewController
-"Today's Tasks" = "오늘의 할일";
+// "Today's Tasks" key is already defined above
 
 // MARK: - DailyTask - tasks
 "Hit rocks" = "바위 캐기";
@@ -96,17 +97,18 @@
 
 // MARK: - Fruit
 "apple" = "사과";
+"orange" = "오렌지";
 "pear" = "배";
 "cherry" = "체리";
 "peach" = "복숭아";
 
 // MARK: - Hemisphere
-"North" = "북반구";
-"South" = "남반구";
+"north" = "북반구";
+"south" = "남반구";
 
 // MARK: - AboutViewController
-"About" = "앱 정보";
-"Version" = "Version";
+"about" = "앱 정보";
+"version" = "Version";
 "The app" = "The app";
 "Credit / Thanks" = "Credit / Thanks";
 
@@ -123,14 +125,14 @@
 "Game patch data" = "게임 데이터 버전";
 
 // MARK: - CollectionProgressViewController
-"Collection Progress" = "수집 현황";
+// "Collection Progress" key is already defined above
 
 // MARK: - Category
-"Fishes" = "물고기";
-"Sea Creatures" = "해산물";
-"Bugs" = "곤충";
-"Fossils" = "화석";
-"Art" = "미술품";
+"fishes" = "물고기";
+"sea_creatures" = "해산물";
+"bugs" = "곤충";
+"fossils" = "화석";
+"art" = "미술품";
 "Housewares" = "가구";
 "Miscellaneous" = "잡화";
 "Wall mounted" = "벽걸이";
@@ -159,12 +161,12 @@
 "Tools" = "도구";
 
 // MARK: - ItemsViewController
-"To catch now" = "아직 늦지 않았어요!";
-"Currently Available" = "오늘 수집하러 가볼까요?";
-"Search..." = "검색어를 입력해주세요. (초성 가능)";
-"All" = "전체";
-"Month" = "월별";
-"Name" = "이름";
+"to_catch_now" = "아직 늦지 않았어요!";
+"currently_available" = "오늘 수집하러 가볼까요?";
+"search" = "검색어를 입력해주세요. (초성 가능)";
+"all" = "전체";
+"month" = "월별";
+"name" = "이름";
 "Sell" = "판매가격";
 "All Select" = "모두 선택";
 "Collected" = "획득";
@@ -179,7 +181,7 @@
 "searching" = "검색하기";
 
 // MARK: - CatalogViewController
-"Catalog" = "카탈로그";
+// "Catalog" key is already defined above (as "catalog")
 
 // MARK: - ItemDetailViewController
 "Seasonality" = "출현 기간";
@@ -261,7 +263,7 @@
 
 // MARK: - time
 "11 PM – 4 PM" = "오후 11시 – 오후 4시";
-"11 PM – 8 AM" = "오후 11시 – 오후 8시";
+"11 PM – 8 AM" = "오후 11시 – 오전 8시";
 "4 AM – 5 PM" = "오전 4시 – 오후 5시";
 "4 AM – 9 PM" = "오전 4시 – 오후 9시";
 "4 AM – 7 PM" = "오전 4시 – 오후 7시";
@@ -278,7 +280,7 @@
 "8 AM – 5 PM" = "오전 8시 – 오후 5시";
 "8 AM – 7 PM" = "오전 8시 – 오후 7시";
 "9 AM – 4 PM" = "오전 9시 – 오후 4시";
-"9 PM – 4 AM" = "오후 9시 – 오후 4시";
+"9 PM – 4 AM" = "오후 9시 – 오전 4시";
 "All day" = "하루종일";
 
 // MARK: - NPCViewController
@@ -287,9 +289,9 @@
 "Tap the npc's heart button and it will appear here." = "NPC의 하트 모양 버튼을 누르면 여기에 표시됩니다.";
 
 // MARK: - VillagersViewController
-"All" = "전체";
-"Personality" = "성격";
-"Gender" = "성별";
+// "all" key is already defined above
+"personality" = "성격";
+"gender" = "성별";
 "Type" = "타입";
 "Species" = "종족";
 "Liked" = "좋아하는 주민";
@@ -401,7 +403,7 @@
 "when you check some items, they'll be displayed here." = "아이템에 체크하면 여기에 표시됩니다.";
 
 // MARK: - Source
-"Birthday" = "생일";
+// "Birthday" key is already defined above
 "Brewster" = "마스터";
 "C.J." = "저스틴";
 "Crafting" = "제작";
@@ -823,7 +825,7 @@
 "grassland" = "목초지";
 "iron" = "아이언";
 "iron parquet" = "철판";
-"japanese" = "일본어";
+"japanese" = "일본풍";
 "kitchen floors" = "주방 바닥";
 "luxury" = "럭셔리";
 "machine floor" = "기계 바닥";
@@ -1052,7 +1054,7 @@
 "wooden-block toy" = "나무블록 장난감";
 "wristwatch" = "손목시계";
 "gears" = "톱니바퀴";
-"bama bear" = "중간 곰인형";
+"mama bear" = "중간 곰인형";
 "papa bear" = "큰 곰인형";
 "campfire" = "모닥불";
 "drinking fountain" = "음수대";

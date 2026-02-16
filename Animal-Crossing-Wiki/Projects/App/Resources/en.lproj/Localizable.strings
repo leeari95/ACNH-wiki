@@ -7,16 +7,17 @@
 */
 
 // MARK: - Tab Bar Titles
-"Dashboard" = "Dashboard";
-"Catalog" = "Catalog";
+"dashboard" = "Dashboard";
+"catalog" = "Catalog";
 "villagers" = "Villagers";
-"Collection" = "Collection";
+"collection" = "Collection";
 "animals" = "Animals";
 "turnipPrices" = "Turnip";
 
 // MARK: - etc
-"Cancel" = "Cancel";
-"Setting" = "Setting";
+"cancel" = "Cancel";
+"ok" = "OK";
+"setting" = "Setting";
 
 // MARK: - DashboardViewContrller - section title
 "My Island" = "My Island";
@@ -35,18 +36,18 @@
 "REPUTATION" = "REPUTATION";
 
 // MARK: - TodaysTasksView
-"Edit" = "Edit";
-"Reset" = "Reset";
+"edit" = "Edit";
+"reset" = "Reset";
 
 // MARK: - VillagersView
-"Reset" = "Reset";
+// "reset" key is already defined above
 "vilagerEmpty" = "Who have you talked to today?
 Find the villagers you have visited and tap the home icon on the villager's page to keep track.";
 "tip" = "Long press on a villager to see more info about them.";
 
 // MARK: - PreferencesViewController
 "island" = "island";
-"Preferences" = "Preferences";
+"preferences" = "Preferences";
 "App Settings" = "App Settings";
 
 // MARK: - PreferencesView
@@ -65,13 +66,13 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";
 
 // MARK: - TaskEditViewController
-"Today's Tasks" = "Today's Tasks";
+// "Today's Tasks" key is already defined above
 
 // MARK: - DailyTask - tasks
 "Hit rocks" = "Hit rocks";
 "Find fossils" = "Find fossils";
 "Find furniture" = "Find furniture";
-"Obtain DIY from vilager" = "Obtain DIY from vilager";
+"Obtain DIY from vilager" = "Obtain DIY from villager";
 "Find bottle message" = "Find bottle message";
 "Find buried bell" = "Find buried bell";
 "Cut down trees" = "Cut down trees";
@@ -99,12 +100,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Peach" = "Peach";
 
 // MARK: - Hemisphere
-"North" = "North";
-"South" = "South";
+"north" = "North";
+"south" = "South";
 
 // MARK: - AboutViewController
-"About" = "About";
-"Version" = "Version";
+"about" = "About";
+"version" = "Version";
 "The app" = "The app";
 "Credit / Thanks" = "Credit / Thanks";
 
@@ -121,14 +122,14 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Game patch data" = "Game patch data";
 
 // MARK: - CollectionProgressViewController
-"Collection Progress" = "Collection Progress";
+// "Collection Progress" key is already defined above
 
 // MARK: - Category
-"Fishes" = "Fishes";
-"Sea Creatures" = "Sea Creatures";
-"Bugs" = "Bugs";
-"Fossils" = "Fossils";
-"Art" = "Art";
+"fishes" = "Fishes";
+"sea_creatures" = "Sea Creatures";
+"bugs" = "Bugs";
+"fossils" = "Fossils";
+"art" = "Art";
 "Housewares" = "Housewares";
 "Miscellaneous" = "Miscellaneous";
 "Wall mounted" = "Wall mounted";
@@ -157,12 +158,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Tools" = "Tools";
 
 // MARK: - ItemsViewController
-"To catch now" = "To catch now";
-"Currently Available" = "Currently Available";
-"Search..." = "Search...";
-"All" = "All";
-"Month" = "Month";
-"Name" = "Name";
+"to_catch_now" = "To catch now";
+"currently_available" = "Currently Available";
+"search" = "Search...";
+"all" = "All";
+"month" = "Month";
+"name" = "Name";
 "Sell" = "Sell";
 "All Select" = "All Select";
 "Collected" = "Collected";
@@ -177,7 +178,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "searching" = "Search";
 
 // MARK: - CatalogViewController
-"Catalog" = "Catalog";
+// "Catalog" key is already defined above (as "catalog")
 
 // MARK: - ItemDetailViewController
 "Seasonality" = "Seasonality";
@@ -283,9 +284,9 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Tap the npc's heart button and it will appear here." = "Tap the npc's heart button and it will appear here.";
 
 // MARK: - VillagersViewController
-"All" = "All";
-"Personality" = "Personality";
-"Gender" = "Gender";
+// "all" key is already defined above
+"personality" = "Personality";
+"gender" = "Gender";
 "Type" = "Type";
 "Species" = "Species";
 "Liked" = "Liked";
@@ -352,8 +353,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Villager house" = "Villager house";
 
 // MARK: - VillagerDetailView
-"Personality" = "Personality";
-"Gender" = "Gender";
+// "Personality" and "Gender" keys are already defined above (as "personality" and "gender")
 "Hobby" = "Hobby";
 "Birthday" = "Birthday";
 "Type" = "Type";
@@ -398,7 +398,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 // MARK: - CollectionViewController
 "There are no collectibles." = "There are no collectibles.";
 "when you check some items, they'll be displayed here." = "when you check some items, they'll be displayed here.";
-"Collection" = "Collection";
+// "Collection" key is already defined above (as "collection")
 
 // MARK: - Source
 "Birthday" = "Birthday";
@@ -415,7 +415,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Jack" = "Jack";
 "Luna" = "Luna";
 "Nook Miles Redemption" = "Nook Miles Redemption";
-"Nook's Cranny" = "Nook's Cranny";
 "Nook's Cranny" = "Nook's Cranny";
 "Nook Shopping Daily Selection" = "Nook Shopping Daily Selection";
 "Nook Shopping Promotion" = "Nook Shopping Promotion";
@@ -511,7 +510,6 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Digging up clams" = "Digging up clams";
 "All villagers (while stung)" = "All villagers (while stung)";
-"Basic Cooking Recipes" = "Basic Cooking Recipes";
 "Niko" = "Niko";
 "K.K. concert" = "K.K. concert";
 "Lottie" = "Lottie";
@@ -673,16 +671,16 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "work bench" = "Work Bench";
 "playground" = "Playground";
 "supplies" = "Supplies";
-"desk" = "fesk";
+"desk" = "Desk";
 "kiki & lala" = "Kiki & Lala";
 "chest" = "Chest";
 "sports" = "Sports";
 "plants" = "Plants";
 "cinnamoroll" = "Cinnamoroll";
-"seasonal fecor" = "Seasonal Decor";
+"seasonal decor" = "Seasonal Decor";
 "bathtub" = "Bathtub";
 "shop" = "Shop";
-"home sppliances" = "Home Appliances";
+"home appliances" = "Home Appliances";
 "fan" = "Fan";
 "sofa" = "Sofa";
 "easter" = "Easter";
@@ -1183,7 +1181,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 
 
 // MARK: - ItemOtherInfoView
-"Catalog" = "Catalog";
+// "Catalog" key is already defined above
 "For sale" = "For sale";
 "Not for sale" = "Not for sale";
 "Seasonal" = "Seasonal";
