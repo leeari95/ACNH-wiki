@@ -1,0 +1,36 @@
+name: Architecture Check
+on:
+  pull_request:
+    branches: [ "develop" ]
+
+  issue_comment:
+    types: created
+
+jobs:
+  architecture-check:
+    name: Architecture Check
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request != null &&
+      github.event.comment.body == '/arch')
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 1
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Run architecture boundary validation
+        run: bash scripts/validate-architecture.sh
+
+      - name: Run pattern convention validation
+        run: bash scripts/validate-patterns.sh
+
+      - name: Validate documentation references
+        run: bash scripts/validate-docs.sh
