@@ -28,21 +28,34 @@ enum CoreDataStorageError: LocalizedError {
 final class CoreDataStorage {
 
     static let shared = CoreDataStorage()
+
+    static let didReceiveRemoteChanges = Notification.Name("CoreDataStorageDidReceiveRemoteChanges")
+
     private init() {}
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: "CoreDataStorage")
 
-        // Automatic lightweight migration 설정 (새 entity 추가 시 자동 마이그레이션)
         container.persistentStoreDescriptions.forEach { description in
+            // Automatic lightweight migration 설정 (새 entity 추가 시 자동 마이그레이션)
             description.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
             description.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
+
+            // CloudKit 동기화 활성화
+            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
+                containerIdentifier: "iCloud.leeari.NookPortalPlus"
+            )
+
+            // Persistent History Tracking (CloudKit 동기화 필수)
+            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         }
 
-        container.loadPersistentStores(completionHandler: { (_, error) in
+        container.loadPersistentStores(completionHandler: { [weak self] (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
+            self?.observeRemoteChanges()
         })
 
         // Background context와 viewContext 자동 병합 설정
@@ -54,6 +67,19 @@ final class CoreDataStorage {
 
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         persistentContainer.performBackgroundTask(block)
+    }
+
+    private func observeRemoteChanges() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRemoteChange(_:)),
+            name: .NSPersistentStoreRemoteChange,
+            object: persistentContainer.persistentStoreCoordinator
+        )
+    }
+
+    @objc private func handleRemoteChange(_ notification: Notification) {
+        NotificationCenter.default.post(name: Self.didReceiveRemoteChanges, object: nil)
     }
 }
 
