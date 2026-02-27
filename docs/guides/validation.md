@@ -5,14 +5,14 @@
 ## Quick Start
 
 ```bash
-# 전체 검증 (아키텍처 + 패턴)
+# 전체 검증 (아키텍처 + 패턴 + 문서)
 make validate
 
 # CI 전체 흐름 (린트 + 검증 + 빌드)
 make ci
 ```
 
-`make validate`는 내부적으로 `validate-arch`와 `validate-patterns` 두 타겟을 순차 실행한다.
+`make validate`는 내부적으로 `validate-arch`, `validate-patterns`, `validate-docs` 세 타겟을 순차 실행한다.
 
 ## validate-architecture.sh
 
@@ -123,9 +123,25 @@ Presentation 레이어의 코딩 규약 준수 여부를 검증한다.
 |------|---|
 | Trigger | `develop` 브랜치 대상 PR 또는 PR 코멘트 `/arch` |
 | Runner | `ubuntu-latest` |
-| 실행 순서 | `validate-architecture.sh` -> `validate-patterns.sh` |
+| 실행 순서 | `validate-architecture.sh` → `validate-patterns.sh` → `validate-docs.sh` |
 
 순수 Bash 스크립트이므로 macOS runner가 필요하지 않다. `ubuntu-latest`에서 실행되어 CI 비용과 대기 시간을 절약한다.
+
+## 현재 한계점 및 향후 방향
+
+현재 하네스는 **정적 구조 검증** (grep/find 기반) 에 집중되어 있다. OpenAI Harness Engineering이 말하는 "반복 가능한 현실 태스크 기반 평가/회귀 측정"까지는 아직 도달하지 못한 상태다.
+
+### 현재 커버 범위
+
+- 레이어 간 의존성 규칙 위반 검출 (정적)
+- Reactor/Coordinator 패턴 규약 준수 여부 (정적)
+- 문서 경로 참조 유효성 (정적)
+
+### 향후 추가 고려 사항
+
+- **태스크 기반 eval harness**: 에이전트에게 실제 작업(예: "새 화면 추가", "버그 수정")을 수행시키고, 결과의 성공률/품질을 측정하는 평가 체계
+- **회귀 테스트**: 모델/프롬프트/도구 변경 시 기존 태스크 수행 품질이 저하되지 않았는지 자동 확인
+- **유닛 테스트 인프라**: 현재 테스트 타겟이 없으므로, 테스트 기반 검증을 추가하면 eval harness의 기반이 될 수 있다
 
 ## 로컬 실행
 

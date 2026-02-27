@@ -17,10 +17,21 @@ jobs:
       github.event.comment.body == '/arch')
 
     steps:
+      - name: Resolve PR ref for issue_comment
+        if: github.event_name == 'issue_comment'
+        id: pr-ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_URL="${{ github.event.issue.pull_request.url }}"
+          PR_JSON=$(gh api "$PR_URL")
+          echo "ref=$(echo "$PR_JSON" | jq -r '.head.ref')" >> "$GITHUB_OUTPUT"
+          echo "repo=$(echo "$PR_JSON" | jq -r '.head.repo.full_name')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event_name == 'issue_comment' && steps.pr-ref.outputs.ref || github.event.pull_request.head.ref }}
+          repository: ${{ github.event_name == 'issue_comment' && steps.pr-ref.outputs.repo || github.event.pull_request.head.repo.full_name }}
           fetch-depth: 1
 
       - name: Make scripts executable
