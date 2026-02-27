@@ -51,12 +51,14 @@ final class CoreDataStorage {
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         }
 
-        container.loadPersistentStores(completionHandler: { [weak self] (_, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            self?.observeRemoteChanges()
         })
+
+        // lazy var 초기화 완료 후 등록해야 재진입 방지
+        observeRemoteChanges(for: container.persistentStoreCoordinator)
 
         // Background context와 viewContext 자동 병합 설정
         container.viewContext.automaticallyMergesChangesFromParent = true
@@ -69,12 +71,12 @@ final class CoreDataStorage {
         persistentContainer.performBackgroundTask(block)
     }
 
-    private func observeRemoteChanges() {
+    private func observeRemoteChanges(for coordinator: NSPersistentStoreCoordinator) {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleRemoteChange(_:)),
             name: .NSPersistentStoreRemoteChange,
-            object: persistentContainer.persistentStoreCoordinator
+            object: coordinator
         )
     }
 
