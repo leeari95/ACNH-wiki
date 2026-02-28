@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+# ============================================================================
+# Pre-push hook — ACNH-wiki
+# ============================================================================
+#
+# Blocks push if source files changed without docs/ updates.
+# To bypass this hook in exceptional cases, use:
+#
+#   git push --no-verify
+#
+# ============================================================================
+
+set -euo pipefail
+
+REMOTE="$1"
+
+while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
+    # Skip delete pushes
+    if [ "$LOCAL_SHA" = "0000000000000000000000000000000000000000" ]; then
+        continue
+    fi
+
+    # Determine diff range
+    if [ "$REMOTE_SHA" = "0000000000000000000000000000000000000000" ]; then
+        # New branch: compare against default branch
+        BASE=$(git merge-base HEAD origin/develop 2>/dev/null || git merge-base HEAD origin/main 2>/dev/null || echo "")
+        if [ -z "$BASE" ]; then
+            continue
+        fi
+        RANGE="${BASE}..${LOCAL_SHA}"
+    else
+        RANGE="${REMOTE_SHA}..${LOCAL_SHA}"
+    fi
+
+    CHANGED_FILES=$(git diff --name-only "$RANGE" 2>/dev/null || true)
+    [ -z "$CHANGED_FILES" ] && continue
+
+    # Check if docs/ is already updated
+    if echo "$CHANGED_FILES" | grep -qE '^docs/'; then
+        continue
+    fi
+
+    # Check if any source files changed
+    SUGGESTIONS=""
+
+    add_suggestion() {
+        local layer="$1"
+        local docs="$2"
+        if ! echo "$SUGGESTIONS" | grep -qF "$layer"; then
+            SUGGESTIONS="${SUGGESTIONS}    ${layer} → ${docs}\n"
+        fi
+    }
+
+    while IFS= read -r file; do
+        case "$file" in
+            *CoreDataStorage/*.swift)
+                add_suggestion "CoreDataStorage" "docs/features/icloud-sync.md, docs/guides/add-coredata-entity.md"
+                ;;
+            *Utility/*.swift)
+                add_suggestion "Utility" "docs/patterns/data-flow.md, docs/gotchas.md"
+                ;;
+            *Networking/*.swift)
+                add_suggestion "Networking" "docs/guides/add-api-endpoint.md, docs/patterns/data-flow.md"
+                ;;
+            *Models/*.swift)
+                add_suggestion "Models" "docs/glossary.md, docs/architecture.md"
+                ;;
+            *Extension/*.swift)
+                add_suggestion "Extension" "docs/architecture.md"
+                ;;
+            *Presentation/Dashboard/*.swift)
+                add_suggestion "Dashboard" "docs/features/dashboard.md"
+                ;;
+            *Presentation/Catalog/*.swift)
+                add_suggestion "Catalog" "docs/features/catalog.md"
+                ;;
+            *Presentation/Animals/*.swift)
+                add_suggestion "Animals" "docs/features/catalog.md"
+                ;;
+            *Presentation/TurnipPrices/*.swift)
+                add_suggestion "TurnipPrices" "docs/features/turnip-prices.md"
+                ;;
+            *Presentation/MusicPlayer/*.swift)
+                add_suggestion "MusicPlayer" "docs/features/music-player.md"
+                ;;
+            *Presentation/Collection/*.swift)
+                add_suggestion "Collection" "docs/architecture.md"
+                ;;
+            *Sources/SceneDelegate.swift|*Sources/AppDelegate.swift)
+                add_suggestion "Root" "docs/architecture.md, docs/features/icloud-sync.md"
+                ;;
+            *Sources/AppCoordinator.swift|*Sources/Coordinator.swift)
+                add_suggestion "Coordinator" "docs/patterns/coordinator-pattern.md, docs/architecture.md"
+                ;;
+        esac
+    done <<< "$CHANGED_FILES"
+
+    if [ -n "$SUGGESTIONS" ]; then
+        echo ""
+        echo "❌ Push blocked: 소스 파일이 변경되었지만 docs/가 업데이트되지 않았습니다."
+        echo ""
+        echo "   업데이트가 필요한 문서:"
+        echo ""
+        echo -e "$SUGGESTIONS"
+        echo "   docs를 업데이트한 후 다시 push하세요."
+        echo "   문서 변경이 불필요한 경우: git push --no-verify"
+        echo ""
+        exit 1
+    fi
+done
+
+exit 0
