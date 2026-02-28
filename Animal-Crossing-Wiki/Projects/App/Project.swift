@@ -81,13 +81,13 @@ let project = Project(
             bundleId: "leeari.NookPortalPlus",
             deploymentTargets: .iOS("16.0"),
             infoPlist: .file(path: "Info.plist"),
-            entitlements: .file(path: "Entitlements.plist"),
             sources: ["Sources/**"],
             resources:  .resources([
                 "Resources/**",
                 "Sources/**/*.xib"
             ],
                                    privacyManifest: appPrivacyInfo),
+            entitlements: .file(path: "Entitlements.plist"),
             scripts: [.runSwiftLintAutocorrect, .runSwiftLint, .uploadFirebaseDsym],
             dependencies: dependencies,
             settings: settings,
