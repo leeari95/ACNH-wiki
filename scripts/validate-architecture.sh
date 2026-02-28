@@ -338,7 +338,7 @@ scan_for_violations() {
 # Pattern: match ViewController not preceded by "UI", plus Coordinator, Reactor (not ReactorKit/Reactive)
 COREDATA_DIR="${SOURCES_DIR}/CoreDataStorage"
 scan_for_violations "${COREDATA_DIR}" \
-    '([^I]ViewController[^+]|[^/]Coordinator|[^a-z]Reactor[^Kit+]|APIRequest|APIProvider|DefaultAPIProvider)' \
+    '([^I]ViewController[^+]|[^/a-z]Coordinator|[^a-z]Reactor[^Kit+]|APIRequest|APIProvider|DefaultAPIProvider)' \
     "CoreDataStorage must not reference Presentation or Networking types"
 
 # --- Extension must not reference Presentation or CoreDataStorage ---
