@@ -38,6 +38,8 @@ func reduce(state: State, mutation: Mutation) -> State {
 `.swiftlint.yml`의 `excluded` 목록에 `Items.swift`, `AppDelegate.swift`, `SceneDelegate.swift`가 포함됨.
 이 파일들에 SwiftLint 규칙을 강제 적용하려 하지 말 것.
 
+SwiftLint 규칙 상세(네이밍, 길이 제한, 비활성화 규칙 등)는 [build-and-run.md — SwiftLint 규칙 상세](guides/build-and-run.md#swiftlint-규칙-상세) 참조.
+
 ## 5. CatalogReactor는 두 탭에서 공유
 
 `CatalogReactor`는 하나의 클래스지만 두 탭에서 재사용됨:
