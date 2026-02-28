@@ -81,17 +81,16 @@ let project = Project(
             bundleId: "leeari.NookPortalPlus",
             deploymentTargets: .iOS("16.0"),
             infoPlist: .file(path: "Info.plist"),
-            sources: ["Sources/**"],
-            resources:  .resources([
-                "Resources/**",
-                "Sources/**/*.xib"
+            resources: .resources([
+                "Resources/**"
             ],
-                                   privacyManifest: appPrivacyInfo),
+                                  privacyManifest: appPrivacyInfo),
+            buildableFolders: ["Sources/"],
             scripts: [.runSwiftLintAutocorrect, .runSwiftLint, .uploadFirebaseDsym],
             dependencies: dependencies,
             settings: settings,
             coreDataModels: [
-                CoreDataModel.coreDataModel("Sources/CoreDataStorage/CoreDataStorage.xcdatamodeld")
+                CoreDataModel.coreDataModel("CoreDataModels/CoreDataStorage.xcdatamodeld")
             ]
         )
     ],
