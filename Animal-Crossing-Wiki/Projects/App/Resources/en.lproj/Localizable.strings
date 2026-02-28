@@ -60,6 +60,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 
 // MARK: - AppSettingView
 "System haptic" = "System haptic";
+"Restore from iCloud" = "Restore from iCloud";
+"Restore data from iCloud?" = "Restore data from iCloud?";
 "Data reset" = "Data reset";
 "Notice" = "Notice";
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";

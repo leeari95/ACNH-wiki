@@ -13,11 +13,13 @@ final class AppSettingReactor: Reactor {
     enum Action {
         case toggleSwitch
         case reset
+        case restore
     }
 
     enum Mutation {
         case setHapticState(_ isOn: Bool)
         case reset(_ isReset: Bool)
+        case restore(_ isRestore: Bool)
     }
 
     struct State {
@@ -46,6 +48,12 @@ final class AppSettingReactor: Reactor {
                 .showAlert(title: "Notice".localized, message: "Are you sure you want to reset it?".localized)
                 .map { AppSettingReactor.Mutation.reset($0) }
                 .observe(on: MainScheduler.asyncInstance)
+
+        case .restore:
+            return coordinator
+                .showAlert(title: "Notice".localized, message: "Restore data from iCloud?".localized)
+                .map { Mutation.restore($0) }
+                .observe(on: MainScheduler.asyncInstance)
         }
     }
 
@@ -59,6 +67,12 @@ final class AppSettingReactor: Reactor {
             if isReset {
                 Items.shared.reset()
                 storage.resetUserInfo()
+                coordinator.transition(for: .dismiss)
+            }
+
+        case .restore(let isRestore):
+            if isRestore {
+                Items.shared.setUpUserCollection()
                 coordinator.transition(for: .dismiss)
             }
         }
