@@ -31,6 +31,8 @@ final class CoreDataStorage {
     static let shared = CoreDataStorage()
 
     static let didReceiveRemoteChanges = Notification.Name("CoreDataStorageDidReceiveRemoteChanges")
+    static let didStartCloudImport = Notification.Name("CoreDataStorageDidStartCloudImport")
+    static let didFinishCloudImport = Notification.Name("CoreDataStorageDidFinishCloudImport")
 
     private init() {}
 
@@ -114,8 +116,14 @@ final class CoreDataStorage {
             } else {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
+            if event.type == .import {
+                NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
+            }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
+            if event.type == .import {
+                NotificationCenter.default.post(name: Self.didStartCloudImport, object: nil)
+            }
         }
     }
 }

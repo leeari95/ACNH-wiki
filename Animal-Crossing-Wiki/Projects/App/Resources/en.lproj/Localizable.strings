@@ -63,6 +63,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Data reset" = "Data reset";
 "Notice" = "Notice";
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";
+"Fetching collection data from iCloud..." = "Fetching collection data from iCloud...";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "Today's Tasks";

@@ -11,6 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
+    private var cloudImportToast: ToastView?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
@@ -21,6 +22,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator?.start()
         window?.rootViewController = appCoordinator?.rootViewController
         window?.makeKeyAndVisible()
+        observeCloudImport()
+    }
+
+    private func observeCloudImport() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCloudImportStart),
+            name: CoreDataStorage.didStartCloudImport,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCloudImportFinish),
+            name: CoreDataStorage.didFinishCloudImport,
+            object: nil
+        )
+    }
+
+    @objc private func handleCloudImportStart() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let window, self.cloudImportToast == nil else { return }
+            let toast = ToastView(message: "Fetching collection data from iCloud...".localized)
+            self.cloudImportToast = toast
+            toast.show(in: window)
+        }
+    }
+
+    @objc private func handleCloudImportFinish() {
+        DispatchQueue.main.async { [weak self] in
+            self?.cloudImportToast?.dismiss()
+            self?.cloudImportToast = nil
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
