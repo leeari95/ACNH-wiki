@@ -93,7 +93,9 @@ final class CoreDataStorage {
 
     func cleanupPersistentHistory() {
         persistentContainer.performBackgroundTask { context in
-            guard let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { return }
+            guard let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
+                return
+            }
             let request = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
             do {
                 try context.execute(request)
@@ -131,7 +133,9 @@ final class CoreDataStorage {
 
     @objc private func handleCloudKitEvent(_ notification: Notification) {
         guard let event = notification.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey]
-                as? NSPersistentCloudKitContainer.Event else { return }
+                as? NSPersistentCloudKitContainer.Event else {
+            return
+        }
 
         let type: String
         switch event.type {
@@ -219,7 +223,9 @@ extension CoreDataStorage {
     /// 기존 로컬 데이터를 CloudKit에 export하기 위해 모든 레코드를 한 번 터치하는 일회성 마이그레이션
     private func migrateExistingDataToCloudKit(container: NSPersistentCloudKitContainer) {
         let key = "didMigrateExistingDataToCloudKit_v2"
-        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        guard !UserDefaults.standard.bool(forKey: key) else {
+            return
+        }
 
         container.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy

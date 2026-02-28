@@ -36,7 +36,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func checkiCloudAccount() {
         CoreDataStorage.shared.checkiCloudAccountStatus { [weak self] status in
-            guard status != .available else { return }
+            guard status != .available else {
+                return
+            }
             self?.showiCloudUnavailableAlert(status: status)
         }
     }
@@ -51,9 +53,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     @objc private func handleAccountChange(_ notification: Notification) {
-        guard let rawValue = notification.userInfo?["status"] as? Int else { return }
+        guard let rawValue = notification.userInfo?["status"] as? Int else {
+            return
+        }
         let status = CKAccountStatus(rawValue: rawValue) ?? .couldNotDetermine
-        guard status != .available else { return }
+        guard status != .available else {
+            return
+        }
         DispatchQueue.main.async { [weak self] in
             self?.showiCloudUnavailableAlert(status: status)
         }
@@ -96,31 +102,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleCloudImportStart() {
         DispatchQueue.main.async { [weak self] in
-            guard let self, let window else { return }
-            self.importCount += 1
-            guard self.cloudImportToast == nil else { return }
+            guard let owner = self, let window = owner.window else {
+                return
+            }
+            owner.importCount += 1
+            guard owner.cloudImportToast == nil else {
+                return
+            }
             let toast = ToastView(message: "Fetching collection data from iCloud...".localized)
-            self.cloudImportToast = toast
+            owner.cloudImportToast = toast
             toast.show(in: window)
-            self.scheduleToastTimeout()
+            owner.scheduleToastTimeout()
         }
     }
 
     @objc private func handleCloudImportFinish() {
         DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.importCount = max(self.importCount - 1, 0)
-            guard self.importCount == 0 else { return }
-            self.dismissImportToast()
+            guard let owner = self else {
+                return
+            }
+            owner.importCount = max(owner.importCount - 1, 0)
+            guard owner.importCount == 0 else {
+                return
+            }
+            owner.dismissImportToast()
         }
     }
 
     private func scheduleToastTimeout() {
         toastTimeoutWork?.cancel()
         let work = DispatchWorkItem { [weak self] in
-            guard let self, self.cloudImportToast != nil else { return }
-            self.importCount = 0
-            self.dismissImportToast()
+            guard let owner = self, owner.cloudImportToast != nil else {
+                return
+            }
+            owner.importCount = 0
+            owner.dismissImportToast()
         }
         toastTimeoutWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 60, execute: work)
@@ -145,7 +161,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     @objc private func handleCloudSyncError(_ notification: Notification) {
-        guard let reason = notification.userInfo?["reason"] as? String else { return }
+        guard let reason = notification.userInfo?["reason"] as? String else {
+            return
+        }
         DispatchQueue.main.async { [weak self] in
             let message: String
             switch reason {
@@ -167,6 +185,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidDisconnect(_ scene: UIScene) {}
 
+    // 백그라운드에서 놓친 CloudKit 원격 변경 알림을 보완하기 위해 데이터 재로드
     func sceneDidBecomeActive(_ scene: UIScene) {
         Items.shared.refreshUserCollection()
     }
@@ -176,6 +195,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {}
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        dismissImportToast()
+        importCount = 0
+
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         backgroundTaskID = UIApplication.shared.beginBackgroundTask {
             UIApplication.shared.endBackgroundTask(backgroundTaskID)
