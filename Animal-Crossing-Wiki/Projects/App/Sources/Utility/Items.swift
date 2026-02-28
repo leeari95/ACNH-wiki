@@ -66,13 +66,15 @@ final class Items {
         }
         .disposed(by: disposeBag)
 
-        NotificationCenter.default.rx
-            .notification(CoreDataStorage.didReceiveRemoteChanges)
-            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
-            .subscribe(with: self) { owner, _ in
-                owner.setUpUserCollection()
-            }
-            .disposed(by: disposeBag)
+        Observable.merge(
+            NotificationCenter.default.rx.notification(CoreDataStorage.didReceiveRemoteChanges),
+            NotificationCenter.default.rx.notification(CoreDataStorage.didFinishCloudImport)
+        )
+        .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+        .subscribe(with: self) { owner, _ in
+            owner.setUpUserCollection()
+        }
+        .disposed(by: disposeBag)
     }
 
     private func setUpUserCollection() {

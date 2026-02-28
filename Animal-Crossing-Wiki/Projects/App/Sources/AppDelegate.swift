@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import OSLog
 import Firebase
 import FirebaseCrashlytics
 
@@ -20,21 +21,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
 
+        // CloudKit silent push를 수신하기 위해 APNs에 디바이스 등록
+        application.registerForRemoteNotifications()
+
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
+    // MARK: - Remote Notifications
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        os_log(.info, log: .default, "APNs registration succeeded (token: %d bytes)", deviceToken.count)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        os_log(.error, log: .default, "APNs registration failed: %{public}@", error.localizedDescription)
+    }
+
+    // MARK: - UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
 
 }
