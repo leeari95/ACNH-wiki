@@ -64,6 +64,11 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Notice" = "Notice";
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";
 "Fetching collection data from iCloud..." = "Fetching collection data from iCloud...";
+"iCloud is not signed in. Data will be saved locally only." = "iCloud is not signed in. Data will be saved locally only.";
+"iCloud access is restricted for this device." = "iCloud access is restricted for this device.";
+"iCloud is temporarily unavailable. Data will sync when available." = "iCloud is temporarily unavailable. Data will sync when available.";
+"iCloud status could not be determined. Data will be saved locally only." = "iCloud status could not be determined. Data will be saved locally only.";
+"iCloud storage is full. Please free up space to continue syncing." = "iCloud storage is full. Please free up space to continue syncing.";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "Today's Tasks";

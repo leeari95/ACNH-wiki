@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 import OSLog
 
 enum CoreDataStorageError: LocalizedError {
@@ -33,6 +34,8 @@ final class CoreDataStorage {
     static let didReceiveRemoteChanges = Notification.Name("CoreDataStorageDidReceiveRemoteChanges")
     static let didStartCloudImport = Notification.Name("CoreDataStorageDidStartCloudImport")
     static let didFinishCloudImport = Notification.Name("CoreDataStorageDidFinishCloudImport")
+    static let cloudSyncDidFail = Notification.Name("CoreDataStorageCloudSyncDidFail")
+    static let iCloudAccountDidChange = Notification.Name("CoreDataStorageICloudAccountDidChange")
 
     private init() {}
 
@@ -40,7 +43,6 @@ final class CoreDataStorage {
         let container = NSPersistentCloudKitContainer(name: "CoreDataStorage")
 
         container.persistentStoreDescriptions.forEach { description in
-            // Automatic lightweight migration 설정 (새 entity 추가 시 자동 마이그레이션)
             description.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
             description.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
 
@@ -48,22 +50,20 @@ final class CoreDataStorage {
                 containerIdentifier: "iCloud.leeari.NookPortalPlus"
             )
 
-            // Persistent History Tracking (CloudKit 동기화 필수)
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         }
 
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                os_log(.error, log: .default, "CoreData store load failed: %{public}@", error.localizedDescription)
             }
         })
 
-        // lazy var 초기화 완료 후 등록해야 재진입 방지
         observeRemoteChanges(for: container.persistentStoreCoordinator)
         observeCloudKitEvents()
+        observeAccountChanges()
 
-        // Background context와 viewContext 자동 병합 설정
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
@@ -75,6 +75,35 @@ final class CoreDataStorage {
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
         persistentContainer.performBackgroundTask(block)
     }
+
+    // MARK: - iCloud Account Status
+
+    func checkiCloudAccountStatus(completion: ((CKAccountStatus) -> Void)? = nil) {
+        CKContainer(identifier: "iCloud.leeari.NookPortalPlus").accountStatus { status, error in
+            if let error {
+                os_log(.error, log: .default, "iCloud account status check failed: %{public}@", error.localizedDescription)
+            }
+            DispatchQueue.main.async {
+                completion?(status)
+            }
+        }
+    }
+
+    // MARK: - Persistent History Cleanup
+
+    func cleanupPersistentHistory() {
+        persistentContainer.performBackgroundTask { context in
+            guard let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else { return }
+            let request = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
+            do {
+                try context.execute(request)
+            } catch {
+                os_log(.error, log: .default, "Persistent history cleanup failed: %{public}@", error.localizedDescription)
+            }
+        }
+    }
+
+    // MARK: - Remote Changes
 
     private func observeRemoteChanges(for coordinator: NSPersistentStoreCoordinator) {
         NotificationCenter.default.addObserver(
@@ -88,6 +117,8 @@ final class CoreDataStorage {
     @objc private func handleRemoteChange(_ notification: Notification) {
         NotificationCenter.default.post(name: Self.didReceiveRemoteChanges, object: nil)
     }
+
+    // MARK: - CloudKit Events
 
     private func observeCloudKitEvents() {
         NotificationCenter.default.addObserver(
@@ -113,6 +144,7 @@ final class CoreDataStorage {
         if event.endDate != nil {
             if let error = event.error {
                 os_log(.error, log: .default, "CloudKit %{public}@ failed: %{public}@", type, error.localizedDescription)
+                postSyncFailureIfNeeded(error)
             } else {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
@@ -126,7 +158,61 @@ final class CoreDataStorage {
             }
         }
     }
+
+    private func postSyncFailureIfNeeded(_ error: Error) {
+        let nsError = error as NSError
+        var reason = "unknown"
+
+        if let ckError = error as? CKError {
+            switch ckError.code {
+            case .quotaExceeded:
+                reason = "quota_exceeded"
+            case .notAuthenticated:
+                reason = "not_authenticated"
+            case .networkFailure, .networkUnavailable:
+                reason = "network"
+            default:
+                reason = ckError.code.rawValue.description
+            }
+        } else if nsError.domain == CKError.errorDomain {
+            if nsError.code == CKError.quotaExceeded.rawValue {
+                reason = "quota_exceeded"
+            } else if nsError.code == CKError.notAuthenticated.rawValue {
+                reason = "not_authenticated"
+            }
+        }
+
+        NotificationCenter.default.post(
+            name: Self.cloudSyncDidFail,
+            object: nil,
+            userInfo: ["reason": reason]
+        )
+    }
+
+    // MARK: - Account Change Observation
+
+    private func observeAccountChanges() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAccountChange),
+            name: .CKAccountChanged,
+            object: nil
+        )
+    }
+
+    @objc private func handleAccountChange() {
+        os_log(.info, log: .default, "iCloud account changed")
+        checkiCloudAccountStatus { status in
+            NotificationCenter.default.post(
+                name: Self.iCloudAccountDidChange,
+                object: nil,
+                userInfo: ["status": status.rawValue]
+            )
+        }
+    }
 }
+
+// MARK: - Migration
 
 extension CoreDataStorage {
 
@@ -154,7 +240,6 @@ extension CoreDataStorage {
                 do {
                     let objects = try context.fetch(request)
                     for object in objects {
-                        // 실제 속성 값을 다시 설정하여 CloudKit export 트리거
                         if let firstAttribute = object.entity.attributesByName.first {
                             let value = object.value(forKey: firstAttribute.key)
                             object.setValue(value, forKey: firstAttribute.key)
@@ -163,14 +248,21 @@ extension CoreDataStorage {
                     totalCount += objects.count
                 } catch {
                     os_log(.error, log: .default, "CloudKit migration failed: %{public}@ - %{public}@", entityName, error.localizedDescription)
+                    return
                 }
             }
 
             if totalCount > 0 {
-                context.saveContext()
+                do {
+                    try context.save()
+                } catch {
+                    os_log(.error, log: .default, "CloudKit migration save failed: %{public}@", error.localizedDescription)
+                    return
+                }
             }
 
             UserDefaults.standard.set(true, forKey: key)
+            os_log(.info, log: .default, "CloudKit migration completed: %d records", totalCount)
         }
     }
 
@@ -202,8 +294,7 @@ extension NSManagedObjectContext {
             do {
                 try save()
             } catch {
-                let nsError = error as NSError
-                debugPrint("Unresolved error \(nsError), \(nsError.userInfo)")
+                os_log(.error, log: .default, "CoreData save failed: %{public}@", error.localizedDescription)
             }
         }
     }
