@@ -41,7 +41,6 @@ final class CoreDataStorage {
             description.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
             description.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
 
-            // CloudKit 동기화 활성화
             description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
                 containerIdentifier: "iCloud.leeari.NookPortalPlus"
             )
@@ -65,7 +64,6 @@ final class CoreDataStorage {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-        // 기존 로컬 데이터를 CloudKit에 강제 export (일회성)
         migrateExistingDataToCloudKit(container: container)
 
         return container

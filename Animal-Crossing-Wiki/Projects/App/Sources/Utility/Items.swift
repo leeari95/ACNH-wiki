@@ -66,7 +66,6 @@ final class Items {
         }
         .disposed(by: disposeBag)
 
-        // iCloud 동기화: 다른 기기에서 변경된 데이터 반영
         NotificationCenter.default.rx
             .notification(CoreDataStorage.didReceiveRemoteChanges)
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)

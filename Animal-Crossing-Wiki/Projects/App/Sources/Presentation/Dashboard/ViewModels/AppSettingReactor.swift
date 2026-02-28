@@ -46,7 +46,6 @@ final class AppSettingReactor: Reactor {
                 .showAlert(title: "Notice".localized, message: "Are you sure you want to reset it?".localized)
                 .map { AppSettingReactor.Mutation.reset($0) }
                 .observe(on: MainScheduler.asyncInstance)
-
         }
     }
 
@@ -62,7 +61,6 @@ final class AppSettingReactor: Reactor {
                 storage.resetUserInfo()
                 coordinator.transition(for: .dismiss)
             }
-
         }
         return newState
     }
