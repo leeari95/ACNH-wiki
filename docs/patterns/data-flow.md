@@ -7,10 +7,10 @@
 앱의 모든 데이터가 `Items.shared` 싱글톤을 통해 흐름:
 
 ```
-┌──────────┐     ┌───────────────┐     ┌───────────────┐
-│  APIs    │────→│ Items.shared  │←────│  CoreData     │
-│ (fetch)  │     │ BehaviorRelay │     │  (user data)  │
-└──────────┘     └───────┬───────┘     └───────────────┘
+┌──────────┐     ┌───────────────┐     ┌───────────────┐     ┌──────────┐
+│  APIs    │────→│ Items.shared  │←────│  CoreData     │←────│ CloudKit │
+│ (fetch)  │     │ BehaviorRelay │     │  (user data)  │     │ (iCloud) │
+└──────────┘     └───────┬───────┘     └───────────────┘     └──────────┘
                          │ Observable streams
                          ▼
                  ┌───────────────┐
@@ -112,3 +112,24 @@ Reactor에서 구독 가능한 `Items.shared` 스트림:
 | `allCheckItem(category:)` | 카테고리 전체 체크 |
 | `resetCheckItem(category:)` | 카테고리 전체 리셋 |
 | `reset()` | 전체 데이터 초기화 |
+| `refreshUserCollection()` | CoreData에서 사용자 데이터 재로드 (foreground 복귀 시 호출) |
+
+## iCloud Sync Flow
+
+CloudKit 원격 변경 시 자동으로 UI가 갱신되는 흐름:
+
+```
+CloudKit Import 완료
+    ↓
+NSPersistentStoreRemoteChange 알림
+    ↓
+CoreDataStorage.handleRemoteChange()
+    ↓
+NotificationCenter.post(didReceiveRemoteChanges)
+    ↓
+Items.swift (debounce 500ms)
+    ↓
+setUpUserCollection() → BehaviorRelay.accept() → UI 갱신
+```
+
+→ 상세: [features/icloud-sync.md](../features/icloud-sync.md)

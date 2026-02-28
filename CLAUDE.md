@@ -19,6 +19,7 @@ UIKit + RxSwift + ReactorKit. 단일 App 모듈, Tuist 빌드 시스템.
 | Catalog + Animals 기능 | [docs/features/catalog.md](docs/features/catalog.md) |
 | TurnipPrices 기능 | [docs/features/turnip-prices.md](docs/features/turnip-prices.md) |
 | MusicPlayer 기능 | [docs/features/music-player.md](docs/features/music-player.md) |
+| iCloud Sync 기능 | [docs/features/icloud-sync.md](docs/features/icloud-sync.md) |
 | 네이밍/용어 사전 | [docs/glossary.md](docs/glossary.md) |
 | 함정 목록 (필독) | [docs/gotchas.md](docs/gotchas.md) |
 | 검증 스크립트 가이드 | [docs/guides/validation.md](docs/guides/validation.md) |
