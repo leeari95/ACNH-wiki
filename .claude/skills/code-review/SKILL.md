@@ -222,18 +222,12 @@ Collect validated findings from Phase 2 and deduplicate:
 
 **If findings count > 0:**
 
-1. Check for existing pending review:
-   ```bash
-   gh api "/repos/leeari95/ACNH-wiki/pulls/<PR_NUMBER>/reviews" \
-     --jq '.[] | select(.state == "PENDING") | {id, user: .user.login}'
-   ```
+Execute script:
+```bash
+echo '<json>' | .claude/skills/code-review/scripts/post-review-comments.sh --pr <PR_NUMBER>
+```
 
-2. If pending exists: AskUserQuestion to confirm deletion, add `--force`
-
-3. Execute script:
-   ```bash
-   echo '<json>' | .claude/skills/code-review/scripts/post-review-comments.sh --pr <PR_NUMBER>
-   ```
+리뷰 코멘트가 PR에 즉시 등록됩니다.
 
 ---
 

@@ -96,25 +96,19 @@ Create JSON following schema in [finding-guidelines.md](finding-guidelines.md#js
 | 0 | Inform user "코드 리뷰 완료! 발견된 이슈가 없습니다." and END |
 | > 0 | Execute script (unless user said "review only") |
 
-**4-Step Workflow:**
+**3-Step Workflow:**
 
 1. **Verify Prerequisites:**
    - [ ] JSON output generated
    - [ ] On original branch
    - [ ] User did NOT say "review only"
 
-2. **Check for Existing Pending Review:**
-   ```bash
-   gh api "/repos/leeari95/ACNH-wiki/pulls/<PR_NUMBER>/reviews" \
-     --jq '.[] | select(.state == "PENDING") | {id, user: .user.login, url: .html_url}'
-   ```
-
-3. **Execute Script:**
+2. **Execute Script:**
    ```bash
    echo '<json-output>' | .claude/skills/code-review/scripts/post-review-comments.sh --pr <PR_NUMBER>
    ```
 
-4. **Provide User Instructions**
+3. **Provide User with Review URL**
 
 ---
 

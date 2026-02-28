@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ACNH-wiki Code Review - PR Comment Posting Script (Claude-optimized)
-# Claude가 코드 리뷰 결과를 GitHub PR에 pending review로 등록하는 스크립트
+# Claude가 코드 리뷰 결과를 GitHub PR에 코멘트로 등록하는 스크립트
 #
 # 사용법:
 #   ./post-review-comments.sh --pr <pr-number> --input <json-file>
@@ -28,25 +28,20 @@ print_help() {
     echo "사용법:"
     echo "  $0 --pr <pr-number> --input <json-file>"
     echo "  $0 --pr <pr-number> < review-results.json"
-    echo "  $0 --pr <pr-number> --force < review-results.json"
     echo ""
     echo "옵션:"
     echo "  --pr <number>          PR 번호 (필수)"
     echo "  --input <file>         JSON 파일 경로 (선택, 미지정 시 stdin 사용)"
-    echo "  --force                기존 pending review가 있으면 자동 삭제 후 진행"
     echo "  --help                 이 도움말 표시"
     echo ""
-    echo "동작 방식 (pending review):"
-    echo "  - GitHub에 'Start a review' 방식으로 리뷰를 시작합니다"
-    echo "  - 기존 pending review가 있으면 에러 발생 (--force로 자동 삭제 가능)"
-    echo "  - 사용자가 GitHub 웹에서 코멘트를 검토한 후"
-    echo "  - 'Finish your review'를 클릭하여 Comment/Approve/Request changes 선택"
+    echo "동작 방식:"
+    echo "  - 리뷰 결과를 GitHub PR에 코멘트로 즉시 등록합니다"
+    echo "  - 각 finding은 해당 코드 라인에 인라인 코멘트로 표시됩니다"
 }
 
 # 인자 파싱
 PR_NUMBER=""
 INPUT_FILE=""
-FORCE_MODE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -61,10 +56,6 @@ while [[ $# -gt 0 ]]; do
         --input)
             INPUT_FILE="$2"
             shift 2
-            ;;
-        --force|-f)
-            FORCE_MODE=true
-            shift
             ;;
         *)
             echo "Error: 알 수 없는 옵션: $1" >&2
@@ -116,57 +107,6 @@ REPO_INFO=$(gh repo view --json owner,name)
 REPO_OWNER=$(echo "$REPO_INFO" | jq -r '.owner.login')
 REPO_NAME=$(echo "$REPO_INFO" | jq -r '.name')
 
-# 현재 사용자 확인
-CURRENT_USER=$(gh api user -q .login)
-
-# 기존 pending review 확인
-echo "=== Checking for existing pending reviews ==="
-PENDING_REVIEWS=$(gh api "/repos/$REPO_OWNER/$REPO_NAME/pulls/$PR_NUMBER/reviews" \
-    --jq ".[] | select(.state == \"PENDING\" and .user.login == \"$CURRENT_USER\")")
-
-if [[ -n "$PENDING_REVIEWS" ]]; then
-    PENDING_REVIEW_ID=$(echo "$PENDING_REVIEWS" | jq -r '.id' | head -1)
-    PENDING_REVIEW_URL=$(echo "$PENDING_REVIEWS" | jq -r '.html_url' | head -1)
-
-    echo "  기존 pending review가 발견되었습니다:"
-    echo "   Review ID: $PENDING_REVIEW_ID"
-    echo "   URL: $PENDING_REVIEW_URL"
-    echo ""
-
-    if [[ "$FORCE_MODE" == true ]]; then
-        echo "  --force 옵션이 지정되어 기존 pending review를 삭제합니다..."
-
-        set +e
-        DELETE_RESPONSE=$(gh api --method DELETE \
-            "/repos/$REPO_OWNER/$REPO_NAME/pulls/$PR_NUMBER/reviews/$PENDING_REVIEW_ID" 2>&1)
-        DELETE_EXIT_CODE=$?
-        set -e
-
-        if [[ $DELETE_EXIT_CODE -eq 0 ]]; then
-            echo "  기존 pending review가 삭제되었습니다."
-            echo ""
-        else
-            echo "Error: 기존 pending review 삭제 실패" >&2
-            echo "$DELETE_RESPONSE" >&2
-            exit 1
-        fi
-    else
-        echo "Error: 이미 pending review가 존재합니다." >&2
-        echo "" >&2
-        echo "다음 중 하나를 선택하세요:" >&2
-        echo "  1. GitHub에서 기존 리뷰를 완료(Finish)하거나 삭제" >&2
-        echo "     URL: $PENDING_REVIEW_URL" >&2
-        echo "" >&2
-        echo "  2. --force 플래그로 기존 리뷰를 자동 삭제:" >&2
-        echo "     $0 --pr $PR_NUMBER --force < input.json" >&2
-        echo "" >&2
-        exit 1
-    fi
-else
-    echo "  기존 pending review 없음"
-    echo ""
-fi
-
 # JSON에서 데이터 추출
 OVERALL_CORRECTNESS=$(echo "$JSON_CONTENT" | jq -r '.overall_correctness // "patch is correct"')
 OVERALL_EXPLANATION=$(echo "$JSON_CONTENT" | jq -r '.overall_explanation // ""')
@@ -180,7 +120,7 @@ echo "Overall Correctness: $OVERALL_CORRECTNESS"
 echo "Confidence Score: $OVERALL_CONFIDENCE"
 echo "Findings Count: $FINDINGS_COUNT"
 echo ""
-echo "Mode: Pending Review (리뷰어가 GitHub에서 최종 검토)"
+echo "Mode: Direct Comment (즉시 코멘트 등록)"
 echo ""
 
 # 전체 요약 본문 생성
@@ -197,7 +137,7 @@ generate_summary_body() {
 **발견된 이슈**: ${FINDINGS_COUNT}개 (각 이슈는 해당 파일의 코드 라인에 코멘트로 표시됩니다)
 
 ---
-_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 생성되었으며, 리뷰어의 최종 검토를 거쳐 제출됩니다._
+_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 자동 생성되었습니다._
 EOF
         else
             cat <<EOF
@@ -212,7 +152,7 @@ EOF
 모든 변경사항이 팀 코딩 컨벤션과 베스트 프랙티스를 준수합니다.
 
 ---
-_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 생성되었으며, 리뷰어의 최종 검토를 거쳐 제출됩니다._
+_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 자동 생성되었습니다._
 EOF
         fi
     else
@@ -226,7 +166,7 @@ EOF
 **발견된 이슈**: ${FINDINGS_COUNT}개 (각 이슈는 해당 파일의 코드 라인에 코멘트로 표시됩니다)
 
 ---
-_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 생성되었으며, 리뷰어의 최종 검토를 거쳐 제출됩니다._
+_이 리뷰는 [Claude Code](https://claude.com/claude-code) 코드리뷰 스킬에 의해 자동 생성되었습니다._
 EOF
     fi
 }
@@ -308,7 +248,7 @@ build_review_json() {
     comments+="]"
 
     # 최종 JSON 조합
-    echo "{\"commit_id\":\"$PR_HEAD_SHA\",\"body\":$json_body,\"comments\":$comments}"
+    echo "{\"commit_id\":\"$PR_HEAD_SHA\",\"body\":$json_body,\"event\":\"COMMENT\",\"comments\":$comments}"
 }
 
 REVIEW_JSON=$(build_review_json)
@@ -346,7 +286,7 @@ echo ""
 # 리뷰 생성
 echo "=== Creating Review ==="
 echo ""
-echo "Creating pending review..."
+echo "Posting review comment..."
 
 set +e
 REVIEW_RESPONSE=$(echo "$REVIEW_JSON" | gh api \
@@ -361,22 +301,13 @@ if [[ $REVIEW_EXIT_CODE -eq 0 ]]; then
     REVIEW_ID=$(echo "$REVIEW_RESPONSE" | jq -r '.id')
     REVIEW_HTML_URL=$(echo "$REVIEW_RESPONSE" | jq -r '.html_url')
 
-    echo "Success: Pending review created!"
+    echo "Success: Review comment posted!"
     echo ""
-    echo "=== Next Steps ==="
-    echo ""
-    echo "1. Review the comments on GitHub:"
-    echo "   $REVIEW_HTML_URL"
-    echo ""
-    echo "2. Choose one of the following:"
-    echo "   - Approve: 변경사항 승인"
-    echo "   - Comment: 코멘트만 남기기"
-    echo "   - Request changes: 수정 요청"
-    echo ""
-    echo "3. Click 'Finish your review' to submit"
+    echo "GitHub에서 리뷰 코멘트를 확인하세요:"
+    echo "  $REVIEW_HTML_URL"
     echo ""
 else
-    echo "Error: Failed to create pending review" >&2
+    echo "Error: Failed to post review comment" >&2
     echo "$REVIEW_RESPONSE" >&2
     exit 1
 fi

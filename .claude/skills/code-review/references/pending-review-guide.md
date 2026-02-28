@@ -1,32 +1,25 @@
-# Pending Review Guide
+# Review Comment Guide
 
-This guide explains the GitHub pending review mechanism and how the `post-review-comments.sh` script works.
+This guide explains how the `post-review-comments.sh` script posts review comments to GitHub PRs.
 
-## What is a Pending Review?
+## How It Works
 
-A **pending review** is a draft review on GitHub that hasn't been submitted yet. It allows reviewers to:
-- Add multiple comments across different files
-- Preview all comments together before publishing
-- Edit or delete comments before submission
-- Choose final verdict (Approve/Comment/Request Changes) when ready
+The script creates a **submitted review** with inline comments on the PR. Comments are immediately visible to all collaborators after execution.
 
-### How `post-review-comments.sh` Creates Pending Reviews
+### How `post-review-comments.sh` Posts Reviews
 
-The script follows these 5 steps:
+The script follows these 4 steps:
 
 1. **JSON Validation**: Verifies the input JSON has all required fields
 2. **PR Verification**: Confirms the specified PR exists
 3. **Review Body Generation**: Converts priority tags, formats findings
-4. **Preview Output**: Displays the generated comment body for verification
-5. **Pending Review Creation**: Uses `gh api` to create pending review
+4. **Review Submission**: Uses `gh api` to create review with `"event":"COMMENT"`
 
-### Why Pending (Not Auto-Submitted)?
+### Direct Submission
 
-Pending reviews give the reviewer (human) final control:
-- Review before publishing
-- Edit if needed
-- Choose verdict based on context
-- Avoid spam if review quality is low
+- Review comments are posted immediately (no pending/draft state)
+- Each finding becomes an inline comment on the relevant code line
+- A summary comment is added as the review body
 
 ---
 
@@ -110,7 +103,7 @@ gh auth login
 gh pr view 123
 ```
 
-### Issue: Pending review not visible on GitHub
+### Issue: Review comment not visible on GitHub
 
 **Solution:**
 1. Ensure script execution: Check for success message
@@ -124,4 +117,3 @@ gh pr view 123
 - GitHub CLI (`gh`) installed and authenticated
 - `jq` installed (`brew install jq`)
 - PR review permissions
-- Original branch (script must be run from the original branch)
