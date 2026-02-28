@@ -76,7 +76,7 @@ final class Items {
             .disposed(by: disposeBag)
     }
 
-    func setUpUserCollection() {
+    private func setUpUserCollection() {
         currentUserInfo.accept(CoreDataUserInfoStorage().fetchUserInfo())
 
         CoreDataDailyTaskStorage().fetchTasks()

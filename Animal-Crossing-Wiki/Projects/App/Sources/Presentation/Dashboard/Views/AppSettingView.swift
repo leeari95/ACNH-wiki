@@ -12,7 +12,6 @@ final class AppSettingView: UIView {
 
     private let disposeBag = DisposeBag()
     private let resetTapGesture = UITapGestureRecognizer()
-    private let restoreTapGesture = UITapGestureRecognizer()
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
@@ -40,14 +39,11 @@ final class AppSettingView: UIView {
             backgroundStackView.widthAnchor.constraint(equalTo: widthAnchor),
             backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
-        let restoreView = InfoContentView(title: "Restore from iCloud".localized)
         let resetView = InfoContentView(title: "Data reset".localized)
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
-            restoreView,
             resetView
         )
-        restoreView.addGestureRecognizer(restoreTapGesture)
         resetView.addGestureRecognizer(resetTapGesture)
     }
 
@@ -57,11 +53,6 @@ final class AppSettingView: UIView {
             .subscribe(onNext: { action in
                 reactor.action.onNext(action)
             }).disposed(by: disposeBag)
-
-        restoreTapGesture.rx.event
-            .map { _ in AppSettingReactor.Action.restore }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
 
         resetTapGesture.rx.event
             .map { _ in AppSettingReactor.Action.reset }
