@@ -484,6 +484,10 @@ extension Items {
             .sorted(by: {$0.category.rawValue < $1.category.rawValue })
     }
 
+    func refreshUserCollection() {
+        setUpUserCollection()
+    }
+
     func reset() {
         villagersLike.accept([])
         villagersHouse.accept([])
