@@ -94,10 +94,11 @@ final class Items {
         CoreDataItemsStorage().fetch()
             .subscribe(onSuccess: { items in
                 var userItems = [Category: [Item]]()
-                items.forEach { item in
-                    var items = userItems[item.category] ?? []
-                    items.append(item)
-                    userItems[item.category] = items
+                var seen = Set<String>()
+                for item in items {
+                    let key = "\(item.category.rawValue)_\(item.name)_\(item.genuine ?? false)"
+                    guard seen.insert(key).inserted else { continue }
+                    userItems[item.category, default: []].append(item)
                 }
                 self.userItems.accept(userItems)
             }, onFailure: { error in

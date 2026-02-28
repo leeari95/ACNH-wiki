@@ -279,18 +279,20 @@ extension CoreDataStorage {
         // CloudKit 동기화로 복수의 UserCollectionEntity가 존재할 수 있음
         // relationship이 있는(데이터가 있는) 엔티티를 우선 반환
         let sorted = results.sorted { lhs, rhs in
-            let lhsCount = (lhs.critters?.count ?? 0)
-                + (lhs.villagersLike?.count ?? 0)
-                + (lhs.villagersHouse?.count ?? 0)
-                + (lhs.dailyTasks?.count ?? 0)
-            let rhsCount = (rhs.critters?.count ?? 0)
-                + (rhs.villagersLike?.count ?? 0)
-                + (rhs.villagersHouse?.count ?? 0)
-                + (rhs.dailyTasks?.count ?? 0)
-            return lhsCount > rhsCount
+            self.relationshipCount(of: lhs) > self.relationshipCount(of: rhs)
         }
 
         return sorted.first ?? UserCollectionEntity(UserInfo(), context: context)
+    }
+
+    private func relationshipCount(of entity: UserCollectionEntity) -> Int {
+        let a: Int = entity.critters?.count ?? 0
+        let b: Int = entity.villagersLike?.count ?? 0
+        let c: Int = entity.villagersHouse?.count ?? 0
+        let d: Int = entity.dailyTasks?.count ?? 0
+        let e: Int = entity.npcLike?.count ?? 0
+        let f: Int = entity.variants?.count ?? 0
+        return a + b + c + d + e + f
     }
 }
 
