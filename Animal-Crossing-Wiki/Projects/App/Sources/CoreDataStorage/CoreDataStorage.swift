@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import OSLog
 
 enum CoreDataStorageError: LocalizedError {
     case readError(Error)
@@ -109,12 +110,12 @@ final class CoreDataStorage {
 
         if event.endDate != nil {
             if let error = event.error {
-                debugPrint("☁️ CloudKit \(type) failed: \(error.localizedDescription)")
+                os_log(.error, log: .default, "CloudKit %{public}@ failed: %{public}@", type, error.localizedDescription)
             } else {
-                debugPrint("☁️ CloudKit \(type) succeeded")
+                os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
         } else {
-            debugPrint("☁️ CloudKit \(type) started")
+            os_log(.info, log: .default, "CloudKit %{public}@ started", type)
         }
     }
 }
@@ -153,7 +154,7 @@ extension CoreDataStorage {
                     }
                     totalCount += objects.count
                 } catch {
-                    debugPrint("☁️ Migration failed: \(entityName) - \(error.localizedDescription)")
+                    os_log(.error, log: .default, "CloudKit migration failed: %{public}@ - %{public}@", entityName, error.localizedDescription)
                 }
             }
 
