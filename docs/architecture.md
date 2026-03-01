@@ -85,7 +85,8 @@
 - **Key files**:
   - `String+extension.swift` - `.localized` (NSLocalizedString 래퍼), `.chosung` (한국어 초성 검색)
   - `Reactor+extension.swift` - `rx.viewDidLoad` 이벤트
-  - `UI/ToastView.swift` - CloudKit Import 상태 토스트 (ActivityIndicator + Label)
+  - `UI/ToastManager.swift` - 전용 UIWindow 기반 토스트 매니저 (레퍼런스 카운팅, 타임아웃)
+  - `UI/ToastView.swift` - 캡슐형 토스트 UI (ActivityIndicator + Label, slide 애니메이션)
   - `UI/` - UIView, UIImage, UIColor 등 UIKit extension 15개+
 
 ### Presentation
@@ -117,7 +118,8 @@ Feature/
 
 - **Path**: `Projects/App/Sources/`
 - `AppDelegate.swift` - Firebase/Crashlytics 초기화
-- `SceneDelegate.swift` - UIWindow + AppCoordinator 생성. CloudKit Import 토스트, iCloud 계정/에러 알림, foreground 복귀 시 데이터 갱신
+- `SceneDelegate.swift` - UIWindow + AppCoordinator 생성. 신규 설치 시 CloudKit Import 대기, iCloud 계정/에러 알림, ToastManager 연동
+- `CloudSyncSplashViewController.swift` - 신규 설치 시 CloudKit Import 대기 스플래시 화면
 - `AppCoordinator.swift` - UITabBarController + 5개 탭 + MusicPlayer 오버레이 관리
 - `Coordinator.swift` - `Coordinator` 프로토콜 + `CoordinatorType` enum
 - `AppAppearance.swift` - 전역 UI 테마
