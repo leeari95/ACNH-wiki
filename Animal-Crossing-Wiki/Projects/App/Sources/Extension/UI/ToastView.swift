@@ -38,7 +38,7 @@ final class ToastView: UIView {
 
     private func configure() {
         backgroundColor = .secondarySystemBackground
-        layer.cornerRadius = 12
+        clipsToBounds = true
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.15
         layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -56,6 +56,11 @@ final class ToastView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.height / 2
     }
 
     func show(in window: UIWindow) {
