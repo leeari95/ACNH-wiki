@@ -14,9 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
     private var isAppSetup = false
-    private var cloudImportToast: ToastView?
-    private var importCount = 0
-    private var toastTimeoutWork: DispatchWorkItem?
     private var importObserver: NSObjectProtocol?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -170,53 +167,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleCloudImportStart() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self, owner.isAppSetup, let window = owner.window else {
-                return
-            }
-            owner.importCount += 1
-            guard owner.cloudImportToast == nil else {
-                return
-            }
-            let toast = ToastView(message: "Fetching collection data from iCloud...".localized)
-            owner.cloudImportToast = toast
-            toast.show(in: window)
-            owner.scheduleToastTimeout()
+            guard let owner = self, owner.isAppSetup else { return }
+            ToastManager.shared.incrementAndShow(message: "Fetching collection data from iCloud...".localized)
         }
     }
 
     @objc private func handleCloudImportFinish() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self, owner.isAppSetup else {
-                return
-            }
-            owner.importCount = max(owner.importCount - 1, 0)
-            guard owner.importCount == 0 else {
-                return
-            }
-            owner.dismissImportToast()
-            os_log(.info, log: .default, "🔄 [Path-C] handleCloudImportFinish — skip refresh (Items.swift handles it)")
-            // Items.swift가 didFinishCloudImport을 직접 구독하므로 여기서 중복 호출하지 않음
+            guard let owner = self, owner.isAppSetup else { return }
+            ToastManager.shared.decrementAndDismiss()
         }
-    }
-
-    private func scheduleToastTimeout() {
-        toastTimeoutWork?.cancel()
-        let work = DispatchWorkItem { [weak self] in
-            guard let owner = self, owner.cloudImportToast != nil else {
-                return
-            }
-            owner.importCount = 0
-            owner.dismissImportToast()
-        }
-        toastTimeoutWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 60, execute: work)
-    }
-
-    private func dismissImportToast() {
-        toastTimeoutWork?.cancel()
-        toastTimeoutWork = nil
-        cloudImportToast?.dismiss()
-        cloudImportToast = nil
     }
 
     // MARK: - Cloud Sync Error
@@ -266,8 +226,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {}
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        dismissImportToast()
-        importCount = 0
+        ToastManager.shared.dismiss()
 
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         backgroundTaskID = UIApplication.shared.beginBackgroundTask {
