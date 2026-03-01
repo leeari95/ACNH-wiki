@@ -276,9 +276,11 @@ extension CoreDataStorage {
 
             // UserCollectionEntity 상세 진단 (중복 탐지 핵심)
             let ucRequest = UserCollectionEntity.fetchRequest()
-            guard let ucResults = try? context.fetch(ucRequest) else { return }
+            guard let ucResults = try? context.fetch(ucRequest) else {
+                return
+            }
 
-            for (i, uc) in ucResults.enumerated() {
+            for (index, uc) in ucResults.enumerated() {
                 let critters = uc.critters?.count ?? 0
                 let tasks = uc.dailyTasks?.count ?? 0
                 let vLike = uc.villagersLike?.count ?? 0
@@ -288,8 +290,9 @@ extension CoreDataStorage {
                 let objectID = uc.objectID.uriRepresentation().lastPathComponent
 
                 os_log(.info, log: .default,
-                       "📊 [%{public}@] UC[%d] id=%{public}@ name=%{public}@ island=%{public}@ | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d",
-                       phase, i, objectID,
+                       "📊 [%{public}@] UC[%d] id=%{public}@ name=%{public}@ island=%{public}@"
+                       + " | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d",
+                       phase, index, objectID,
                        uc.name ?? "(nil)", uc.islandName ?? "(nil)",
                        critters, tasks, vLike, vHouse, npcLike, variants)
             }
@@ -345,11 +348,15 @@ extension CoreDataStorage {
     /// 중복 UserCollectionEntity를 하나로 통합하고 고아 엔티티를 정리
     func consolidateUserCollections() {
         performBackgroundTask { [weak self] context in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
             let request = UserCollectionEntity.fetchRequest()
-            guard let allUCs = try? context.fetch(request), allUCs.count > 1 else { return }
+            guard let allUCs = try? context.fetch(request), allUCs.count > 1 else {
+                return
+            }
 
             let sorted = allUCs.sorted { self.relationshipCount(of: $0) > self.relationshipCount(of: $1) }
 
@@ -439,7 +446,9 @@ extension CoreDataStorage {
                     }
                     totalCount += objects.count
                 } catch {
-                    os_log(.error, log: .default, "CloudKit migration failed: %{public}@ - %{public}@", entityName, error.localizedDescription)
+                    os_log(.error, log: .default,
+                           "CloudKit migration failed: %{public}@ - %{public}@",
+                           entityName, error.localizedDescription)
                     return
                 }
             }
@@ -483,13 +492,13 @@ extension CoreDataStorage {
     }
 
     private func relationshipCount(of entity: UserCollectionEntity) -> Int {
-        let a: Int = entity.critters?.count ?? 0
-        let b: Int = entity.villagersLike?.count ?? 0
-        let c: Int = entity.villagersHouse?.count ?? 0
-        let d: Int = entity.dailyTasks?.count ?? 0
-        let e: Int = entity.npcLike?.count ?? 0
-        let f: Int = entity.variants?.count ?? 0
-        return a + b + c + d + e + f
+        let critters: Int = entity.critters?.count ?? 0
+        let villagersLike: Int = entity.villagersLike?.count ?? 0
+        let villagersHouse: Int = entity.villagersHouse?.count ?? 0
+        let dailyTasks: Int = entity.dailyTasks?.count ?? 0
+        let npcLike: Int = entity.npcLike?.count ?? 0
+        let variants: Int = entity.variants?.count ?? 0
+        return critters + villagersLike + villagersHouse + dailyTasks + npcLike + variants
     }
 }
 
