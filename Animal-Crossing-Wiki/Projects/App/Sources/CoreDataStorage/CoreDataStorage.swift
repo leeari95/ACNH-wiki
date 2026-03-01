@@ -37,6 +37,8 @@ final class CoreDataStorage {
     static let cloudSyncDidFail = Notification.Name("CoreDataStorageCloudSyncDidFail")
     static let iCloudAccountDidChange = Notification.Name("CoreDataStorageICloudAccountDidChange")
 
+    private var lastDiagnosticsDate: Date = .distantPast
+
     private init() {}
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -170,7 +172,7 @@ final class CoreDataStorage {
                 NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
             }
             if event.type == .export {
-                logSyncDiagnostics(phase: "Export-end")
+                os_log(.info, log: .default, "CloudKit Export completed")
             }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
@@ -237,8 +239,15 @@ final class CoreDataStorage {
 
 extension CoreDataStorage {
 
-    /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅
+    /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅 (5초 throttle)
     func logSyncDiagnostics(phase: String) {
+        let now = Date()
+        guard now.timeIntervalSince(lastDiagnosticsDate) >= 5 else {
+            os_log(.info, log: .default, "📊 [%{public}@] skipped (throttled)", phase)
+            return
+        }
+        lastDiagnosticsDate = now
+
         persistentContainer.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 

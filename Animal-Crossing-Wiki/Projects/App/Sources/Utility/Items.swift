@@ -70,8 +70,9 @@ final class Items {
             NotificationCenter.default.rx.notification(CoreDataStorage.didReceiveRemoteChanges),
             NotificationCenter.default.rx.notification(CoreDataStorage.didFinishCloudImport)
         )
-        .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+        .debounce(.seconds(2), scheduler: MainScheduler.instance)
         .subscribe(with: self) { owner, _ in
+            os_log(.info, log: .default, "🔄 [Path-B] Items.swift debounced subscription → setUpUserCollection")
             owner.setUpUserCollection()
         }
         .disposed(by: disposeBag)

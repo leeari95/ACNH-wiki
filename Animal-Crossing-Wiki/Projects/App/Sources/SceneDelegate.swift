@@ -194,7 +194,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 return
             }
             owner.dismissImportToast()
-            Items.shared.refreshUserCollection()
+            os_log(.info, log: .default, "🔄 [Path-C] handleCloudImportFinish — skip refresh (Items.swift handles it)")
+            // Items.swift가 didFinishCloudImport을 직접 구독하므로 여기서 중복 호출하지 않음
         }
     }
 
@@ -255,8 +256,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidDisconnect(_ scene: UIScene) {}
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        guard isAppSetup else { return }
-        Items.shared.refreshUserCollection()
+        // CloudKit 이벤트(didReceiveRemoteChanges/didFinishCloudImport)가
+        // Items.swift의 debounced subscription(Path-B)을 통해 자동으로 데이터를 갱신하므로
+        // 여기서 중복 호출하지 않음 (Path-A + Path-B 동시 실행 시 Synchronization anomaly 발생)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {}
