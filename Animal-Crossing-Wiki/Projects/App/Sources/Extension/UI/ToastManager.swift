@@ -43,9 +43,11 @@ final class ToastManager {
         guard currentToast == nil else {
             return
         }
+
         guard let window = makeWindowIfNeeded() else {
             return
         }
+
         let toast = ToastView(message: message)
         currentToast = toast
         toast.show(in: window)
@@ -58,6 +60,7 @@ final class ToastManager {
         guard referenceCount == 0 else {
             return
         }
+
         dismiss()
     }
 
@@ -85,6 +88,7 @@ final class ToastManager {
             .first(where: { $0.activationState == .foregroundActive }) else {
             return nil
         }
+
         let window = UIWindow(windowScene: scene)
         window.windowLevel = .statusBar + 1
         window.backgroundColor = .clear

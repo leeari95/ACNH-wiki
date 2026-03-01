@@ -166,7 +166,9 @@ final class ItemsReactor: Reactor {
             allItems = items
             if mode == .user && allItems.isEmpty {
                 performOnMain { [weak self] in
-                    (self?.coordinator as? CollectionCoordinator)?.transition(for: .pop)
+                    guard let owner = self else { return }
+
+                    (owner.coordinator as? CollectionCoordinator)?.transition(for: .pop)
                 }
                 break
             }
@@ -192,11 +194,13 @@ final class ItemsReactor: Reactor {
 
         case .showDetail(let item):
             performOnMain { [weak self] in
-                if let coordinator = self?.coordinator as? CatalogCoordinator {
+                guard let owner = self else { return }
+
+                if let coordinator = owner.coordinator as? CatalogCoordinator {
                     coordinator.transition(for: .itemDetail(item))
-                } else if let coordinator = self?.coordinator as? CollectionCoordinator {
+                } else if let coordinator = owner.coordinator as? CollectionCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
-                } else if let coordinator = self?.coordinator as? DashboardCoordinator {
+                } else if let coordinator = owner.coordinator as? DashboardCoordinator {
                     coordinator.transition(for: .itemDetail(item: item))
                 }
             }
@@ -372,7 +376,7 @@ final class ItemsReactor: Reactor {
         }
     }
 
-    func performOnMain(_ block: @escaping () -> Void) {
+    private func performOnMain(_ block: @escaping () -> Void) {
         if Thread.isMainThread {
             block()
         } else {

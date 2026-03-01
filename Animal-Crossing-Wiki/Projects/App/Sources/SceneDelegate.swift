@@ -65,15 +65,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func waitForCloudKitImport(timeout: TimeInterval, completion: @escaping () -> Void) {
         var hasCompleted = false
 
+        // hasCompleted 접근을 main queue로 한정하여 race condition 방지
         let complete: (String) -> Void = { [weak self] reason in
-            guard !hasCompleted else { return }
-            hasCompleted = true
-            if let observer = self?.importObserver {
-                NotificationCenter.default.removeObserver(observer)
-                self?.importObserver = nil
+            DispatchQueue.main.async {
+                guard !hasCompleted else {
+                    return
+                }
+
+                hasCompleted = true
+                if let observer = self?.importObserver {
+                    NotificationCenter.default.removeObserver(observer)
+                    self?.importObserver = nil
+                }
+                os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", reason)
+                completion()
             }
-            os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", reason)
-            DispatchQueue.main.async { completion() }
         }
 
         // iCloud 계정 확인 — 미로그인이면 Import 대기 불필요
@@ -167,14 +173,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleCloudImportStart() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self, owner.isAppSetup else { return }
+            guard let owner = self, owner.isAppSetup else {
+                return
+            }
+
             ToastManager.shared.incrementAndShow(message: "Fetching collection data from iCloud...".localized)
         }
     }
 
     @objc private func handleCloudImportFinish() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self, owner.isAppSetup else { return }
+            guard let owner = self, owner.isAppSetup else {
+                return
+            }
+
             ToastManager.shared.decrementAndDismiss()
         }
     }
