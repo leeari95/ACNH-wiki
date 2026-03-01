@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         os_log(.info, log: .default, "🚀 isFreshInstall = %{public}@", isFresh ? "true" : "false")
 
         if isFresh {
+            CoreDataStorage.shared.markWaitingForFirstImport()
             showSplashScreen()
             window?.makeKeyAndVisible()
             waitForCloudKitImport(timeout: 10) { [weak self] in

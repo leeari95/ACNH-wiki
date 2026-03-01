@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import CloudKit
+import os
 import OSLog
 
 enum CoreDataStorageError: LocalizedError {
@@ -37,7 +38,10 @@ final class CoreDataStorage {
     static let cloudSyncDidFail = Notification.Name("CoreDataStorageCloudSyncDidFail")
     static let iCloudAccountDidChange = Notification.Name("CoreDataStorageICloudAccountDidChange")
 
-    private var lastDiagnosticsDate: Date = .distantPast
+    private let lastDiagnosticsDate = OSAllocatedUnfairLock(initialState: Date.distantPast)
+
+    /// 신규 설치 시 CloudKit Import 완료 전까지 UC 생성을 억제하는 플래그
+    private(set) var isWaitingForFirstImport = false
 
     private init() {}
 
@@ -101,6 +105,12 @@ final class CoreDataStorage {
             count = (try? context.count(for: request)) ?? 0
         }
         return count == .zero
+    }
+
+    /// 신규 설치 시 호출 — CloudKit Import 완료까지 로컬 UC 생성을 억제
+    func markWaitingForFirstImport() {
+        isWaitingForFirstImport = true
+        os_log(.info, log: .default, "🚀 Marked waiting for first CloudKit import")
     }
 
     // MARK: - Persistent History Cleanup
@@ -167,6 +177,7 @@ final class CoreDataStorage {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
             if event.type == .import {
+                isWaitingForFirstImport = false
                 logSyncDiagnostics(phase: "Import-end")
                 consolidateUserCollections()
                 NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
@@ -241,12 +252,20 @@ extension CoreDataStorage {
 
     /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅 (5초 throttle)
     func logSyncDiagnostics(phase: String) {
-        let now = Date()
-        guard now.timeIntervalSince(lastDiagnosticsDate) >= 5 else {
+        let shouldProceed = lastDiagnosticsDate.withLock { lastDate -> Bool in
+            let now = Date()
+            guard now.timeIntervalSince(lastDate) >= 5 else {
+                return false
+            }
+
+            lastDate = now
+            return true
+        }
+
+        guard shouldProceed else {
             os_log(.info, log: .default, "📊 [%{public}@] skipped (throttled)", phase)
             return
         }
-        lastDiagnosticsDate = now
 
         persistentContainer.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -289,12 +308,8 @@ extension CoreDataStorage {
                 let variants = uc.variants?.count ?? 0
                 let objectID = uc.objectID.uriRepresentation().lastPathComponent
 
-                os_log(.info, log: .default,
-                       "📊 [%{public}@] UC[%d] id=%{public}@ name=%{public}@ island=%{public}@"
-                       + " | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d",
-                       phase, index, objectID,
-                       uc.name ?? "(nil)", uc.islandName ?? "(nil)",
-                       critters, tasks, vLike, vHouse, npcLike, variants)
+                // swiftlint:disable:next line_length
+                os_log(.info, log: .default, "📊 [%{public}@] UC[%d] id=%{public}@ name=%{private}@ island=%{private}@ | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d", phase, index, objectID, uc.name ?? "(nil)", uc.islandName ?? "(nil)", critters, tasks, vLike, vHouse, npcLike, variants)
             }
 
             // ItemEntity 중복 진단 — 같은 name+category로 묶어서 중복 확인
@@ -351,24 +366,37 @@ extension CoreDataStorage {
             guard let self else {
                 return
             }
+
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
             let request = UserCollectionEntity.fetchRequest()
-            guard let allUCs = try? context.fetch(request), allUCs.count > 1 else {
+            let allUCs: [UserCollectionEntity]
+            do {
+                allUCs = try context.fetch(request)
+            } catch {
+                os_log(.error, log: .default,
+                       "🔧 Consolidation fetch failed: %{public}@",
+                       error.localizedDescription)
+                return
+            }
+
+            guard allUCs.count > 1 else {
                 return
             }
 
             let sorted = allUCs.sorted { self.relationshipCount(of: $0) > self.relationshipCount(of: $1) }
+            let keptUC = sorted[0]
 
             os_log(.info, log: .default,
                    "🔧 Consolidation: %d UCs found, keeping UC with %d relationships",
-                   allUCs.count, self.relationshipCount(of: sorted[0]))
+                   allUCs.count, self.relationshipCount(of: keptUC))
 
             for orphanUC in sorted.dropFirst() {
                 os_log(.info, log: .default,
-                       "🔧 Consolidation: deleting UC id=%{public}@ (%d relationships)",
+                       "🔧 Consolidation: reassigning & deleting UC id=%{public}@ (%d relationships)",
                        orphanUC.objectID.uriRepresentation().lastPathComponent,
                        self.relationshipCount(of: orphanUC))
+                self.reassignRelationships(from: orphanUC, to: keptUC)
                 context.delete(orphanUC)
             }
             context.saveContext()
@@ -379,8 +407,36 @@ extension CoreDataStorage {
         }
     }
 
+    /// orphan UC의 관계 엔티티를 kept UC로 이전 (데이터 손실 방지)
+    private func reassignRelationships(
+        from source: UserCollectionEntity,
+        to destination: UserCollectionEntity
+    ) {
+        // Note: "userColletion"은 CoreData 모델의 기존 typo (기술 부채)
+        let relationships: [(toManyKey: String, inverseKey: String)] = [
+            ("critters", "userColletion"),
+            ("dailyTasks", "userCollection"),
+            ("villagersLike", "userCollection"),
+            ("villagersHouse", "userCollection"),
+            ("npcLike", "userCollection"),
+            ("variants", "userCollection")
+        ]
+
+        for (toManyKey, inverseKey) in relationships {
+            guard let children = source.value(forKey: toManyKey) as? Set<NSManagedObject> else {
+                continue
+            }
+
+            for child in children {
+                child.setValue(destination, forKey: inverseKey)
+            }
+        }
+    }
+
     /// UC 관계가 nil인 고아 엔티티를 삭제
     private func cleanupOrphanedEntities(in context: NSManagedObjectContext) {
+        // Note: ItemEntity의 inverse relationship이 "userColletion" (typo)인 것은
+        // CoreData 모델의 기존 오타. 모델 마이그레이션이 필요하므로 별도 기술 부채로 관리.
         let entityRelMap: [(entity: String, relationship: String)] = [
             ("ItemEntity", "userColletion"),
             ("DailyTaskEntity", "userCollection"),
@@ -485,6 +541,13 @@ extension CoreDataStorage {
 
         if let existing = sorted.first {
             return existing
+        }
+
+        // 신규 설치 시 CloudKit Import 완료 전에는 UC 생성을 억제하여
+        // Export로 인한 iCloud 중복 UC 방지
+        if isWaitingForFirstImport {
+            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, waiting for CloudKit import — skipping creation")
+            throw CoreDataStorageError.notFound
         }
 
         os_log(.info, log: .default, "⚠️ getUserCollection: No UC found — creating new one")
