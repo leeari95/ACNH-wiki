@@ -7,20 +7,47 @@
 
 import UIKit
 import CloudKit
+import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
+    private var isAppSetup = false
     private var cloudImportToast: ToastView?
     private var importCount = 0
     private var toastTimeoutWork: DispatchWorkItem?
+    private var importObserver: NSObjectProtocol?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
         window = UIWindow(windowScene: windowScene)
+
+        os_log(.info, log: .default, "🚀 App launch — checking fresh install")
+        let isFresh = CoreDataStorage.shared.isFreshInstall()
+        os_log(.info, log: .default, "🚀 isFreshInstall = %{public}@", isFresh ? "true" : "false")
+
+        if isFresh {
+            showSplashScreen()
+            window?.makeKeyAndVisible()
+            waitForCloudKitImport(timeout: 10) { [weak self] in
+                self?.setupApp()
+            }
+        } else {
+            setupApp()
+        }
+    }
+
+    // MARK: - App Setup
+
+    private func setupApp() {
+        isAppSetup = true
+
+        CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
+        CoreDataStorage.shared.consolidateUserCollections()
+
         appCoordinator = AppCoordinator()
         appCoordinator?.start()
         window?.rootViewController = appCoordinator?.rootViewController
@@ -30,6 +57,47 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         observeAccountChanges()
         checkiCloudAccount()
         CoreDataStorage.shared.cleanupPersistentHistory()
+    }
+
+    // MARK: - Fresh Install: Wait for CloudKit Import
+
+    private func showSplashScreen() {
+        window?.rootViewController = CloudSyncSplashViewController()
+    }
+
+    private func waitForCloudKitImport(timeout: TimeInterval, completion: @escaping () -> Void) {
+        var hasCompleted = false
+
+        let complete: (String) -> Void = { [weak self] reason in
+            guard !hasCompleted else { return }
+            hasCompleted = true
+            if let observer = self?.importObserver {
+                NotificationCenter.default.removeObserver(observer)
+                self?.importObserver = nil
+            }
+            os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", reason)
+            DispatchQueue.main.async { completion() }
+        }
+
+        // iCloud 계정 확인 — 미로그인이면 Import 대기 불필요
+        CoreDataStorage.shared.checkiCloudAccountStatus { status in
+            if status != .available {
+                os_log(.info, log: .default, "🚀 iCloud not available (status=%d) — skipping wait", status.rawValue)
+                complete("no-icloud")
+            }
+        }
+
+        importObserver = NotificationCenter.default.addObserver(
+            forName: CoreDataStorage.didFinishCloudImport,
+            object: nil,
+            queue: .main
+        ) { _ in
+            complete("import-arrived")
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+            complete("timeout")
+        }
     }
 
     // MARK: - iCloud Account Check
@@ -102,7 +170,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleCloudImportStart() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self, let window = owner.window else {
+            guard let owner = self, owner.isAppSetup, let window = owner.window else {
                 return
             }
             owner.importCount += 1
@@ -118,7 +186,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     @objc private func handleCloudImportFinish() {
         DispatchQueue.main.async { [weak self] in
-            guard let owner = self else {
+            guard let owner = self, owner.isAppSetup else {
                 return
             }
             owner.importCount = max(owner.importCount - 1, 0)
@@ -126,6 +194,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 return
             }
             owner.dismissImportToast()
+            Items.shared.refreshUserCollection()
         }
     }
 
@@ -185,8 +254,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidDisconnect(_ scene: UIScene) {}
 
-    // 백그라운드에서 놓친 CloudKit 원격 변경 알림을 보완하기 위해 데이터 재로드
     func sceneDidBecomeActive(_ scene: UIScene) {
+        guard isAppSetup else { return }
         Items.shared.refreshUserCollection()
     }
 

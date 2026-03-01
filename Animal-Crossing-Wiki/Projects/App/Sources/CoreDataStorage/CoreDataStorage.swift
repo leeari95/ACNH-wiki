@@ -89,6 +89,18 @@ final class CoreDataStorage {
         }
     }
 
+    // MARK: - Fresh Install Detection
+
+    func isFreshInstall() -> Bool {
+        let context = persistentContainer.viewContext
+        var count = 0
+        context.performAndWait {
+            let request = UserCollectionEntity.fetchRequest()
+            count = (try? context.count(for: request)) ?? 0
+        }
+        return count == .zero
+    }
+
     // MARK: - Persistent History Cleanup
 
     func cleanupPersistentHistory() {
@@ -153,7 +165,12 @@ final class CoreDataStorage {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
             if event.type == .import {
+                logSyncDiagnostics(phase: "Import-end")
+                consolidateUserCollections()
                 NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
+            }
+            if event.type == .export {
+                logSyncDiagnostics(phase: "Export-end")
             }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
@@ -212,6 +229,166 @@ final class CoreDataStorage {
                 object: nil,
                 userInfo: ["status": status.rawValue]
             )
+        }
+    }
+}
+
+// MARK: - Sync Diagnostics
+
+extension CoreDataStorage {
+
+    /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅
+    func logSyncDiagnostics(phase: String) {
+        persistentContainer.performBackgroundTask { context in
+            context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+            let entityNames = [
+                "UserCollectionEntity", "ItemEntity", "DailyTaskEntity",
+                "VillagersLikeEntity", "VillagersHouseEntity", "NPCLikeEntity",
+                "VariantCollectionEntity"
+            ]
+
+            var counts: [String: Int] = [:]
+            for name in entityNames {
+                let request = NSFetchRequest<NSManagedObject>(entityName: name)
+                counts[name] = (try? context.count(for: request)) ?? -1
+            }
+
+            os_log(.info, log: .default,
+                   "📊 [%{public}@] UC=%d Items=%d Tasks=%d VLike=%d VHouse=%d NPC=%d Variants=%d",
+                   phase,
+                   counts["UserCollectionEntity"] ?? -1,
+                   counts["ItemEntity"] ?? -1,
+                   counts["DailyTaskEntity"] ?? -1,
+                   counts["VillagersLikeEntity"] ?? -1,
+                   counts["VillagersHouseEntity"] ?? -1,
+                   counts["NPCLikeEntity"] ?? -1,
+                   counts["VariantCollectionEntity"] ?? -1)
+
+            // UserCollectionEntity 상세 진단 (중복 탐지 핵심)
+            let ucRequest = UserCollectionEntity.fetchRequest()
+            guard let ucResults = try? context.fetch(ucRequest) else { return }
+
+            for (i, uc) in ucResults.enumerated() {
+                let critters = uc.critters?.count ?? 0
+                let tasks = uc.dailyTasks?.count ?? 0
+                let vLike = uc.villagersLike?.count ?? 0
+                let vHouse = uc.villagersHouse?.count ?? 0
+                let npcLike = uc.npcLike?.count ?? 0
+                let variants = uc.variants?.count ?? 0
+                let objectID = uc.objectID.uriRepresentation().lastPathComponent
+
+                os_log(.info, log: .default,
+                       "📊 [%{public}@] UC[%d] id=%{public}@ name=%{public}@ island=%{public}@ | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d",
+                       phase, i, objectID,
+                       uc.name ?? "(nil)", uc.islandName ?? "(nil)",
+                       critters, tasks, vLike, vHouse, npcLike, variants)
+            }
+
+            // ItemEntity 중복 진단 — 같은 name+category로 묶어서 중복 확인
+            let itemRequest = NSFetchRequest<NSManagedObject>(entityName: "ItemEntity")
+            if let items = try? context.fetch(itemRequest) {
+                var grouped: [String: Int] = [:]
+                var orphanCount = 0
+                var ucRefs: [String: Int] = [:]  // UC objectID → item count
+
+                for item in items {
+                    let name = item.value(forKey: "name") as? String ?? "?"
+                    let category = item.value(forKey: "category") as? String ?? "?"
+                    grouped["\(category)_\(name)", default: 0] += 1
+
+                    // userColletion (typo in model) 관계 확인
+                    if let ucRef = item.value(forKey: "userColletion") as? NSManagedObject {
+                        let ucID = ucRef.objectID.uriRepresentation().lastPathComponent
+                        ucRefs[ucID, default: 0] += 1
+                    } else {
+                        orphanCount += 1
+                    }
+                }
+
+                let duplicates = grouped.filter { $0.value > 1 }
+                os_log(.info, log: .default,
+                       "📊 [%{public}@] Items: %d total, %d unique keys, %d duplicate keys, %d orphans",
+                       phase, items.count, grouped.count, duplicates.count, orphanCount)
+
+                // 어느 UC에 몇 개의 아이템이 연결되어 있는지
+                for (ucID, count) in ucRefs.sorted(by: { $0.value > $1.value }) {
+                    os_log(.info, log: .default,
+                           "📊 [%{public}@] Items → UC %{public}@: %d items",
+                           phase, ucID, count)
+                }
+
+                // 상위 10개 중복 항목 로깅
+                for (key, count) in duplicates.sorted(by: { $0.value > $1.value }).prefix(10) {
+                    os_log(.info, log: .default,
+                           "📊 [%{public}@] Dup: %{public}@ × %d",
+                           phase, key, count)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - UC Consolidation
+
+extension CoreDataStorage {
+
+    /// 중복 UserCollectionEntity를 하나로 통합하고 고아 엔티티를 정리
+    func consolidateUserCollections() {
+        performBackgroundTask { [weak self] context in
+            guard let self else { return }
+            context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+            let request = UserCollectionEntity.fetchRequest()
+            guard let allUCs = try? context.fetch(request), allUCs.count > 1 else { return }
+
+            let sorted = allUCs.sorted { self.relationshipCount(of: $0) > self.relationshipCount(of: $1) }
+
+            os_log(.info, log: .default,
+                   "🔧 Consolidation: %d UCs found, keeping UC with %d relationships",
+                   allUCs.count, self.relationshipCount(of: sorted[0]))
+
+            for orphanUC in sorted.dropFirst() {
+                os_log(.info, log: .default,
+                       "🔧 Consolidation: deleting UC id=%{public}@ (%d relationships)",
+                       orphanUC.objectID.uriRepresentation().lastPathComponent,
+                       self.relationshipCount(of: orphanUC))
+                context.delete(orphanUC)
+            }
+            context.saveContext()
+
+            self.cleanupOrphanedEntities(in: context)
+
+            os_log(.info, log: .default, "🔧 Consolidation: completed")
+        }
+    }
+
+    /// UC 관계가 nil인 고아 엔티티를 삭제
+    private func cleanupOrphanedEntities(in context: NSManagedObjectContext) {
+        let entityRelMap: [(entity: String, relationship: String)] = [
+            ("ItemEntity", "userColletion"),
+            ("DailyTaskEntity", "userCollection"),
+            ("VillagersLikeEntity", "userCollection"),
+            ("VillagersHouseEntity", "userCollection"),
+            ("NPCLikeEntity", "userCollection"),
+            ("VariantCollectionEntity", "userCollection")
+        ]
+
+        var totalOrphans = 0
+        for (entity, rel) in entityRelMap {
+            let request = NSFetchRequest<NSManagedObject>(entityName: entity)
+            request.predicate = NSPredicate(format: "%K == nil", rel)
+            if let orphans = try? context.fetch(request), !orphans.isEmpty {
+                os_log(.info, log: .default,
+                       "🔧 Orphan cleanup: %{public}@ → %d orphans deleted",
+                       entity, orphans.count)
+                orphans.forEach { context.delete($0) }
+                totalOrphans += orphans.count
+            }
+        }
+
+        if totalOrphans > 0 {
+            context.saveContext()
         }
     }
 }
@@ -282,7 +459,18 @@ extension CoreDataStorage {
             self.relationshipCount(of: lhs) > self.relationshipCount(of: rhs)
         }
 
-        return sorted.first ?? UserCollectionEntity(UserInfo(), context: context)
+        if results.count > 1 {
+            os_log(.info, log: .default,
+                   "⚠️ getUserCollection: %d UCs found (returning UC with %d relationships)",
+                   results.count, self.relationshipCount(of: sorted.first!))
+        }
+
+        if let existing = sorted.first {
+            return existing
+        }
+
+        os_log(.info, log: .default, "⚠️ getUserCollection: No UC found — creating new one")
+        return UserCollectionEntity(UserInfo(), context: context)
     }
 
     private func relationshipCount(of entity: UserCollectionEntity) -> Int {
