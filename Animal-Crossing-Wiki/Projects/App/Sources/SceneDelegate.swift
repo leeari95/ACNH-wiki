@@ -152,7 +152,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let alert = UIAlertController(title: "iCloud".localized, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
-        window?.rootViewController?.present(alert, animated: true)
+        presentAlert(alert)
+    }
+
+    private func presentAlert(_ alert: UIAlertController) {
+        var presenter = window?.rootViewController
+        while let presented = presenter?.presentedViewController {
+            presenter = presented
+        }
+        presenter?.present(alert, animated: true)
     }
 
     // MARK: - Cloud Import Toast
@@ -220,7 +228,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
             let alert = UIAlertController(title: "iCloud".localized, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
-            self?.window?.rootViewController?.present(alert, animated: true)
+            self?.presentAlert(alert)
         }
     }
 
@@ -241,6 +249,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
         ToastManager.shared.dismiss()
 
+        // Extend execution time for pending CloudKit sync operations (import/export)
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         backgroundTaskID = UIApplication.shared.beginBackgroundTask {
             UIApplication.shared.endBackgroundTask(backgroundTaskID)

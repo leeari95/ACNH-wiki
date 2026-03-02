@@ -41,7 +41,11 @@ final class CoreDataStorage {
     private let lastDiagnosticsDate = OSAllocatedUnfairLock(initialState: Date.distantPast)
 
     /// 신규 설치 시 CloudKit Import 완료 전까지 UC 생성을 억제하는 플래그
-    private(set) var isWaitingForFirstImport = false
+    private let _isWaitingForFirstImport = OSAllocatedUnfairLock(initialState: false)
+    private(set) var isWaitingForFirstImport: Bool {
+        get { _isWaitingForFirstImport.withLock { $0 } }
+        set { _isWaitingForFirstImport.withLock { $0 = newValue } }
+    }
 
     private init() {}
 

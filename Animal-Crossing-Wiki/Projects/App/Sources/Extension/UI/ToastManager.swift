@@ -69,9 +69,10 @@ final class ToastManager {
         timeoutWork?.cancel()
         timeoutWork = nil
         referenceCount = 0
-        currentToast?.dismiss()
+        let toastToDismiss = currentToast
+        currentToast = nil
+        toastToDismiss?.dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            self?.currentToast = nil
             self?.teardownWindow()
         }
     }

@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
 
-        // CloudKit silent push를 수신하기 위해 APNs에 디바이스 등록
+        // Register with APNs to receive CloudKit silent pushes
         application.registerForRemoteNotifications()
 
         return true

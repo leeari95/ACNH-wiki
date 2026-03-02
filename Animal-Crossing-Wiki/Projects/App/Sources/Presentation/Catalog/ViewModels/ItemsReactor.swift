@@ -166,7 +166,9 @@ final class ItemsReactor: Reactor {
             allItems = items
             if mode == .user && allItems.isEmpty {
                 performOnMain { [weak self] in
-                    guard let owner = self else { return }
+                    guard let owner = self else {
+                        return
+                    }
 
                     (owner.coordinator as? CollectionCoordinator)?.transition(for: .pop)
                 }
@@ -194,7 +196,9 @@ final class ItemsReactor: Reactor {
 
         case .showDetail(let item):
             performOnMain { [weak self] in
-                guard let owner = self else { return }
+                guard let owner = self else {
+                    return
+                }
 
                 if let coordinator = owner.coordinator as? CatalogCoordinator {
                     coordinator.transition(for: .itemDetail(item))

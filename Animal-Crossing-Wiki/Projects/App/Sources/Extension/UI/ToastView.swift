@@ -38,7 +38,8 @@ final class ToastView: UIView {
 
     private func configure() {
         backgroundColor = .secondarySystemBackground
-        clipsToBounds = true
+        clipsToBounds = false
+        layer.masksToBounds = false
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.15
         layer.shadowOffset = CGSize(width: 0, height: 2)
