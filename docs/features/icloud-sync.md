@@ -134,6 +134,9 @@ waitForCloudKitImport(timeout: 10)
     ├── import-arrived → setupApp()
     ├── no-icloud → setupApp()
     └── timeout → setupApp()
+                        ↓
+              setupApp() → clearWaitingForFirstImport()
+              (모든 경로에서 플래그 해제 보장)
 ```
 
 ## UC Duplication Prevention
@@ -144,7 +147,7 @@ waitForCloudKitImport(timeout: 10)
 
 1. 신규 설치 감지 시 `markWaitingForFirstImport()` 호출
 2. `getUserCollection()`에서 UC 미존재 + 플래그 ON → `.notFound` throw (새 UC 생성 억제)
-3. CloudKit Import 완료 시 플래그 자동 해제 → 이후 정상 동작
+3. CloudKit Import 완료 시 플래그 자동 해제 + `setupApp()`에서 `clearWaitingForFirstImport()` 호출 (no-iCloud/timeout 경로 보장)
 4. 모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → debugPrint)
 
 **기존 중복 정리**: `consolidateUserCollections()` — 앱 시작/Import 완료 시 자동 실행:
@@ -171,3 +174,4 @@ waitForCloudKitImport(timeout: 10)
 
 - `sceneDidEnterBackground`에서 `beginBackgroundTask` 호출 (30초)
 - CloudKit 동기화 작업이 완료될 시간 확보
+- expiration handler와 타이머 양쪽에서 idempotent하게 종료 (이중 호출 방지)

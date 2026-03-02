@@ -73,7 +73,13 @@ final class ToastManager {
         currentToast = nil
         toastToDismiss?.dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            self?.teardownWindow()
+            guard let owner = self else {
+                return
+            }
+            guard owner.currentToast == nil else {
+                return
+            }
+            owner.teardownWindow()
         }
     }
 

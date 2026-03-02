@@ -32,7 +32,10 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
         RANGE="${REMOTE_SHA}..${LOCAL_SHA}"
     fi
 
-    CHANGED_FILES=$(git diff --name-only "$RANGE" 2>/dev/null || true)
+    if ! CHANGED_FILES=$(git diff --name-only "$RANGE" 2>/dev/null); then
+        echo "❌ Push blocked: 변경 파일 계산에 실패했습니다. (range: $RANGE)" >&2
+        exit 1
+    fi
     [ -z "$CHANGED_FILES" ] && continue
 
     # Check if docs/ is already updated

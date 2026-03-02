@@ -117,6 +117,12 @@ final class CoreDataStorage {
         os_log(.info, log: .default, "🚀 Marked waiting for first CloudKit import")
     }
 
+    /// Import 대기 플래그 해제 — setupApp() 또는 no-iCloud 경로에서 호출
+    func clearWaitingForFirstImport() {
+        isWaitingForFirstImport = false
+        os_log(.info, log: .default, "🚀 Cleared waiting for first CloudKit import")
+    }
+
     // MARK: - Persistent History Cleanup
 
     func cleanupPersistentHistory() {

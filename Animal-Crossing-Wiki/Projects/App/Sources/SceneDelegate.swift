@@ -43,6 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func setupApp() {
         isAppSetup = true
 
+        CoreDataStorage.shared.clearWaitingForFirstImport()
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
         CoreDataStorage.shared.consolidateUserCollections()
 
@@ -251,12 +252,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Extend execution time for pending CloudKit sync operations (import/export)
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask {
+        let endTask = {
+            guard backgroundTaskID != .invalid else {
+                return
+            }
             UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
         }
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(expirationHandler: endTask)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            endTask()
         }
     }
 
