@@ -153,10 +153,31 @@ make setup
 
 `make setup` 실행 시 `git config core.hooksPath .githooks`가 자동 설정된다. 이후 모든 `git commit` 전에 `.githooks/pre-commit`이 실행되어 `make validate`를 자동 수행한다.
 
+### Pre-push Hook (docs 업데이트 강제)
+
+**파일**: `.githooks/pre-push`
+
+push 대상 커밋에 `.swift` 소스 변경이 있으면서 `docs/` 변경이 없으면 **push를 차단**한다.
+소스 디렉토리별로 어떤 문서를 업데이트해야 하는지 안내를 출력한다.
+
+| 소스 디렉토리 | 관련 문서 |
+|--------------|----------|
+| CoreDataStorage/ | docs/features/icloud-sync.md, docs/guides/add-coredata-entity.md |
+| Utility/ | docs/patterns/data-flow.md, docs/gotchas.md |
+| Networking/ | docs/guides/add-api-endpoint.md, docs/patterns/data-flow.md |
+| Models/ | docs/glossary.md, docs/architecture.md |
+| Presentation/{Feature}/ | docs/features/{feature}.md |
+| SceneDelegate / AppDelegate | docs/architecture.md, docs/features/icloud-sync.md |
+| Coordinator | docs/patterns/coordinator-pattern.md, docs/architecture.md |
+
 ### 우회 방법
 
 ```bash
+# pre-commit 우회
 git commit --no-verify
+
+# pre-push 우회 (문서 변경이 불필요한 경우)
+git push --no-verify
 ```
 
-`--no-verify` 플래그로 pre-commit hook을 우회할 수 있지만, 아키텍처 위반이 CI에서 감지되므로 **비추천**한다. 긴급 상황에서만 사용할 것.
+`--no-verify` 플래그로 hook을 우회할 수 있지만, 아키텍처 위반이 CI에서 감지되므로 **비추천**한다. 긴급 상황에서만 사용할 것.

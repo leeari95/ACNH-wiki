@@ -367,8 +367,8 @@ if [[ -d "${EXTENSION_DIR}" ]]; then
             continue
         fi
 
-        # Exclude UIViewController — it's a UIKit base class, not a Presentation type
-        if echo "${content}" | grep -qE 'UIViewController'; then
+        # Exclude UIKit base types — UIViewController and rootViewController property
+        if echo "${content}" | grep -qE 'UIViewController|rootViewController'; then
             continue
         fi
 

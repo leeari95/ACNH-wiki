@@ -65,6 +65,18 @@ final class Items {
             owner.fixedVisitNPCList.accept(fixedVisitNPCList)
         }
         .disposed(by: disposeBag)
+
+        Observable.merge(
+            NotificationCenter.default.rx.notification(CoreDataStorage.didReceiveRemoteChanges),
+            NotificationCenter.default.rx.notification(CoreDataStorage.didFinishCloudImport)
+        )
+        // CloudKit 이벤트가 짧은 간격으로 다수 발생하므로 2초 debounce로 통합 (500ms → 2s)
+        .debounce(.seconds(2), scheduler: MainScheduler.instance)
+        .subscribe(with: self) { owner, _ in
+            os_log(.info, log: .default, "🔄 [Path-B] Items.swift debounced subscription → setUpUserCollection")
+            owner.setUpUserCollection()
+        }
+        .disposed(by: disposeBag)
     }
 
     private func setUpUserCollection() {
@@ -84,10 +96,14 @@ final class Items {
         CoreDataItemsStorage().fetch()
             .subscribe(onSuccess: { items in
                 var userItems = [Category: [Item]]()
-                items.forEach { item in
-                    var items = userItems[item.category] ?? []
-                    items.append(item)
-                    userItems[item.category] = items
+                var seen = Set<String>()
+                for item in items {
+                    let key = "\(item.category.rawValue)_\(item.name)_\(item.genuine ?? false)"
+                    guard seen.insert(key).inserted else {
+                        continue
+                    }
+
+                    userItems[item.category, default: []].append(item)
                 }
                 self.userItems.accept(userItems)
             }, onFailure: { error in
@@ -474,6 +490,10 @@ extension Items {
         return items
             .filter { $0.keyword.contains(keyword) }
             .sorted(by: {$0.category.rawValue < $1.category.rawValue })
+    }
+
+    func refreshUserCollection() {
+        setUpUserCollection()
     }
 
     func reset() {

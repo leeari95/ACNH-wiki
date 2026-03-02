@@ -87,6 +87,7 @@ let project = Project(
                 "Sources/**/*.xib"
             ],
                                    privacyManifest: appPrivacyInfo),
+            entitlements: .file(path: "Entitlements.plist"),
             scripts: [.runSwiftLintAutocorrect, .runSwiftLint, .uploadFirebaseDsym],
             dependencies: dependencies,
             settings: settings,

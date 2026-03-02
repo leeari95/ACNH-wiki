@@ -65,6 +65,12 @@
 "Data reset" = "수집 및 섬 데이터 초기화";
 "Notice" = "알림";
 "Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
+"Fetching collection data from iCloud..." = "iCloud를 통해 수집 기록을 불러오는 중입니다.";
+"iCloud is not signed in. Data will be saved locally only." = "iCloud에 로그인되어 있지 않습니다. 데이터는 기기에만 저장됩니다.";
+"iCloud access is restricted for this device." = "이 기기에서 iCloud 접근이 제한되어 있습니다.";
+"iCloud is temporarily unavailable. Data will sync when available." = "iCloud를 일시적으로 사용할 수 없습니다. 사용 가능해지면 동기화됩니다.";
+"iCloud status could not be determined. Data will be saved locally only." = "iCloud 상태를 확인할 수 없습니다. 데이터는 기기에만 저장됩니다.";
+"iCloud storage is full. Please free up space to continue syncing." = "iCloud 저장 공간이 가득 찼습니다. 동기화를 계속하려면 공간을 확보하세요.";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "오늘의 할일";
