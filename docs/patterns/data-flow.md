@@ -6,7 +6,7 @@
 
 앱의 모든 데이터가 `Items.shared` 싱글톤을 통해 흐름:
 
-```
+```text
 ┌──────────┐     ┌───────────────┐     ┌───────────────┐     ┌──────────┐
 │  APIs    │────→│ Items.shared  │←────│  CoreData     │←────│ CloudKit │
 │ (fetch)  │     │ BehaviorRelay │     │  (user data)  │     │ (iCloud) │
@@ -49,7 +49,7 @@
 
 ## API → Domain Model Flow
 
-```
+```text
 APIRequest struct (BugRequest 등)
     ↓ DefaultAPIProvider.request()
 Alamofire AF.request()
@@ -65,7 +65,7 @@ Items.shared.categories (Observable stream)
 
 ## User Action → Persistence Flow
 
-```
+```text
 User taps "collect item"
     ↓
 Reactor.action.onNext(.toggleItem(item))
@@ -118,7 +118,7 @@ Reactor에서 구독 가능한 `Items.shared` 스트림:
 
 CloudKit 원격 변경 시 자동으로 UI가 갱신되는 흐름 (Path-B):
 
-```
+```text
 CloudKit Import/RemoteChange 발생
     ↓
 NSPersistentStoreRemoteChange 알림
@@ -127,7 +127,7 @@ CoreDataStorage.handleRemoteChange()
     ↓
 NotificationCenter.post(didReceiveRemoteChanges)
     ↓
-Items.swift (debounce 500ms)
+Items.swift (debounce 2s)
     ↓
 setUpUserCollection() → BehaviorRelay.accept() → UI 갱신
 ```

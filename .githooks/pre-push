@@ -75,7 +75,7 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
                 add_suggestion "Catalog" "docs/features/catalog.md"
                 ;;
             *Presentation/Animals/*.swift)
-                add_suggestion "Animals" "docs/features/catalog.md"
+                add_suggestion "Animals" "docs/features/catalog.md, docs/architecture.md"
                 ;;
             *Presentation/TurnipPrices/*.swift)
                 add_suggestion "TurnipPrices" "docs/features/turnip-prices.md"

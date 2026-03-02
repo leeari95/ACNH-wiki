@@ -7,7 +7,7 @@
 
 ## Architecture
 
-```
+```text
 Device A                    CloudKit Server               Device B
 ┌──────────┐               ┌──────────────┐              ┌──────────┐
 │ CoreData │──Export──────→│   iCloud     │──Import─────→│ CoreData │
@@ -29,7 +29,7 @@ Device A                    CloudKit Server               Device B
 |------|------|
 | `CoreDataStorage.swift` | `NSPersistentCloudKitContainer` 설정, CloudKit 이벤트 감지, iCloud 계정 확인, UC 중복 방지, Persistent History 정리 |
 | `SceneDelegate.swift` | 신규 설치 감지 + CloudKit Import 대기, iCloud 계정/에러 알림, ToastManager 연동 |
-| `Items.swift` | `didReceiveRemoteChanges` 구독 (debounce 500ms) → `setUpUserCollection()` |
+| `Items.swift` | `didReceiveRemoteChanges` 구독 (debounce 2s) → `setUpUserCollection()` |
 | `ToastManager.swift` | 전용 UIWindow 기반 토스트 매니저. 레퍼런스 카운팅, 타임아웃, 백그라운드 dismiss |
 | `ToastView.swift` | Import 상태 토스트 UI (캡슐형 디자인, ActivityIndicator + Label, slide 애니메이션) |
 | `CloudSyncSplashViewController.swift` | 신규 설치 시 CloudKit Import 대기 스플래시 화면 |
@@ -38,7 +38,7 @@ Device A                    CloudKit Server               Device B
 
 ### Export (로컬 저장 → CloudKit)
 
-```
+```text
 User taps "collect item"
     ↓
 CoreDataItemsStorage.update() → context.saveContext()
@@ -50,7 +50,7 @@ CloudKit Server에 반영
 
 ### Import (CloudKit → 다른 기기)
 
-```
+```text
 CloudKit Silent Push 수신
     ↓
 NSPersistentCloudKitContainer 자동 Import
@@ -70,10 +70,10 @@ Items.setUpUserCollection() → BehaviorRelay.accept() → UI 갱신
 
 CloudKit 이벤트(`didReceiveRemoteChanges` / `didFinishCloudImport`)가 Items.swift의 debounced subscription(Path-B)을 통해 자동으로 데이터를 갱신하므로 `sceneDidBecomeActive`에서 중복 호출하지 않음.
 
-```
+```text
 CloudKit Import/RemoteChange 발생
     ↓
-Path-B: Items.swift debounce(500ms)
+Path-B: Items.swift debounce(2s)
     ↓
 setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 ```
@@ -121,7 +121,7 @@ setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 
 신규 설치 시 CloudKit Import를 기다려 기존 iCloud 데이터를 수신한 후 앱을 시작:
 
-```
+```text
 SceneDelegate.scene(_:willConnectTo:)
     ↓
 isFreshInstall() == true
