@@ -192,9 +192,6 @@ final class CoreDataStorage {
                 consolidateUserCollections()
                 NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
             }
-            if event.type == .export {
-                os_log(.info, log: .default, "CloudKit Export completed")
-            }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
             if event.type == .import {
@@ -303,7 +300,12 @@ extension CoreDataStorage {
                    counts["NPCLikeEntity"] ?? -1,
                    counts["VariantCollectionEntity"] ?? -1)
 
-            // UserCollectionEntity 상세 진단 (중복 탐지 핵심)
+            // UC가 2개 이상일 때만 상세 진단 (중복 탐지)
+            let ucCount = counts["UserCollectionEntity"] ?? 0
+            guard ucCount > 1 else {
+                return
+            }
+
             let ucRequest = UserCollectionEntity.fetchRequest()
             guard let ucResults = try? context.fetch(ucRequest) else {
                 return
@@ -320,47 +322,6 @@ extension CoreDataStorage {
 
                 // swiftlint:disable:next line_length
                 os_log(.info, log: .default, "📊 [%{public}@] UC[%d] id=%{public}@ name=%{private}@ island=%{private}@ | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d", phase, index, objectID, uc.name ?? "(nil)", uc.islandName ?? "(nil)", critters, tasks, vLike, vHouse, npcLike, variants)
-            }
-
-            // ItemEntity 중복 진단 — 같은 name+category로 묶어서 중복 확인
-            let itemRequest = NSFetchRequest<NSManagedObject>(entityName: "ItemEntity")
-            if let items = try? context.fetch(itemRequest) {
-                var grouped: [String: Int] = [:]
-                var orphanCount = 0
-                var ucRefs: [String: Int] = [:]  // UC objectID → item count
-
-                for item in items {
-                    let name = item.value(forKey: "name") as? String ?? "?"
-                    let category = item.value(forKey: "category") as? String ?? "?"
-                    grouped["\(category)_\(name)", default: 0] += 1
-
-                    // userColletion (typo in model) 관계 확인
-                    if let ucRef = item.value(forKey: "userColletion") as? NSManagedObject {
-                        let ucID = ucRef.objectID.uriRepresentation().lastPathComponent
-                        ucRefs[ucID, default: 0] += 1
-                    } else {
-                        orphanCount += 1
-                    }
-                }
-
-                let duplicates = grouped.filter { $0.value > 1 }
-                os_log(.info, log: .default,
-                       "📊 [%{public}@] Items: %d total, %d unique keys, %d duplicate keys, %d orphans",
-                       phase, items.count, grouped.count, duplicates.count, orphanCount)
-
-                // 어느 UC에 몇 개의 아이템이 연결되어 있는지
-                for (ucID, count) in ucRefs.sorted(by: { $0.value > $1.value }) {
-                    os_log(.info, log: .default,
-                           "📊 [%{public}@] Items → UC %{public}@: %d items",
-                           phase, ucID, count)
-                }
-
-                // 상위 10개 중복 항목 로깅
-                for (key, count) in duplicates.sorted(by: { $0.value > $1.value }).prefix(10) {
-                    os_log(.info, log: .default,
-                           "📊 [%{public}@] Dup: %{public}@ × %d",
-                           phase, key, count)
-                }
             }
         }
     }

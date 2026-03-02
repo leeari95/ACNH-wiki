@@ -155,6 +155,11 @@ waitForCloudKitImport(timeout: 10)
 - 나머지 UC의 자식 엔티티를 보존 UC로 `reassignRelationships`
 - 고아 UC 삭제 → CloudKit Export로 iCloud에서도 정리
 
+**진단 로그**: `logSyncDiagnostics(phase:)` — UC 중복 감지 시에만 상세 진단 출력:
+- Entity별 카운트 요약은 항상 출력
+- UC가 2개 이상일 때만 각 UC의 관계 수, objectID 등 상세 정보 로깅
+- 불필요한 ItemEntity 전체 스캔 없음 (성능 최적화)
+
 ## Migration (기존 데이터 → CloudKit)
 
 `migrateExistingDataToCloudKit()` — 일회성 마이그레이션:
