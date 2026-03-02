@@ -23,7 +23,7 @@ while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
     # Determine diff range
     if [ "$REMOTE_SHA" = "0000000000000000000000000000000000000000" ]; then
         # New branch: compare against default branch
-        BASE=$(git merge-base HEAD origin/develop 2>/dev/null || git merge-base HEAD origin/main 2>/dev/null || echo "")
+        BASE=$(git merge-base HEAD "$REMOTE/develop" 2>/dev/null || git merge-base HEAD "$REMOTE/main" 2>/dev/null || echo "")
         if [ -z "$BASE" ]; then
             continue
         fi
