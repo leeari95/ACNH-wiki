@@ -42,7 +42,7 @@ fi
 # --- CoreDataStorage layer ---
 if echo "$FILE_PATH" | grep -q "/CoreDataStorage/"; then
     cat <<'EOJSON'
-{"message": "⚠️ CoreDataStorage 변경 감지. 문서 업데이트 확인:\n- docs/guides/add-coredata-entity.md (새 Entity/Storage 시)\n- docs/patterns/data-flow.md (영속화 흐름 변경 시)"}
+{"message": "⚠️ CoreDataStorage 변경 감지. 문서 업데이트 확인:\n- docs/features/icloud-sync.md (CloudKit 동기화 관련 변경 시)\n- docs/guides/add-coredata-entity.md (새 Entity/Storage 시)\n- docs/patterns/data-flow.md (영속화 흐름 변경 시)"}
 EOJSON
     exit 0
 fi
@@ -51,6 +51,14 @@ fi
 if echo "$FILE_PATH" | grep -q "/Utility/"; then
     cat <<'EOJSON'
 {"message": "⚠️ Utility 변경 감지. 문서 업데이트 확인:\n- docs/patterns/data-flow.md (Items.shared 스트림 변경 시)\n- docs/gotchas.md (새로운 주의사항 시)"}
+EOJSON
+    exit 0
+fi
+
+# --- SceneDelegate / AppDelegate ---
+if echo "$FILE_PATH" | grep -qE "(SceneDelegate|AppDelegate)\.swift$"; then
+    cat <<'EOJSON'
+{"message": "⚠️ SceneDelegate/AppDelegate 변경 감지. 문서 업데이트 확인:\n- docs/architecture.md (앱 라이프사이클 변경 시)\n- docs/features/icloud-sync.md (CloudKit/토스트/계정 관련 변경 시)"}
 EOJSON
     exit 0
 fi

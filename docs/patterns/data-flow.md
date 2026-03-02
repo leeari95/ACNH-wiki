@@ -6,11 +6,11 @@
 
 앱의 모든 데이터가 `Items.shared` 싱글톤을 통해 흐름:
 
-```
-┌──────────┐     ┌───────────────┐     ┌───────────────┐
-│  APIs    │────→│ Items.shared  │←────│  CoreData     │
-│ (fetch)  │     │ BehaviorRelay │     │  (user data)  │
-└──────────┘     └───────┬───────┘     └───────────────┘
+```text
+┌──────────┐     ┌───────────────┐     ┌───────────────┐     ┌──────────┐
+│  APIs    │────→│ Items.shared  │←────│  CoreData     │←────│ CloudKit │
+│ (fetch)  │     │ BehaviorRelay │     │  (user data)  │     │ (iCloud) │
+└──────────┘     └───────┬───────┘     └───────────────┘     └──────────┘
                          │ Observable streams
                          ▼
                  ┌───────────────┐
@@ -49,7 +49,7 @@
 
 ## API → Domain Model Flow
 
-```
+```text
 APIRequest struct (BugRequest 등)
     ↓ DefaultAPIProvider.request()
 Alamofire AF.request()
@@ -65,7 +65,7 @@ Items.shared.categories (Observable stream)
 
 ## User Action → Persistence Flow
 
-```
+```text
 User taps "collect item"
     ↓
 Reactor.action.onNext(.toggleItem(item))
@@ -112,3 +112,26 @@ Reactor에서 구독 가능한 `Items.shared` 스트림:
 | `allCheckItem(category:)` | 카테고리 전체 체크 |
 | `resetCheckItem(category:)` | 카테고리 전체 리셋 |
 | `reset()` | 전체 데이터 초기화 |
+| `refreshUserCollection()` | CoreData에서 사용자 데이터 재로드 |
+
+## iCloud Sync Flow
+
+CloudKit 원격 변경 시 자동으로 UI가 갱신되는 흐름 (Path-B):
+
+```text
+CloudKit Import/RemoteChange 발생
+    ↓
+NSPersistentStoreRemoteChange 알림
+    ↓
+CoreDataStorage.handleRemoteChange()
+    ↓
+NotificationCenter.post(didReceiveRemoteChanges)
+    ↓
+Items.swift (debounce 2s)
+    ↓
+setUpUserCollection() → BehaviorRelay.accept() → UI 갱신
+```
+
+Foreground 복귀 시에도 Path-B가 자동으로 처리하므로 `sceneDidBecomeActive`에서 중복 호출하지 않음.
+
+→ 상세: [features/icloud-sync.md](../features/icloud-sync.md)

@@ -57,11 +57,11 @@
 ### CoreDataStorage
 
 - **Path**: `Projects/App/Sources/CoreDataStorage/`
-- **Imports**: Foundation, CoreData, RxSwift
+- **Imports**: Foundation, CoreData, CloudKit, RxSwift, OSLog
 - **Rule**: Presentation, Networking을 import하지 않음. Entity ↔ Domain 변환은 매핑 extension에서 처리.
 - **Pattern**: Storage 프로토콜 → CoreData 구현체 → Entity 매핑
 - **Key files**:
-  - `CoreDataStorage.swift` - 싱글톤. `NSPersistentCloudKitContainer`. 자동 lightweight migration.
+  - `CoreDataStorage.swift` - 싱글톤. `NSPersistentCloudKitContainer`. 자동 lightweight migration. CloudKit 이벤트 감지, iCloud 계정 확인, Persistent History 정리. → [features/icloud-sync.md](features/icloud-sync.md)
   - `ItemsStorage/` - `ItemsStorage` 프로토콜 + `CoreDataItemsStorage` 구현
   - `UserInfoStorage/`, `DailyTaskStorage/`, `VariantsStorage/`, `VillagersLikeStorage/`, `VillagersHouseStorage/`, `NPCLikeStorage/`
 - **Root entity**: `UserCollectionEntity` (모든 컬렉션의 부모)
@@ -85,6 +85,8 @@
 - **Key files**:
   - `String+extension.swift` - `.localized` (NSLocalizedString 래퍼), `.chosung` (한국어 초성 검색)
   - `Reactor+extension.swift` - `rx.viewDidLoad` 이벤트
+  - `UI/ToastManager.swift` - 전용 UIWindow 기반 토스트 매니저 (레퍼런스 카운팅, 타임아웃)
+  - `UI/ToastView.swift` - 캡슐형 토스트 UI (ActivityIndicator + Label, slide 애니메이션)
   - `UI/` - UIView, UIImage, UIColor 등 UIKit extension 15개+
 
 ### Presentation
@@ -116,7 +118,8 @@ Feature/
 
 - **Path**: `Projects/App/Sources/`
 - `AppDelegate.swift` - Firebase/Crashlytics 초기화
-- `SceneDelegate.swift` - UIWindow + AppCoordinator 생성
+- `SceneDelegate.swift` - UIWindow + AppCoordinator 생성. 신규 설치 시 CloudKit Import 대기, iCloud 계정/에러 알림, ToastManager 연동
+- `CloudSyncSplashViewController.swift` - 신규 설치 시 CloudKit Import 대기 스플래시 화면
 - `AppCoordinator.swift` - UITabBarController + 5개 탭 + MusicPlayer 오버레이 관리
 - `Coordinator.swift` - `Coordinator` 프로토콜 + `CoordinatorType` enum
 - `AppAppearance.swift` - 전역 UI 테마

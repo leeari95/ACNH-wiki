@@ -338,7 +338,7 @@ scan_for_violations() {
 # Pattern: match ViewController not preceded by "UI", plus Coordinator, Reactor (not ReactorKit/Reactive)
 COREDATA_DIR="${SOURCES_DIR}/CoreDataStorage"
 scan_for_violations "${COREDATA_DIR}" \
-    '([^I]ViewController[^+]|[^/]Coordinator|[^a-z]Reactor[^Kit+]|APIRequest|APIProvider|DefaultAPIProvider)' \
+    '([^I]ViewController[^+]|[^/a-z]Coordinator|[^a-z]Reactor[^Kit+]|APIRequest|APIProvider|DefaultAPIProvider)' \
     "CoreDataStorage must not reference Presentation or Networking types"
 
 # --- Extension must not reference Presentation or CoreDataStorage ---
@@ -367,8 +367,8 @@ if [[ -d "${EXTENSION_DIR}" ]]; then
             continue
         fi
 
-        # Exclude UIViewController — it's a UIKit base class, not a Presentation type
-        if echo "${content}" | grep -qE 'UIViewController'; then
+        # Exclude UIKit base types — UIViewController and rootViewController property
+        if echo "${content}" | grep -qE 'UIViewController|rootViewController'; then
             continue
         fi
 

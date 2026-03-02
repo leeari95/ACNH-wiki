@@ -57,6 +57,99 @@ swiftlint --config .swiftlint.yml --fix
 - Script: `Scripts/SwiftLintRunScript.sh`
 - 제외 파일: `Items.swift`, `AppDelegate.swift`, `SceneDelegate.swift`
 
+### SwiftLint 규칙 상세
+
+`.swiftlint.yml` 설정 기반. 코드 작성 시 아래 규칙을 준수할 것.
+
+#### 네이밍 (identifier_name)
+
+| 항목 | 값 |
+|------|---|
+| 최소 길이 (warning) | **2자** |
+| 최소 길이 (error) | **4자** |
+| 최대 길이 | 40자 (기본값) |
+| 예외 허용 | `a`, `b` |
+
+```swift
+// ✅ Good
+let item = items.first
+for index in 0..<count { ... }
+items.map { item in item.name }
+
+// ❌ Bad — 1글자 변수명 (a, b 제외)
+let v = view           // identifier_name violation: 'v'
+items.map { i in ... } // identifier_name violation: 'i'
+for x in array { ... } // identifier_name violation: 'x'
+
+// ✅ 예외: a, b는 허용
+let a = pointA
+let b = pointB
+```
+
+> **주의**: 클로저 파라미터에서 `$0` 사용은 린트 위반이 아니지만, 명시적 이름 사용 권장.
+
+#### 길이 제한
+
+| 규칙 | Warning | Error |
+|------|---------|-------|
+| **line_length** | 140자 | — |
+| **function_body_length** | 200줄 | 300줄 |
+| **type_body_length** | 500줄 | 500줄 |
+| **file_length** | 1000줄 | 1200줄 |
+
+```swift
+// ✅ 한 줄이 140자를 넘기면 줄바꿈
+let cell = collectionView.dequeueReusableCell(
+    withReuseIdentifier: ItemCell.className,
+    for: indexPath
+)
+```
+
+#### 비활성화된 규칙 (disabled_rules)
+
+아래 규칙은 **검사하지 않음** — 이 규칙을 위반해도 경고/에러 없음:
+
+| 규칙 | 설명 |
+|------|------|
+| `colon` | 콜론 앞뒤 공백 |
+| `control_statement` | if/for 등 괄호 사용 |
+| `trailing_whitespace` | 줄 끝 공백 |
+| `vertical_parameter_alignment` | 파라미터 세로 정렬 |
+| `cyclomatic_complexity` | 분기 복잡도 |
+| `void_function_in_ternary` | 삼항 연산자 내 void 함수 |
+| `comment_spacing` | 주석 공백 |
+| `function_parameter_count` | 함수 파라미터 개수 |
+
+#### 옵트인 규칙 (opt_in_rules)
+
+아래 규칙은 **추가로 활성화**됨:
+
+| 규칙 | 설명 | 예시 |
+|------|------|------|
+| `empty_count` | `.count == 0` 대신 `.isEmpty` 사용 | `if array.isEmpty { }` ✅ |
+| `conditional_returns_on_newline` | guard/if의 return은 새 줄에 | 아래 참조 |
+
+```swift
+// ✅ Good — return이 새 줄에
+guard condition else {
+    return
+}
+
+// ❌ Bad — return이 같은 줄에
+guard condition else { return }
+```
+
+#### 린트 제외 대상
+
+| 파일/경로 | 사유 |
+|-----------|------|
+| `AppDelegate.swift` | 보일러플레이트 |
+| `SceneDelegate.swift` | 보일러플레이트 |
+| `Items.swift` | 중앙 데이터 허브, 규칙 예외 필요 |
+| `Tuist/` | 빌드 설정 파일 |
+| `Workspace.swift` | Tuist 워크스페이스 정의 |
+| `Projects/*/Project.swift` | Tuist 프로젝트 정의 |
+
 ## Validation
 
 아키텍처 경계와 패턴 규약을 검증하는 스크립트:
