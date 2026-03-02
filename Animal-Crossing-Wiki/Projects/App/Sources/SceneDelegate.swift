@@ -169,35 +169,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func observeCloudImport() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handleCloudImportStart),
-            name: CoreDataStorage.didStartCloudImport,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleCloudImportFinish),
+            selector: #selector(handleCloudImportFinish(_:)),
             name: CoreDataStorage.didFinishCloudImport,
             object: nil
         )
     }
 
-    @objc private func handleCloudImportStart() {
-        DispatchQueue.main.async { [weak self] in
-            guard let owner = self, owner.isAppSetup else {
-                return
-            }
-
-            ToastManager.shared.incrementAndShow(message: "Fetching collection data from iCloud...".localized)
+    @objc private func handleCloudImportFinish(_ notification: Notification) {
+        // Persistent History 기반: 실제 CloudKit 데이터 변경이 있을 때만 토스트 표시
+        let hasChanges = notification.userInfo?["hasChanges"] as? Bool ?? false
+        guard hasChanges else {
+            return
         }
-    }
 
-    @objc private func handleCloudImportFinish() {
         DispatchQueue.main.async { [weak self] in
             guard let owner = self, owner.isAppSetup else {
                 return
             }
 
-            ToastManager.shared.decrementAndDismiss()
+            ToastManager.shared.show(
+                message: "Fetching collection data from iCloud...".localized,
+                timeout: 3
+            )
         }
     }
 

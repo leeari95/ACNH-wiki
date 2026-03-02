@@ -55,11 +55,13 @@ CloudKit Silent Push 수신
     ↓
 NSPersistentCloudKitContainer 자동 Import
     ↓
-CoreDataStorage.handleCloudKitEvent() → didStartCloudImport 알림
+CoreDataStorage.handleCloudKitEvent() → Import 완료
     ↓
-SceneDelegate → ToastManager.incrementAndShow() ("iCloud를 통해 수집 기록을 불러오는 중입니다.")
+hasImportedChanges() → Persistent History에서 CloudKit 트랜잭션 확인
     ↓
-Import 완료 → didFinishCloudImport 알림 → 토스트 dismiss
+didFinishCloudImport 알림 (hasChanges: true/false)
+    ↓
+hasChanges == true → SceneDelegate → ToastManager.show(timeout: 3)
     ↓
 NSPersistentStoreRemoteChange 알림
     ↓
@@ -112,10 +114,9 @@ setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 `ToastManager.shared` — 전용 UIWindow(`windowLevel = .statusBar + 1`) 위에 토스트 표시.
 어떤 화면(alert, modal 포함) 위에서든 항상 보이며, `isUserInteractionEnabled = false`로 터치 이벤트 통과.
 
-- **표시 조건**: CloudKit Import 시작 시 (`incrementAndShow`)
-- **해제 조건**: 모든 Import 완료 시 (`decrementAndDismiss`, 레퍼런스 카운팅)
-- **타임아웃**: 60초 후 자동 dismiss
-- **백그라운드 전환 시**: `dismiss()` → 즉시 해제 + 카운터 초기화 + 윈도우 해제
+- **표시 조건**: Import 완료 시 Persistent History에 실제 CloudKit 데이터 변경이 있을 때만 (`hasImportedChanges()` → `author != nil` + `changes.isEmpty == false`)
+- **해제 조건**: 3초 자동 dismiss (`show(timeout: 3)`)
+- **백그라운드 전환 시**: `dismiss()` → 즉시 해제 + 윈도우 해제
 
 ## Fresh Install Flow
 

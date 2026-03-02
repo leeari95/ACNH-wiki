@@ -40,6 +40,9 @@ final class CoreDataStorage {
 
     private let lastDiagnosticsDate = OSAllocatedUnfairLock(initialState: Date.distantPast)
 
+    /// Import 완료 시 Persistent History에서 실제 데이터 변경 여부를 판별하기 위한 토큰
+    private let _lastHistoryToken = OSAllocatedUnfairLock<NSPersistentHistoryToken?>(initialState: nil)
+
     /// 신규 설치 시 CloudKit Import 완료 전까지 UC 생성을 억제하는 플래그
     private let _isWaitingForFirstImport = OSAllocatedUnfairLock(initialState: false)
     private(set) var isWaitingForFirstImport: Bool {
@@ -77,6 +80,7 @@ final class CoreDataStorage {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
+        initializeHistoryToken(container: container)
         migrateExistingDataToCloudKit(container: container)
 
         return container
@@ -154,6 +158,55 @@ final class CoreDataStorage {
         NotificationCenter.default.post(name: Self.didReceiveRemoteChanges, object: nil)
     }
 
+    // MARK: - Persistent History Change Detection
+
+    /// 컨테이너 초기화 시 현재 히스토리 토큰을 기록하여 이후 변경만 감지
+    private func initializeHistoryToken(container: NSPersistentCloudKitContainer) {
+        let context = container.newBackgroundContext()
+        context.performAndWait {
+            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: nil as NSPersistentHistoryToken?)
+            request.resultType = .transactionsOnly
+            if let result = try? context.execute(request) as? NSPersistentHistoryResult,
+               let transactions = result.result as? [NSPersistentHistoryTransaction],
+               let token = transactions.last?.token {
+                self._lastHistoryToken.withLock { $0 = token }
+            }
+        }
+    }
+
+    /// Import 완료 후 persistent history를 조회하여 실제 데이터 변경 여부를 확인
+    private func hasImportedChanges() -> Bool {
+        let token = _lastHistoryToken.withLock { $0 }
+        let context = persistentContainer.newBackgroundContext()
+        var result = false
+
+        context.performAndWait {
+            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: token)
+            request.resultType = .transactionsAndChanges
+
+            guard let historyResult = try? context.execute(request) as? NSPersistentHistoryResult,
+                  let transactions = historyResult.result as? [NSPersistentHistoryTransaction] else {
+                return
+            }
+
+            if let newToken = transactions.last?.token {
+                self._lastHistoryToken.withLock { $0 = newToken }
+            }
+
+            // author != nil → CloudKit mirroring delegate가 생성한 트랜잭션만 필터
+            // (앱 로컬 저장은 author == nil)
+            result = transactions.contains { transaction in
+                guard transaction.author != nil,
+                      let changes = transaction.changes else {
+                    return false
+                }
+                return !changes.isEmpty
+            }
+        }
+
+        return result
+    }
+
     // MARK: - CloudKit Events
 
     private func observeCloudKitEvents() {
@@ -188,9 +241,14 @@ final class CoreDataStorage {
             }
             if event.type == .import {
                 isWaitingForFirstImport = false
+                let hasChanges = hasImportedChanges()
                 logSyncDiagnostics(phase: "Import-end")
                 consolidateUserCollections()
-                NotificationCenter.default.post(name: Self.didFinishCloudImport, object: nil)
+                NotificationCenter.default.post(
+                    name: Self.didFinishCloudImport,
+                    object: nil,
+                    userInfo: hasChanges ? ["hasChanges": true] : nil
+                )
             }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
