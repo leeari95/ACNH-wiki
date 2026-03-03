@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+# ============================================================================
+# Pre-commit hook — ACNH-wiki
+# ============================================================================
+#
+# Runs architecture and pattern validations before each commit.
+# To bypass this hook in exceptional cases, use:
+#
+#   git commit --no-verify
+#
+# ============================================================================
+
+set -euo pipefail
+
+echo "==> Running pre-commit validations..."
+echo ""
+
+if make validate; then
+    echo ""
+    echo "==> All validations passed. Proceeding with commit."
+else
+    echo ""
+    echo "==> Validation failed. Commit blocked."
+    echo "    Fix the issues above, then try again."
+    echo "    To bypass this check: git commit --no-verify"
+    exit 1
+fi
+
+# ----------------------------------------------------------------------------
+# Check: Source change without docs update
+# ----------------------------------------------------------------------------
+# Maps each source directory to its related docs.
+# Advisory only — does NOT block the commit.
+# ----------------------------------------------------------------------------
+
+STAGED_FILES=$(git diff --cached --name-only)
+HAS_DOCS_UPDATE=false
+SUGGESTIONS=""
+
+while IFS= read -r file; do
+    if echo "$file" | grep -qE '^docs/'; then
+        HAS_DOCS_UPDATE=true
+    fi
+done <<< "$STAGED_FILES"
+
+# Skip check if docs/ is already updated
+if [ "$HAS_DOCS_UPDATE" = true ]; then
+    exit 0
+fi
+
+add_suggestion() {
+    local layer="$1"
+    local docs="$2"
+    # Avoid duplicate suggestions
+    if ! echo "$SUGGESTIONS" | grep -qF "$layer"; then
+        SUGGESTIONS="${SUGGESTIONS}    ${layer} → ${docs}\n"
+    fi
+}
+
+while IFS= read -r file; do
+    case "$file" in
+        *CoreDataStorage/*.swift)
+            add_suggestion "CoreDataStorage" "docs/features/icloud-sync.md, docs/guides/add-coredata-entity.md, docs/patterns/data-flow.md"
+            ;;
+        *Utility/*.swift)
+            add_suggestion "Utility" "docs/patterns/data-flow.md, docs/gotchas.md"
+            ;;
+        *Networking/*.swift)
+            add_suggestion "Networking" "docs/guides/add-api-endpoint.md, docs/patterns/data-flow.md"
+            ;;
+        *Models/*.swift)
+            add_suggestion "Models" "docs/glossary.md, docs/architecture.md"
+            ;;
+        *Extension/*.swift)
+            add_suggestion "Extension" "docs/architecture.md"
+            ;;
+        *Presentation/Dashboard/*.swift)
+            add_suggestion "Dashboard" "docs/features/dashboard.md"
+            ;;
+        *Presentation/Catalog/*.swift)
+            add_suggestion "Catalog" "docs/features/catalog.md"
+            ;;
+        *Presentation/Animals/*.swift)
+            add_suggestion "Animals" "docs/features/catalog.md"
+            ;;
+        *Presentation/TurnipPrices/*.swift)
+            add_suggestion "TurnipPrices" "docs/features/turnip-prices.md"
+            ;;
+        *Presentation/MusicPlayer/*.swift)
+            add_suggestion "MusicPlayer" "docs/features/music-player.md"
+            ;;
+        *Presentation/Collection/*.swift)
+            add_suggestion "Collection" "docs/architecture.md"
+            ;;
+        *Sources/SceneDelegate.swift|*Sources/AppDelegate.swift)
+            add_suggestion "Root" "docs/architecture.md, docs/features/icloud-sync.md"
+            ;;
+        *Sources/AppCoordinator.swift|*Sources/Coordinator.swift)
+            add_suggestion "Coordinator" "docs/patterns/coordinator-pattern.md, docs/architecture.md"
+            ;;
+    esac
+done <<< "$STAGED_FILES"
+
+if [ -n "$SUGGESTIONS" ]; then
+    echo ""
+    echo "⚠️  소스 파일이 변경되었지만 docs/가 업데이트되지 않았습니다."
+    echo "   관련 문서 업데이트가 필요한지 확인하세요:"
+    echo ""
+    echo -e "$SUGGESTIONS"
+fi
+
+exit 0

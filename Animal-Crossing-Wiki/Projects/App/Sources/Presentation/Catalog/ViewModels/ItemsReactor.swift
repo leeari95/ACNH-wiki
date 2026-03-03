@@ -165,8 +165,13 @@ final class ItemsReactor: Reactor {
             }
             allItems = items
             if mode == .user && allItems.isEmpty {
-                let coordinator = coordinator as? CollectionCoordinator
-                coordinator?.transition(for: .pop)
+                performOnMain { [weak self] in
+                    guard let owner = self else {
+                        return
+                    }
+
+                    (owner.coordinator as? CollectionCoordinator)?.transition(for: .pop)
+                }
                 break
             }
 
@@ -190,12 +195,18 @@ final class ItemsReactor: Reactor {
             currentScope = scope
 
         case .showDetail(let item):
-            if let coordinator = coordinator as? CatalogCoordinator {
-                coordinator.transition(for: .itemDetail(item))
-            } else if let coordinator = coordinator as? CollectionCoordinator {
-                coordinator.transition(for: .itemDetail(item: item))
-            } else if let coordinator = coordinator as? DashboardCoordinator {
-                coordinator.transition(for: .itemDetail(item: item))
+            performOnMain { [weak self] in
+                guard let owner = self else {
+                    return
+                }
+
+                if let coordinator = owner.coordinator as? CatalogCoordinator {
+                    coordinator.transition(for: .itemDetail(item))
+                } else if let coordinator = owner.coordinator as? CollectionCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
+                } else if let coordinator = owner.coordinator as? DashboardCoordinator {
+                    coordinator.transition(for: .itemDetail(item: item))
+                }
             }
         case .setLoadingState(let isLoading):
             newState.isLoading = isLoading
@@ -369,4 +380,11 @@ final class ItemsReactor: Reactor {
         }
     }
 
+    private func performOnMain(_ block: @escaping () -> Void) {
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.async(execute: block)
+        }
+    }
 }

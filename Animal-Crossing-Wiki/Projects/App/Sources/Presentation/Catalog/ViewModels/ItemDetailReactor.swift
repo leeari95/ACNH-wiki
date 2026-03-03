@@ -39,7 +39,12 @@ final class ItemDetailReactor: Reactor {
     private let variantsStorage: VariantsStorage
     private(set) var coordinator: Coordinator?
 
-    init(item: Item, coordinator: Coordinator?, storage: ItemsStorage = CoreDataItemsStorage(), variantsStorage: VariantsStorage = CoreDataVariantsStorage()) {
+    init(
+        item: Item,
+        coordinator: Coordinator?,
+        storage: ItemsStorage = CoreDataItemsStorage(),
+        variantsStorage: VariantsStorage = CoreDataVariantsStorage()
+    ) {
         self.storage = storage
         self.variantsStorage = variantsStorage
         self.coordinator = coordinator
