@@ -23,7 +23,9 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 do {
                     let object = try self.coreDataStorage.getUserCollection(context)
                     var itemEntities = object.dailyTasks?.allObjects as? [DailyTaskEntity] ?? []
-                    if itemEntities.isEmpty {
+                    // Import 진행 중에는 기본 태스크 자동 생성을 건너뜀
+                    // — CloudKit에서 태스크가 아직 도착하지 않았을 수 있음
+                    if itemEntities.isEmpty && !CoreDataStorage.shared.isImportInProgress {
                         itemEntities = DailyTask.tasks.map { DailyTaskEntity($0, context: context)}
                         object.addToDailyTasks(NSSet(array: itemEntities))
                         context.saveContext()

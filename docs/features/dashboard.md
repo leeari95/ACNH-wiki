@@ -86,4 +86,5 @@ viewController.setUpViewModels(
 
 - **CustomTaskViewControllerDelegate**: DashboardCoordinator가 IconChooser → CustomTaskVC 간 아이콘 선택 결과를 전달하는 delegate
 - **showAlert()**: DashboardCoordinator의 `showAlert(title:message:) -> Observable<Bool>` 메서드로 확인 다이얼로그 표시
+- **showRecoveryResultAlert()**: (TEMPORARY) iCloud 데이터 복구 결과 알림. 성공 시 앱 종료 유도
 - **HapticManager**: 주민/NPC 상세 표시 시 success 햅틱 피드백
