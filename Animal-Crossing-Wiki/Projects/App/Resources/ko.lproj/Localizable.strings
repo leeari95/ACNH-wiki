@@ -63,6 +63,12 @@
 // MARK: - AppSettingView
 "System haptic" = "시스템 햅틱";
 "Data reset" = "수집 및 섬 데이터 초기화";
+"Recover data from iCloud" = "iCloud에서 데이터 복구";
+"iCloud Data Recovery" = "iCloud 데이터 복구";
+"This will reset local data and re-download from iCloud. Continue?" = "로컬 데이터를 초기화하고 iCloud에서 다시 다운로드합니다. 계속하시겠습니까?";
+"Recovery Complete" = "복구 완료";
+"Please restart the app to complete data recovery from iCloud." = "iCloud에서 데이터 복구를 완료하려면 앱을 다시 시작해 주세요.";
+"Recovery Failed" = "복구 실패";
 "Notice" = "알림";
 "Are you sure you want to reset it?" = "정말 초기화하시겠습니까?\n(되돌릴 수 없습니다.)";
 "Fetching collection data from iCloud..." = "iCloud를 통해 수집 기록을 불러오는 중입니다.";
