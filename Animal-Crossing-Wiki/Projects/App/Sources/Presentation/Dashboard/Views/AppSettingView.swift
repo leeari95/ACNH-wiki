@@ -15,6 +15,15 @@ final class AppSettingView: UIView {
     private let recoverTapGesture = UITapGestureRecognizer() // TEMPORARY: Recovery
     private lazy var recoveryIndicator = UIActivityIndicatorView(style: .medium) // TEMPORARY: Recovery
 
+    private lazy var syncStatusLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(for: .caption1, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.text = " "
+        return label
+    }()
+
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
             axis: .vertical,
@@ -49,6 +58,7 @@ final class AppSettingView: UIView {
         )
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            InfoContentView(title: "iCloud sync status".localized, contentView: syncStatusLabel),
             recoverView,
             resetView
         )
@@ -90,6 +100,44 @@ final class AppSettingView: UIView {
                 }
             })
             .disposed(by: disposeBag)
+
+        // Sync status display
+        reactor.state.compactMap { $0.syncStatus }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] info in
+                self?.updateSyncStatusLabel(info)
+            })
+            .disposed(by: disposeBag)
+
+        // Load sync status on appear
+        reactor.action.onNext(.loadSyncStatus)
+    }
+
+    private func updateSyncStatusLabel(_ info: SyncStatusInfo) {
+        var lines: [String] = []
+
+        if info.isSyncing {
+            lines.append("Syncing...".localized)
+        }
+
+        if info.hasUserCollection {
+            lines.append(
+                String(format: "Local records: %d".localized, info.totalRecordCount)
+            )
+        } else {
+            lines.append("Waiting for iCloud data...".localized)
+        }
+
+        if let lastSync = info.lastSyncDate {
+            let formatter = RelativeDateTimeFormatter()
+            formatter.unitsStyle = .short
+            let relative = formatter.localizedString(for: lastSync, relativeTo: Date())
+            lines.append(
+                String(format: "Last sync: %@".localized, relative)
+            )
+        }
+
+        syncStatusLabel.text = lines.joined(separator: "\n")
     }
 }
 
