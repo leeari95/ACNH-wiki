@@ -30,7 +30,7 @@ final class AppSettingView: UIView {
             axis: .vertical,
             alignment: .fill,
             distribution: .fill,
-            spacing: 4
+            spacing: 16
         )
         return stackView
     }()
