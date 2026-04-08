@@ -27,7 +27,7 @@ Device A                    CloudKit Server               Device B
 
 | File | 역할 |
 |------|------|
-| `CoreDataStorage.swift` | `NSPersistentCloudKitContainer` 설정, CloudKit 이벤트 감지, iCloud 계정 확인, UC 중복 방지, Persistent History 정리 |
+| `CoreDataStorage.swift` | `NSPersistentCloudKitContainer` 설정, CloudKit 이벤트 감지, iCloud 계정 확인, UC 중복 방지, 기존 유저 보호, 동기화 상태 조회, Persistent History 정리 |
 | `SceneDelegate.swift` | 신규 설치 감지 + CloudKit Import 대기, iCloud 계정/에러 알림, ToastManager 연동 |
 | `Items.swift` | `didReceiveRemoteChanges` 구독 (debounce 2s) → `setUpUserCollection()` |
 | `ToastManager.swift` | 전용 UIWindow 기반 토스트 매니저. 레퍼런스 카운팅, 타임아웃, 백그라운드 dismiss |
@@ -154,17 +154,33 @@ waitForCloudKitImport(timeout: 10)
 
 **문제**: 신규 설치 시 로컬 UC 생성 → CloudKit Import로 기존 UC 도착 → UC 2개 존재 (영구 중복)
 
-**해결**: 다중 억제 플래그
+**해결**: 다중 억제 플래그 + 기존 유저 보호
 
-`getUserCollection()`에서 UC가 없을 때 새 UC 생성을 억제하는 4가지 조건:
+`getUserCollection()`에서 UC가 없을 때 새 UC 생성을 억제하는 5가지 조건:
 
 1. `isWaitingForFirstImport` — 신규 설치 시 Import 완료 전
 2. `isImportInProgress` — Import가 진행 중 (timeout 후에도 import가 끝나지 않은 경우)
 3. `isSyncResetInProgress` — Change Token Expired 후 re-import 대기
-4. `_firstImportCompletedAt` grace period — 첫 Import 완료 후 30초간 UC 생성 유예
+4. `_firstImportCompletedAt` grace period — 첫 Import 완료 후 120초간 UC 생성 유예
+5. `hasEverHadUserCollection` — 기존 유저 보호 (아래 참조)
 
-모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → debugPrint).
+모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → `os_log`).
 Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 정상 로드됨.
+
+### Known User Protection (`hasEverHadUserCollection`)
+
+**문제**: 앱 업데이트/iCloud 재로그인 시 `NSPersistentCloudKitContainer`가 CloudKit 미러를 재구성하면서 로컬 UC가 일시적으로 0개가 될 수 있음. 이때 빈 UC를 자동 생성하면 CloudKit에 빈 데이터가 Export되어 기존 클라우드 데이터가 오염됨.
+
+**해결**: `UserDefaults` 기반 `hasEverHadUserCollection` 플래그:
+- UC를 한 번이라도 성공적으로 fetch하면 `true`로 기록
+- 이후 UC가 0개여도 빈 UC를 생성하지 않고 `.notFound`를 throw
+- CloudKit re-import이 완료되면 정상 복구됨
+- `performCloudKitRecovery()`에서도 플래그 유지 (복구 = 기존 유저)
+
+**`shouldSuppressDataCreation` 통합 프로퍼티**: DailyTask 등 외부 Storage에서도 기본값 생성 억제 판단에 사용:
+- `isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress` 중 하나라도 true
+- grace period (120초) 내
+- `hasEverHadUserCollection == true`
 
 **기존 중복 정리**: `consolidateUserCollections()` — 앱 시작/Import 완료 시 자동 실행 (5초 지연, DispatchWorkItem으로 중복 방지):
 - UC가 2개 이상이면 관계(relationships)가 가장 많은 UC 보존
@@ -219,3 +235,24 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 - `AppSettingView` — 복구 버튼 + ActivityIndicator
 - `DashboardCoordinator.showRecoveryResultAlert()`
 - `Localizable.strings` (ko/en) — 복구 관련 문자열 6개
+
+## Sync Status Display
+
+설정 화면에서 사용자가 iCloud 동기화 상태를 확인할 수 있는 정보 표시:
+
+- **로컬 레코드 수**: UC 존재 여부 + 총 레코드 수 (Items, Tasks, Villagers, Houses)
+- **마지막 동기화 시각**: Import/Export 중 가장 최근 성공 시각 (상대 시간 표시)
+- **동기화 진행 중**: Import 또는 sync reset 진행 시 "동기화 중..." 표시
+- **데이터 대기 중**: UC 미존재 시 "iCloud 데이터 대기 중..." 표시
+
+**관련 파일**:
+- `CoreDataStorage.fetchSyncStatus()`, `SyncStatusInfo` — 상태 조회
+- `CoreDataStorage.lastSuccessfulImportDate/ExportDate` — 성공 시각 추적
+- `AppSettingReactor` — `.loadSyncStatus` Action, `.setSyncStatus` Mutation
+- `AppSettingView` — `syncStatusLabel` + `updateSyncStatusLabel()`
+- `Localizable.strings` (ko/en) — 동기화 상태 문자열 5개
+
+## Error Logging
+
+모든 Storage 클래스의 에러 로깅이 `debugPrint()` (Release 빌드에서 무시됨)에서 `os_log(.error)` (Release에서도 기록)로 강화됨.
+Console.app 또는 Xcode에서 `CoreDataStorage`, `ItemsStorage`, `DailyTaskStorage` 등으로 필터하여 프로덕션 에러 추적 가능.
