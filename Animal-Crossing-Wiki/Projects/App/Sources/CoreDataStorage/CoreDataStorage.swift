@@ -91,11 +91,18 @@ final class CoreDataStorage {
 
     private static let hasEverHadUserCollectionKey = "CoreDataStorage_hasEverHadUserCollection"
 
-    /// 한 번이라도 UserCollectionEntity가 존재했는지 여부 (UserDefaults 기반)
+    /// 한 번이라도 UserCollectionEntity가 존재했는지 여부 (UserDefaults 기반, 메모리 캐싱)
     /// 이 플래그가 true인데 UC가 0개면, 빈 UC 자동 생성 대신 .notFound를 throw
+    private var _hasEverHadUserCollectionCached = UserDefaults.standard.bool(
+        forKey: CoreDataStorage.hasEverHadUserCollectionKey
+    )
     private(set) var hasEverHadUserCollection: Bool {
-        get { UserDefaults.standard.bool(forKey: Self.hasEverHadUserCollectionKey) }
-        set { UserDefaults.standard.set(newValue, forKey: Self.hasEverHadUserCollectionKey) }
+        get { _hasEverHadUserCollectionCached }
+        set {
+            guard _hasEverHadUserCollectionCached != newValue else { return }
+            _hasEverHadUserCollectionCached = newValue
+            UserDefaults.standard.set(newValue, forKey: Self.hasEverHadUserCollectionKey)
+        }
     }
 
     /// 의도적 데이터 초기화 시 호출 — 새 UC 생성을 다시 허용
@@ -104,19 +111,21 @@ final class CoreDataStorage {
         os_log(.info, log: .default, "🛡️ hasEverHadUserCollection cleared (intentional reset)")
     }
 
+    /// 첫 Import 완료 후 UC 생성/기본 데이터 생성을 유예하는 시간 (초)
+    private static let gracePeriodSeconds: TimeInterval = 120
+
+    /// 첫 Import 완료 후 grace period 내인지 확인
+    private var isWithinGracePeriod: Bool {
+        guard let firstImportDate = _firstImportCompletedAt.withLock({ $0 }) else { return false }
+        return Date().timeIntervalSince(firstImportDate) < Self.gracePeriodSeconds
+    }
+
     /// Import 또는 sync reset 진행 중이거나, grace period 내인지 확인
     /// DailyTask 등 외부 Storage에서도 기본값 생성 억제 판단에 사용
     /// 주의: hasEverHadUserCollection은 여기에 포함하지 않음 — 그 플래그는 getUserCollection()에서만 사용
     ///       여기에 포함하면 기존 유저의 DailyTask 자동 생성이 영구적으로 차단됨
     var shouldSuppressDataCreation: Bool {
-        if isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress {
-            return true
-        }
-        if let firstImportDate = _firstImportCompletedAt.withLock({ $0 }),
-           Date().timeIntervalSince(firstImportDate) < 120 {
-            return true
-        }
-        return false
+        isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress || isWithinGracePeriod
     }
 
     // MARK: - Private API Notification Names (fragile)
@@ -486,6 +495,24 @@ final class CoreDataStorage {
 
 extension CoreDataStorage {
 
+    // MARK: - Entity Count Helper
+
+    private static let entityNames = [
+        "UserCollectionEntity", "ItemEntity", "DailyTaskEntity",
+        "VillagersLikeEntity", "VillagersHouseEntity", "NPCLikeEntity",
+        "VariantCollectionEntity"
+    ]
+
+    /// 모든 엔티티의 레코드 수를 한 번에 조회 (logSyncDiagnostics, fetchSyncStatus 공용)
+    private func entityCounts(in context: NSManagedObjectContext) -> [String: Int] {
+        var counts: [String: Int] = [:]
+        for name in Self.entityNames {
+            let request = NSFetchRequest<NSManagedObject>(entityName: name)
+            counts[name] = (try? context.count(for: request)) ?? -1
+        }
+        return counts
+    }
+
     /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅 (5초 throttle)
     func logSyncDiagnostics(phase: String) {
         let shouldProceed = lastDiagnosticsDate.withLock { lastDate -> Bool in
@@ -506,17 +533,7 @@ extension CoreDataStorage {
         persistentContainer.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-            let entityNames = [
-                "UserCollectionEntity", "ItemEntity", "DailyTaskEntity",
-                "VillagersLikeEntity", "VillagersHouseEntity", "NPCLikeEntity",
-                "VariantCollectionEntity"
-            ]
-
-            var counts: [String: Int] = [:]
-            for name in entityNames {
-                let request = NSFetchRequest<NSManagedObject>(entityName: name)
-                counts[name] = (try? context.count(for: request)) ?? -1
-            }
+            let counts = self.entityCounts(in: context)
 
             os_log(.info, log: .default,
                    "📊 [%{public}@] UC=%d Items=%d Tasks=%d VLike=%d VHouse=%d NPC=%d Variants=%d",
@@ -560,16 +577,14 @@ extension CoreDataStorage {
         persistentContainer.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-            let ucCount = (try? context.count(for: UserCollectionEntity.fetchRequest())) ?? 0
-            let itemCount = (try? context.count(for: NSFetchRequest<NSManagedObject>(entityName: "ItemEntity"))) ?? 0
-            let taskCount = (try? context.count(for: NSFetchRequest<NSManagedObject>(entityName: "DailyTaskEntity"))) ?? 0
-            let vLikeCount = (try? context.count(for: NSFetchRequest<NSManagedObject>(entityName: "VillagersLikeEntity"))) ?? 0
-            let vHouseCount = (try? context.count(for: NSFetchRequest<NSManagedObject>(entityName: "VillagersHouseEntity"))) ?? 0
-
-            let totalRecords = itemCount + taskCount + vLikeCount + vHouseCount
+            let counts = self.entityCounts(in: context)
+            let totalRecords = (counts["ItemEntity"] ?? 0)
+                + (counts["DailyTaskEntity"] ?? 0)
+                + (counts["VillagersLikeEntity"] ?? 0)
+                + (counts["VillagersHouseEntity"] ?? 0)
 
             let info = SyncStatusInfo(
-                hasUserCollection: ucCount > 0,
+                hasUserCollection: (counts["UserCollectionEntity"] ?? 0) > 0,
                 totalRecordCount: totalRecords,
                 lastImportDate: self.lastSuccessfulImportDate,
                 lastExportDate: self.lastSuccessfulExportDate,
@@ -828,9 +843,8 @@ extension CoreDataStorage {
             throw CoreDataStorageError.notFound
         }
 
-        if let firstImportDate = _firstImportCompletedAt.withLock({ $0 }),
-           Date().timeIntervalSince(firstImportDate) < 120 {
-            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, within grace period (120s) — skipping creation")
+        if isWithinGracePeriod {
+            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, within grace period (%.0fs) — skipping creation", Self.gracePeriodSeconds)
             throw CoreDataStorageError.notFound
         }
 

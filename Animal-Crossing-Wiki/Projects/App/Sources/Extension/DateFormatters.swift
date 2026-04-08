@@ -26,4 +26,13 @@ enum DateFormatters {
         formatter.setLocalizedDateFormatFromTemplate("EEEE, MMM d")
         return formatter
     }()
+
+    // MARK: - Sync Status
+
+    /// 동기화 상태 표시용 상대 시간 포맷터 (예: "3 min. ago")
+    static let syncRelativeDate: RelativeDateTimeFormatter = {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        return formatter
+    }()
 }

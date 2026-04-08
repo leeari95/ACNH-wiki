@@ -126,9 +126,7 @@ final class AppSettingView: UIView {
         }
 
         if let lastSync = info.lastSyncDate {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.unitsStyle = .short
-            let relative = formatter.localizedString(for: lastSync, relativeTo: Date())
+            let relative = DateFormatters.syncRelativeDate.localizedString(for: lastSync, relativeTo: Date())
             syncStatusLabel.text = String(
                 format: "Synced %@ · %d items".localized, relative, info.totalRecordCount
             )
