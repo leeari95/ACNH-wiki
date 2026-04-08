@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import os
 
 final class CoreDataVillagersLikeStorage: VillagersLikeStorage {
 
@@ -40,7 +41,7 @@ final class CoreDataVillagersLikeStorage: VillagersLikeStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "VillagersLikeStorage error: %{public}@", error.localizedDescription)
             }
         }
     }

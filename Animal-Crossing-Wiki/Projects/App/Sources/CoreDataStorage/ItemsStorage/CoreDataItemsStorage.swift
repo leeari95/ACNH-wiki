@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import os
 
 final class CoreDataItemsStorage: ItemsStorage {
 
@@ -46,7 +47,7 @@ final class CoreDataItemsStorage: ItemsStorage {
 
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "ItemsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
@@ -59,7 +60,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                 object.addToCritters(NSSet(array: newItems))
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "ItemsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
@@ -72,7 +73,7 @@ final class CoreDataItemsStorage: ItemsStorage {
                 object.removeFromCritters(NSSet(array: items.filter { $0.category == category.rawValue }))
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "ItemsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }

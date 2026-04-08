@@ -86,7 +86,7 @@ final class Items {
             .subscribe(onSuccess: { tasks in
                 self.currentDailyTasks.accept(tasks)
             }, onFailure: { error in
-                debugPrint(error)
+                os_log(.error, log: .default, "Items.swift fetch error: %{public}@", error.localizedDescription)
             }).disposed(by: disposeBag)
 
         self.villagersLike.accept(CoreDataVillagersLikeStorage().fetch())
@@ -107,14 +107,14 @@ final class Items {
                 }
                 self.userItems.accept(userItems)
             }, onFailure: { error in
-                debugPrint(error)
+                os_log(.error, log: .default, "Items.swift fetch error: %{public}@", error.localizedDescription)
             }).disposed(by: disposeBag)
 
         CoreDataVariantsStorage().fetchAll()
             .subscribe(onSuccess: { variantsByItem in
                 self.collectedVariants.accept(variantsByItem)
             }, onFailure: { error in
-                debugPrint(error)
+                os_log(.error, log: .default, "Items.swift fetch error: %{public}@", error.localizedDescription)
             }).disposed(by: disposeBag)
     }
 
