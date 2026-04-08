@@ -100,7 +100,17 @@ setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 | `.quotaExceeded` | Alert: "iCloud 저장 공간이 가득 찼습니다" |
 | `.notAuthenticated` | Alert: "iCloud에 로그인되어 있지 않습니다" |
 | `.networkFailure` / `.networkUnavailable` | 로그 기록 (자동 재시도 대기) |
+| Export 134301 (merge error) | `retryExportAfterMergeError()` — 최대 3회 지수 백오프 재시도 (5s, 10s, 15s) |
+| Change Token Expired (CKError 21) | sync reset 감지 → orphan cleanup/UC 생성 억제 (아래 참조) |
 | 기타 | `os_log(.error)` 기록 |
+
+### Change Token Expired 대응
+
+`NSCloudKitMirroringDelegate`가 Change Token Expired를 감지하면 내부 상태를 리셋하고 Setup → Export → Import 사이클을 재실행함.
+이때 손상된 로컬 데이터가 Export되면 iCloud 원본까지 오염될 수 있으므로, sync reset 기간 동안 모든 cleanup과 UC 생성을 억제.
+
+- `NSCloudKitMirroringDelegateWillResetSyncNotificationName` 감지 → `isSyncResetInProgress = true`
+- 다음 Import 완료 시 자동 해제
 
 ## Conflict Resolution
 
@@ -144,17 +154,28 @@ waitForCloudKitImport(timeout: 10)
 
 **문제**: 신규 설치 시 로컬 UC 생성 → CloudKit Import로 기존 UC 도착 → UC 2개 존재 (영구 중복)
 
-**해결**: `isWaitingForFirstImport` 플래그
+**해결**: 다중 억제 플래그
 
-1. 신규 설치 감지 시 `markWaitingForFirstImport()` 호출
-2. `getUserCollection()`에서 UC 미존재 + 플래그 ON → `.notFound` throw (새 UC 생성 억제)
-3. CloudKit Import 완료 시 플래그 자동 해제 + `setupApp()`에서 `clearWaitingForFirstImport()` 호출 (no-iCloud/timeout 경로 보장)
-4. 모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → debugPrint)
+`getUserCollection()`에서 UC가 없을 때 새 UC 생성을 억제하는 4가지 조건:
 
-**기존 중복 정리**: `consolidateUserCollections()` — 앱 시작/Import 완료 시 자동 실행:
+1. `isWaitingForFirstImport` — 신규 설치 시 Import 완료 전
+2. `isImportInProgress` — Import가 진행 중 (timeout 후에도 import가 끝나지 않은 경우)
+3. `isSyncResetInProgress` — Change Token Expired 후 re-import 대기
+4. `_firstImportCompletedAt` grace period — 첫 Import 완료 후 30초간 UC 생성 유예
+
+모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → debugPrint).
+Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 정상 로드됨.
+
+**기존 중복 정리**: `consolidateUserCollections()` — 앱 시작/Import 완료 시 자동 실행 (5초 지연, DispatchWorkItem으로 중복 방지):
 - UC가 2개 이상이면 관계(relationships)가 가장 많은 UC 보존
 - 나머지 UC의 자식 엔티티를 보존 UC로 `reassignRelationships`
 - 고아 UC 삭제 → CloudKit Export로 iCloud에서도 정리
+
+**Orphan Cleanup 안전장치** (`cleanupOrphanedEntities()`):
+- Import 또는 sync reset 진행 중에는 실행하지 않음 (relationship이 아직 해소되지 않았을 수 있음)
+- UC가 0개이면 실행하지 않음 (orphan 판단 기준 자체 없음)
+- 전체 레코드가 모두 orphan이면 삭제하지 않음 (데이터 유실 방지)
+- Count-first 최적화: 삭제 전 수량만 확인하여 불필요한 객체 로딩 방지
 
 **진단 로그**: `logSyncDiagnostics(phase:)` — UC 중복 감지 시에만 상세 진단 출력:
 - Entity별 카운트 요약은 항상 출력
@@ -181,3 +202,20 @@ waitForCloudKitImport(timeout: 10)
 - `sceneDidEnterBackground`에서 `beginBackgroundTask` 호출 (30초)
 - CloudKit 동기화 작업이 완료될 시간 확보
 - expiration handler와 타이머 양쪽에서 idempotent하게 종료 (이중 호출 방지)
+
+## Data Recovery (TEMPORARY)
+
+설정 화면에서 "iCloud에서 데이터 복구" 기능 제공. 안정화 후 제거 예정.
+
+**동작 원리**:
+1. iCloud 계정 확인 → store coordinator에서 기존 store 분리
+2. SQLite 파일 (.sqlite, -shm, -wal) + ckAssets 폴더 삭제
+3. 앱 종료 (`exit(0)`) → 재시작 시 `loadPersistentStores`가 빈 store 생성
+4. `NSPersistentCloudKitContainer`가 CloudKit에서 전체 데이터 자동 import
+
+**관련 파일** (모두 `// TEMPORARY: Recovery` 주석):
+- `CoreDataStorage.performCloudKitRecovery()`, `RecoveryError`
+- `AppSettingReactor` — `.recoverFromCloud` Action, `.setRecoveryInProgress` Mutation
+- `AppSettingView` — 복구 버튼 + ActivityIndicator
+- `DashboardCoordinator.showRecoveryResultAlert()`
+- `Localizable.strings` (ko/en) — 복구 관련 문자열 6개

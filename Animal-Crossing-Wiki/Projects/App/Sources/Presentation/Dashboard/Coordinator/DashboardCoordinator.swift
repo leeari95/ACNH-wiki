@@ -157,6 +157,29 @@ final class DashboardCoordinator: Coordinator {
         }
         return currentVC.showAlert(title: title, message: message)
     }
+
+    // TEMPORARY: Recovery
+    func showRecoveryResultAlert(success: Bool, message: String?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let currentVC = self?.rootViewController.visibleViewController else { return }
+            let title: String
+            let body: String
+            if success {
+                title = "Recovery Complete".localized
+                body = "Please restart the app to complete data recovery from iCloud.".localized
+            } else {
+                title = "Recovery Failed".localized
+                body = message ?? "Unknown error".localized
+            }
+            let alert = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK".localized, style: .default) { _ in
+                if success {
+                    exit(0)
+                }
+            })
+            currentVC.present(alert, animated: true)
+        }
+    }
 }
 
 protocol CustomTaskViewControllerDelegate: AnyObject {

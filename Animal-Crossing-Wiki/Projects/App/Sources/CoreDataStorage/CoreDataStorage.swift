@@ -50,6 +50,37 @@ final class CoreDataStorage {
         set { _isWaitingForFirstImport.withLock { $0 = newValue } }
     }
 
+    /// CloudKit Import가 진행 중인지 추적 — orphan cleanup 억제에 사용
+    private let _isImportInProgress = OSAllocatedUnfairLock(initialState: false)
+    private(set) var isImportInProgress: Bool {
+        get { _isImportInProgress.withLock { $0 } }
+        set { _isImportInProgress.withLock { $0 = newValue } }
+    }
+
+    /// Change Token Expired로 인한 sync reset 진행 중 — 모든 cleanup 억제
+    private let _isSyncResetInProgress = OSAllocatedUnfairLock(initialState: false)
+    private(set) var isSyncResetInProgress: Bool {
+        get { _isSyncResetInProgress.withLock { $0 } }
+        set { _isSyncResetInProgress.withLock { $0 = newValue } }
+    }
+
+    /// 첫 번째 Import 완료 시점 — grace period 계산에 사용
+    private let _firstImportCompletedAt = OSAllocatedUnfairLock<Date?>(initialState: nil)
+
+    /// Export 재시도 횟수
+    private let _exportRetryCount = OSAllocatedUnfairLock(initialState: 0)
+
+    /// Consolidation 5초 지연 타이머 — 새 import 시 이전 타이머 취소용
+    private var consolidationWorkItem: DispatchWorkItem?
+
+    // MARK: - Private API Notification Names (fragile)
+    // These notification names are undocumented and may change without notice.
+    // Verified working on iOS 16–18. Remove if Apple provides a public API.
+    private enum SyncResetNotification {
+        static let willReset = Notification.Name("NSCloudKitMirroringDelegateWillResetSyncNotificationName")
+        static let didReset = Notification.Name("NSCloudKitMirroringDelegateDidResetSyncNotificationName")
+    }
+
     private init() {}
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -216,6 +247,35 @@ final class CoreDataStorage {
             name: NSPersistentCloudKitContainer.eventChangedNotification,
             object: nil
         )
+        observeSyncReset()
+    }
+
+    // MARK: - Sync Reset Detection (Change Token Expired)
+
+    private func observeSyncReset() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleSyncWillReset(_:)),
+            name: SyncResetNotification.willReset,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleSyncDidReset(_:)),
+            name: SyncResetNotification.didReset,
+            object: nil
+        )
+    }
+
+    @objc private func handleSyncWillReset(_ notification: Notification) {
+        isSyncResetInProgress = true
+        os_log(.info, log: .default, "🔄 Sync reset detected (WillReset) — orphan cleanup suppressed")
+    }
+
+    @objc private func handleSyncDidReset(_ notification: Notification) {
+        os_log(.info, log: .default, "🔄 Sync reset completed (DidReset) — waiting for next import cycle")
+        // DidReset 후 다음 Import가 완료되면 isSyncResetInProgress를 해제
+        // handleCloudKitEvent의 import 종료 처리에서 해제됨
     }
 
     @objc private func handleCloudKitEvent(_ notification: Notification) {
@@ -240,20 +300,79 @@ final class CoreDataStorage {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
             }
             if event.type == .import {
+                isImportInProgress = false
                 isWaitingForFirstImport = false
+                isSyncResetInProgress = false
+                _exportRetryCount.withLock { $0 = 0 }
+
+                _firstImportCompletedAt.withLock { date in
+                    if date == nil { date = Date() }
+                }
+
                 let hasChanges = hasImportedChanges()
                 logSyncDiagnostics(phase: "Import-end")
-                consolidateUserCollections()
+
+                // CloudKit이 relationship을 해소할 시간을 확보하기 위해 5초 지연
+                // 이전 타이머가 있으면 취소하여 중복 실행 방지
+                consolidationWorkItem?.cancel()
+                let workItem = DispatchWorkItem { [weak self] in
+                    self?.consolidateUserCollections()
+                }
+                consolidationWorkItem = workItem
+                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 5, execute: workItem)
+
                 NotificationCenter.default.post(
                     name: Self.didFinishCloudImport,
                     object: nil,
                     userInfo: hasChanges ? ["hasChanges": true] : nil
                 )
             }
+            if event.type == .export {
+                if event.error != nil {
+                    retryExportAfterMergeError()
+                } else {
+                    _exportRetryCount.withLock { $0 = 0 }
+                }
+            }
         } else {
             os_log(.info, log: .default, "CloudKit %{public}@ started", type)
             if event.type == .import {
+                isImportInProgress = true
                 NotificationCenter.default.post(name: Self.didStartCloudImport, object: nil)
+            }
+        }
+    }
+
+    // MARK: - Export Retry
+
+    private func retryExportAfterMergeError() {
+        let retryCount = _exportRetryCount.withLock { count -> Int in
+            count += 1
+            return count
+        }
+
+        guard retryCount <= 3 else {
+            os_log(.error, log: .default, "Export retry limit reached (%d) — giving up", retryCount)
+            return
+        }
+
+        let delay = Double(retryCount) * 5.0
+        os_log(.info, log: .default, "Export failed — scheduling retry %d in %.0fs", retryCount, delay)
+
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.persistentContainer.performBackgroundTask { context in
+                context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+                let request = UserCollectionEntity.fetchRequest()
+                guard let ucs = try? context.fetch(request), !ucs.isEmpty else {
+                    return
+                }
+                // UC attribute를 re-touch하여 CloudKit export 유도
+                for uc in ucs {
+                    let name = uc.name
+                    uc.name = name
+                }
+                context.saveContext()
+                os_log(.info, log: .default, "Export retry %d: re-touched %d UC(s)", retryCount, ucs.count)
             }
         }
     }
@@ -464,6 +583,19 @@ extension CoreDataStorage {
 
     /// UC 관계가 nil인 고아 엔티티를 삭제
     private func cleanupOrphanedEntities(in context: NSManagedObjectContext) {
+        // Import 또는 sync reset 진행 중에는 cleanup 건너뜀
+        // — CloudKit이 relationship을 비동기로 해소하므로 일시적으로 orphan처럼 보일 수 있음
+        guard !isImportInProgress, !isSyncResetInProgress else {
+            os_log(.info, log: .default, "🔧 Orphan cleanup skipped — sync in progress")
+            return
+        }
+
+        let ucCount = (try? context.count(for: UserCollectionEntity.fetchRequest())) ?? 0
+        guard ucCount > 0 else {
+            os_log(.info, log: .default, "🔧 Orphan cleanup skipped — no UC exists")
+            return
+        }
+
         // Note: ItemEntity의 inverse relationship이 "userColletion" (typo)인 것은
         // CoreData 모델의 기존 오타. 모델 마이그레이션이 필요하므로 별도 기술 부채로 관리.
         let entityRelMap: [(entity: String, relationship: String)] = [
@@ -477,12 +609,27 @@ extension CoreDataStorage {
 
         var totalOrphans = 0
         for (entity, rel) in entityRelMap {
-            let request = NSFetchRequest<NSManagedObject>(entityName: entity)
-            request.predicate = NSPredicate(format: "%K == nil", rel)
-            if let orphans = try? context.fetch(request), !orphans.isEmpty {
+            // Count-first: 객체를 메모리에 올리기 전에 수량만 확인
+            let orphanCountRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
+            orphanCountRequest.predicate = NSPredicate(format: "%K == nil", rel)
+            let orphanCount = (try? context.count(for: orphanCountRequest)) ?? 0
+            guard orphanCount > 0 else { continue }
+
+            let totalCount = (try? context.count(for: NSFetchRequest<NSManagedObject>(entityName: entity))) ?? 0
+
+            // 전체 레코드가 모두 orphan이면 삭제하지 않음 — 데이터 유실 방지
+            if orphanCount == totalCount {
+                os_log(.error, log: .default,
+                       "🔧 Orphan cleanup: ALL %{public}@ are orphans (%d) — SKIPPING to protect data",
+                       entity, orphanCount)
+                continue
+            }
+
+            // 안전 확인 통과 후에만 실제 객체를 fetch하여 삭제
+            if let orphans = try? context.fetch(orphanCountRequest) {
                 os_log(.info, log: .default,
-                       "🔧 Orphan cleanup: %{public}@ → %d orphans deleted",
-                       entity, orphans.count)
+                       "🔧 Orphan cleanup: %{public}@ → %d orphans / %d total deleted",
+                       entity, orphans.count, totalCount)
                 orphans.forEach { context.delete($0) }
                 totalOrphans += orphans.count
             }
@@ -572,10 +719,21 @@ extension CoreDataStorage {
             return existing
         }
 
-        // 신규 설치 시 CloudKit Import 완료 전에는 UC 생성을 억제하여
-        // Export로 인한 iCloud 중복 UC 방지
-        if isWaitingForFirstImport {
-            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, waiting for CloudKit import — skipping creation")
+        // UC가 없을 때 새 UC 생성을 억제하는 조건들:
+        // 1. Import 대기 중 (신규 설치 시 CloudKit Import 완료 전)
+        // 2. Import 진행 중 (timeout 후에도 import가 아직 끝나지 않은 경우)
+        // 3. Sync reset 진행 중 (Change Token Expired 후 re-import 대기)
+        // 4. 첫 Import 완료 후 30초 유예 (relationship 해소 시간 확보)
+        if isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress {
+            os_log(.info, log: .default,
+                   "⏳ getUserCollection: No UC found — skipping creation (waiting=%{public}@, importing=%{public}@, reset=%{public}@)",
+                   isWaitingForFirstImport.description, isImportInProgress.description, isSyncResetInProgress.description)
+            throw CoreDataStorageError.notFound
+        }
+
+        if let firstImportDate = _firstImportCompletedAt.withLock({ $0 }),
+           Date().timeIntervalSince(firstImportDate) < 30 {
+            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, within grace period — skipping creation")
             throw CoreDataStorageError.notFound
         }
 
@@ -591,6 +749,79 @@ extension CoreDataStorage {
         let npcLike: Int = entity.npcLike?.count ?? 0
         let variants: Int = entity.variants?.count ?? 0
         return critters + villagersLike + villagersHouse + dailyTasks + npcLike + variants
+    }
+}
+
+// MARK: - Data Recovery (TEMPORARY: Recovery)
+
+extension CoreDataStorage {
+
+    /// TEMPORARY: Recovery — 안정화 후 제거 예정
+    enum RecoveryError: LocalizedError {
+        case iCloudNotAvailable
+        case storeNotFound
+
+        var errorDescription: String? {
+            switch self {
+            case .iCloudNotAvailable: return "iCloud is not available"
+            case .storeNotFound: return "CoreData store not found"
+            }
+        }
+    }
+
+    /// TEMPORARY: Recovery — 로컬 store 파일을 삭제하고 앱 재시작 시 CloudKit에서 전체 재import 유도
+    /// store를 런타임에 재등록하면 CloudKit 옵션이 누락되므로, 파일만 삭제하고 재시작을 안내한다.
+    func performCloudKitRecovery(completion: @escaping (Result<Void, Error>) -> Void) {
+        checkiCloudAccountStatus { [weak self] status in
+            guard status == .available else {
+                completion(.failure(RecoveryError.iCloudNotAvailable))
+                return
+            }
+            guard let self else { return }
+
+            guard let storeDescription = self.persistentContainer.persistentStoreDescriptions.first,
+                  let storeURL = storeDescription.url else {
+                completion(.failure(RecoveryError.storeNotFound))
+                return
+            }
+
+            do {
+                // 기존 store 분리
+                let coordinator = self.persistentContainer.persistentStoreCoordinator
+                if let store = coordinator.persistentStore(for: storeURL) {
+                    try coordinator.remove(store)
+                }
+
+                // Store 파일 삭제 — fileExists 대신 직접 시도 + 부재 에러 무시 (TOCTOU 방지)
+                let fileManager = FileManager.default
+                let storePath = storeURL.path
+                for suffix in ["", "-shm", "-wal"] {
+                    do {
+                        try fileManager.removeItem(atPath: storePath + suffix)
+                    } catch let error as NSError where error.code == NSFileNoSuchFileError {
+                        // 파일이 이미 없음 — 정상
+                    }
+                }
+
+                // ckAssets 폴더 삭제
+                let ckAssetsURL = storeURL.deletingLastPathComponent()
+                    .appendingPathComponent("ckAssets")
+                do {
+                    try fileManager.removeItem(at: ckAssetsURL)
+                } catch let error as NSError where error.code == NSFileNoSuchFileError {
+                    // 폴더가 이미 없음 — 정상
+                }
+
+                // migration flag 유지 — 재시작 시 re-export 중복 방지
+                UserDefaults.standard.set(true, forKey: "didMigrateExistingDataToCloudKit_v2")
+
+                os_log(.info, log: .default, "🔄 Recovery: store files deleted — app restart required for CloudKit re-import")
+                completion(.success(()))
+            } catch {
+                os_log(.error, log: .default, "🔄 Recovery failed: %{public}@", error.localizedDescription)
+                completion(.failure(error))
+            }
+        }
     }
 }
 

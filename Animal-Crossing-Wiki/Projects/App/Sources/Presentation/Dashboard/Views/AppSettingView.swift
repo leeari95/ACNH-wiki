@@ -12,6 +12,8 @@ final class AppSettingView: UIView {
 
     private let disposeBag = DisposeBag()
     private let resetTapGesture = UITapGestureRecognizer()
+    private let recoverTapGesture = UITapGestureRecognizer() // TEMPORARY: Recovery
+    private lazy var recoveryIndicator = UIActivityIndicatorView(style: .medium) // TEMPORARY: Recovery
 
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
@@ -40,11 +42,18 @@ final class AppSettingView: UIView {
             backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
         let resetView = InfoContentView(title: "Data reset".localized)
+        // TEMPORARY: Recovery
+        let recoverView = InfoContentView(
+            title: "Recover data from iCloud".localized,
+            contentView: recoveryIndicator
+        )
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            recoverView,
             resetView
         )
         resetView.addGestureRecognizer(resetTapGesture)
+        recoverView.addGestureRecognizer(recoverTapGesture) // TEMPORARY: Recovery
     }
 
     func bind(to reactor: AppSettingReactor) {
@@ -61,6 +70,25 @@ final class AppSettingView: UIView {
 
         reactor.state.map { $0.currentHapticState }
             .bind(to: hapticSwitch.rx.isOn)
+            .disposed(by: disposeBag)
+
+        // TEMPORARY: Recovery
+        recoverTapGesture.rx.event
+            .map { _ in AppSettingReactor.Action.recoverFromCloud }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        // TEMPORARY: Recovery — activity indicator
+        reactor.state.map { $0.isRecoveryInProgress }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] inProgress in
+                if inProgress {
+                    self?.recoveryIndicator.startAnimating()
+                } else {
+                    self?.recoveryIndicator.stopAnimating()
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
