@@ -61,6 +61,12 @@ Find the villagers you have visited and tap the home icon on the villager's page
 // MARK: - AppSettingView
 "System haptic" = "System haptic";
 "Data reset" = "Data reset";
+"Recover data from iCloud" = "Recover data from iCloud";
+"iCloud Data Recovery" = "iCloud Data Recovery";
+"This will reset local data and re-download from iCloud. Continue?" = "This will reset local data and re-download from iCloud. Continue?";
+"Recovery Complete" = "Recovery Complete";
+"Please restart the app to complete data recovery from iCloud." = "Please restart the app to complete data recovery from iCloud.";
+"Recovery Failed" = "Recovery Failed";
 "Notice" = "Notice";
 "Are you sure you want to reset it?" = "Are you sure you want to reset it";
 "Fetching collection data from iCloud..." = "Fetching collection data from iCloud...";
