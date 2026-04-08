@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import os
 
 final class CoreDataNPCLikeStorage: NPCLikeStorage {
 
@@ -54,7 +55,7 @@ final class CoreDataNPCLikeStorage: NPCLikeStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "NPCLikeStorage error: %{public}@", error.localizedDescription)
             }
         }
     }

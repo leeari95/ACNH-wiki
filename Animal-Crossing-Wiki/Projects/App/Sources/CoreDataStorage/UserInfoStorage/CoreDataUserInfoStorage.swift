@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import CoreData
+import os
 
 final class CoreDataUserInfoStorage: UserInfoStorage {
 
@@ -38,16 +39,19 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
                 object.islandReputation = Int16(userInfo.islandReputation)
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "UserInfoStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
 
     func resetUserInfo() {
         coreDataStorage.performBackgroundTask { [weak self] context in
-            let object = try? self?.coreDataStorage.getUserCollection(context) as? NSManagedObject
+            guard let self else { return }
+            let object = try? self.coreDataStorage.getUserCollection(context) as? NSManagedObject
             object.flatMap { context.delete($0) }
             context.saveContext()
+            // 의도적 초기화이므로 기존 유저 플래그를 리셋하여 새 UC 생성을 허용
+            self.coreDataStorage.clearHasEverHadUserCollection()
         }
     }
 }

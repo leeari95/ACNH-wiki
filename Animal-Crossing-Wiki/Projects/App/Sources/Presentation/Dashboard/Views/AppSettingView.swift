@@ -15,12 +15,22 @@ final class AppSettingView: UIView {
     private let recoverTapGesture = UITapGestureRecognizer() // TEMPORARY: Recovery
     private lazy var recoveryIndicator = UIActivityIndicatorView(style: .medium) // TEMPORARY: Recovery
 
+    private lazy var syncStatusLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(for: .caption1, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        label.text = " "
+        return label
+    }()
+
     private lazy var backgroundStackView: UIStackView = {
         let stackView = UIStackView(
             axis: .vertical,
             alignment: .fill,
             distribution: .fill,
-            spacing: 4
+            spacing: 16
         )
         return stackView
     }()
@@ -49,6 +59,7 @@ final class AppSettingView: UIView {
         )
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
+            InfoContentView(title: "iCloud sync status".localized, contentView: syncStatusLabel),
             recoverView,
             resetView
         )
@@ -90,6 +101,40 @@ final class AppSettingView: UIView {
                 }
             })
             .disposed(by: disposeBag)
+
+        // Sync status display
+        reactor.state.compactMap { $0.syncStatus }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] info in
+                self?.updateSyncStatusLabel(info)
+            })
+            .disposed(by: disposeBag)
+
+        // Load sync status on appear
+        reactor.action.onNext(.loadSyncStatus)
+    }
+
+    private func updateSyncStatusLabel(_ info: SyncStatusInfo) {
+        if info.isSyncing {
+            syncStatusLabel.text = "Syncing...".localized
+            return
+        }
+
+        if !info.hasUserCollection {
+            syncStatusLabel.text = "Waiting for iCloud data...".localized
+            return
+        }
+
+        if let lastSync = info.lastSyncDate {
+            let relative = DateFormatters.syncRelativeDate.localizedString(for: lastSync, relativeTo: Date())
+            syncStatusLabel.text = String(
+                format: "Synced %@ · %d items".localized, relative, info.totalRecordCount
+            )
+        } else {
+            syncStatusLabel.text = String(
+                format: "Saved %d items".localized, info.totalRecordCount
+            )
+        }
     }
 }
 
