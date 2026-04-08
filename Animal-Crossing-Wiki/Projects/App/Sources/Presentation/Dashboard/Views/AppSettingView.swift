@@ -19,7 +19,8 @@ final class AppSettingView: UIView {
         let label = UILabel()
         label.font = .preferredFont(for: .caption1, weight: .regular)
         label.textColor = .secondaryLabel
-        label.numberOfLines = 0
+        label.numberOfLines = 1
+        label.textAlignment = .right
         label.text = " "
         return label
     }()
@@ -114,30 +115,28 @@ final class AppSettingView: UIView {
     }
 
     private func updateSyncStatusLabel(_ info: SyncStatusInfo) {
-        var lines: [String] = []
-
         if info.isSyncing {
-            lines.append("Syncing...".localized)
+            syncStatusLabel.text = "Syncing...".localized
+            return
         }
 
-        if info.hasUserCollection {
-            lines.append(
-                String(format: "Local records: %d".localized, info.totalRecordCount)
-            )
-        } else {
-            lines.append("Waiting for iCloud data...".localized)
+        if !info.hasUserCollection {
+            syncStatusLabel.text = "Waiting for iCloud data...".localized
+            return
         }
 
         if let lastSync = info.lastSyncDate {
             let formatter = RelativeDateTimeFormatter()
             formatter.unitsStyle = .short
             let relative = formatter.localizedString(for: lastSync, relativeTo: Date())
-            lines.append(
-                String(format: "Last sync: %@".localized, relative)
+            syncStatusLabel.text = String(
+                format: "Synced %@ · %d items".localized, relative, info.totalRecordCount
+            )
+        } else {
+            syncStatusLabel.text = String(
+                format: "Saved %d items".localized, info.totalRecordCount
             )
         }
-
-        syncStatusLabel.text = lines.joined(separator: "\n")
     }
 }
 
