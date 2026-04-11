@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import CoreData
+import os
 
 final class CoreDataDailyTaskStorage: DailyTaskStorage {
 
@@ -23,9 +24,11 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 do {
                     let object = try self.coreDataStorage.getUserCollection(context)
                     var itemEntities = object.dailyTasks?.allObjects as? [DailyTaskEntity] ?? []
-                    // Import 진행 중에는 기본 태스크 자동 생성을 건너뜀
-                    // — CloudKit에서 태스크가 아직 도착하지 않았을 수 있음
-                    if itemEntities.isEmpty && !CoreDataStorage.shared.isImportInProgress {
+                    // 기본 태스크 자동 생성은 아래 조건을 모두 만족할 때만 수행:
+                    // - 태스크가 0개
+                    // - Import/sync reset/grace period가 아님
+                    // - 이전에 UC가 존재한 적 없음 (기존 유저면 CloudKit 데이터를 기다려야 함)
+                    if itemEntities.isEmpty && !self.coreDataStorage.shouldSuppressDataCreation {
                         itemEntities = DailyTask.tasks.map { DailyTaskEntity($0, context: context)}
                         object.addToDailyTasks(NSSet(array: itemEntities))
                         context.saveContext()
@@ -75,7 +78,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "DailyTaskStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
@@ -92,7 +95,7 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "DailyTaskStorage error: %{public}@", error.localizedDescription)
             }
         }
     }

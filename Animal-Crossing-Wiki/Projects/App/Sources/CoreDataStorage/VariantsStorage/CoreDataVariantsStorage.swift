@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import os
 
 final class CoreDataVariantsStorage: VariantsStorage {
 
@@ -89,7 +90,7 @@ final class CoreDataVariantsStorage: VariantsStorage {
 
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "VariantsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
@@ -106,7 +107,7 @@ final class CoreDataVariantsStorage: VariantsStorage {
                     context.saveContext()
                 }
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "VariantsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
@@ -125,7 +126,7 @@ final class CoreDataVariantsStorage: VariantsStorage {
 
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "VariantsStorage error: %{public}@", error.localizedDescription)
             }
         }
     }
