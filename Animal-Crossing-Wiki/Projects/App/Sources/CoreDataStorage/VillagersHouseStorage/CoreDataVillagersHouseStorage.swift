@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import os
 
 final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
 
@@ -40,7 +41,7 @@ final class CoreDataVillagersHouseStorage: VillagersHouseStorage {
                 }
                 context.saveContext()
             } catch {
-                debugPrint(error)
+                os_log(.error, log: .default, "VillagersHouseStorage error: %{public}@", error.localizedDescription)
             }
         }
     }

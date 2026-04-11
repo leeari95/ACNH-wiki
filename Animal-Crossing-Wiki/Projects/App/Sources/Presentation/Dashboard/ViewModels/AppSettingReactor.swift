@@ -14,17 +14,20 @@ final class AppSettingReactor: Reactor {
         case toggleSwitch
         case reset
         case recoverFromCloud // TEMPORARY: Recovery
+        case loadSyncStatus
     }
 
     enum Mutation {
         case setHapticState(_ isOn: Bool)
         case reset(_ isReset: Bool)
         case setRecoveryInProgress(Bool) // TEMPORARY: Recovery
+        case setSyncStatus(SyncStatusInfo)
     }
 
     struct State {
         var currentHapticState: Bool = HapticManager.shared.mode == .on
         var isRecoveryInProgress: Bool = false // TEMPORARY: Recovery
+        var syncStatus: SyncStatusInfo?
     }
 
     let initialState: State
@@ -49,6 +52,15 @@ final class AppSettingReactor: Reactor {
                 .showAlert(title: "Notice".localized, message: "Are you sure you want to reset it?".localized)
                 .map { AppSettingReactor.Mutation.reset($0) }
                 .observe(on: MainScheduler.asyncInstance)
+
+        case .loadSyncStatus:
+            return Observable.create { observer in
+                CoreDataStorage.shared.fetchSyncStatus { info in
+                    observer.onNext(.setSyncStatus(info))
+                    observer.onCompleted()
+                }
+                return Disposables.create()
+            }
 
         // TEMPORARY: Recovery
         case .recoverFromCloud:
@@ -101,6 +113,9 @@ final class AppSettingReactor: Reactor {
         // TEMPORARY: Recovery
         case .setRecoveryInProgress(let inProgress):
             newState.isRecoveryInProgress = inProgress
+
+        case .setSyncStatus(let info):
+            newState.syncStatus = info
         }
         return newState
     }

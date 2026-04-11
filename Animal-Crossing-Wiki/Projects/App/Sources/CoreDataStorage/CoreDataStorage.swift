@@ -73,6 +73,61 @@ final class CoreDataStorage {
     /// Consolidation 5초 지연 타이머 — 새 import 시 이전 타이머 취소용
     private var consolidationWorkItem: DispatchWorkItem?
 
+    /// 마지막 CloudKit Import 성공 시각 — 동기화 상태 표시에 사용
+    private let _lastSuccessfulImportDate = OSAllocatedUnfairLock<Date?>(initialState: nil)
+    var lastSuccessfulImportDate: Date? {
+        get { _lastSuccessfulImportDate.withLock { $0 } }
+        set { _lastSuccessfulImportDate.withLock { $0 = newValue } }
+    }
+
+    /// 마지막 CloudKit Export 성공 시각 — 동기화 상태 표시에 사용
+    private let _lastSuccessfulExportDate = OSAllocatedUnfairLock<Date?>(initialState: nil)
+    var lastSuccessfulExportDate: Date? {
+        get { _lastSuccessfulExportDate.withLock { $0 } }
+        set { _lastSuccessfulExportDate.withLock { $0 = newValue } }
+    }
+
+    // MARK: - Known User Flag
+
+    private static let hasEverHadUserCollectionKey = "CoreDataStorage_hasEverHadUserCollection"
+
+    /// 한 번이라도 UserCollectionEntity가 존재했는지 여부 (UserDefaults 기반, 메모리 캐싱)
+    /// 이 플래그가 true인데 UC가 0개면, 빈 UC 자동 생성 대신 .notFound를 throw
+    private var _hasEverHadUserCollectionCached = UserDefaults.standard.bool(
+        forKey: CoreDataStorage.hasEverHadUserCollectionKey
+    )
+    private(set) var hasEverHadUserCollection: Bool {
+        get { _hasEverHadUserCollectionCached }
+        set {
+            guard _hasEverHadUserCollectionCached != newValue else { return }
+            _hasEverHadUserCollectionCached = newValue
+            UserDefaults.standard.set(newValue, forKey: Self.hasEverHadUserCollectionKey)
+        }
+    }
+
+    /// 의도적 데이터 초기화 시 호출 — 새 UC 생성을 다시 허용
+    func clearHasEverHadUserCollection() {
+        hasEverHadUserCollection = false
+        os_log(.info, log: .default, "🛡️ hasEverHadUserCollection cleared (intentional reset)")
+    }
+
+    /// 첫 Import 완료 후 UC 생성/기본 데이터 생성을 유예하는 시간 (초)
+    private static let gracePeriodSeconds: TimeInterval = 120
+
+    /// 첫 Import 완료 후 grace period 내인지 확인
+    private var isWithinGracePeriod: Bool {
+        guard let firstImportDate = _firstImportCompletedAt.withLock({ $0 }) else { return false }
+        return Date().timeIntervalSince(firstImportDate) < Self.gracePeriodSeconds
+    }
+
+    /// Import 또는 sync reset 진행 중이거나, grace period 내인지 확인
+    /// DailyTask 등 외부 Storage에서도 기본값 생성 억제 판단에 사용
+    /// 주의: hasEverHadUserCollection은 여기에 포함하지 않음 — 그 플래그는 getUserCollection()에서만 사용
+    ///       여기에 포함하면 기존 유저의 DailyTask 자동 생성이 영구적으로 차단됨
+    var shouldSuppressDataCreation: Bool {
+        isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress || isWithinGracePeriod
+    }
+
     // MARK: - Private API Notification Names (fragile)
     // These notification names are undocumented and may change without notice.
     // Verified working on iOS 16–18. Remove if Apple provides a public API.
@@ -298,6 +353,12 @@ final class CoreDataStorage {
                 postSyncFailureIfNeeded(error)
             } else {
                 os_log(.info, log: .default, "CloudKit %{public}@ succeeded", type)
+                // 동기화 성공 시각 기록 (설정 화면 표시용)
+                if event.type == .import {
+                    lastSuccessfulImportDate = Date()
+                } else if event.type == .export {
+                    lastSuccessfulExportDate = Date()
+                }
             }
             if event.type == .import {
                 isImportInProgress = false
@@ -434,6 +495,24 @@ final class CoreDataStorage {
 
 extension CoreDataStorage {
 
+    // MARK: - Entity Count Helper
+
+    private static let entityNames = [
+        "UserCollectionEntity", "ItemEntity", "DailyTaskEntity",
+        "VillagersLikeEntity", "VillagersHouseEntity", "NPCLikeEntity",
+        "VariantCollectionEntity"
+    ]
+
+    /// 모든 엔티티의 레코드 수를 한 번에 조회 (logSyncDiagnostics, fetchSyncStatus 공용)
+    private func entityCounts(in context: NSManagedObjectContext) -> [String: Int] {
+        var counts: [String: Int] = [:]
+        for name in Self.entityNames {
+            let request = NSFetchRequest<NSManagedObject>(entityName: name)
+            counts[name] = (try? context.count(for: request)) ?? -1
+        }
+        return counts
+    }
+
     /// CloudKit Import/Export 이벤트 후 데이터 상태를 로깅 (5초 throttle)
     func logSyncDiagnostics(phase: String) {
         let shouldProceed = lastDiagnosticsDate.withLock { lastDate -> Bool in
@@ -454,17 +533,7 @@ extension CoreDataStorage {
         persistentContainer.performBackgroundTask { context in
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-            let entityNames = [
-                "UserCollectionEntity", "ItemEntity", "DailyTaskEntity",
-                "VillagersLikeEntity", "VillagersHouseEntity", "NPCLikeEntity",
-                "VariantCollectionEntity"
-            ]
-
-            var counts: [String: Int] = [:]
-            for name in entityNames {
-                let request = NSFetchRequest<NSManagedObject>(entityName: name)
-                counts[name] = (try? context.count(for: request)) ?? -1
-            }
+            let counts = self.entityCounts(in: context)
 
             os_log(.info, log: .default,
                    "📊 [%{public}@] UC=%d Items=%d Tasks=%d VLike=%d VHouse=%d NPC=%d Variants=%d",
@@ -501,6 +570,44 @@ extension CoreDataStorage {
                 os_log(.info, log: .default, "📊 [%{public}@] UC[%d] id=%{public}@ name=%{private}@ island=%{private}@ | items=%d tasks=%d vLike=%d vHouse=%d npc=%d variants=%d", phase, index, objectID, uc.name ?? "(nil)", uc.islandName ?? "(nil)", critters, tasks, vLike, vHouse, npcLike, variants)
             }
         }
+    }
+
+    /// 설정 화면에 표시할 동기화 상태 정보를 조회
+    func fetchSyncStatus(completion: @escaping (SyncStatusInfo) -> Void) {
+        persistentContainer.performBackgroundTask { context in
+            context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+            let counts = self.entityCounts(in: context)
+            let totalRecords = (counts["ItemEntity"] ?? 0)
+                + (counts["DailyTaskEntity"] ?? 0)
+                + (counts["VillagersLikeEntity"] ?? 0)
+                + (counts["VillagersHouseEntity"] ?? 0)
+
+            let info = SyncStatusInfo(
+                hasUserCollection: (counts["UserCollectionEntity"] ?? 0) > 0,
+                totalRecordCount: totalRecords,
+                lastImportDate: self.lastSuccessfulImportDate,
+                lastExportDate: self.lastSuccessfulExportDate,
+                isSyncing: self.isImportInProgress || self.isSyncResetInProgress
+            )
+
+            DispatchQueue.main.async {
+                completion(info)
+            }
+        }
+    }
+}
+
+/// 동기화 상태 정보 모델
+struct SyncStatusInfo {
+    let hasUserCollection: Bool
+    let totalRecordCount: Int
+    let lastImportDate: Date?
+    let lastExportDate: Date?
+    let isSyncing: Bool
+
+    var lastSyncDate: Date? {
+        [lastImportDate, lastExportDate].compactMap { $0 }.max()
     }
 }
 
@@ -716,6 +823,10 @@ extension CoreDataStorage {
         }
 
         if let existing = sorted.first {
+            // UC가 존재하면 "기존 유저" 플래그를 기록
+            if !hasEverHadUserCollection {
+                hasEverHadUserCollection = true
+            }
             return existing
         }
 
@@ -723,7 +834,8 @@ extension CoreDataStorage {
         // 1. Import 대기 중 (신규 설치 시 CloudKit Import 완료 전)
         // 2. Import 진행 중 (timeout 후에도 import가 아직 끝나지 않은 경우)
         // 3. Sync reset 진행 중 (Change Token Expired 후 re-import 대기)
-        // 4. 첫 Import 완료 후 30초 유예 (relationship 해소 시간 확보)
+        // 4. 첫 Import 완료 후 120초 유예 (relationship 해소 시간 확보)
+        // 5. 기존 유저 — 이전에 UC가 존재했으므로, CloudKit re-import 대기 필요
         if isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress {
             os_log(.info, log: .default,
                    "⏳ getUserCollection: No UC found — skipping creation (waiting=%{public}@, importing=%{public}@, reset=%{public}@)",
@@ -731,13 +843,20 @@ extension CoreDataStorage {
             throw CoreDataStorageError.notFound
         }
 
-        if let firstImportDate = _firstImportCompletedAt.withLock({ $0 }),
-           Date().timeIntervalSince(firstImportDate) < 30 {
-            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, within grace period — skipping creation")
+        if isWithinGracePeriod {
+            os_log(.info, log: .default, "⏳ getUserCollection: No UC found, within grace period (%.0fs) — skipping creation", Self.gracePeriodSeconds)
             throw CoreDataStorageError.notFound
         }
 
-        os_log(.info, log: .default, "⚠️ getUserCollection: No UC found — creating new one")
+        // 기존 유저인데 UC가 0개 → CloudKit 미러 재구성 또는 re-import 대기 상태
+        // 빈 UC를 생성하면 CloudKit에 빈 데이터가 Export되어 기존 데이터를 오염시킬 수 있음
+        if hasEverHadUserCollection {
+            os_log(.error, log: .default,
+                   "🛡️ getUserCollection: No UC found but hasEverHadUserCollection=true — blocking empty UC creation to protect cloud data")
+            throw CoreDataStorageError.notFound
+        }
+
+        os_log(.info, log: .default, "⚠️ getUserCollection: No UC found (fresh user) — creating new one")
         return UserCollectionEntity(UserInfo(), context: context)
     }
 
@@ -814,6 +933,9 @@ extension CoreDataStorage {
 
                 // migration flag 유지 — 재시작 시 re-export 중복 방지
                 UserDefaults.standard.set(true, forKey: "didMigrateExistingDataToCloudKit_v2")
+
+                // 기존 유저 플래그 유지 — 재시작 후 CloudKit re-import 전까지 빈 UC 생성 방지
+                // (복구 = 기존 유저이므로 true 유지가 올바름)
 
                 os_log(.info, log: .default, "🔄 Recovery: store files deleted — app restart required for CloudKit re-import")
                 completion(.success(()))

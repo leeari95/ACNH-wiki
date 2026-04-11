@@ -7,6 +7,7 @@
 
 import Foundation
 import ReactorKit
+import os
 
 final class TasksEditReactor: Reactor {
 
@@ -83,7 +84,7 @@ final class TasksEditReactor: Reactor {
                 .subscribe(onSuccess: { task in
                     Items.shared.deleteTask(task)
                 }, onFailure: { error in
-                    debugPrint(error)
+                    os_log(.error, log: .default, "TasksEditReactor delete error: %{public}@", error.localizedDescription)
                 }).disposed(by: disposeBag)
         }
         return newState
