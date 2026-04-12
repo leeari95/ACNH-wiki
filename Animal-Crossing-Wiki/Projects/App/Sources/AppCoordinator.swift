@@ -10,20 +10,19 @@ import UIKit
 final class AppCoordinator: Coordinator {
     var type: CoordinatorType = .main
     var childCoordinators: [Coordinator] = []
-    private(set) var rootViewController: UITabBarController!
+    private(set) var rootViewController: KeyboardResponderTabBarController!
 
     private var playerViewController: PlayerViewController?
     private var topAnchorConstraint: NSLayoutConstraint?
 
-    init(rootViewController: UITabBarController = UITabBarController()) {
+    init(rootViewController: KeyboardResponderTabBarController = KeyboardResponderTabBarController()) {
         self.rootViewController = rootViewController
     }
 
     func start() {
-        // iPad에서도 하단 탭바 사용
         if #available(iOS 18.0, *) {
-            rootViewController.mode = .tabBar
-            rootViewController.traitOverrides.horizontalSizeClass = .compact
+            // iPad: sidebar navigation, iPhone: bottom tab bar
+            rootViewController.mode = .automatic
         }
 
         let dashboardCoordinator = DashboardCoordinator()
@@ -87,11 +86,12 @@ extension AppCoordinator {
             constant: frame.height - rootViewController.tabBar.frame.height - PlayerSheetMetrics.minimizedHeight
         )
 
+        let guide = rootViewController.view.readableContentGuide
         topAnchorConstraint.flatMap {
             NSLayoutConstraint.activate([
                 viewController.view.bottomAnchor.constraint(equalTo: rootViewController.tabBar.topAnchor),
-                viewController.view.leadingAnchor.constraint(equalTo: rootViewController.view.leadingAnchor),
-                viewController.view.trailingAnchor.constraint(equalTo: rootViewController.view.trailingAnchor),
+                viewController.view.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+                viewController.view.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
                 $0
             ])
         }
@@ -115,8 +115,9 @@ extension AppCoordinator {
     func maximize() {
         let frame = rootViewController.view.frame
         let tabBarHeight = rootViewController.tabBar.frame.height
+        let maximizedHeight = PlayerSheetMetrics.maximizedHeight(for: frame.height)
         rootViewController.view.bringSubviewToFront(rootViewController.tabBar)
-        topAnchorConstraint?.constant = frame.height - tabBarHeight - PlayerSheetMetrics.maximizedHeight
+        topAnchorConstraint?.constant = frame.height - tabBarHeight - maximizedHeight
         UIView.animate(
             withDuration: 0.5,
             delay: 0,
@@ -133,9 +134,12 @@ extension AppCoordinator {
         playerViewController = nil
         MusicPlayerManager.shared.close()
     }
-    
+
     private enum PlayerSheetMetrics {
         static let minimizedHeight: CGFloat = 80
-        static let maximizedHeight: CGFloat = 450
+
+        static func maximizedHeight(for screenHeight: CGFloat) -> CGFloat {
+            min(450, screenHeight * 0.55)
+        }
     }
 }

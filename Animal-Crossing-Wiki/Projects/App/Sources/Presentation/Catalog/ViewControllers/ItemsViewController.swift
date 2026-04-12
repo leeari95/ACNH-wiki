@@ -80,11 +80,11 @@ final class ItemsViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
     private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 105, height: 175)
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        flowLayout.minimumLineSpacing = 20
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let layout = AdaptiveGridLayout.grid(
+            itemWidth: 105, itemHeight: 175, spacing: 20,
+            sectionInsets: .init(top: 10, leading: 20, bottom: 10, trailing: 20)
+        )
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.contentInset.bottom = 60
         collectionView.showsHorizontalScrollIndicator = false

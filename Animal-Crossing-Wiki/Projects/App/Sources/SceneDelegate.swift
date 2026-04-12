@@ -15,12 +15,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var appCoordinator: AppCoordinator?
     private var isAppSetup = false
     private var importObserver: NSObjectProtocol?
+    private var pendingConnectionOptions: UIScene.ConnectionOptions?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
         window = UIWindow(windowScene: windowScene)
+        pendingConnectionOptions = connectionOptions
 
         os_log(.info, log: .default, "🚀 App launch — checking fresh install")
         let isFresh = CoreDataStorage.shared.isFreshInstall()
@@ -51,6 +53,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator?.start()
         window?.rootViewController = appCoordinator?.rootViewController
         window?.makeKeyAndVisible()
+
+        if let options = pendingConnectionOptions {
+            restoreState(from: options)
+            pendingConnectionOptions = nil
+        }
+
         observeCloudImport()
         observeCloudSyncErrors()
         observeAccountChanges()
@@ -223,6 +231,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let alert = UIAlertController(title: "iCloud".localized, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
             self?.presentAlert(alert)
+        }
+    }
+
+    // MARK: - State Restoration
+
+    private static let activityType = "leeari.NookPortalPlus.browsing"
+
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        let activity = NSUserActivity(activityType: SceneDelegate.activityType)
+        activity.userInfo = [
+            "selectedTab": appCoordinator?.rootViewController.selectedIndex ?? 0
+        ]
+        return activity
+    }
+
+    private func restoreState(from connectionOptions: UIScene.ConnectionOptions) {
+        let activity = connectionOptions.userActivities.first { $0.activityType == SceneDelegate.activityType }
+        if let tabIndex = activity?.userInfo?["selectedTab"] as? Int {
+            appCoordinator?.rootViewController.selectedIndex = tabIndex
         }
     }
 

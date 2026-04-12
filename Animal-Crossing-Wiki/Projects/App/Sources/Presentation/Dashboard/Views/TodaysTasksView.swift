@@ -14,9 +14,8 @@ final class TodaysTasksView: UIView {
     private var heightConstraint: NSLayoutConstraint!
 
     private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 40, height: 40)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let layout = AdaptiveGridLayout.iconGrid(itemSize: 40)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false

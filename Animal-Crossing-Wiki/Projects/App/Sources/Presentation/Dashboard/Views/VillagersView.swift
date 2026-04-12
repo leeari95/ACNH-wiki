@@ -29,9 +29,8 @@ final class VillagersView: UIView {
     }()
 
     private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 50, height: 50)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let layout = AdaptiveGridLayout.iconGrid(itemSize: 50)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false

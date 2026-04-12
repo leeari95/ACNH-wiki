@@ -37,6 +37,8 @@ final class DashboardCoordinator: Coordinator {
         self.rootViewController = rootViewController
     }
 
+    private var settingsObserver: NSObjectProtocol?
+
     func start() {
         let viewController = DashboardViewController()
         viewController.bind(to: DashboardReactor(coordinator: self))
@@ -49,6 +51,14 @@ final class DashboardCoordinator: Coordinator {
             randomVisitNPCListVM: NpcsSectionReactor(state: .init(), mode: .randomVisit, coordinator: self)
         )
         rootViewController.addChild(viewController)
+
+        settingsObserver = NotificationCenter.default.addObserver(
+            forName: .openSettingsFromKeyboard,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.transition(for: .setting)
+        }
     }
 
     func transition(for route: Route) {
@@ -59,20 +69,17 @@ final class DashboardCoordinator: Coordinator {
                 to: PreferencesReactor(coordinator: self),
                 appSettingReactor: AppSettingReactor(coordinator: self)
             )
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.present(navigationController, animated: true)
+            presentAdaptive(viewController, from: rootViewController)
 
         case .about:
             let viewController = AboutViewController()
             viewController.bind(to: AboutReactor(coordinator: self))
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.present(navigationController, animated: true)
+            presentAdaptive(viewController, from: rootViewController)
 
         case .taskEdit:
             let viewController = TaskEditViewController()
             viewController.bind(to: TasksEditReactor(coordinator: self))
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.present(navigationController, animated: true)
+            presentAdaptive(viewController, from: rootViewController)
 
         case .customTask(let task):
             let viewController = CustomTaskViewController()
@@ -90,16 +97,15 @@ final class DashboardCoordinator: Coordinator {
         case .iconChooser:
             let viewController = IconChooserViewController()
             viewController.coordinator = self
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.visibleViewController?.present(navigationController, animated: true)
+            let source = rootViewController.visibleViewController ?? rootViewController!
+            presentAdaptive(viewController, from: source, preferredSize: CGSize(width: 400, height: 500))
 
         case .villagerDetail(let villager):
             let viewController = VillagerDetailViewController()
             viewController.bind(
                 to: VillagerDetailReactor(villager: villager, state: .init(villager: villager))
             )
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.present(navigationController, animated: true)
+            presentAdaptive(viewController, from: rootViewController)
             HapticManager.shared.notification(type: .success)
 
         case let .npcDetail(npc):
@@ -107,8 +113,7 @@ final class DashboardCoordinator: Coordinator {
             viewController.bind(
                 to: NPCDetailReactor(npc: npc, state: .init(npc: npc))
             )
-            let navigationController = UINavigationController(rootViewController: viewController)
-            rootViewController.present(navigationController, animated: true)
+            presentAdaptive(viewController, from: rootViewController)
             HapticManager.shared.notification(type: .success)
 
         case .progress:

@@ -15,9 +15,8 @@ final class IconChooserViewController: UIViewController {
     private let iconCount = 200
 
     private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: itemSize, height: itemSize)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let layout = AdaptiveGridLayout.iconGrid(itemSize: CGFloat(itemSize))
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false

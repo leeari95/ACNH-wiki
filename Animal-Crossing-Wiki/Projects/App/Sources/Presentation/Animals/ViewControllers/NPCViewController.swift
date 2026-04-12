@@ -41,11 +41,11 @@ final class NPCViewController: UIViewController {
     private var selectedKeyword = BehaviorRelay<[Menu: String]>(value: [.all: Menu.all.rawValue])
 
     private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 105, height: 140)
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        flowLayout.minimumLineSpacing = 20
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let layout = AdaptiveGridLayout.grid(
+            itemWidth: 105, itemHeight: 140, spacing: 20,
+            sectionInsets: .init(top: 10, leading: 20, bottom: 10, trailing: 20)
+        )
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.contentInset.bottom = 60
         collectionView.showsHorizontalScrollIndicator = false

@@ -27,6 +27,9 @@ final class VillagersCell: UICollectionViewCell {
         likeButton.setTitle(nil, for: .normal)
         houseButton.setImage(UIImage(systemName: "house"), for: .normal)
         houseButton.setTitle(nil, for: .normal)
+
+        let pointerInteraction = UIPointerInteraction(delegate: self)
+        addInteraction(pointerInteraction)
     }
 
     override func prepareForReuse() {
@@ -87,6 +90,16 @@ final class VillagersCell: UICollectionViewCell {
             }).disposed(by: disposeBag)
     }
     
+}
+
+extension VillagersCell: UIPointerInteractionDelegate {
+    func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
+        let preview = UITargetedPreview(view: contentView)
+        return UIPointerStyle(effect: .lift(preview))
+    }
+}
+
+extension VillagersCell {
     private func bind(reactor: NPCCellReactor) {
         Observable.just(NPCCellReactor.Action.fetch)
             .bind(to: reactor.action)

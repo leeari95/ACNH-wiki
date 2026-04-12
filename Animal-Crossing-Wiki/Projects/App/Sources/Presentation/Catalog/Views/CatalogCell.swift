@@ -34,6 +34,9 @@ final class CatalogCell: UICollectionViewCell {
         contentView.backgroundColor = .acSecondaryBackground
         contentView.layer.cornerRadius = 14
         nameLabel.font = .preferredFont(for: .footnote, weight: .bold)
+
+        let pointerInteraction = UIPointerInteraction(delegate: self)
+        addInteraction(pointerInteraction)
     }
 
     override func prepareForReuse() {
@@ -93,6 +96,13 @@ final class CatalogCell: UICollectionViewCell {
                     for: .normal
                 )
             }).disposed(by: disposeBag)
+    }
+}
+
+extension CatalogCell: UIPointerInteractionDelegate {
+    func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
+        let preview = UITargetedPreview(view: contentView)
+        return UIPointerStyle(effect: .lift(preview))
     }
 }
 
