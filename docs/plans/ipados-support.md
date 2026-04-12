@@ -1,6 +1,6 @@
 # iPadOS Native Support Plan
 
-> Status: Draft
+> Status: Phase 1~4 Implemented, Phase 5 Pending
 > Target: iPadOS 16.0+ (matching current deployment target)
 > Last updated: 2026-04-12
 
