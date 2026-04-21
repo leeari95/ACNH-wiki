@@ -45,6 +45,11 @@ struct UserCollectionSnapshot {
     // MARK: - Serialization
 
     func toData() throws -> Data {
+        // NSKeyedArchiver 사용 이유:
+        // - PropertyListSerialization은 NSString/NSNumber/NSDate/NSData/NSArray/NSDictionary만 허용.
+        // - ItemEntity의 일부 Transformable(예: variations, recipe)은 내부에 커스텀 NSCoding DTO를 포함하여 plist 직렬화 시 실패함 (SafetySnapshotError.serializationFailed).
+        // - NSKeyedArchiver는 NSCoding 준수 객체 전부를 처리. Core Data Transformable은 이미 NSCoding을 통해 저장되므로 그대로 통과됨.
+        // - 파일은 사람이 읽기 어렵지만 내부 안전망 용도이므로 수용 가능.
         let root: [String: Any] = [
             "version": version,
             "createdAt": createdAt,
@@ -57,10 +62,12 @@ struct UserCollectionSnapshot {
             "variants": variants
         ]
         do {
-            return try PropertyListSerialization.data(
-                fromPropertyList: root,
-                format: .binary,
-                options: 0
+            // requiringSecureCoding=false: 앱이 자기 자신이 쓴 파일만 복호화하므로 임의 객체 주입 위험 없음.
+            // true로 하면 unarchive 시 전체 클래스 허용 목록을 알려줘야 하는데,
+            // Transformable 내부의 모든 커스텀 DTO 타입을 나열하기 어려움.
+            return try NSKeyedArchiver.archivedData(
+                withRootObject: root as NSDictionary,
+                requiringSecureCoding: false
             )
         } catch {
             throw SafetySnapshotError.serializationFailed(error)
@@ -68,21 +75,28 @@ struct UserCollectionSnapshot {
     }
 
     static func from(data: Data) throws -> UserCollectionSnapshot {
-        let plist: Any
+        let unarchiver: NSKeyedUnarchiver
         do {
-            plist = try PropertyListSerialization.propertyList(
-                from: data, options: [], format: nil
-            )
+            unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
         } catch {
             throw SafetySnapshotError.deserializationFailed(error)
         }
-        guard let dict = plist as? [String: Any],
-              let version = dict["version"] as? Int,
-              let createdAt = dict["createdAt"] as? Date,
-              let userInfo = dict["userInfo"] as? [String: Any] else {
+        unarchiver.requiresSecureCoding = false
+        guard let root = unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? [String: Any] else {
+            unarchiver.finishDecoding()
             throw SafetySnapshotError.deserializationFailed(
                 NSError(domain: "SafetySnapshot", code: -1,
                         userInfo: [NSLocalizedDescriptionKey: "Malformed snapshot root"])
+            )
+        }
+        unarchiver.finishDecoding()
+
+        guard let version = root["version"] as? Int,
+              let createdAt = root["createdAt"] as? Date,
+              let userInfo = root["userInfo"] as? [String: Any] else {
+            throw SafetySnapshotError.deserializationFailed(
+                NSError(domain: "SafetySnapshot", code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: "Malformed snapshot fields"])
             )
         }
         guard version == kCurrentSafetySnapshotVersion else {
@@ -94,12 +108,12 @@ struct UserCollectionSnapshot {
             version: version,
             createdAt: createdAt,
             userInfo: userInfo,
-            items: (dict["items"] as? [[String: Any]]) ?? [],
-            dailyTasks: (dict["dailyTasks"] as? [[String: Any]]) ?? [],
-            villagersLike: (dict["villagersLike"] as? [[String: Any]]) ?? [],
-            villagersHouse: (dict["villagersHouse"] as? [[String: Any]]) ?? [],
-            npcLike: (dict["npcLike"] as? [[String: Any]]) ?? [],
-            variants: (dict["variants"] as? [[String: Any]]) ?? []
+            items: (root["items"] as? [[String: Any]]) ?? [],
+            dailyTasks: (root["dailyTasks"] as? [[String: Any]]) ?? [],
+            villagersLike: (root["villagersLike"] as? [[String: Any]]) ?? [],
+            villagersHouse: (root["villagersHouse"] as? [[String: Any]]) ?? [],
+            npcLike: (root["npcLike"] as? [[String: Any]]) ?? [],
+            variants: (root["variants"] as? [[String: Any]]) ?? []
         )
     }
 

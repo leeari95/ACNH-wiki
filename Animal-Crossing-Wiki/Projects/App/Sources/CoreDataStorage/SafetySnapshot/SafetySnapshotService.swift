@@ -83,7 +83,21 @@ final class SafetySnapshotService {
         }
         observers.append(remoteObserver)
 
-        // (4) Initial snapshot — 현재 store에 이미 데이터가 있으면 즉시 백업
+        // (4) CloudKit Sync Reset 임박 — iOS가 로컬 store를 purge하기 직전 알림.
+        //     debounce 우회하여 즉시 flush → purge 후에도 마지막 정상 상태가 Documents/에 남음.
+        //     (이 알림의 이름은 비공개 API — CoreDataStorage.swift의 SyncResetNotification 참조)
+        let willResetObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name("NSCloudKitMirroringDelegateWillResetSyncNotificationName"),
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            os_log(.error, log: .default,
+                   "🛟 SafetySnapshot: sync-reset imminent — flushing immediately")
+            self?.flushNow(container: container)
+        }
+        observers.append(willResetObserver)
+
+        // (5) Initial snapshot — 현재 store에 이미 데이터가 있으면 즉시 백업
         // 디스크 I/O를 줄이기 위해 background queue에서 debounce 없이 한 번 실행
         queue.async { [weak self] in
             self?.writeSnapshotNow(container: container)
