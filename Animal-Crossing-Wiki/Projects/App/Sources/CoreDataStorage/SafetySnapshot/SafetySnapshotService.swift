@@ -36,12 +36,19 @@ final class SafetySnapshotService {
 
     private let queue = DispatchQueue(label: "app.safety.snapshot", qos: .utility)
     private var pendingWorkItem: DispatchWorkItem?
-    private var contextObserver: NSObjectProtocol?
+    private var observers: [NSObjectProtocol] = []
 
-    /// 앱 시작 시 1회 호출 — LocalStore(또는 현 persistent container)의 save 알림을 관찰.
+    /// 앱 시작 시 1회 호출 — 다음 이벤트에 대해 모두 스냅샷 작성을 예약:
+    /// 1. 로컬 context save (사용자 편집)
+    /// 2. CloudKit Import 완료 (원격 기기의 변경을 수신)
+    /// 3. 원격 persistent store 변경 알림
+    /// 또한 즉시 **initial snapshot**을 비동기로 작성하여, 이번 세션 중 아무 편집이 없더라도
+    /// 최신 상태의 백업이 Documents/에 존재하도록 보장한다.
     func startObserving(container: NSPersistentContainer) {
         stopObserving()
-        contextObserver = NotificationCenter.default.addObserver(
+
+        // (1) 로컬 save 관찰 — 사용자 편집 경로
+        let saveObserver = NotificationCenter.default.addObserver(
             forName: .NSManagedObjectContextDidSave,
             object: nil,
             queue: nil
@@ -54,13 +61,40 @@ final class SafetySnapshotService {
             }
             self.scheduleSnapshot(container: container)
         }
+        observers.append(saveObserver)
+
+        // (2) CloudKit Import 완료 알림 — import로 들어온 데이터도 스냅샷에 반영
+        let importObserver = NotificationCenter.default.addObserver(
+            forName: CoreDataStorage.didFinishCloudImport,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.scheduleSnapshot(container: container)
+        }
+        observers.append(importObserver)
+
+        // (3) 원격 store 변경 알림 — 동기화로 인한 머지가 일어난 직후
+        let remoteObserver = NotificationCenter.default.addObserver(
+            forName: CoreDataStorage.didReceiveRemoteChanges,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.scheduleSnapshot(container: container)
+        }
+        observers.append(remoteObserver)
+
+        // (4) Initial snapshot — 현재 store에 이미 데이터가 있으면 즉시 백업
+        // 디스크 I/O를 줄이기 위해 background queue에서 debounce 없이 한 번 실행
+        queue.async { [weak self] in
+            self?.writeSnapshotNow(container: container)
+        }
     }
 
     func stopObserving() {
-        if let observer = contextObserver {
+        for observer in observers {
             NotificationCenter.default.removeObserver(observer)
-            contextObserver = nil
         }
+        observers.removeAll()
         pendingWorkItem?.cancel()
         pendingWorkItem = nil
     }
