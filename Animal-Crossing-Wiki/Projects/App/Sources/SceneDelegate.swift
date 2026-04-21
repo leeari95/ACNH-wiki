@@ -45,7 +45,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         CoreDataStorage.shared.clearWaitingForFirstImport()
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
-        CoreDataStorage.shared.consolidateUserCollections()
+        // Note: 자동 consolidateUserCollections 제거됨 (3.2.4+).
+        // 로컬 데이터가 의도치 않게 삭제되는 버그로 인해, 사용자가 설정에서
+        // "중복/고아 데이터 정리" 버튼을 직접 눌렀을 때만 실행.
 
         appCoordinator = AppCoordinator()
         appCoordinator?.start()
@@ -56,6 +58,70 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         observeAccountChanges()
         checkiCloudAccount()
         CoreDataStorage.shared.cleanupPersistentHistory()
+
+        // Stage 1.5: 로컬 안전 스냅샷 관찰 시작 — LocalStore save 시 debounce 후 Documents에 덤프
+        SafetySnapshotService.shared.startObserving(container: CoreDataStorage.shared.persistentContainer)
+
+        // Purge 의심 상황(fresh install=true && hasEverHadUserCollection=true)에서 로컬 스냅샷이 있다면
+        // 사용자에게 복원 옵션을 제안. CloudKit import가 실패/지연되어도 데이터를 되살릴 수 있음.
+        offerSafetySnapshotRestoreIfNeeded()
+    }
+
+    private func offerSafetySnapshotRestoreIfNeeded() {
+        guard CoreDataStorage.shared.hasEverHadUserCollection,
+              CoreDataStorage.shared.isFreshInstall(),
+              let metadata = SafetySnapshotService.shared.readMetadata() else {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.presentSafetySnapshotPrompt(metadata: metadata)
+        }
+    }
+
+    private func presentSafetySnapshotPrompt(metadata: SafetySnapshotService.Metadata) {
+        guard let root = window?.rootViewController else { return }
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        let relative = formatter.localizedString(for: metadata.createdAt, relativeTo: Date())
+        let message = String(
+            format: "Local backup detected message".localized,
+            relative, metadata.totalChildCount
+        )
+        let alert = UIAlertController(
+            title: "Local backup detected".localized,
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Wait for iCloud".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "Restore local backup".localized, style: .destructive) { [weak self] _ in
+            self?.performSafetySnapshotRestore()
+        })
+        root.present(alert, animated: true)
+    }
+
+    private func performSafetySnapshotRestore() {
+        SafetySnapshotService.shared.restore(
+            to: CoreDataStorage.shared.persistentContainer
+        ) { [weak self] outcome in
+            guard let root = self?.window?.rootViewController else { return }
+            let title: String
+            let message: String
+            switch outcome {
+            case .success(let count):
+                title = "Restore complete".localized
+                message = String(format: "Restored %d items".localized, count)
+                Items.shared.refreshUserCollection()
+            case .noSnapshot:
+                title = "Restore failed".localized
+                message = "No local backup found".localized
+            case .failed(let error):
+                title = "Restore failed".localized
+                message = error.localizedDescription
+            }
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
+            root.present(alert, animated: true)
+        }
     }
 
     // MARK: - Fresh Install: Wait for CloudKit Import
@@ -242,6 +308,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         ToastManager.shared.dismiss()
+
+        // Stage 1.5: 백그라운드 진입 직전 pending 스냅샷을 강제 flush
+        SafetySnapshotService.shared.flushNow(container: CoreDataStorage.shared.persistentContainer)
 
         // Extend execution time for pending CloudKit sync operations (import/export)
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid

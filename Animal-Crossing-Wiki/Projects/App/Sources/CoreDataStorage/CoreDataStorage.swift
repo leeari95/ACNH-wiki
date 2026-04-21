@@ -111,6 +111,38 @@ final class CoreDataStorage {
         os_log(.info, log: .default, "🛡️ hasEverHadUserCollection cleared (intentional reset)")
     }
 
+    // MARK: - Recovery Grace Period
+
+    private static let recoveryInitiatedAtKey = "CoreDataStorage_recoveryInitiatedAt"
+
+    /// performCloudKitRecovery 후 재시작했는데 import가 지연되는 동안
+    /// getUserCollection이 .notFound를 영구히 throw하는 것을 막기 위한 유예 시간 (10분).
+    private static let recoveryGracePeriodSeconds: TimeInterval = 600
+
+    /// 복구 시작 시각 기록 — 재시작 후 grace window 계산에 사용
+    func markRecoveryInitiated() {
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: Self.recoveryInitiatedAtKey)
+        os_log(.info, log: .default, "🔄 Recovery initiated timestamp recorded")
+    }
+
+    /// Recovery 완료 후 UC가 정상 복구되면 호출하여 플래그 정리
+    func clearRecoveryInitiated() {
+        UserDefaults.standard.removeObject(forKey: Self.recoveryInitiatedAtKey)
+    }
+
+    /// 복구 시작 후 grace period 내인지 확인 — 이 기간에는 hasEverHadUserCollection 체크를 우회하여 UC 생성을 허용
+    var isWithinRecoveryGracePeriod: Bool {
+        let timestamp = UserDefaults.standard.double(forKey: Self.recoveryInitiatedAtKey)
+        guard timestamp > 0 else { return false }
+        let elapsed = Date().timeIntervalSince1970 - timestamp
+        if elapsed < 0 || elapsed > Self.recoveryGracePeriodSeconds {
+            // 만료 시 자동 정리
+            UserDefaults.standard.removeObject(forKey: Self.recoveryInitiatedAtKey)
+            return false
+        }
+        return true
+    }
+
     /// 첫 Import 완료 후 UC 생성/기본 데이터 생성을 유예하는 시간 (초)
     private static let gracePeriodSeconds: TimeInterval = 120
 
@@ -373,14 +405,10 @@ final class CoreDataStorage {
                 let hasChanges = hasImportedChanges()
                 logSyncDiagnostics(phase: "Import-end")
 
-                // CloudKit이 relationship을 해소할 시간을 확보하기 위해 5초 지연
-                // 이전 타이머가 있으면 취소하여 중복 실행 방지
-                consolidationWorkItem?.cancel()
-                let workItem = DispatchWorkItem { [weak self] in
-                    self?.consolidateUserCollections()
-                }
-                consolidationWorkItem = workItem
-                DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 5, execute: workItem)
+                // Note: 자동 consolidation 제거됨 (3.2.4+).
+                // Import 완료 후 자동으로 consolidateUserCollections/cleanupOrphanedEntities를
+                // 호출하면 로컬 데이터가 의도치 않게 삭제되는 버그가 있었음.
+                // 이제는 사용자가 설정에서 "중복/고아 데이터 정리" 버튼을 눌렀을 때만 실행.
 
                 NotificationCenter.default.post(
                     name: Self.didFinishCloudImport,
@@ -615,30 +643,37 @@ struct SyncStatusInfo {
 
 extension CoreDataStorage {
 
+    /// 사용자가 설정 화면에서 "중복/고아 데이터 정리" 버튼을 눌렀을 때 호출.
+    /// 작업 완료 후 main queue로 completion 호출.
+    func consolidateUserCollectionsManually(completion: @escaping () -> Void) {
+        performBackgroundTask { [weak self] context in
+            self?.consolidateAndCleanup(in: context)
+            DispatchQueue.main.async { completion() }
+        }
+    }
+
     /// 중복 UserCollectionEntity를 하나로 통합하고 고아 엔티티를 정리
     func consolidateUserCollections() {
         performBackgroundTask { [weak self] context in
-            guard let self else {
-                return
-            }
+            self?.consolidateAndCleanup(in: context)
+        }
+    }
 
-            context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    private func consolidateAndCleanup(in context: NSManagedObjectContext) {
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-            let request = UserCollectionEntity.fetchRequest()
-            let allUCs: [UserCollectionEntity]
-            do {
-                allUCs = try context.fetch(request)
-            } catch {
-                os_log(.error, log: .default,
-                       "🔧 Consolidation fetch failed: %{public}@",
-                       error.localizedDescription)
-                return
-            }
+        let request = UserCollectionEntity.fetchRequest()
+        let allUCs: [UserCollectionEntity]
+        do {
+            allUCs = try context.fetch(request)
+        } catch {
+            os_log(.error, log: .default,
+                   "🔧 Consolidation fetch failed: %{public}@",
+                   error.localizedDescription)
+            return
+        }
 
-            guard allUCs.count > 1 else {
-                return
-            }
-
+        if allUCs.count > 1 {
             let sorted = allUCs.sorted { self.relationshipCount(of: $0) > self.relationshipCount(of: $1) }
             let keptUC = sorted[0]
 
@@ -655,11 +690,11 @@ extension CoreDataStorage {
                 context.delete(orphanUC)
             }
             context.saveContext()
-
-            self.cleanupOrphanedEntities(in: context)
-
-            os_log(.info, log: .default, "🔧 Consolidation: completed")
         }
+
+        self.cleanupOrphanedEntities(in: context)
+
+        os_log(.info, log: .default, "🔧 Consolidation: completed")
     }
 
     /// orphan UC의 관계 엔티티를 kept UC로 이전 (데이터 손실 방지)
@@ -734,8 +769,9 @@ extension CoreDataStorage {
 
             // 안전 확인 통과 후에만 실제 객체를 fetch하여 삭제
             if let orphans = try? context.fetch(orphanCountRequest) {
-                os_log(.info, log: .default,
-                       "🔧 Orphan cleanup: %{public}@ → %d orphans / %d total deleted",
+                // 프로덕션에서도 추적 가능하도록 .error 레벨로 기록 (데이터 삭제는 항상 감사 대상)
+                os_log(.error, log: .default,
+                       "🔧 Orphan cleanup: %{public}@ → %d orphans / %d total WILL BE DELETED",
                        entity, orphans.count, totalCount)
                 orphans.forEach { context.delete($0) }
                 totalOrphans += orphans.count
@@ -850,7 +886,16 @@ extension CoreDataStorage {
 
         // 기존 유저인데 UC가 0개 → CloudKit 미러 재구성 또는 re-import 대기 상태
         // 빈 UC를 생성하면 CloudKit에 빈 데이터가 Export되어 기존 데이터를 오염시킬 수 있음
+        //
+        // 예외: performCloudKitRecovery 직후 grace period(10분) 내에는
+        //       import가 지연되더라도 앱이 동작 가능하도록 UC 생성을 허용한다.
+        //       복구 자체가 "로컬 재생성 + CloudKit에서 재import" 플로우이므로 안전.
         if hasEverHadUserCollection {
+            if isWithinRecoveryGracePeriod {
+                os_log(.info, log: .default,
+                       "🔄 getUserCollection: No UC found, within recovery grace period — allowing UC creation")
+                return UserCollectionEntity(UserInfo(), context: context)
+            }
             os_log(.error, log: .default,
                    "🛡️ getUserCollection: No UC found but hasEverHadUserCollection=true — blocking empty UC creation to protect cloud data")
             throw CoreDataStorageError.notFound
@@ -871,11 +916,13 @@ extension CoreDataStorage {
     }
 }
 
-// MARK: - Data Recovery (TEMPORARY: Recovery)
+// MARK: - Data Recovery
 
 extension CoreDataStorage {
 
-    /// TEMPORARY: Recovery — 안정화 후 제거 예정
+    /// 사용자가 설정에서 "iCloud에서 복원"을 명시적으로 눌렀을 때만 실행되는 복원 플로우.
+    /// 로컬 store를 삭제하고 앱 재시작 시 CloudKit에서 전체 re-import 유도.
+    /// 로컬 데이터가 iCloud 백업으로 완전히 대체되므로 파괴적 동작 — 2단 확인 alert 후에만 호출.
     enum RecoveryError: LocalizedError {
         case iCloudNotAvailable
         case storeNotFound
@@ -888,7 +935,7 @@ extension CoreDataStorage {
         }
     }
 
-    /// TEMPORARY: Recovery — 로컬 store 파일을 삭제하고 앱 재시작 시 CloudKit에서 전체 재import 유도
+    /// 로컬 store 파일을 삭제하고 앱 재시작 시 CloudKit에서 전체 re-import 유도.
     /// store를 런타임에 재등록하면 CloudKit 옵션이 누락되므로, 파일만 삭제하고 재시작을 안내한다.
     func performCloudKitRecovery(completion: @escaping (Result<Void, Error>) -> Void) {
         checkiCloudAccountStatus { [weak self] status in
@@ -936,6 +983,10 @@ extension CoreDataStorage {
 
                 // 기존 유저 플래그 유지 — 재시작 후 CloudKit re-import 전까지 빈 UC 생성 방지
                 // (복구 = 기존 유저이므로 true 유지가 올바름)
+
+                // Recovery grace period 시작 — 재시작 후 import가 지연되어도
+                // 10분간은 UC 생성을 허용하여 앱이 동작 가능하도록 보장
+                self.markRecoveryInitiated()
 
                 os_log(.info, log: .default, "🔄 Recovery: store files deleted — app restart required for CloudKit re-import")
                 completion(.success(()))
