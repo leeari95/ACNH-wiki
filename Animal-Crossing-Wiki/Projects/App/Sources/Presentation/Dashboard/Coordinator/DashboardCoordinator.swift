@@ -158,7 +158,18 @@ final class DashboardCoordinator: Coordinator {
         return currentVC.showAlert(title: title, message: message)
     }
 
-    // TEMPORARY: Recovery
+    /// Stage 1.5 로컬 백업에서 복원 완료/실패 결과를 사용자에게 안내.
+    func showLocalRestoreResult(success: Bool, message: String?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let currentVC = self?.rootViewController.visibleViewController else { return }
+            let title = success ? "Restore complete".localized : "Restore failed".localized
+            let body = message ?? ""
+            let alert = UIAlertController(title: title, message: body, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
+            currentVC.present(alert, animated: true)
+        }
+    }
+
     func showRecoveryResultAlert(success: Bool, message: String?) {
         DispatchQueue.main.async { [weak self] in
             guard let currentVC = self?.rootViewController.visibleViewController else { return }

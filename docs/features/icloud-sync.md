@@ -5,6 +5,11 @@
 `NSPersistentCloudKitContainer`를 사용하여 여러 기기 간 수집 기록을 자동 동기화.
 사용자 개입 없이 백그라운드에서 동작하며, Import 시 토스트 알림으로 상태를 안내.
 
+> **3.2.4 변경사항**: 자동 consolidation/orphan cleanup이 사용자 로컬 데이터를 삭제하는 버그
+> 때문에 **자동 호출을 모두 제거**했습니다. 중복 정리 및 복원은 설정 화면에서 사용자가 명시적으로
+> 트리거해야 합니다. 상세는 아래 "Manual Consolidation" / "Data Recovery" 섹션 참조.
+> (중기 계획 — `docs/plans/local-backup-split.md` 참조: 로컬/백업 store 분리 아키텍처로 이관 예정)
+
 ## Architecture
 
 ```text
@@ -219,22 +224,46 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 - CloudKit 동기화 작업이 완료될 시간 확보
 - expiration handler와 타이머 양쪽에서 idempotent하게 종료 (이중 호출 방지)
 
-## Data Recovery (TEMPORARY)
+## Data Recovery (수동 복원)
 
-설정 화면에서 "iCloud에서 데이터 복구" 기능 제공. 안정화 후 제거 예정.
+설정 화면에서 "iCloud에서 복원 (로컬 데이터 덮어씀)" 기능 제공. 3.2.4부터 정식 기능으로 승격.
+**파괴적 동작** — 2단 확인 Alert 후에만 실행됨.
 
 **동작 원리**:
 1. iCloud 계정 확인 → store coordinator에서 기존 store 분리
 2. SQLite 파일 (.sqlite, -shm, -wal) + ckAssets 폴더 삭제
-3. 앱 종료 (`exit(0)`) → 재시작 시 `loadPersistentStores`가 빈 store 생성
-4. `NSPersistentCloudKitContainer`가 CloudKit에서 전체 데이터 자동 import
+3. `recoveryInitiatedAt` 타임스탬프 기록 (10분 grace period)
+4. 앱 종료 (`exit(0)`) → 재시작 시 `loadPersistentStores`가 빈 store 생성
+5. `NSPersistentCloudKitContainer`가 CloudKit에서 전체 데이터 자동 import
 
-**관련 파일** (모두 `// TEMPORARY: Recovery` 주석):
-- `CoreDataStorage.performCloudKitRecovery()`, `RecoveryError`
-- `AppSettingReactor` — `.recoverFromCloud` Action, `.setRecoveryInProgress` Mutation
+**Recovery Grace Period (10분)**:
+- 재시작 후 CloudKit import가 지연되거나 실패해도 앱이 사용 가능 상태가 되도록 보장
+- `getUserCollection()`에서 `hasEverHadUserCollection == true`이더라도 grace 기간 내에는 UC 신규 생성 허용
+- 10분 경과 또는 정상 import 완료 시 플래그 자동 정리
+
+**관련 파일**:
+- `CoreDataStorage.performCloudKitRecovery()`, `RecoveryError`, `markRecoveryInitiated`, `isWithinRecoveryGracePeriod`
+- `AppSettingReactor` — `.recoverFromCloud` Action (2단 확인), `.setRecoveryInProgress` Mutation
 - `AppSettingView` — 복구 버튼 + ActivityIndicator
 - `DashboardCoordinator.showRecoveryResultAlert()`
-- `Localizable.strings` (ko/en) — 복구 관련 문자열 6개
+- `Localizable.strings` (ko/en) — 복구 관련 문자열
+
+## Manual Consolidation (중복/고아 데이터 정리)
+
+**3.2.4부터 자동 consolidation 제거됨** — 로컬 데이터가 의도치 않게 삭제되는 버그로 인해,
+사용자가 설정에서 "중복/고아 데이터 정리" 버튼을 직접 눌렀을 때만 실행.
+
+**제거된 자동 호출부**:
+- ~~`CoreDataStorage.handleCloudKitEvent()` Import 완료 후 5초 지연~~
+- ~~`SceneDelegate.setupApp()` 앱 시작 시~~
+
+**수동 호출**:
+- `CoreDataStorage.consolidateUserCollectionsManually(completion:)` — 설정 버튼에서만 호출
+- `consolidateUserCollections()` (기존 함수)는 유지하되 자동 호출처 없음
+
+**삭제 시 로깅**:
+- `cleanupOrphanedEntities` 내부 삭제 직전 `os_log(.error)`로 대상 수량 기록 (Release에서도 추적 가능)
+- Console.app에서 `"🔧 Orphan cleanup"` 필터로 실제 삭제 이력 감사 가능
 
 ## Sync Status Display
 

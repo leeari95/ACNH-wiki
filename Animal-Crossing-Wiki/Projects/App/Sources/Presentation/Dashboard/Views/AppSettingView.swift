@@ -12,8 +12,20 @@ final class AppSettingView: UIView {
 
     private let disposeBag = DisposeBag()
     private let resetTapGesture = UITapGestureRecognizer()
-    private let recoverTapGesture = UITapGestureRecognizer() // TEMPORARY: Recovery
-    private lazy var recoveryIndicator = UIActivityIndicatorView(style: .medium) // TEMPORARY: Recovery
+    private let recoverTapGesture = UITapGestureRecognizer()
+    private let consolidateTapGesture = UITapGestureRecognizer()
+    private let localRestoreTapGesture = UITapGestureRecognizer()
+    private lazy var recoveryIndicator = UIActivityIndicatorView(style: .medium)
+    private lazy var consolidateIndicator = UIActivityIndicatorView(style: .medium)
+    private lazy var localRestoreIndicator = UIActivityIndicatorView(style: .medium)
+    private lazy var localBackupInfoLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(for: .caption1, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        return label
+    }()
 
     private lazy var syncStatusLabel: UILabel = {
         let label = UILabel()
@@ -52,19 +64,35 @@ final class AppSettingView: UIView {
             backgroundStackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
         let resetView = InfoContentView(title: "Data reset".localized)
-        // TEMPORARY: Recovery
         let recoverView = InfoContentView(
             title: "Recover data from iCloud".localized,
             contentView: recoveryIndicator
         )
+        let consolidateView = InfoContentView(
+            title: "Clean duplicate data".localized,
+            contentView: consolidateIndicator
+        )
+        let localBackupInfoView = InfoContentView(
+            title: "Local backup info".localized,
+            contentView: localBackupInfoLabel
+        )
+        let localRestoreView = InfoContentView(
+            title: "Restore from local backup".localized,
+            contentView: localRestoreIndicator
+        )
         backgroundStackView.addArrangedSubviews(
             InfoContentView(title: "System haptic".localized, contentView: hapticSwitch),
             InfoContentView(title: "iCloud sync status".localized, contentView: syncStatusLabel),
+            localBackupInfoView,
+            localRestoreView,
+            consolidateView,
             recoverView,
             resetView
         )
         resetView.addGestureRecognizer(resetTapGesture)
-        recoverView.addGestureRecognizer(recoverTapGesture) // TEMPORARY: Recovery
+        recoverView.addGestureRecognizer(recoverTapGesture)
+        consolidateView.addGestureRecognizer(consolidateTapGesture)
+        localRestoreView.addGestureRecognizer(localRestoreTapGesture)
     }
 
     func bind(to reactor: AppSettingReactor) {
@@ -83,13 +111,16 @@ final class AppSettingView: UIView {
             .bind(to: hapticSwitch.rx.isOn)
             .disposed(by: disposeBag)
 
-        // TEMPORARY: Recovery
         recoverTapGesture.rx.event
             .map { _ in AppSettingReactor.Action.recoverFromCloud }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
 
-        // TEMPORARY: Recovery — activity indicator
+        consolidateTapGesture.rx.event
+            .map { _ in AppSettingReactor.Action.consolidateManually }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
         reactor.state.map { $0.isRecoveryInProgress }
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
@@ -98,6 +129,42 @@ final class AppSettingView: UIView {
                     self?.recoveryIndicator.startAnimating()
                 } else {
                     self?.recoveryIndicator.stopAnimating()
+                }
+            })
+            .disposed(by: disposeBag)
+
+        localRestoreTapGesture.rx.event
+            .map { _ in AppSettingReactor.Action.restoreLocalBackup }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isLocalRestoreInProgress }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] inProgress in
+                if inProgress {
+                    self?.localRestoreIndicator.startAnimating()
+                } else {
+                    self?.localRestoreIndicator.stopAnimating()
+                }
+            })
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.localBackupMetadata }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] metadata in
+                self?.updateLocalBackupInfo(metadata)
+            })
+            .disposed(by: disposeBag)
+
+        reactor.state.map { $0.isConsolidationInProgress }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] inProgress in
+                if inProgress {
+                    self?.consolidateIndicator.startAnimating()
+                } else {
+                    self?.consolidateIndicator.stopAnimating()
                 }
             })
             .disposed(by: disposeBag)
@@ -112,6 +179,19 @@ final class AppSettingView: UIView {
 
         // Load sync status on appear
         reactor.action.onNext(.loadSyncStatus)
+        reactor.action.onNext(.loadLocalBackupMetadata)
+    }
+
+    private func updateLocalBackupInfo(_ metadata: SafetySnapshotService.Metadata?) {
+        guard let metadata else {
+            localBackupInfoLabel.text = "No local backup".localized
+            return
+        }
+        let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
+        localBackupInfoLabel.text = String(
+            format: "Local backup info format".localized,
+            relative, metadata.totalChildCount
+        )
     }
 
     private func updateSyncStatusLabel(_ info: SyncStatusInfo) {
