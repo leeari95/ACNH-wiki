@@ -163,7 +163,7 @@ final class CoreDataStorage {
     // MARK: - Private API Notification Names (fragile)
     // These notification names are undocumented and may change without notice.
     // Verified working on iOS 16–18. Remove if Apple provides a public API.
-    private enum SyncResetNotification {
+    enum SyncResetNotification {
         static let willReset = Notification.Name("NSCloudKitMirroringDelegateWillResetSyncNotificationName")
         static let didReset = Notification.Name("NSCloudKitMirroringDelegateDidResetSyncNotificationName")
     }
@@ -405,10 +405,8 @@ final class CoreDataStorage {
                 let hasChanges = hasImportedChanges()
                 logSyncDiagnostics(phase: "Import-end")
 
-                // Note: 자동 consolidation 제거됨 (3.2.4+).
-                // Import 완료 후 자동으로 consolidateUserCollections/cleanupOrphanedEntities를
-                // 호출하면 로컬 데이터가 의도치 않게 삭제되는 버그가 있었음.
-                // 이제는 사용자가 설정에서 "중복/고아 데이터 정리" 버튼을 눌렀을 때만 실행.
+                // Import 후 자동 consolidation/orphan cleanup이 로컬 데이터를 삭제하는 버그로
+                // 제거됨 — 사용자가 설정에서 명시적으로 실행할 때만 돌아간다.
 
                 NotificationCenter.default.post(
                     name: Self.didFinishCloudImport,

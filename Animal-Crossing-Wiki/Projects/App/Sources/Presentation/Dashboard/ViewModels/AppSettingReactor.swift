@@ -117,9 +117,7 @@ final class AppSettingReactor: Reactor {
             guard let metadata = SafetySnapshotService.shared.readMetadata() else {
                 return .empty()
             }
-            let formatter = RelativeDateTimeFormatter()
-            formatter.unitsStyle = .abbreviated
-            let relative = formatter.localizedString(for: metadata.createdAt, relativeTo: Date())
+            let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
             let message = String(
                 format: "Restore local backup warning".localized,
                 relative, metadata.totalChildCount
@@ -139,9 +137,7 @@ final class AppSettingReactor: Reactor {
 
     private func performLocalRestore() -> Observable<Mutation> {
         return Observable.create { [weak self] observer in
-            SafetySnapshotService.shared.restore(
-                to: CoreDataStorage.shared.persistentContainer
-            ) { outcome in
+            SafetySnapshotService.shared.restore { outcome in
                 switch outcome {
                 case .success(let count):
                     Items.shared.refreshUserCollection()

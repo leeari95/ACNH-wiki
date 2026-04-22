@@ -187,9 +187,7 @@ final class AppSettingView: UIView {
             localBackupInfoLabel.text = "No local backup".localized
             return
         }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        let relative = formatter.localizedString(for: metadata.createdAt, relativeTo: Date())
+        let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
         localBackupInfoLabel.text = String(
             format: "Local backup info format".localized,
             relative, metadata.totalChildCount

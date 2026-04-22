@@ -45,9 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         CoreDataStorage.shared.clearWaitingForFirstImport()
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
-        // Note: 자동 consolidateUserCollections 제거됨 (3.2.4+).
-        // 로컬 데이터가 의도치 않게 삭제되는 버그로 인해, 사용자가 설정에서
-        // "중복/고아 데이터 정리" 버튼을 직접 눌렀을 때만 실행.
 
         appCoordinator = AppCoordinator()
         appCoordinator?.start()
@@ -59,8 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         checkiCloudAccount()
         CoreDataStorage.shared.cleanupPersistentHistory()
 
-        // Stage 1.5: 로컬 안전 스냅샷 관찰 시작 — LocalStore save 시 debounce 후 Documents에 덤프
-        SafetySnapshotService.shared.startObserving(container: CoreDataStorage.shared.persistentContainer)
+        SafetySnapshotService.shared.startObserving()
 
         // Purge 의심 상황(fresh install=true && hasEverHadUserCollection=true)에서 로컬 스냅샷이 있다면
         // 사용자에게 복원 옵션을 제안. CloudKit import가 실패/지연되어도 데이터를 되살릴 수 있음.
@@ -80,9 +76,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func presentSafetySnapshotPrompt(metadata: SafetySnapshotService.Metadata) {
         guard let root = window?.rootViewController else { return }
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        let relative = formatter.localizedString(for: metadata.createdAt, relativeTo: Date())
+        let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
         let message = String(
             format: "Local backup detected message".localized,
             relative, metadata.totalChildCount
@@ -100,9 +94,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func performSafetySnapshotRestore() {
-        SafetySnapshotService.shared.restore(
-            to: CoreDataStorage.shared.persistentContainer
-        ) { [weak self] outcome in
+        SafetySnapshotService.shared.restore { [weak self] outcome in
             guard let root = self?.window?.rootViewController else { return }
             let title: String
             let message: String
@@ -310,7 +302,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         ToastManager.shared.dismiss()
 
         // Stage 1.5: 백그라운드 진입 직전 pending 스냅샷을 강제 flush
-        SafetySnapshotService.shared.flushNow(container: CoreDataStorage.shared.persistentContainer)
+        SafetySnapshotService.shared.flushNow()
 
         // Extend execution time for pending CloudKit sync operations (import/export)
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid

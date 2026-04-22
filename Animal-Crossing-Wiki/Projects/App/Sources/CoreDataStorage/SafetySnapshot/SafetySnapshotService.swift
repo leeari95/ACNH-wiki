@@ -20,13 +20,24 @@ final class SafetySnapshotService {
     private static let fileName = "local_safety_snapshot.plist"
 
     var snapshotURL: URL {
-        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            fatalError("Documents directory unavailable")
+        }
         return documents.appendingPathComponent(Self.fileName)
     }
 
     var snapshotExists: Bool {
         FileManager.default.fileExists(atPath: snapshotURL.path)
     }
+
+    // MARK: - Lightweight Metadata Cache
+    //
+    // readMetadata()가 3MB+ 스냅샷을 매번 unarchive하지 않도록,
+    // 스냅샷 저장 시점에 createdAt/childCount만 UserDefaults에 별도로 기록한다.
+    // UserDefaults가 비어있으면 fallback으로 파일을 unarchive한다 (예: 마이그레이션 첫 실행).
+
+    private static let metadataCreatedAtKey = "SafetySnapshot_lastCreatedAt"
+    private static let metadataChildCountKey = "SafetySnapshot_lastChildCount"
 
     // MARK: - Debounced Save
 
@@ -38,69 +49,55 @@ final class SafetySnapshotService {
     private var pendingWorkItem: DispatchWorkItem?
     private var observers: [NSObjectProtocol] = []
 
+    private var container: NSPersistentContainer {
+        CoreDataStorage.shared.persistentContainer
+    }
+
     /// 앱 시작 시 1회 호출 — 다음 이벤트에 대해 모두 스냅샷 작성을 예약:
     /// 1. 로컬 context save (사용자 편집)
     /// 2. CloudKit Import 완료 (원격 기기의 변경을 수신)
     /// 3. 원격 persistent store 변경 알림
+    /// 4. CloudKit Sync Reset 임박 (iOS가 로컬 purge 직전에 마지막 flush)
     /// 또한 즉시 **initial snapshot**을 비동기로 작성하여, 이번 세션 중 아무 편집이 없더라도
     /// 최신 상태의 백업이 Documents/에 존재하도록 보장한다.
-    func startObserving(container: NSPersistentContainer) {
+    func startObserving() {
         stopObserving()
 
-        // (1) 로컬 save 관찰 — 사용자 편집 경로
+        let psc = container.persistentStoreCoordinator
         let saveObserver = NotificationCenter.default.addObserver(
             forName: .NSManagedObjectContextDidSave,
             object: nil,
             queue: nil
         ) { [weak self] notification in
-            guard let self else { return }
-            // 다른 container의 save가 섞이면 무시
             guard let ctx = notification.object as? NSManagedObjectContext,
-                  ctx.persistentStoreCoordinator === container.persistentStoreCoordinator else {
+                  ctx.persistentStoreCoordinator === psc else {
                 return
             }
-            self.scheduleSnapshot(container: container)
+            self?.scheduleSnapshot()
         }
         observers.append(saveObserver)
 
-        // (2) CloudKit Import 완료 알림 — import로 들어온 데이터도 스냅샷에 반영
         let importObserver = NotificationCenter.default.addObserver(
-            forName: CoreDataStorage.didFinishCloudImport,
-            object: nil,
-            queue: nil
-        ) { [weak self] _ in
-            self?.scheduleSnapshot(container: container)
-        }
+            forName: CoreDataStorage.didFinishCloudImport, object: nil, queue: nil
+        ) { [weak self] _ in self?.scheduleSnapshot() }
         observers.append(importObserver)
 
-        // (3) 원격 store 변경 알림 — 동기화로 인한 머지가 일어난 직후
         let remoteObserver = NotificationCenter.default.addObserver(
-            forName: CoreDataStorage.didReceiveRemoteChanges,
-            object: nil,
-            queue: nil
-        ) { [weak self] _ in
-            self?.scheduleSnapshot(container: container)
-        }
+            forName: CoreDataStorage.didReceiveRemoteChanges, object: nil, queue: nil
+        ) { [weak self] _ in self?.scheduleSnapshot() }
         observers.append(remoteObserver)
 
-        // (4) CloudKit Sync Reset 임박 — iOS가 로컬 store를 purge하기 직전 알림.
-        //     debounce 우회하여 즉시 flush → purge 후에도 마지막 정상 상태가 Documents/에 남음.
-        //     (이 알림의 이름은 비공개 API — CoreDataStorage.swift의 SyncResetNotification 참조)
+        // iOS purge 직전 debounce 우회하여 즉시 flush → purge 후 마지막 정상 상태 보존
         let willResetObserver = NotificationCenter.default.addObserver(
-            forName: Notification.Name("NSCloudKitMirroringDelegateWillResetSyncNotificationName"),
-            object: nil,
-            queue: nil
+            forName: CoreDataStorage.SyncResetNotification.willReset, object: nil, queue: nil
         ) { [weak self] _ in
-            os_log(.error, log: .default,
-                   "🛟 SafetySnapshot: sync-reset imminent — flushing immediately")
-            self?.flushNow(container: container)
+            os_log(.error, log: .default, "🛟 SafetySnapshot: sync-reset imminent — flushing immediately")
+            self?.flushNow()
         }
         observers.append(willResetObserver)
 
-        // (5) Initial snapshot — 현재 store에 이미 데이터가 있으면 즉시 백업
-        // 디스크 I/O를 줄이기 위해 background queue에서 debounce 없이 한 번 실행
         queue.async { [weak self] in
-            self?.writeSnapshotNow(container: container)
+            self?.writeSnapshotNow()
         }
     }
 
@@ -113,28 +110,29 @@ final class SafetySnapshotService {
         pendingWorkItem = nil
     }
 
-    private func scheduleSnapshot(container: NSPersistentContainer) {
+    private func scheduleSnapshot() {
         pendingWorkItem?.cancel()
         let workItem = DispatchWorkItem { [weak self] in
-            self?.writeSnapshotNow(container: container)
+            self?.writeSnapshotNow()
         }
         pendingWorkItem = workItem
         queue.asyncAfter(deadline: .now() + Self.debounceSeconds, execute: workItem)
     }
 
-    /// 강제 저장 — 앱 종료 직전 등에서 flushing 용도. 실패해도 무시.
-    func flushNow(container: NSPersistentContainer) {
+    /// 강제 저장 — 앱 종료 직전/sync-reset 직전 등에서 flushing 용도.
+    func flushNow() {
         pendingWorkItem?.cancel()
         pendingWorkItem = nil
-        writeSnapshotNow(container: container)
+        writeSnapshotNow()
     }
 
-    private func writeSnapshotNow(container: NSPersistentContainer) {
+    private func writeSnapshotNow() {
         let context = container.newBackgroundContext()
         do {
             let snapshot = try UserCollectionSnapshot.dump(from: context)
             let data = try snapshot.toData()
-            try atomicWrite(data: data, to: snapshotURL)
+            try data.write(to: snapshotURL, options: [.atomic])
+            updateMetadataCache(createdAt: snapshot.createdAt, childCount: snapshot.totalChildCount)
             os_log(.info, log: .default,
                    "🛟 SafetySnapshot written: %d children, %d bytes",
                    snapshot.totalChildCount, data.count)
@@ -148,11 +146,6 @@ final class SafetySnapshotService {
         }
     }
 
-    private func atomicWrite(data: Data, to url: URL) throws {
-        // .atomic → 임시 파일 경유 rename. 중간 종료 시에도 기존 파일 보존됨.
-        try data.write(to: url, options: [.atomic])
-    }
-
     // MARK: - Restore
 
     enum RestoreOutcome {
@@ -161,30 +154,24 @@ final class SafetySnapshotService {
         case failed(Error)
     }
 
-    /// 사용자 확인 후 호출. 대상 container의 기존 UC + 자식을 모두 삭제하고 스냅샷으로 재구성.
-    /// **파괴적 동작** — 호출 전 기존 데이터가 이미 비어있거나, 사용자 명시적 동의 필요.
-    func restore(to container: NSPersistentContainer, completion: @escaping (RestoreOutcome) -> Void) {
-        guard snapshotExists else {
-            DispatchQueue.main.async { completion(.noSnapshot) }
-            return
-        }
-
-        container.performBackgroundTask { context in
+    /// 사용자 확인 후 호출. 기존 UC + 자식을 모두 삭제하고 스냅샷으로 재구성.
+    /// **파괴적 동작** — 호출 전 사용자 명시적 동의 필요.
+    func restore(completion: @escaping (RestoreOutcome) -> Void) {
+        container.performBackgroundTask { [weak self] context in
+            guard let self else { return }
             let outcome: RestoreOutcome
             do {
                 let data = try Data(contentsOf: self.snapshotURL)
                 let snapshot = try UserCollectionSnapshot.from(data: data)
-
-                // 기존 UC + 자식을 모두 삭제 (cascade rule이 설정되어 있지 않은 relationship이 있을 수 있으므로 안전하게 명시 삭제)
                 try Self.wipeExistingCollection(in: context)
-
                 try snapshot.apply(to: context)
                 try context.save()
-
                 os_log(.error, log: .default,
                        "🛟 SafetySnapshot RESTORED: %d children",
                        snapshot.totalChildCount)
                 outcome = .success(totalRestored: snapshot.totalChildCount)
+            } catch let error as NSError where error.domain == NSCocoaErrorDomain && error.code == NSFileReadNoSuchFileError {
+                outcome = .noSnapshot
             } catch {
                 os_log(.error, log: .default,
                        "🛟 SafetySnapshot restore FAILED: %{public}@",
@@ -218,22 +205,37 @@ final class SafetySnapshotService {
     struct Metadata {
         let createdAt: Date
         let totalChildCount: Int
-        let fileSize: Int64
     }
 
     /// UI에서 "N분 전에 저장된 백업이 있습니다 (아이템 N개)"를 표시하기 위한 요약.
-    /// 실제 복원은 restore(...)를 호출해야 한다.
+    /// UserDefaults 캐시 우선, 없으면 파일을 unarchive하여 역으로 캐시 채움.
     func readMetadata() -> Metadata? {
+        if let cached = readCachedMetadata() {
+            return cached
+        }
+        return readMetadataFromFile()
+    }
+
+    private func readCachedMetadata() -> Metadata? {
+        guard let createdAt = UserDefaults.standard.object(forKey: Self.metadataCreatedAtKey) as? Date else {
+            return nil
+        }
+        let count = UserDefaults.standard.integer(forKey: Self.metadataChildCountKey)
+        // 파일이 외부에서 삭제된 경우 캐시가 stale할 수 있으므로 실제 파일 존재 여부 확인
+        guard snapshotExists else {
+            clearMetadataCache()
+            return nil
+        }
+        return Metadata(createdAt: createdAt, totalChildCount: count)
+    }
+
+    private func readMetadataFromFile() -> Metadata? {
         guard snapshotExists else { return nil }
         do {
             let data = try Data(contentsOf: snapshotURL)
             let snapshot = try UserCollectionSnapshot.from(data: data)
-            let size = (try? snapshotURL.resourceValues(forKeys: [.fileSizeKey]).fileSize).flatMap { Int64($0) } ?? 0
-            return Metadata(
-                createdAt: snapshot.createdAt,
-                totalChildCount: snapshot.totalChildCount,
-                fileSize: size
-            )
+            updateMetadataCache(createdAt: snapshot.createdAt, childCount: snapshot.totalChildCount)
+            return Metadata(createdAt: snapshot.createdAt, totalChildCount: snapshot.totalChildCount)
         } catch {
             os_log(.error, log: .default,
                    "🛟 SafetySnapshot metadata read failed: %{public}@",
@@ -242,8 +244,19 @@ final class SafetySnapshotService {
         }
     }
 
+    private func updateMetadataCache(createdAt: Date, childCount: Int) {
+        UserDefaults.standard.set(createdAt, forKey: Self.metadataCreatedAtKey)
+        UserDefaults.standard.set(childCount, forKey: Self.metadataChildCountKey)
+    }
+
+    private func clearMetadataCache() {
+        UserDefaults.standard.removeObject(forKey: Self.metadataCreatedAtKey)
+        UserDefaults.standard.removeObject(forKey: Self.metadataChildCountKey)
+    }
+
     /// 복원 완료 후 또는 사용자가 의도적으로 지울 때.
     func deleteSnapshot() {
         try? FileManager.default.removeItem(at: snapshotURL)
+        clearMetadataCache()
     }
 }
