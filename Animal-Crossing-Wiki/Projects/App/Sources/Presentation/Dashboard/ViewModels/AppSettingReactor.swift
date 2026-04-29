@@ -13,21 +13,30 @@ final class AppSettingReactor: Reactor {
     enum Action {
         case toggleSwitch
         case reset
-        case recoverFromCloud // TEMPORARY: Recovery
+        case recoverFromCloud
+        case consolidateManually
+        case restoreLocalBackup
         case loadSyncStatus
+        case loadLocalBackupMetadata
     }
 
     enum Mutation {
         case setHapticState(_ isOn: Bool)
         case reset(_ isReset: Bool)
-        case setRecoveryInProgress(Bool) // TEMPORARY: Recovery
+        case setRecoveryInProgress(Bool)
+        case setConsolidationInProgress(Bool)
+        case setLocalRestoreInProgress(Bool)
         case setSyncStatus(SyncStatusInfo)
+        case setLocalBackupMetadata(SafetySnapshotService.Metadata?)
     }
 
     struct State {
         var currentHapticState: Bool = HapticManager.shared.mode == .on
-        var isRecoveryInProgress: Bool = false // TEMPORARY: Recovery
+        var isRecoveryInProgress: Bool = false
+        var isConsolidationInProgress: Bool = false
+        var isLocalRestoreInProgress: Bool = false
         var syncStatus: SyncStatusInfo?
+        var localBackupMetadata: SafetySnapshotService.Metadata?
     }
 
     let initialState: State
@@ -62,13 +71,20 @@ final class AppSettingReactor: Reactor {
                 return Disposables.create()
             }
 
-        // TEMPORARY: Recovery
         case .recoverFromCloud:
+            // 2단 확인: 복원은 로컬 데이터를 전부 지우므로 파괴적 동작
             return coordinator
                 .showAlert(
                     title: "iCloud Data Recovery".localized,
-                    message: "This will reset local data and re-download from iCloud. Continue?".localized
+                    message: "Recovery warning: local data will be erased".localized
                 )
+                .flatMap { [weak self] firstConfirmed -> Observable<Bool> in
+                    guard let self, firstConfirmed else { return .just(false) }
+                    return self.coordinator.showAlert(
+                        title: "Are you absolutely sure?".localized,
+                        message: "Recovery final confirm".localized
+                    )
+                }
                 .flatMap { confirmed -> Observable<Mutation> in
                     guard confirmed else { return .empty() }
                     return Observable.concat(
@@ -77,10 +93,78 @@ final class AppSettingReactor: Reactor {
                     )
                 }
                 .observe(on: MainScheduler.asyncInstance)
+
+        case .consolidateManually:
+            return coordinator
+                .showAlert(
+                    title: "Clean duplicate data".localized,
+                    message: "Consolidate warning".localized
+                )
+                .flatMap { confirmed -> Observable<Mutation> in
+                    guard confirmed else { return .empty() }
+                    return Observable.concat(
+                        .just(.setConsolidationInProgress(true)),
+                        self.performConsolidation()
+                    )
+                }
+                .observe(on: MainScheduler.asyncInstance)
+
+        case .loadLocalBackupMetadata:
+            let metadata = SafetySnapshotService.shared.readMetadata()
+            return .just(.setLocalBackupMetadata(metadata))
+
+        case .restoreLocalBackup:
+            guard let metadata = SafetySnapshotService.shared.readMetadata() else {
+                return .empty()
+            }
+            let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
+            let message = String(
+                format: "Restore local backup warning".localized,
+                relative, metadata.totalChildCount
+            )
+            return coordinator
+                .showAlert(title: "Restore from local backup".localized, message: message)
+                .flatMap { confirmed -> Observable<Mutation> in
+                    guard confirmed else { return .empty() }
+                    return Observable.concat(
+                        .just(.setLocalRestoreInProgress(true)),
+                        self.performLocalRestore()
+                    )
+                }
+                .observe(on: MainScheduler.asyncInstance)
         }
     }
 
-    // TEMPORARY: Recovery
+    private func performLocalRestore() -> Observable<Mutation> {
+        return Observable.create { [weak self] observer in
+            SafetySnapshotService.shared.restore { outcome in
+                switch outcome {
+                case .success(let count):
+                    Items.shared.refreshUserCollection()
+                    self?.coordinator.showLocalRestoreResult(success: true, message: String(format: "Restored %d items".localized, count))
+                case .noSnapshot:
+                    self?.coordinator.showLocalRestoreResult(success: false, message: "No local backup found".localized)
+                case .failed(let error):
+                    self?.coordinator.showLocalRestoreResult(success: false, message: error.localizedDescription)
+                }
+                observer.onNext(.setLocalRestoreInProgress(false))
+                observer.onNext(.setLocalBackupMetadata(SafetySnapshotService.shared.readMetadata()))
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
+    private func performConsolidation() -> Observable<Mutation> {
+        return Observable.create { observer in
+            CoreDataStorage.shared.consolidateUserCollectionsManually {
+                observer.onNext(.setConsolidationInProgress(false))
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+
     private func performRecovery() -> Observable<Mutation> {
         return Observable.create { observer in
             CoreDataStorage.shared.performCloudKitRecovery { [weak self] result in
@@ -110,12 +194,20 @@ final class AppSettingReactor: Reactor {
                 coordinator.transition(for: .dismiss)
             }
 
-        // TEMPORARY: Recovery
         case .setRecoveryInProgress(let inProgress):
             newState.isRecoveryInProgress = inProgress
 
+        case .setConsolidationInProgress(let inProgress):
+            newState.isConsolidationInProgress = inProgress
+
+        case .setLocalRestoreInProgress(let inProgress):
+            newState.isLocalRestoreInProgress = inProgress
+
         case .setSyncStatus(let info):
             newState.syncStatus = info
+
+        case .setLocalBackupMetadata(let metadata):
+            newState.localBackupMetadata = metadata
         }
         return newState
     }

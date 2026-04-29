@@ -5,6 +5,11 @@
 `NSPersistentCloudKitContainer`를 사용하여 여러 기기 간 수집 기록을 자동 동기화.
 사용자 개입 없이 백그라운드에서 동작하며, Import 시 토스트 알림으로 상태를 안내.
 
+> **3.2.4 변경사항**: 자동 consolidation/orphan cleanup이 사용자 로컬 데이터를 삭제하는 버그
+> 때문에 **자동 호출을 모두 제거**했습니다. 중복 정리 및 복원은 설정 화면에서 사용자가 명시적으로
+> 트리거해야 합니다. 상세는 아래 "Manual Consolidation" / "Data Recovery" 섹션 참조.
+> (중기 계획 — `docs/plans/local-backup-split.md` 참조: 로컬/백업 store 분리 아키텍처로 이관 예정)
+
 ## Architecture
 
 ```text
@@ -219,22 +224,46 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 - CloudKit 동기화 작업이 완료될 시간 확보
 - expiration handler와 타이머 양쪽에서 idempotent하게 종료 (이중 호출 방지)
 
-## Data Recovery (TEMPORARY)
+## Data Recovery (수동 복원)
 
-설정 화면에서 "iCloud에서 데이터 복구" 기능 제공. 안정화 후 제거 예정.
+설정 화면에서 "iCloud에서 복원 (로컬 데이터 덮어씀)" 기능 제공. 3.2.4부터 정식 기능으로 승격.
+**파괴적 동작** — 2단 확인 Alert 후에만 실행됨.
 
 **동작 원리**:
 1. iCloud 계정 확인 → store coordinator에서 기존 store 분리
 2. SQLite 파일 (.sqlite, -shm, -wal) + ckAssets 폴더 삭제
-3. 앱 종료 (`exit(0)`) → 재시작 시 `loadPersistentStores`가 빈 store 생성
-4. `NSPersistentCloudKitContainer`가 CloudKit에서 전체 데이터 자동 import
+3. `recoveryInitiatedAt` 타임스탬프 기록 (10분 grace period)
+4. 앱 종료 (`exit(0)`) → 재시작 시 `loadPersistentStores`가 빈 store 생성
+5. `NSPersistentCloudKitContainer`가 CloudKit에서 전체 데이터 자동 import
 
-**관련 파일** (모두 `// TEMPORARY: Recovery` 주석):
-- `CoreDataStorage.performCloudKitRecovery()`, `RecoveryError`
-- `AppSettingReactor` — `.recoverFromCloud` Action, `.setRecoveryInProgress` Mutation
+**Recovery Grace Period (10분)**:
+- 재시작 후 CloudKit import가 지연되거나 실패해도 앱이 사용 가능 상태가 되도록 보장
+- `getUserCollection()`에서 `hasEverHadUserCollection == true`이더라도 grace 기간 내에는 UC 신규 생성 허용
+- 10분 경과 또는 정상 import 완료 시 플래그 자동 정리
+
+**관련 파일**:
+- `CoreDataStorage.performCloudKitRecovery()`, `RecoveryError`, `markRecoveryInitiated`, `isWithinRecoveryGracePeriod`
+- `AppSettingReactor` — `.recoverFromCloud` Action (2단 확인), `.setRecoveryInProgress` Mutation
 - `AppSettingView` — 복구 버튼 + ActivityIndicator
 - `DashboardCoordinator.showRecoveryResultAlert()`
-- `Localizable.strings` (ko/en) — 복구 관련 문자열 6개
+- `Localizable.strings` (ko/en) — 복구 관련 문자열
+
+## Manual Consolidation (중복/고아 데이터 정리)
+
+**3.2.4부터 자동 consolidation 제거됨** — 로컬 데이터가 의도치 않게 삭제되는 버그로 인해,
+사용자가 설정에서 "중복/고아 데이터 정리" 버튼을 직접 눌렀을 때만 실행.
+
+**제거된 자동 호출부**:
+- ~~`CoreDataStorage.handleCloudKitEvent()` Import 완료 후 5초 지연~~
+- ~~`SceneDelegate.setupApp()` 앱 시작 시~~
+
+**수동 호출**:
+- `CoreDataStorage.consolidateUserCollectionsManually(completion:)` — 설정 버튼에서만 호출
+- `consolidateUserCollections()` (기존 함수)는 유지하되 자동 호출처 없음
+
+**삭제 시 로깅**:
+- `cleanupOrphanedEntities` 내부 삭제 직전 `os_log(.error)`로 대상 수량 기록 (Release에서도 추적 가능)
+- Console.app에서 `"🔧 Orphan cleanup"` 필터로 실제 삭제 이력 감사 가능
 
 ## Sync Status Display
 
@@ -257,3 +286,69 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 
 모든 Storage 클래스의 에러 로깅이 `debugPrint()` (Release 빌드에서 무시됨)에서 `os_log(.error)` (Release에서도 기록)로 강화됨.
 Console.app 또는 Xcode에서 `CoreDataStorage`, `ItemsStorage`, `DailyTaskStorage` 등으로 필터하여 프로덕션 에러 추적 가능.
+
+## Remote Telemetry (Firebase)
+
+3.2.0 이후 "로컬 데이터가 초기화되었다"는 클레임을 원격에서 추적하기 위해, `Utility/Log.swift`에서
+Crashlytics(세션 breadcrumb + custom keys + 비치명 에러)와 Analytics(집계 이벤트/클릭)를 통합 래핑.
+
+### Logging API
+
+모든 레벨(`verbose` ~ `error`)은 **3-way fan-out**: `os_log` + Crashlytics breadcrumb + Analytics 이벤트.
+에러/크래시 없이도 Analytics 콘솔에서 로그가 보이며, 문제 발생 시엔 Crashlytics breadcrumb으로 세션 맥락이 함께 업로드됨.
+
+| 호출 | 용도 | Analytics 이벤트명 |
+|------|------|-------------------|
+| `Log.verbose(_:)` | 상세 추적 | `log_verbose` |
+| `Log.debug(_:)` | 디버그 흐름 | `log_debug` |
+| `Log.info(_:)` | 일반 흐름, 결정 지점 | `log_info` |
+| `Log.warning(_:)` | 주의 상태 | `log_warning` |
+| `Log.error(name:reason:userInfo:)` | **비치명 에러 업로드** | `log_error` + Crashlytics `recordError` |
+| `Log.event(_:parameters:)` | 구조화된 집계 이벤트 | (Event enum) |
+| `Log.click(_:parameters:)` | 사용자 탭 추적 | `select_content` |
+| `Log.setContext(_:_:)` | 커스텀 키 단건 설정 | — (Crashlytics 전용) |
+| `Log.snapshot(...)` | 엔티티 카운트/플래그 일괄 전송 | — (Crashlytics 전용) |
+
+**메시지 길이**: Analytics 파라미터 제한(100자)에 맞춰 자동 잘림.
+
+### Analytics Events (집계)
+
+| Event | 발생 지점 |
+|-------|-----------|
+| `sync_recovery_triggered` | `performCloudKitRecovery` 성공 — 사용자가 설정에서 복원 실행 |
+| `sync_orphan_cleanup` | `cleanupOrphanedEntities`가 실제로 레코드 삭제 (entity/count 파라미터) |
+| `sync_uc_consolidated` | 중복 UC가 통합됨 (uc_total/kept_relationships) |
+| `sync_uc_created` | 새 UC 생성 (path: fresh_user \| recovery_grace) |
+| `sync_uc_creation_suppressed` | UC 생성이 억제됨 (reason: sync_in_progress \| grace_period) |
+| `sync_token_expired` | `NSCloudKitMirroringDelegateWillReset` 감지 |
+| `sync_user_collection_missing` | **핵심 증상**: hasEverHadUC=true인데 UC=0 |
+| `sync_cloud_failed` | CloudKit Export/Import 실패 (reason/code) |
+
+### Crashlytics Custom Keys (세션 스냅샷)
+
+`logSyncDiagnostics(phase:throttled:)` 호출 시 os_log 진단 + `Log.snapshot` 갱신을 한 번의 background fetch로 수행.
+Import 종료, UC 생성(recovery grace), UC missing 시점에 자동 전송. UC missing처럼 즉시 컨텍스트가 필요한
+경우 `throttled: false` 로 호출하여 5초 throttle을 우회.
+
+- `sync_uc_count` / `sync_item_count` / `sync_task_count` / `sync_villager_count`
+- `sync_has_ever_had_uc` / `sync_is_fresh_install`
+- `sync_waiting_first_import` / `sync_import_in_progress` / `sync_reset_in_progress`
+- `sync_within_recovery_grace`
+- `sync_last_import_at` / `sync_last_export_at` (epoch seconds)
+- `sync_app_version`
+
+### 비치명 에러 (Crashlytics `recordError`)
+
+세션 breadcrumb과 custom keys를 포함한 상세 컨텍스트를 Firebase Crashlytics에 업로드:
+
+- `Log.UserCollectionMissing` — hasEverHadUC=true + UC=0 관측
+- `Log.OrphanCleanupDelete` — 실제 orphan 삭제 발생 (감사 로그)
+
+### 조사 가이드
+
+사용자 클레임 접수 시:
+
+1. Firebase Crashlytics → Non-fatal issues → `UserCollectionMissing` 필터
+2. 해당 세션의 breadcrumb(`log()` 문자열)으로 이벤트 순서 재구성
+3. custom keys로 그 순간의 엔티티 수/플래그 상태 확인
+4. Analytics → `sync_user_collection_missing` 분포로 버전/일자별 발생 빈도 확인
