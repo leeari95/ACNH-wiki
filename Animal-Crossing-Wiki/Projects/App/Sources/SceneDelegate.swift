@@ -45,7 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         CoreDataStorage.shared.clearWaitingForFirstImport()
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
-        CoreDataStorage.shared.consolidateUserCollections()
 
         appCoordinator = AppCoordinator()
         appCoordinator?.start()
@@ -56,6 +55,65 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         observeAccountChanges()
         checkiCloudAccount()
         CoreDataStorage.shared.cleanupPersistentHistory()
+
+        SafetySnapshotService.shared.startObserving()
+
+        // Purge 의심 상황(fresh install=true && hasEverHadUserCollection=true)에서 로컬 스냅샷이 있다면
+        // 사용자에게 복원 옵션을 제안. CloudKit import가 실패/지연되어도 데이터를 되살릴 수 있음.
+        offerSafetySnapshotRestoreIfNeeded()
+    }
+
+    private func offerSafetySnapshotRestoreIfNeeded() {
+        guard CoreDataStorage.shared.hasEverHadUserCollection,
+              CoreDataStorage.shared.isFreshInstall(),
+              let metadata = SafetySnapshotService.shared.readMetadata() else {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.presentSafetySnapshotPrompt(metadata: metadata)
+        }
+    }
+
+    private func presentSafetySnapshotPrompt(metadata: SafetySnapshotService.Metadata) {
+        guard let root = window?.rootViewController else { return }
+        let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
+        let message = String(
+            format: "Local backup detected message".localized,
+            relative, metadata.totalChildCount
+        )
+        let alert = UIAlertController(
+            title: "Local backup detected".localized,
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Wait for iCloud".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "Restore local backup".localized, style: .destructive) { [weak self] _ in
+            self?.performSafetySnapshotRestore()
+        })
+        root.present(alert, animated: true)
+    }
+
+    private func performSafetySnapshotRestore() {
+        SafetySnapshotService.shared.restore { [weak self] outcome in
+            guard let root = self?.window?.rootViewController else { return }
+            let title: String
+            let message: String
+            switch outcome {
+            case .success(let count):
+                title = "Restore complete".localized
+                message = String(format: "Restored %d items".localized, count)
+                Items.shared.refreshUserCollection()
+            case .noSnapshot:
+                title = "Restore failed".localized
+                message = "No local backup found".localized
+            case .failed(let error):
+                title = "Restore failed".localized
+                message = error.localizedDescription
+            }
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
+            root.present(alert, animated: true)
+        }
     }
 
     // MARK: - Fresh Install: Wait for CloudKit Import
@@ -242,6 +300,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         ToastManager.shared.dismiss()
+
+        // Stage 1.5: 백그라운드 진입 직전 pending 스냅샷을 강제 flush
+        SafetySnapshotService.shared.flushNow()
 
         // Extend execution time for pending CloudKit sync operations (import/export)
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
