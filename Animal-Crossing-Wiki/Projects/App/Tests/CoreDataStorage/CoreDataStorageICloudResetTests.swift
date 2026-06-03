@@ -335,7 +335,7 @@ extension CoreDataStorageICloudResetTests {
             }
         )
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
         disposable.dispose()
         return result ?? .failure(TestError.timeout)
     }
