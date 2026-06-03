@@ -40,12 +40,7 @@ xcodebuild \
   build
 
 # 특정 유닛 테스트 실행
-xcodebuild \
-  -workspace Animal-Crossing-Wiki.xcworkspace \
-  -scheme ACNH-wiki \
-  -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
-  -only-testing:ACNH-wikiTests/CoreDataStorageICloudResetTests \
-  test
+make test
 ```
 
 > 설정 변경 후 반드시 `mise x -- tuist generate` 재실행
@@ -197,6 +192,9 @@ make ci
 | Runner | `macos-26` |
 | Xcode | 26.5 |
 | Swift | 6.2 |
+
+CI는 `develop-build.yml`에서 빌드 후 `ACNH-wikiTests/CoreDataStorageICloudResetTests`를 실행하여
+iCloud 동기화 초기화 회귀 테스트를 PR 체크에 포함한다.
 
 ## Project Config Files
 

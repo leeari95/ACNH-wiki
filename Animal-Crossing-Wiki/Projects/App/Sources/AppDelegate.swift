@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         AppAppearance.setUpAppearance()
 
+        if AppEnvironment.isUnitTesting {
+            return true
+        }
+
         FirebaseApp.configure()
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
 

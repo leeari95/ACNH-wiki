@@ -27,10 +27,11 @@ UIKit + RxSwift + ReactorKit. 단일 App 모듈, Tuist 빌드 시스템.
 ## Build Commands
 
 ```bash
-mise install                             # Tuist 4.115.1 설치
+mise install                             # Tuist 4.152.0 설치
 mise x -- tuist install                  # SPM 의존성 설치
 mise x -- tuist generate --no-open       # Xcode 프로젝트 생성
 mise x -- tuist build                    # CLI 빌드
+make test                                # 핵심 유닛 테스트 실행
 swiftlint --config .swiftlint.yml        # 린트 검사
 swiftlint --config .swiftlint.yml --fix  # 자동 수정
 make validate                            # 아키텍처 + 패턴 검증

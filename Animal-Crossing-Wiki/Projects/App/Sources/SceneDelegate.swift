@@ -23,6 +23,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         window = UIWindow(windowScene: windowScene)
 
+        if AppEnvironment.isUnitTesting {
+            window?.rootViewController = UIViewController()
+            window?.makeKeyAndVisible()
+            return
+        }
+
         os_log(.info, log: .default, "🚀 App launch — checking fresh install")
         let isFresh = CoreDataStorage.shared.isFreshInstall()
         os_log(.info, log: .default, "🚀 isFreshInstall = %{public}@", isFresh ? "true" : "false")
@@ -154,9 +160,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // iCloud 계정 확인 — 미로그인이면 Import 대기 불필요
         CoreDataStorage.shared.checkiCloudAccountStatus { status in
-            if status != .available {
-                os_log(.info, log: .default, "🚀 iCloud not available (status=%d) — skipping wait", status.rawValue)
-                complete(.noICloud)
+            if let reason = Self.firstImportWaitCompletionReason(for: status) {
+                os_log(.info, log: .default,
+                       "🚀 iCloud wait completed from account status=%d reason=%{public}@",
+                       status.rawValue, "\(reason)")
+                complete(reason)
             }
         }
 
@@ -170,6 +178,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
             complete(.timeout)
+        }
+    }
+
+    static func firstImportWaitCompletionReason(
+        for status: CKAccountStatus
+    ) -> CoreDataStorage.FirstImportWaitCompletionReason? {
+        switch status {
+        case .available:
+            return nil
+        case .noAccount, .restricted:
+            return .noICloud
+        case .couldNotDetermine, .temporarilyUnavailable:
+            return .timeout
+        @unknown default:
+            return .timeout
         }
     }
 

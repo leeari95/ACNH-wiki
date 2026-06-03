@@ -53,7 +53,10 @@ let schemes: [Scheme] = [
         name: "ACNH-wiki",
         shared: true,
         buildAction: .buildAction(targets: ["ACNH-wiki"]),
-        testAction: .targets(["ACNH-wikiTests"]),
+        testAction: .targets(
+            ["ACNH-wikiTests"],
+            arguments: .arguments(environmentVariables: ["IS_UNIT_TESTING": "1"])
+        ),
         runAction: .runAction(
             configuration: .debug,
             executable: "ACNH-wiki",

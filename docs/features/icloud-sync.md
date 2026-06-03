@@ -38,6 +38,7 @@ Device A                    CloudKit Server               Device B
 | `ToastManager.swift` | 전용 UIWindow 기반 토스트 매니저. 레퍼런스 카운팅, 타임아웃, 백그라운드 dismiss |
 | `ToastView.swift` | Import 상태 토스트 UI (캡슐형 디자인, ActivityIndicator + Label, slide 애니메이션) |
 | `CloudSyncSplashViewController.swift` | 신규 설치 시 CloudKit Import 대기 스플래시 화면 |
+| `SafetySnapshotService.swift` | CloudKit purge/reset에 대비한 로컬 안전 스냅샷 작성 및 수동 복원 |
 
 ## Data Sync Flow
 
@@ -154,7 +155,8 @@ waitForCloudKitImport(timeout: 10)
 
 `timeout`은 "CloudKit에 데이터가 없다"는 의미가 아니라 "아직 확인하지 못했다"는 의미로 처리한다.
 따라서 앱은 열리지만 `isFirstImportTimedOut`을 유지하여 빈 `UserCollectionEntity`와 기본 DailyTask 생성을 계속 억제한다.
-이후 Import 이벤트가 실제로 도착하면 `handleCloudKitEvent()`가 timeout 상태를 해제하고 Path-B가 데이터를 다시 로드한다.
+이후 Import 이벤트가 실제로 성공하면 `handleCloudKitEvent()`가 timeout 상태를 해제하고 Path-B가 데이터를 다시 로드한다.
+Import가 에러로 종료되면 CloudKit 데이터 유무가 여전히 불명확하므로 timeout/reset 억제 상태를 유지한다.
 단, timeout 콜백보다 먼저 Import 성공 이벤트가 이미 관측된 경우에는 timeout 상태를 남기지 않는다.
 
 계정 없는 회귀 테스트는 `CoreDataStorageICloudResetTests`에서 관리한다. 이 테스트는 실제 iCloud 로그인 없이
@@ -255,6 +257,15 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 - `AppSettingView` — 복구 버튼 + ActivityIndicator
 - `DashboardCoordinator.showRecoveryResultAlert()`
 - `Localizable.strings` (ko/en) — 복구 관련 문자열
+
+### Local Safety Snapshot
+
+`SafetySnapshotService`는 UC 그래프를 `local_safety_snapshot.plist`로 유지한다.
+CloudKit import, remote change, sync reset 직전에는 최신 로컬 상태를 스냅샷으로 남겨 iOS가 Core Data store를 purge해도 사용자가 수동 복원할 수 있게 한다.
+
+- 스냅샷 파일은 첫 잠금 해제 후 백그라운드 CloudKit flush에서도 갱신될 수 있도록 `completeUntilFirstUserAuthentication` 보호 등급으로 저장한다.
+- 파일은 기기/iCloud 백업에서 제외하여 Core Data 원본과 별도로 장기 보관되지 않게 한다.
+- 복원은 `wipeExistingCollection → snapshot.apply → context.save()`를 단일 context rollback 경계에 묶는다. 중간 실패 시 기존 로컬 컬렉션 삭제가 저장되지 않는다.
 
 ## Manual Consolidation (중복/고아 데이터 정리)
 

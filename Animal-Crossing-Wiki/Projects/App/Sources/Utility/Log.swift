@@ -70,7 +70,10 @@ enum Log {
     private static let analyticsStringLimit = 100
 
     private static var isFirebaseConfigured: Bool {
-        FirebaseApp.app() != nil
+        guard !AppEnvironment.isUnitTesting else {
+            return false
+        }
+        return FirebaseApp.app() != nil
     }
 
     private static var crashlytics: Crashlytics? {

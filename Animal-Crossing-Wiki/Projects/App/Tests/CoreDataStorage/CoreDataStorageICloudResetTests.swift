@@ -19,7 +19,7 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         let storage = try makeStorage()
         let context = storage.persistentContainer.viewContext
 
-        let existingUserCollection = UserCollectionEntity(UserInfo(), context: context)
+        let existingUserCollection = try insertUserCollection(in: context)
         try context.save()
 
         _ = try storage.getUserCollection(context)
@@ -77,7 +77,7 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         let storage = try makeStorage()
         let context = storage.persistentContainer.viewContext
 
-        let existingUserCollection = UserCollectionEntity(UserInfo(), context: context)
+        let existingUserCollection = try insertUserCollection(in: context)
         try context.save()
 
         _ = try storage.getUserCollection(context)
@@ -107,6 +107,127 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), 0)
     }
 
+    func testFailedCloudImportAfterTimeoutKeepsSuppressionAndDoesNotCreateEmptyData() throws {
+        let storage = try makeStorage()
+
+        storage.markWaitingForFirstImport()
+        storage.completeFirstImportWait(reason: .timeout)
+        storage.markImportInProgressForTesting()
+        storage.finishCloudImportForTesting(succeeded: false)
+
+        XCTAssertTrue(storage.isFirstImportTimedOut)
+        XCTAssertFalse(storage.isImportInProgress)
+        XCTAssertTrue(storage.shouldSuppressDataCreation)
+
+        let result = waitForFetchTasks(using: CoreDataDailyTaskStorage(coreDataStorage: storage))
+
+        assertReadErrorWrappingNotFound(result)
+        XCTAssertEqual(try entityCount("UserCollectionEntity", in: storage), 0)
+        XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), 0)
+    }
+
+    func testFailedCloudImportDuringSyncResetKeepsResetSuppressionAndDoesNotCreateEmptyData() throws {
+        let storage = try makeStorage()
+
+        storage.markSyncResetInProgressForTesting()
+        storage.markImportInProgressForTesting()
+        storage.finishCloudImportForTesting(succeeded: false)
+
+        XCTAssertTrue(storage.isSyncResetInProgress)
+        XCTAssertFalse(storage.isImportInProgress)
+        XCTAssertTrue(storage.shouldSuppressDataCreation)
+
+        let result = waitForFetchTasks(using: CoreDataDailyTaskStorage(coreDataStorage: storage))
+
+        assertReadErrorWrappingNotFound(result)
+        XCTAssertEqual(try entityCount("UserCollectionEntity", in: storage), 0)
+        XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), 0)
+    }
+
+    func testSuccessfulCloudImportClearsResetAndTimeoutSuppression() throws {
+        let storage = try makeStorage()
+
+        storage.markWaitingForFirstImport()
+        storage.completeFirstImportWait(reason: .timeout)
+        storage.markSyncResetInProgressForTesting()
+        storage.markImportInProgressForTesting()
+        storage.finishCloudImportForTesting(succeeded: true)
+
+        XCTAssertFalse(storage.isFirstImportTimedOut)
+        XCTAssertFalse(storage.isImportInProgress)
+        XCTAssertFalse(storage.isSyncResetInProgress)
+    }
+
+    func testTransientICloudAccountStatusesKeepFirstImportUnknown() {
+        XCTAssertNil(SceneDelegate.firstImportWaitCompletionReason(for: .available))
+        XCTAssertEqual(SceneDelegate.firstImportWaitCompletionReason(for: .noAccount), .noICloud)
+        XCTAssertEqual(SceneDelegate.firstImportWaitCompletionReason(for: .restricted), .noICloud)
+        XCTAssertEqual(SceneDelegate.firstImportWaitCompletionReason(for: .temporarilyUnavailable), .timeout)
+        XCTAssertEqual(SceneDelegate.firstImportWaitCompletionReason(for: .couldNotDetermine), .timeout)
+    }
+
+    func testSafetySnapshotWriteUsesBackgroundSafeProtectionAndExcludesBackup() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        try insertUserCollection(in: context)
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        var appliedProtection: FileProtectionType?
+        let service = SafetySnapshotService(
+            containerProvider: { storage.persistentContainer },
+            snapshotDirectoryProvider: { snapshotDirectory },
+            fileAttributeSetter: { _, attributes in
+                appliedProtection = attributes[.protectionKey] as? FileProtectionType
+            }
+        )
+
+        service.flushNow()
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: service.snapshotURL.path))
+        let resourceValues = try service.snapshotURL.resourceValues(forKeys: [.isExcludedFromBackupKey])
+        XCTAssertEqual(resourceValues.isExcludedFromBackup, true)
+        XCTAssertEqual(appliedProtection, .completeUntilFirstUserAuthentication)
+    }
+
+    func testSafetySnapshotRestoreFailureAfterWipeRollsBackExistingCollection() throws {
+        enum InjectedRestoreFailure: Error {
+            case failure
+        }
+
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        try insertUserCollection(in: context)
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let snapshot = try UserCollectionSnapshot.dump(from: context)
+        let snapshotURL = snapshotDirectory.appendingPathComponent("local_safety_snapshot.plist")
+        try snapshot.toData().write(to: snapshotURL)
+
+        let service = SafetySnapshotService(
+            containerProvider: { storage.persistentContainer },
+            snapshotDirectoryProvider: { snapshotDirectory },
+            beforeApplyingSnapshot: { _ in throw InjectedRestoreFailure.failure }
+        )
+
+        let expectation = expectation(description: "restore completes")
+        service.restore { outcome in
+            guard case .failed(let error) = outcome else {
+                XCTFail("Expected restore failure after injected error, got \(outcome)")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertTrue(error is InjectedRestoreFailure)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 2)
+        XCTAssertEqual(try entityCount("UserCollectionEntity", in: storage), 1)
+    }
+
     func testAppFlowFetchTasksNoICloudFreshUserStillCreatesLocalDefaults() throws {
         let storage = try makeStorage()
 
@@ -125,9 +246,9 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
     }
 }
 
-private extension CoreDataStorageICloudResetTests {
+extension CoreDataStorageICloudResetTests {
 
-    func makeStorage() throws -> CoreDataStorage {
+    private func makeStorage() throws -> CoreDataStorage {
         let model = try makeManagedObjectModel()
         let container = NSPersistentCloudKitContainer(name: "CoreDataStorage", managedObjectModel: model)
         let description = NSPersistentStoreDescription()
@@ -146,7 +267,7 @@ private extension CoreDataStorageICloudResetTests {
         return CoreDataStorage(testingPersistentContainer: container)
     }
 
-    func makeManagedObjectModel() throws -> NSManagedObjectModel {
+    private func makeManagedObjectModel() throws -> NSManagedObjectModel {
         let bundle = Bundle(for: CoreDataStorage.self)
         guard let modelURL = bundle.url(forResource: "CoreDataStorage", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
@@ -155,12 +276,31 @@ private extension CoreDataStorageICloudResetTests {
         return model
     }
 
-    func userCollectionCount(in context: NSManagedObjectContext) throws -> Int {
+    @discardableResult
+    private func insertUserCollection(
+        in context: NSManagedObjectContext,
+        userInfo: UserInfo = UserInfo()
+    ) throws -> UserCollectionEntity {
+        guard let object = NSEntityDescription.insertNewObject(
+            forEntityName: "UserCollectionEntity",
+            into: context
+        ) as? UserCollectionEntity else {
+            throw TestError.entityCastFailed
+        }
+        object.name = userInfo.name
+        object.islandName = userInfo.islandName
+        object.islandFruit = userInfo.islandFruit.imageName
+        object.hemisphere = userInfo.hemisphere.rawValue.capitalized
+        object.islandReputation = Int16(userInfo.islandReputation)
+        return object
+    }
+
+    private func userCollectionCount(in context: NSManagedObjectContext) throws -> Int {
         let request = UserCollectionEntity.fetchRequest()
         return try context.count(for: request)
     }
 
-    func entityCount(_ entityName: String, in storage: CoreDataStorage) throws -> Int {
+    private func entityCount(_ entityName: String, in storage: CoreDataStorage) throws -> Int {
         let context = storage.persistentContainer.newBackgroundContext()
         var count = 0
         var caughtError: Error?
@@ -180,7 +320,7 @@ private extension CoreDataStorageICloudResetTests {
         return count
     }
 
-    func waitForFetchTasks(using storage: CoreDataDailyTaskStorage) -> Result<[DailyTask], Error> {
+    private func waitForFetchTasks(using storage: CoreDataDailyTaskStorage) -> Result<[DailyTask], Error> {
         let expectation = expectation(description: "fetchTasks")
         var result: Result<[DailyTask], Error>?
 
@@ -200,14 +340,14 @@ private extension CoreDataStorageICloudResetTests {
         return result ?? .failure(TestError.timeout)
     }
 
-    func assertNotFound(_ error: Error, file: StaticString = #filePath, line: UInt = #line) {
+    private func assertNotFound(_ error: Error, file: StaticString = #filePath, line: UInt = #line) {
         guard case CoreDataStorageError.notFound = error else {
             XCTFail("Expected CoreDataStorageError.notFound, got \(error)", file: file, line: line)
             return
         }
     }
 
-    func assertReadErrorWrappingNotFound(
+    private func assertReadErrorWrappingNotFound(
         _ result: Result<[DailyTask], Error>,
         file: StaticString = #filePath,
         line: UInt = #line
@@ -223,8 +363,15 @@ private extension CoreDataStorageICloudResetTests {
         assertNotFound(underlying, file: file, line: line)
     }
 
-    enum TestError: Error {
+    private func makeTemporaryDirectory() throws -> URL {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        return directory
+    }
+
+    private enum TestError: Error {
         case modelNotFound
+        case entityCastFailed
         case timeout
     }
 }

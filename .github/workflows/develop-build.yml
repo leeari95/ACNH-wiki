@@ -25,7 +25,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '26.1.1'
+          xcode-version: '26.5'
 
       - uses: actions/checkout@v4
         with:
@@ -61,3 +61,13 @@ jobs:
             -destination generic/platform="iOS Simulator" \
             -configuration Debug \
             build
+
+      - name: Run iCloud Reset Regression Tests
+        run: |
+          xcodebuild \
+            -workspace Animal-Crossing-Wiki.xcworkspace \
+            -scheme ACNH-wiki \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -configuration Debug \
+            -only-testing:ACNH-wikiTests/CoreDataStorageICloudResetTests \
+            test
