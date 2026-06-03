@@ -64,6 +64,14 @@ final class CoreDataStorage {
         set { _isSyncResetInProgress.withLock { $0 = newValue } }
     }
 
+    /// Fresh install에서 CloudKit 첫 import 대기가 timeout된 상태.
+    /// timeout은 "원격 데이터 없음"이 아니라 "아직 모름"이므로 빈 UC 생성을 막는다.
+    private let _isFirstImportTimedOut = OSAllocatedUnfairLock(initialState: false)
+    private(set) var isFirstImportTimedOut: Bool {
+        get { _isFirstImportTimedOut.withLock { $0 } }
+        set { _isFirstImportTimedOut.withLock { $0 = newValue } }
+    }
+
     /// 첫 번째 Import 완료 시점 — grace period 계산에 사용
     private let _firstImportCompletedAt = OSAllocatedUnfairLock<Date?>(initialState: nil)
 
@@ -115,8 +123,8 @@ final class CoreDataStorage {
 
     private static let recoveryInitiatedAtKey = "CoreDataStorage_recoveryInitiatedAt"
 
-    /// performCloudKitRecovery 후 재시작했는데 import가 지연되는 동안
-    /// getUserCollection이 .notFound를 영구히 throw하는 것을 막기 위한 유예 시간 (10분).
+    /// performCloudKitRecovery 후 재시작했는데 import가 지연되는 상황을
+    /// UI/로그에서 구분하기 위한 유예 시간 (10분).
     private static let recoveryGracePeriodSeconds: TimeInterval = 600
 
     /// 복구 시작 시각 기록 — 재시작 후 grace window 계산에 사용
@@ -130,7 +138,7 @@ final class CoreDataStorage {
         UserDefaults.standard.removeObject(forKey: Self.recoveryInitiatedAtKey)
     }
 
-    /// 복구 시작 후 grace period 내인지 확인 — 이 기간에는 hasEverHadUserCollection 체크를 우회하여 UC 생성을 허용
+    /// 복구 시작 후 grace period 내인지 확인 — 상태 표시에만 사용하고, UC 생성 허용에는 사용하지 않는다.
     var isWithinRecoveryGracePeriod: Bool {
         let timestamp = UserDefaults.standard.double(forKey: Self.recoveryInitiatedAtKey)
         guard timestamp > 0 else { return false }
@@ -157,7 +165,11 @@ final class CoreDataStorage {
     /// 주의: hasEverHadUserCollection은 여기에 포함하지 않음 — 그 플래그는 getUserCollection()에서만 사용
     ///       여기에 포함하면 기존 유저의 DailyTask 자동 생성이 영구적으로 차단됨
     var shouldSuppressDataCreation: Bool {
-        isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress || isWithinGracePeriod
+        isWaitingForFirstImport
+            || isImportInProgress
+            || isSyncResetInProgress
+            || isFirstImportTimedOut
+            || isWithinGracePeriod
     }
 
     // MARK: - Private API Notification Names (fragile)
@@ -168,9 +180,17 @@ final class CoreDataStorage {
         static let didReset = Notification.Name("NSCloudKitMirroringDelegateDidResetSyncNotificationName")
     }
 
-    private init() {}
+    private let injectedPersistentContainer: NSPersistentCloudKitContainer?
+
+    private init(persistentContainer: NSPersistentCloudKitContainer? = nil) {
+        self.injectedPersistentContainer = persistentContainer
+    }
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
+        if let injectedPersistentContainer {
+            return injectedPersistentContainer
+        }
+
         let container = NSPersistentCloudKitContainer(name: "CoreDataStorage")
 
         container.persistentStoreDescriptions.forEach { description in
@@ -243,7 +263,27 @@ final class CoreDataStorage {
     /// Import 대기 플래그 해제 — setupApp() 또는 no-iCloud 경로에서 호출
     func clearWaitingForFirstImport() {
         isWaitingForFirstImport = false
+        isFirstImportTimedOut = false
         Log.info("clearWaitingForFirstImport")
+    }
+
+    enum FirstImportWaitCompletionReason {
+        case importArrived
+        case noICloud
+        case timeout
+    }
+
+    /// Fresh install 첫 CloudKit import 대기 종료.
+    /// timeout은 데이터 없음의 증거가 아니므로 UC 생성을 계속 억제한다.
+    func completeFirstImportWait(reason: FirstImportWaitCompletionReason) {
+        isWaitingForFirstImport = false
+        switch reason {
+        case .importArrived, .noICloud:
+            isFirstImportTimedOut = false
+        case .timeout:
+            isFirstImportTimedOut = lastSuccessfulImportDate == nil
+        }
+        Log.info("completeFirstImportWait reason=\(reason)")
     }
 
     // MARK: - Persistent History Cleanup
@@ -390,6 +430,7 @@ final class CoreDataStorage {
                 // 동기화 성공 시각 기록 (설정 화면 표시용)
                 if event.type == .import {
                     lastSuccessfulImportDate = Date()
+                    isFirstImportTimedOut = false
                 } else if event.type == .export {
                     lastSuccessfulExportDate = Date()
                 }
@@ -397,6 +438,7 @@ final class CoreDataStorage {
             if event.type == .import {
                 isImportInProgress = false
                 isWaitingForFirstImport = false
+                isFirstImportTimedOut = false
                 isSyncResetInProgress = false
                 _exportRetryCount.withLock { $0 = 0 }
 
@@ -905,15 +947,21 @@ extension CoreDataStorage {
         // 1. Import 대기 중 (신규 설치 시 CloudKit Import 완료 전)
         // 2. Import 진행 중 (timeout 후에도 import가 아직 끝나지 않은 경우)
         // 3. Sync reset 진행 중 (Change Token Expired 후 re-import 대기)
-        // 4. 첫 Import 완료 후 120초 유예 (relationship 해소 시간 확보)
-        // 5. 기존 유저 — 이전에 UC가 존재했으므로, CloudKit re-import 대기 필요
-        if isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress {
-            Log.info("getUserCollection: No UC — skipping (waiting=\(isWaitingForFirstImport), importing=\(isImportInProgress), reset=\(isSyncResetInProgress))")
+        // 4. fresh install 첫 import 대기가 timeout됨 (CloudKit 데이터 유무가 아직 불명확)
+        // 5. 첫 Import 완료 후 120초 유예 (relationship 해소 시간 확보)
+        // 6. 기존 유저 — 이전에 UC가 존재했으므로, CloudKit re-import 대기 필요
+        if isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress || isFirstImportTimedOut {
+            Log.info(
+                "getUserCollection: No UC — skipping "
+                    + "(waiting=\(isWaitingForFirstImport), importing=\(isImportInProgress), "
+                    + "reset=\(isSyncResetInProgress), timedOut=\(isFirstImportTimedOut))"
+            )
             Log.event(.ucCreationSuppressed, parameters: [
                 Log.Param.reason: SuppressionReason.syncInProgress.rawValue,
                 Log.Param.waiting: isWaitingForFirstImport.description,
                 Log.Param.importing: isImportInProgress.description,
-                Log.Param.reset: isSyncResetInProgress.description
+                Log.Param.reset: isSyncResetInProgress.description,
+                Log.Param.timedOut: isFirstImportTimedOut.description
             ])
             throw CoreDataStorageError.notFound
         }
@@ -928,17 +976,7 @@ extension CoreDataStorage {
 
         // 기존 유저인데 UC가 0개 → CloudKit 미러 재구성 또는 re-import 대기 상태
         // 빈 UC를 생성하면 CloudKit에 빈 데이터가 Export되어 기존 데이터를 오염시킬 수 있음
-        //
-        // 예외: performCloudKitRecovery 직후 grace period(10분) 내에는
-        //       import가 지연되더라도 앱이 동작 가능하도록 UC 생성을 허용한다.
-        //       복구 자체가 "로컬 재생성 + CloudKit에서 재import" 플로우이므로 안전.
         if hasEverHadUserCollection {
-            if isWithinRecoveryGracePeriod {
-                Log.info("UC created within recovery grace period (hasEverHadUC=true)")
-                Log.event(.ucCreated, parameters: [Log.Param.path: UCCreationPath.recoveryGrace.rawValue])
-                logSyncDiagnostics(phase: "UC-created-recovery", throttled: false)
-                return UserCollectionEntity(UserInfo(), context: context)
-            }
             // 핵심 데이터 유실 증상: "기존 유저인데 UC가 사라짐".
             // 3.2.0 이후 클레임의 주 증상으로 추정되는 상태.
             Log.warning("UC missing but hasEverHadUC=true — user data appears reset, blocking empty UC to protect cloud")
@@ -972,6 +1010,19 @@ extension CoreDataStorage {
         return critters + villagersLike + villagersHouse + dailyTasks + npcLike + variants
     }
 }
+
+#if DEBUG
+extension CoreDataStorage {
+    convenience init(testingPersistentContainer: NSPersistentCloudKitContainer) {
+        self.init(persistentContainer: testingPersistentContainer)
+    }
+
+    static func resetPersistentSyncFlagsForTesting() {
+        UserDefaults.standard.removeObject(forKey: hasEverHadUserCollectionKey)
+        UserDefaults.standard.removeObject(forKey: recoveryInitiatedAtKey)
+    }
+}
+#endif
 
 // MARK: - Data Recovery
 
@@ -1041,8 +1092,8 @@ extension CoreDataStorage {
                 // 기존 유저 플래그 유지 — 재시작 후 CloudKit re-import 전까지 빈 UC 생성 방지
                 // (복구 = 기존 유저이므로 true 유지가 올바름)
 
-                // Recovery grace period 시작 — 재시작 후 import가 지연되어도
-                // 10분간은 UC 생성을 허용하여 앱이 동작 가능하도록 보장
+                // Recovery grace period 시작 — 재시작 후 import 지연/실패 상태를 UI와 진단 로그에서
+                // 구분하기 위한 표시용 플래그. 빈 UC 생성을 허용하지는 않는다.
                 self.markRecoveryInitiated()
 
                 Log.warning("recovery: local store wiped, awaiting restart + CloudKit re-import")
@@ -1058,7 +1109,6 @@ extension CoreDataStorage {
 
 private enum UCCreationPath: String {
     case freshUser = "fresh_user"
-    case recoveryGrace = "recovery_grace"
 }
 
 private enum SuppressionReason: String {

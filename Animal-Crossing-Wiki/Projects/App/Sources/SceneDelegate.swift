@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var appCoordinator: AppCoordinator?
     private var isAppSetup = false
     private var importObserver: NSObjectProtocol?
+    private var pendingFirstImportCompletionReason: CoreDataStorage.FirstImportWaitCompletionReason?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
@@ -30,7 +31,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CoreDataStorage.shared.markWaitingForFirstImport()
             showSplashScreen()
             window?.makeKeyAndVisible()
-            waitForCloudKitImport(timeout: 10) { [weak self] in
+            waitForCloudKitImport(timeout: 10) { [weak self] reason in
+                self?.pendingFirstImportCompletionReason = reason
                 self?.setupApp()
             }
         } else {
@@ -43,7 +45,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func setupApp() {
         isAppSetup = true
 
-        CoreDataStorage.shared.clearWaitingForFirstImport()
+        if let reason = pendingFirstImportCompletionReason {
+            CoreDataStorage.shared.completeFirstImportWait(reason: reason)
+            pendingFirstImportCompletionReason = nil
+        } else {
+            CoreDataStorage.shared.clearWaitingForFirstImport()
+        }
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
 
         appCoordinator = AppCoordinator()
@@ -122,11 +129,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = CloudSyncSplashViewController()
     }
 
-    private func waitForCloudKitImport(timeout: TimeInterval, completion: @escaping () -> Void) {
+    private func waitForCloudKitImport(
+        timeout: TimeInterval,
+        completion: @escaping (CoreDataStorage.FirstImportWaitCompletionReason) -> Void
+    ) {
         var hasCompleted = false
 
         // hasCompleted 접근을 main queue로 한정하여 race condition 방지
-        let complete: (String) -> Void = { [weak self] reason in
+        let complete: (CoreDataStorage.FirstImportWaitCompletionReason) -> Void = { [weak self] reason in
             DispatchQueue.main.async {
                 guard !hasCompleted else {
                     return
@@ -137,8 +147,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     NotificationCenter.default.removeObserver(observer)
                     self?.importObserver = nil
                 }
-                os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", reason)
-                completion()
+                os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", "\(reason)")
+                completion(reason)
             }
         }
 
@@ -146,7 +156,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         CoreDataStorage.shared.checkiCloudAccountStatus { status in
             if status != .available {
                 os_log(.info, log: .default, "🚀 iCloud not available (status=%d) — skipping wait", status.rawValue)
-                complete("no-icloud")
+                complete(.noICloud)
             }
         }
 
@@ -155,11 +165,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             object: nil,
             queue: .main
         ) { _ in
-            complete("import-arrived")
+            complete(.importArrived)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
-            complete("timeout")
+            complete(.timeout)
         }
     }
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import FirebaseCore
 import FirebaseCrashlytics
 import FirebaseAnalytics
 
@@ -42,6 +43,7 @@ enum Log {
         static let waiting = "waiting"
         static let importing = "importing"
         static let reset = "reset"
+        static let timedOut = "timed_out"
         static let recoveryGrace = "recovery_grace"
     }
 
@@ -65,8 +67,18 @@ enum Log {
 
     // MARK: - Internal
 
-    private static let crashlytics = Crashlytics.crashlytics()
     private static let analyticsStringLimit = 100
+
+    private static var isFirebaseConfigured: Bool {
+        FirebaseApp.app() != nil
+    }
+
+    private static var crashlytics: Crashlytics? {
+        guard isFirebaseConfigured else {
+            return nil
+        }
+        return Crashlytics.crashlytics()
+    }
 
     private static func truncate(_ message: String) -> String {
         guard message.count > analyticsStringLimit else {
@@ -86,9 +98,9 @@ enum Log {
     // verbose/debug는 Analytics 쿼터 보호를 위해 DEBUG 빌드에서만 Analytics로 전송된다.
 
     private static func emit(level: String, symbol: String, osLogType: OSLogType, message: String, sendToAnalytics: Bool) {
-        crashlytics.log("[\(level.uppercased())] \(message)")
+        crashlytics?.log("[\(level.uppercased())] \(message)")
         os_log(osLogType, log: .default, "%{public}@ %{public}@", symbol, message)
-        guard sendToAnalytics else {
+        guard sendToAnalytics, isFirebaseConfigured else {
             return
         }
         Analytics.logEvent("log_\(level)", parameters: [Param.message: truncate(message)])
@@ -130,8 +142,11 @@ enum Log {
         var info = userInfo
         info[NSLocalizedDescriptionKey] = reason
         let nsError = NSError(domain: "Log.\(name)", code: 0, userInfo: info)
-        crashlytics.record(error: nsError)
+        crashlytics?.record(error: nsError)
         os_log(.error, log: .default, "❗️ non-fatal: %{public}@ — %{public}@", name, reason)
+        guard isFirebaseConfigured else {
+            return
+        }
         Analytics.logEvent("log_error", parameters: [
             Param.errorName: truncate(name),
             Param.reason: truncate(reason)
@@ -141,8 +156,10 @@ enum Log {
     // MARK: - Analytics
 
     static func event(_ event: Event, parameters: [String: Any] = [:]) {
-        Analytics.logEvent(event.rawValue, parameters: parameters)
-        crashlytics.log("[EVENT] \(event.rawValue) \(parameters)")
+        if isFirebaseConfigured {
+            Analytics.logEvent(event.rawValue, parameters: parameters)
+            crashlytics?.log("[EVENT] \(event.rawValue) \(parameters)")
+        }
         os_log(.info, log: .default, "📈 %{public}@", event.rawValue)
     }
 
@@ -151,7 +168,9 @@ enum Log {
         var params = parameters
         params[AnalyticsParameterItemID] = name
         params[AnalyticsParameterContentType] = "click"
-        Analytics.logEvent(AnalyticsEventSelectContent, parameters: params)
+        if isFirebaseConfigured {
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: params)
+        }
         os_log(.info, log: .default, "👆 click=%{public}@", name)
     }
 
@@ -159,10 +178,10 @@ enum Log {
 
     static func setContext(_ key: String, _ value: Any?) {
         guard let value else {
-            crashlytics.setCustomValue("", forKey: key)
+            crashlytics?.setCustomValue("", forKey: key)
             return
         }
-        crashlytics.setCustomValue(value, forKey: key)
+        crashlytics?.setCustomValue(value, forKey: key)
     }
 
     /// 엔티티 카운트와 sync 플래그를 한 번에 custom keys로 전송.

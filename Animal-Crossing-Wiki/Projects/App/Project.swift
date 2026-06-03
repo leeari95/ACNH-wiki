@@ -53,7 +53,7 @@ let schemes: [Scheme] = [
         name: "ACNH-wiki",
         shared: true,
         buildAction: .buildAction(targets: ["ACNH-wiki"]),
-        testAction: nil,
+        testAction: .targets(["ACNH-wikiTests"]),
         runAction: .runAction(
             configuration: .debug,
             executable: "ACNH-wiki",
@@ -93,6 +93,19 @@ let project = Project(
             coreDataModels: [
                 CoreDataModel.coreDataModel("CoreDataModels/CoreDataStorage.xcdatamodeld")
             ]
+        ),
+        .target(
+            name: "ACNH-wikiTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "leeari.NookPortalPlusTests",
+            deploymentTargets: .iOS("16.0"),
+            infoPlist: .default,
+            sources: ["Tests/**"],
+            dependencies: [
+                .target(name: "ACNH-wiki")
+            ],
+            settings: settings
         )
     ],
     schemes: schemes,
