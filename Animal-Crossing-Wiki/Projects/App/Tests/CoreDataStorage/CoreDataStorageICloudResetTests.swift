@@ -5,13 +5,21 @@ import RxSwift
 
 final class CoreDataStorageICloudResetTests: XCTestCase {
 
+    /// 테스트마다 격리된 UserDefaults suite. `.standard`(실제 앱 suite)를 건드리지 않아
+    /// 실기기에서 `make test`를 돌려도 production 앱의 known-user/recovery 플래그를 오염시키지 않는다.
+    private var testSuiteName: String!
+    private var testDefaults: UserDefaults!
+
     override func setUp() {
         super.setUp()
-        CoreDataStorage.resetPersistentSyncFlagsForTesting()
+        testSuiteName = "CoreDataStorageICloudResetTests.\(UUID().uuidString)"
+        testDefaults = UserDefaults(suiteName: testSuiteName)
     }
 
     override func tearDown() {
-        CoreDataStorage.resetPersistentSyncFlagsForTesting()
+        testDefaults.removePersistentDomain(forName: testSuiteName)
+        testDefaults = nil
+        testSuiteName = nil
         super.tearDown()
     }
 
@@ -209,9 +217,9 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
 
         let service = SafetySnapshotService(
             containerProvider: { storage.persistentContainer },
-            snapshotDirectoryProvider: { snapshotDirectory },
-            beforeApplyingSnapshot: { _ in throw InjectedRestoreFailure.failure }
+            snapshotDirectoryProvider: { snapshotDirectory }
         )
+        service.beforeApplyingSnapshotForTesting = { _ in throw InjectedRestoreFailure.failure }
 
         let expectation = expectation(description: "restore completes")
         service.restore { outcome in
@@ -246,6 +254,8 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
     }
 }
 
+// MARK: - Helpers
+
 extension CoreDataStorageICloudResetTests {
 
     private func makeStorage() throws -> CoreDataStorage {
@@ -264,7 +274,7 @@ extension CoreDataStorageICloudResetTests {
             throw loadError
         }
 
-        return CoreDataStorage(testingPersistentContainer: container)
+        return CoreDataStorage(testingPersistentContainer: container, userDefaults: testDefaults)
     }
 
     private func makeManagedObjectModel() throws -> NSManagedObjectModel {

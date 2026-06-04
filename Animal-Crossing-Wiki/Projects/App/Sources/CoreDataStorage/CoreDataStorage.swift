@@ -101,19 +101,23 @@ final class CoreDataStorage {
 
     /// 한 번이라도 UserCollectionEntity가 존재했는지 여부 (UserDefaults 기반, 메모리 캐싱)
     /// 이 플래그가 true인데 UC가 0개면, 빈 UC 자동 생성 대신 .notFound를 throw
-    private let _hasEverHadUserCollectionCached = OSAllocatedUnfairLock(
-        initialState: UserDefaults.standard.bool(forKey: CoreDataStorage.hasEverHadUserCollectionKey)
-    )
+    /// 초기값은 init에서 주입된 `userDefaults`로부터 읽는다.
+    private let _hasEverHadUserCollectionCached: OSAllocatedUnfairLock<Bool>
     private(set) var hasEverHadUserCollection: Bool {
         get { _hasEverHadUserCollectionCached.withLock { $0 } }
         set {
-            _hasEverHadUserCollectionCached.withLock { cached in
+            // UserDefaults I/O는 unfair lock 임계영역 밖에서 수행한다 (잠재적 재진입 트랩 회피).
+            let didChange = _hasEverHadUserCollectionCached.withLock { cached -> Bool in
                 guard cached != newValue else {
-                    return
+                    return false
                 }
                 cached = newValue
-                UserDefaults.standard.set(newValue, forKey: Self.hasEverHadUserCollectionKey)
+                return true
             }
+            guard didChange else {
+                return
+            }
+            userDefaults.set(newValue, forKey: Self.hasEverHadUserCollectionKey)
         }
     }
 
@@ -133,25 +137,25 @@ final class CoreDataStorage {
 
     /// 복구 시작 시각 기록 — 재시작 후 grace window 계산에 사용
     func markRecoveryInitiated() {
-        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: Self.recoveryInitiatedAtKey)
+        userDefaults.set(Date().timeIntervalSince1970, forKey: Self.recoveryInitiatedAtKey)
         Log.info("recovery initiated timestamp recorded (10min grace started)")
     }
 
     /// Recovery 완료 후 UC가 정상 복구되면 호출하여 플래그 정리
     func clearRecoveryInitiated() {
-        UserDefaults.standard.removeObject(forKey: Self.recoveryInitiatedAtKey)
+        userDefaults.removeObject(forKey: Self.recoveryInitiatedAtKey)
     }
 
     /// 복구 시작 후 grace period 내인지 확인 — 상태 표시에만 사용하고, UC 생성 허용에는 사용하지 않는다.
     var isWithinRecoveryGracePeriod: Bool {
-        let timestamp = UserDefaults.standard.double(forKey: Self.recoveryInitiatedAtKey)
+        let timestamp = userDefaults.double(forKey: Self.recoveryInitiatedAtKey)
         guard timestamp > 0 else {
             return false
         }
         let elapsed = Date().timeIntervalSince1970 - timestamp
         if elapsed < 0 || elapsed > Self.recoveryGracePeriodSeconds {
             // 만료 시 자동 정리
-            UserDefaults.standard.removeObject(forKey: Self.recoveryInitiatedAtKey)
+            userDefaults.removeObject(forKey: Self.recoveryInitiatedAtKey)
             return false
         }
         return true
@@ -190,8 +194,19 @@ final class CoreDataStorage {
 
     private let injectedPersistentContainer: NSPersistentCloudKitContainer?
 
-    private init(persistentContainer: NSPersistentCloudKitContainer? = nil) {
+    /// 동기화 영속 플래그(known-user/recovery)의 저장소. production은 `.standard`,
+    /// 테스트는 격리된 suite를 주입해 실기기의 실제 앱 상태를 오염시키지 않는다.
+    private let userDefaults: UserDefaults
+
+    private init(
+        persistentContainer: NSPersistentCloudKitContainer? = nil,
+        userDefaults: UserDefaults = .standard
+    ) {
         self.injectedPersistentContainer = persistentContainer
+        self.userDefaults = userDefaults
+        self._hasEverHadUserCollectionCached = OSAllocatedUnfairLock(
+            initialState: userDefaults.bool(forKey: Self.hasEverHadUserCollectionKey)
+        )
     }
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -284,13 +299,16 @@ final class CoreDataStorage {
     /// Fresh install 첫 CloudKit import 대기 종료.
     /// timeout은 데이터 없음의 증거가 아니므로 UC 생성을 계속 억제한다.
     func completeFirstImportWait(reason: FirstImportWaitCompletionReason) {
-        isWaitingForFirstImport = false
+        // timedOut 플래그를 먼저 확정한 뒤 waiting을 해제한다. 순서를 뒤집으면 두 플래그가
+        // 모두 false가 되는 찰나에 shouldSuppressDataCreation이 잠깐 풀리는 TOCTOU 윈도우가
+        // 생긴다 (timeout 경로). 이 순서면 억제는 항상 fail-safe하게 유지된다.
         switch reason {
         case .importArrived, .noICloud:
             isFirstImportTimedOut = false
         case .timeout:
             isFirstImportTimedOut = lastSuccessfulImportDate == nil
         }
+        isWaitingForFirstImport = false
         Log.info("completeFirstImportWait reason=\(reason)")
     }
 
@@ -466,6 +484,8 @@ final class CoreDataStorage {
         guard succeeded else {
             // Failed import means CloudKit data is still unknown. Keep waiting/timeout/reset
             // suppression flags so the app cannot create and export an empty UC after grace.
+            // _exportRetryCount is export-only (never incremented by import), so the success
+            // path's reset is intentionally absent here.
             logSyncDiagnostics(phase: "Import-failed", throttled: false)
             return
         }
@@ -631,12 +651,13 @@ extension CoreDataStorage {
         }
 
         persistentContainer.performBackgroundTask { [weak self] context in
-            guard let self else {
+            guard let owner = self else {
                 return
             }
+
             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
-            let counts = self.entityCounts(in: context)
+            let counts = owner.entityCounts(in: context)
             let ucCount = counts["UserCollectionEntity"] ?? -1
             let itemCount = counts["ItemEntity"] ?? -1
 
@@ -655,14 +676,15 @@ extension CoreDataStorage {
                 itemCount: itemCount,
                 taskCount: counts["DailyTaskEntity"] ?? -1,
                 villagerCount: (counts["VillagersLikeEntity"] ?? 0) + (counts["VillagersHouseEntity"] ?? 0),
-                hasEverHadUC: self.hasEverHadUserCollection,
+                hasEverHadUC: owner.hasEverHadUserCollection,
                 isFreshInstall: nil,
-                isWaitingForFirstImport: self.isWaitingForFirstImport,
-                isImportInProgress: self.isImportInProgress,
-                isSyncResetInProgress: self.isSyncResetInProgress,
-                isWithinRecoveryGracePeriod: self.isWithinRecoveryGracePeriod,
-                lastImportDate: self.lastSuccessfulImportDate,
-                lastExportDate: self.lastSuccessfulExportDate
+                isWaitingForFirstImport: owner.isWaitingForFirstImport,
+                isFirstImportTimedOut: owner.isFirstImportTimedOut,
+                isImportInProgress: owner.isImportInProgress,
+                isSyncResetInProgress: owner.isSyncResetInProgress,
+                isWithinRecoveryGracePeriod: owner.isWithinRecoveryGracePeriod,
+                lastImportDate: owner.lastSuccessfulImportDate,
+                lastExportDate: owner.lastSuccessfulExportDate
             ))
 
             // UC가 2개 이상일 때만 상세 진단 (중복 탐지)
@@ -1039,9 +1061,13 @@ extension CoreDataStorage {
 }
 
 #if DEBUG
+// MARK: - Testing
 extension CoreDataStorage {
-    convenience init(testingPersistentContainer: NSPersistentCloudKitContainer) {
-        self.init(persistentContainer: testingPersistentContainer)
+    convenience init(
+        testingPersistentContainer: NSPersistentCloudKitContainer,
+        userDefaults: UserDefaults = .standard
+    ) {
+        self.init(persistentContainer: testingPersistentContainer, userDefaults: userDefaults)
     }
 
     func markImportInProgressForTesting() {
@@ -1054,11 +1080,6 @@ extension CoreDataStorage {
 
     func finishCloudImportForTesting(succeeded: Bool) {
         finishCloudImport(succeeded: succeeded)
-    }
-
-    static func resetPersistentSyncFlagsForTesting() {
-        UserDefaults.standard.removeObject(forKey: hasEverHadUserCollectionKey)
-        UserDefaults.standard.removeObject(forKey: recoveryInitiatedAtKey)
     }
 }
 #endif
