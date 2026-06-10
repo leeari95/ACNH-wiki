@@ -73,7 +73,7 @@ final class ItemSeasonView: UIView {
     }
 
     private func setUpCalendar(months: [Int]) {
-        if backgroundStackView.arrangedSubviews.last as? CalendarView != nil {
+        if backgroundStackView.arrangedSubviews.last is CalendarView {
             backgroundStackView.arrangedSubviews.last?.removeFromSuperview()
         }
         let calendarView = CalendarView(months: months)
