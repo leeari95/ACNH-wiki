@@ -146,6 +146,28 @@ final class CoreDataStorage {
         userDefaults.removeObject(forKey: Self.recoveryInitiatedAtKey)
     }
 
+    /// 성공한 import로 UC가 실제 복구되었으면 recovery grace 타임스탬프를 정리한다.
+    /// UC가 아직 없으면(부분 import) 타임스탬프를 유지해 진단 상태가 남도록 한다.
+    private func clearRecoveryInitiatedIfRecovered() {
+        guard isWithinRecoveryGracePeriod else {
+            return
+        }
+
+        persistentContainer.performBackgroundTask { [weak self] context in
+            guard let owner = self else {
+                return
+            }
+
+            let count = (try? context.count(for: UserCollectionEntity.fetchRequest())) ?? 0
+            guard count > 0 else {
+                return
+            }
+
+            owner.clearRecoveryInitiated()
+            Log.info("recovery grace cleared — UC restored by successful import")
+        }
+    }
+
     /// 복구 시작 후 grace period 내인지 확인 — 상태 표시에만 사용하고, UC 생성 허용에는 사용하지 않는다.
     var isWithinRecoveryGracePeriod: Bool {
         let timestamp = userDefaults.double(forKey: Self.recoveryInitiatedAtKey)
@@ -182,6 +204,17 @@ final class CoreDataStorage {
             || isSyncResetInProgress
             || isFirstImportTimedOut
             || isWithinGracePeriod
+    }
+
+    /// 반복되는 sync 실패로 사용자가 "빈 컬렉션" 보호 모드에 갇힌 상태인지.
+    /// UC가 없는데 생성이 억제 중이거나 known-user 보호로 차단된 경우 true.
+    /// SceneDelegate가 동기화 실패 시 보호 모드 안내 노출 여부를 판단할 때 사용한다.
+    var isAwaitingCloudDataWithoutCollection: Bool {
+        guard shouldSuppressDataCreation || hasEverHadUserCollection else {
+            return false
+        }
+
+        return isFreshInstall()
     }
 
     // MARK: - Private API Notification Names (fragile)
@@ -499,6 +532,8 @@ final class CoreDataStorage {
         _firstImportCompletedAt.withLock { date in
             if date == nil { date = Date() }
         }
+
+        clearRecoveryInitiatedIfRecovered()
 
         let hasChanges = hasImportedChanges()
         logSyncDiagnostics(phase: "Import-end")
@@ -843,10 +878,11 @@ extension CoreDataStorage {
 
     /// UC 관계가 nil인 고아 엔티티를 삭제
     private func cleanupOrphanedEntities(in context: NSManagedObjectContext) {
-        // Import 또는 sync reset 진행 중에는 cleanup 건너뜀
-        // — CloudKit이 relationship을 비동기로 해소하므로 일시적으로 orphan처럼 보일 수 있음
-        guard !isImportInProgress, !isSyncResetInProgress else {
-            os_log(.info, log: .default, "🔧 Orphan cleanup skipped — sync in progress")
+        // Import/sync reset 진행 중이거나 import 완료 직후 grace period에는 cleanup 건너뜀
+        // — CloudKit이 relationship을 비동기로 해소하므로 import가 끝난 뒤에도
+        //   일시적으로 orphan처럼 보일 수 있음 (grace period가 존재하는 이유와 동일)
+        guard !isImportInProgress, !isSyncResetInProgress, !isWithinGracePeriod else {
+            os_log(.info, log: .default, "🔧 Orphan cleanup skipped — sync in progress or within grace period")
             return
         }
 
@@ -1083,91 +1119,6 @@ extension CoreDataStorage {
     }
 }
 #endif
-
-// MARK: - Data Recovery
-
-extension CoreDataStorage {
-
-    /// 사용자가 설정에서 "iCloud에서 복원"을 명시적으로 눌렀을 때만 실행되는 복원 플로우.
-    /// 로컬 store를 삭제하고 앱 재시작 시 CloudKit에서 전체 re-import 유도.
-    /// 로컬 데이터가 iCloud 백업으로 완전히 대체되므로 파괴적 동작 — 2단 확인 alert 후에만 호출.
-    enum RecoveryError: LocalizedError {
-        case iCloudNotAvailable
-        case storeNotFound
-
-        var errorDescription: String? {
-            switch self {
-            case .iCloudNotAvailable: return "iCloud is not available"
-            case .storeNotFound: return "CoreData store not found"
-            }
-        }
-    }
-
-    /// 로컬 store 파일을 삭제하고 앱 재시작 시 CloudKit에서 전체 re-import 유도.
-    /// store를 런타임에 재등록하면 CloudKit 옵션이 누락되므로, 파일만 삭제하고 재시작을 안내한다.
-    func performCloudKitRecovery(completion: @escaping (Result<Void, Error>) -> Void) {
-        checkiCloudAccountStatus { [weak self] status in
-            guard status == .available else {
-                completion(.failure(RecoveryError.iCloudNotAvailable))
-                return
-            }
-            guard let self else {
-                return
-            }
-
-            guard let storeDescription = self.persistentContainer.persistentStoreDescriptions.first,
-                  let storeURL = storeDescription.url else {
-                completion(.failure(RecoveryError.storeNotFound))
-                return
-            }
-
-            do {
-                // 기존 store 분리
-                let coordinator = self.persistentContainer.persistentStoreCoordinator
-                if let store = coordinator.persistentStore(for: storeURL) {
-                    try coordinator.remove(store)
-                }
-
-                // Store 파일 삭제 — fileExists 대신 직접 시도 + 부재 에러 무시 (TOCTOU 방지)
-                let fileManager = FileManager.default
-                let storePath = storeURL.path
-                for suffix in ["", "-shm", "-wal"] {
-                    do {
-                        try fileManager.removeItem(atPath: storePath + suffix)
-                    } catch let error as NSError where error.code == NSFileNoSuchFileError {
-                        // 파일이 이미 없음 — 정상
-                    }
-                }
-
-                // ckAssets 폴더 삭제
-                let ckAssetsURL = storeURL.deletingLastPathComponent()
-                    .appendingPathComponent("ckAssets")
-                do {
-                    try fileManager.removeItem(at: ckAssetsURL)
-                } catch let error as NSError where error.code == NSFileNoSuchFileError {
-                    // 폴더가 이미 없음 — 정상
-                }
-
-                // migration flag 유지 — 재시작 시 re-export 중복 방지
-                UserDefaults.standard.set(true, forKey: "didMigrateExistingDataToCloudKit_v2")
-
-                // 기존 유저 플래그 유지 — 재시작 후 CloudKit re-import 전까지 빈 UC 생성 방지
-                // (복구 = 기존 유저이므로 true 유지가 올바름)
-
-                // Recovery grace period 시작 — 재시작 후 import 지연/실패 상태를 UI와 진단 로그에서
-                // 구분하기 위한 표시용 플래그. 빈 UC 생성을 허용하지는 않는다.
-                self.markRecoveryInitiated()
-
-                Log.warning("recovery: local store wiped, awaiting restart + CloudKit re-import")
-                Log.event(.recoveryTriggered)
-                completion(.success(()))
-            } catch {
-                os_log(.error, log: .default, "🔄 Recovery failed: %{public}@", error.localizedDescription)
-                completion(.failure(error))
-            }
-        }
-    }
-}
 
 private enum UCCreationPath: String {
     case freshUser = "fresh_user"

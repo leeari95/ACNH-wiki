@@ -252,6 +252,93 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         XCTAssertEqual(try entityCount("UserCollectionEntity", in: storage), 1)
         XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), DailyTask.tasks.count)
     }
+
+    func testManualConsolidationDuringPostImportGracePeriodKeepsTransientOrphans() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        let userCollection = try insertUserCollection(in: context)
+        try insertDailyTask(in: context, linkedTo: userCollection)
+        try insertDailyTask(in: context, linkedTo: nil)
+        try context.save()
+
+        // 성공 import 직후 — CloudKit relationship 해소 대기용 grace period 활성
+        storage.finishCloudImportForTesting(succeeded: true)
+
+        waitForManualConsolidation(of: storage)
+
+        // grace period 내에는 일시적 orphan을 삭제하지 않아야 한다
+        XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), 2)
+    }
+
+    func testManualConsolidationOutsideGracePeriodStillDeletesOrphans() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        let userCollection = try insertUserCollection(in: context)
+        try insertDailyTask(in: context, linkedTo: userCollection)
+        try insertDailyTask(in: context, linkedTo: nil)
+        try context.save()
+
+        waitForManualConsolidation(of: storage)
+
+        XCTAssertEqual(try entityCount("DailyTaskEntity", in: storage), 1)
+    }
+
+    func testSuccessfulImportClearsRecoveryGraceOnceCollectionRestored() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        try insertUserCollection(in: context)
+        try context.save()
+        storage.markRecoveryInitiated()
+        XCTAssertTrue(storage.isWithinRecoveryGracePeriod)
+
+        storage.finishCloudImportForTesting(succeeded: true)
+
+        // 정리는 background context에서 수행되므로 폴링으로 대기
+        let deadline = Date().addingTimeInterval(5)
+        while storage.isWithinRecoveryGracePeriod && Date() < deadline {
+            RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+        }
+        XCTAssertFalse(storage.isWithinRecoveryGracePeriod)
+    }
+
+    func testFailedImportKeepsRecoveryGrace() throws {
+        let storage = try makeStorage()
+
+        storage.markRecoveryInitiated()
+        storage.finishCloudImportForTesting(succeeded: false)
+
+        XCTAssertTrue(storage.isWithinRecoveryGracePeriod)
+    }
+
+    func testSuccessfulImportWithoutCollectionKeepsRecoveryGrace() throws {
+        let storage = try makeStorage()
+
+        storage.markRecoveryInitiated()
+        storage.finishCloudImportForTesting(succeeded: true)
+
+        // UC가 복구되지 않았다면 grace 타임스탬프는 유지되어야 한다
+        RunLoop.current.run(until: Date().addingTimeInterval(0.5))
+        XCTAssertTrue(storage.isWithinRecoveryGracePeriod)
+    }
+
+    func testSyncProtectionStateDetectsSuppressedEmptyCollection() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        XCTAssertFalse(storage.isAwaitingCloudDataWithoutCollection)
+
+        storage.markWaitingForFirstImport()
+        storage.completeFirstImportWait(reason: .timeout)
+        XCTAssertTrue(storage.isAwaitingCloudDataWithoutCollection)
+
+        // UC가 생기면 더 이상 보호 모드 안내 대상이 아니다
+        try insertUserCollection(in: context)
+        try context.save()
+        XCTAssertFalse(storage.isAwaitingCloudDataWithoutCollection)
+    }
 }
 
 // MARK: - Helpers
@@ -303,6 +390,31 @@ extension CoreDataStorageICloudResetTests {
         object.hemisphere = userInfo.hemisphere.rawValue.capitalized
         object.islandReputation = Int16(userInfo.islandReputation)
         return object
+    }
+
+    @discardableResult
+    private func insertDailyTask(
+        in context: NSManagedObjectContext,
+        linkedTo userCollection: UserCollectionEntity?
+    ) throws -> DailyTaskEntity {
+        guard let object = NSEntityDescription.insertNewObject(
+            forEntityName: "DailyTaskEntity",
+            into: context
+        ) as? DailyTaskEntity else {
+            throw TestError.entityCastFailed
+        }
+        object.id = UUID()
+        object.name = "task"
+        object.setValue(userCollection, forKey: "userCollection")
+        return object
+    }
+
+    private func waitForManualConsolidation(of storage: CoreDataStorage) {
+        let expectation = expectation(description: "consolidation")
+        storage.consolidateUserCollectionsManually {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
     }
 
     private func userCollectionCount(in context: NSManagedObjectContext) throws -> Int {

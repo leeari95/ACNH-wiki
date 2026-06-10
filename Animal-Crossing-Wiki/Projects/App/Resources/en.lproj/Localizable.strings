@@ -98,6 +98,7 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "iCloud is temporarily unavailable. Data will sync when available." = "iCloud is temporarily unavailable. Data will sync when available.";
 "iCloud status could not be determined. Data will be saved locally only." = "iCloud status could not be determined. Data will be saved locally only.";
 "iCloud storage is full. Please free up space to continue syncing." = "iCloud storage is full. Please free up space to continue syncing.";
+"iCloud sync keeps failing. Creating new data is paused to protect your existing iCloud data. Please check your iCloud sign-in and storage." = "iCloud sync keeps failing. Creating new data is paused to protect your existing iCloud data. Please check your iCloud sign-in and storage.";
 
 // MARK: - TaskEditViewController
 "Today's Tasks" = "Today's Tasks";

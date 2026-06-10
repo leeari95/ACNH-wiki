@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
     private var isAppSetup = false
+    private var hasShownSyncProtectionNotice = false
     private var importObserver: NSObjectProtocol?
     private var pendingFirstImportCompletionReason: CoreDataStorage.FirstImportWaitCompletionReason?
 
@@ -301,6 +302,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         DispatchQueue.main.async { [weak self] in
+            guard let owner = self else {
+                return
+            }
+
             let message: String
             switch reason {
             case "quota_exceeded":
@@ -308,12 +313,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             case "not_authenticated":
                 message = "iCloud is not signed in. Data will be saved locally only.".localized
             default:
-                return
+                // 반복 sync 실패로 컬렉션 생성이 보호 모드에 들어가 빈 화면이 유지되는 상태라면,
+                // 세션당 한 번 보호 중임을 안내한다 (조용한 빈 컬렉션 방지).
+                guard owner.isAppSetup,
+                      !owner.hasShownSyncProtectionNotice,
+                      CoreDataStorage.shared.isAwaitingCloudDataWithoutCollection else {
+                    return
+                }
+
+                owner.hasShownSyncProtectionNotice = true
+                // swiftlint:disable:next line_length
+                message = "iCloud sync keeps failing. Creating new data is paused to protect your existing iCloud data. Please check your iCloud sign-in and storage.".localized
             }
 
             let alert = UIAlertController(title: "iCloud".localized, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
-            self?.presentAlert(alert)
+            owner.presentAlert(alert)
         }
     }
 

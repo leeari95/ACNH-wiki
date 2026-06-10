@@ -108,7 +108,12 @@ setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 | `.networkFailure` / `.networkUnavailable` | 로그 기록 (자동 재시도 대기) |
 | Export 134301 (merge error) | `retryExportAfterMergeError()` — 최대 3회 지수 백오프 재시도 (5s, 10s, 15s) |
 | Change Token Expired (CKError 21) | sync reset 감지 → orphan cleanup/UC 생성 억제 (아래 참조) |
-| 기타 | `os_log(.error)` 기록 |
+| 기타 | `os_log(.error)` 기록 + 보호 모드 안내 (아래) |
+
+**Sync 보호 모드 안내**: sync 실패가 반복되어 UC가 없는데 생성이 억제된 상태
+(`isAwaitingCloudDataWithoutCollection == true`)라면, `SceneDelegate.handleCloudSyncError`가
+세션당 한 번 "데이터 보호를 위해 새 데이터 생성을 보류 중" Alert를 표시한다.
+사용자가 조용한 빈 컬렉션 화면에 갇히는 것을 방지하기 위한 안내.
 
 ### Change Token Expired 대응
 
@@ -203,6 +208,8 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 
 **Orphan Cleanup 안전장치** (`cleanupOrphanedEntities()`):
 - Import 또는 sync reset 진행 중에는 실행하지 않음 (relationship이 아직 해소되지 않았을 수 있음)
+- 첫 Import 완료 후 grace period(120초) 내에도 실행하지 않음 — CloudKit이 relationship을
+  비동기로 해소하는 동안 일시적 orphan을 실제 orphan으로 오판해 삭제하는 것을 방지
 - UC가 0개이면 실행하지 않음 (orphan 판단 기준 자체 없음)
 - 전체 레코드가 모두 orphan이면 삭제하지 않음 (데이터 유실 방지)
 - Count-first 최적화: 삭제 전 수량만 확인하여 불필요한 객체 로딩 방지
