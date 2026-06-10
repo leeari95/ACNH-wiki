@@ -47,7 +47,9 @@ final class SafetySnapshotService {
     private static let debounceSeconds: TimeInterval = 30
 
     private let queue = DispatchQueue(label: "app.safety.snapshot", qos: .utility)
-    private var pendingWorkItem: DispatchWorkItem?
+
+    /// CoreData 저장 알림(임의 스레드)·main 스레드·sync-reset 알림이 동시에 접근하므로 lock으로 보호
+    private let _pendingWorkItem = OSAllocatedUnfairLock<DispatchWorkItem?>(initialState: nil)
     private var observers: [NSObjectProtocol] = []
     private let containerProvider: () -> NSPersistentContainer
     private let snapshotDirectoryProvider: () -> URL?
@@ -131,24 +133,33 @@ final class SafetySnapshotService {
             NotificationCenter.default.removeObserver(observer)
         }
         observers.removeAll()
-        pendingWorkItem?.cancel()
-        pendingWorkItem = nil
+        _pendingWorkItem.withLock { item in
+            item?.cancel()
+            item = nil
+        }
     }
 
     private func scheduleSnapshot() {
-        pendingWorkItem?.cancel()
         let workItem = DispatchWorkItem { [weak self] in
             self?.writeSnapshotNow()
         }
-        pendingWorkItem = workItem
+        _pendingWorkItem.withLock { item in
+            item?.cancel()
+            item = workItem
+        }
         queue.asyncAfter(deadline: .now() + Self.debounceSeconds, execute: workItem)
     }
 
     /// 강제 저장 — 앱 종료 직전/sync-reset 직전 등에서 flushing 용도.
+    /// debounce 중인 쓰기와 파일 I/O가 겹치지 않도록 queue에서 동기 실행한다.
     func flushNow() {
-        pendingWorkItem?.cancel()
-        pendingWorkItem = nil
-        writeSnapshotNow()
+        _pendingWorkItem.withLock { item in
+            item?.cancel()
+            item = nil
+        }
+        queue.sync { [weak self] in
+            self?.writeSnapshotNow()
+        }
     }
 
     private func writeSnapshotNow() {

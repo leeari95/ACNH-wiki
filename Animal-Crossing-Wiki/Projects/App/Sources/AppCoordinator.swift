@@ -40,6 +40,7 @@ final class AppCoordinator: Coordinator {
 
         let animalsCoordinator = AnimalsCoordinator()
         animalsCoordinator.start()
+        animalsCoordinator.setUpParent(to: self)
         addViewController(animalsCoordinator.rootViewController, title: "animals".localized, icon: "icon-book-tabbar")
         childCoordinators.append(animalsCoordinator)
 

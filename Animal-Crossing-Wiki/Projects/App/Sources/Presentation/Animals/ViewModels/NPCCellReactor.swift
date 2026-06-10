@@ -63,6 +63,7 @@ final class NPCCellReactor: Reactor {
             HapticManager.shared.impact(style: .medium)
             Items.shared.updateNPCLike(npc)
             likeStorage.update(npc)
+            newState.isLiked = !(newState.isLiked ?? false)
         }
         return newState
     }

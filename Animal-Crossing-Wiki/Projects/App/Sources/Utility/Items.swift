@@ -499,6 +499,7 @@ extension Items {
     func reset() {
         villagersLike.accept([])
         villagersHouse.accept([])
+        npcLike.accept([])
         let currentItems = userItems.value.map { $0.key }
         var resetItem = userItems.value
         currentItems.forEach { category in
