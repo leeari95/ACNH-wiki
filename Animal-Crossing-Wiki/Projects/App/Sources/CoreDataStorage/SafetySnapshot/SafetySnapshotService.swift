@@ -52,7 +52,13 @@ final class SafetySnapshotService {
     private let containerProvider: () -> NSPersistentContainer
     private let snapshotDirectoryProvider: () -> URL?
     private let fileAttributeSetter: (URL, [FileAttributeKey: Any]) throws -> Void
-    private let beforeApplyingSnapshot: ((NSManagedObjectContext) throws -> Void)?
+
+    #if DEBUG
+    /// 테스트 전용 fault-injection seam. `restore()`가 기존 데이터를 wipe한 직후,
+    /// 스냅샷을 적용하기 직전에 호출한다. production 빌드에는 컴파일되지 않으므로
+    /// 복원 경로에 죽은 코드가 남지 않는다.
+    var beforeApplyingSnapshotForTesting: ((NSManagedObjectContext) throws -> Void)?
+    #endif
 
     init(
         containerProvider: @escaping () -> NSPersistentContainer = { CoreDataStorage.shared.persistentContainer },
@@ -61,13 +67,11 @@ final class SafetySnapshotService {
         },
         fileAttributeSetter: @escaping (URL, [FileAttributeKey: Any]) throws -> Void = { url, attributes in
             try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path)
-        },
-        beforeApplyingSnapshot: ((NSManagedObjectContext) throws -> Void)? = nil
+        }
     ) {
         self.containerProvider = containerProvider
         self.snapshotDirectoryProvider = snapshotDirectoryProvider
         self.fileAttributeSetter = fileAttributeSetter
-        self.beforeApplyingSnapshot = beforeApplyingSnapshot
     }
 
     private var container: NSPersistentContainer {
@@ -178,9 +182,12 @@ final class SafetySnapshotService {
         do {
             try url.setResourceValues(values)
         } catch {
-            os_log(.error, log: .default,
-                   "🛟 SafetySnapshot resource value update failed: %{public}@",
-                   error.localizedDescription)
+            // 백업 제외(isExcludedFromBackup) 회귀를 Crashlytics에서 관측할 수 있도록 비치명 에러로 보고한다.
+            // 파일 보호 등급은 write 옵션 + setAttributes로 이미 적용되므로 암호화 경계 자체는 유지된다.
+            Log.error(
+                name: "SafetySnapshotBackupExclusion",
+                reason: error.localizedDescription
+            )
         }
     }
 
@@ -204,7 +211,9 @@ final class SafetySnapshotService {
                 let data = try Data(contentsOf: self.snapshotURL)
                 let snapshot = try UserCollectionSnapshot.from(data: data)
                 try Self.wipeExistingCollection(in: context)
-                try self.beforeApplyingSnapshot?(context)
+                #if DEBUG
+                try self.beforeApplyingSnapshotForTesting?(context)
+                #endif
                 try snapshot.apply(to: context)
                 try context.save()
                 os_log(.error, log: .default,
