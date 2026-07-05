@@ -84,6 +84,10 @@ viewController.setUpViewModels(
 
 ## Special Patterns
 
+- **DailyTask progressList 정규화**: CloudKit 부분 import/sync reset 후 `DailyTaskEntity.progressList`가
+  nil이거나 `amount`보다 짧을 수 있다. UI는 `amount` 기준으로 체크박스를 만들기 때문에
+  `toDomain()`에서 길이를 `amount`로 보정하고, `toggleCompleted`(모델·storage 양쪽)도
+  보정 후 토글한다 — index out of range 크래시 방지 + 손상 데이터 자가 치유
 - **CustomTaskViewControllerDelegate**: DashboardCoordinator가 IconChooser → CustomTaskVC 간 아이콘 선택 결과를 전달하는 delegate
 - **showAlert()**: DashboardCoordinator의 `showAlert(title:message:) -> Observable<Bool>` 메서드로 확인 다이얼로그 표시
 - **showRecoveryResultAlert()**: (TEMPORARY) iCloud 데이터 복구 결과 알림. 성공 시 앱 종료 유도

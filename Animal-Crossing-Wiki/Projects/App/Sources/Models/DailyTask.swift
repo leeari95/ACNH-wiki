@@ -16,6 +16,10 @@ struct DailyTask {
     let createdDate: Date
 
     mutating func toggleCompleted(_ index: Int) {
+        // 동기화로 progressList가 amount보다 짧아질 수 있음 — 길이를 보정해 크래시 방지
+        if progressList.count <= index {
+            progressList.append(contentsOf: Array(repeating: false, count: index + 1 - progressList.count))
+        }
         self.progressList[index].toggle()
     }
 

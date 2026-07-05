@@ -49,6 +49,12 @@ topAnchor constraint 조절 + spring animation으로 minimize/maximize 전환.
 - `MPRemoteCommandCenter` 연동 (잠금화면 컨트롤)
 - 재생 모드: shuffle, fullRepeat, oneSongRepeat
 
+**곡 종료 알림 (`AVPlayerItemDidPlayToEndTime`) 처리 규칙**:
+- block 기반 옵저버는 `removeObserver(self,...)`로 제거되지 않으므로 **토큰**(`endPlaybackObserver`)을 보관해 제거한다 (누적 등록 시 자동 다음 곡이 여러 번 실행되는 버그 방지)
+- `object: nil`로 등록하고 핸들러에서 `notification.object === player?.currentItem`을 확인한다 — 특정 `AVPlayerItem`에 바인딩하면 곡 전환 후 알림을 받지 못함
+- 등록 지점은 한 곳: `currentSong` 구독에서 `AVPlayer` 재생성 직후 `setUpNotification()` 호출
+- 잠금화면 아트워크 다운로드는 `backgroundDisposeBag`(곡마다 재생성)에 담아, 이전 곡 이미지가 늦게 도착해 now playing 정보를 덮어쓰는 것을 방지
+
 ## 데이터 흐름
 
 ```

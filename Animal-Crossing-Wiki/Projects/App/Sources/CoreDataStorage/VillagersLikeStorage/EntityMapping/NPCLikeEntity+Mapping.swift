@@ -31,7 +31,7 @@ extension NPCLikeEntity {
             iconImage: self.iconImage ?? "",
             photoImage: self.photoImage ?? "",
             gender: Gender(rawValue: self.gender ?? "") ?? .male,
-            genderAsia: Gender(rawValue: self.gender ?? "") ?? .male,
+            genderAsia: Gender(rawValue: self.genderAsia ?? "") ?? .male,
             species: self.species ?? "",
             birthday: self.birthday ?? "",
             appearanceLocation: appearanceLocation ?? [],

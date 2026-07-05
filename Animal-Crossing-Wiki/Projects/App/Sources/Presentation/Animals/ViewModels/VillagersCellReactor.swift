@@ -84,11 +84,13 @@ final class VillagersCellReactor: Reactor {
             HapticManager.shared.impact(style: .medium)
             Items.shared.updateVillagerHouse(villager)
             houseStorage.update(villager)
+            newState.isResident = !(newState.isResident ?? false)
 
         case .updateLike:
             HapticManager.shared.impact(style: .medium)
             Items.shared.updateVillagerLike(villager)
             likeStorage.update(villager)
+            newState.isLiked = !(newState.isLiked ?? false)
         }
         return newState
     }

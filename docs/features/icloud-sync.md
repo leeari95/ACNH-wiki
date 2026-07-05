@@ -273,6 +273,9 @@ CloudKit import, remote change, sync reset 직전에는 최신 로컬 상태를 
 - 스냅샷 파일은 첫 잠금 해제 후 백그라운드 CloudKit flush에서도 갱신될 수 있도록 `completeUntilFirstUserAuthentication` 보호 등급으로 저장한다.
 - 파일은 기기/iCloud 백업에서 제외하여 Core Data 원본과 별도로 장기 보관되지 않게 한다.
 - 복원은 `wipeExistingCollection → snapshot.apply → context.save()`를 단일 context rollback 경계에 묶는다. 중간 실패 시 기존 로컬 컬렉션 삭제가 저장되지 않는다.
+- debounce용 `pendingWorkItem`은 CoreData 저장 알림(임의 스레드)·main 스레드·sync-reset 알림이
+  동시에 접근하므로 `OSAllocatedUnfairLock`으로 보호하고, `flushNow()`는 debounce 쓰기와
+  파일 I/O가 겹치지 않도록 전용 queue에서 동기 실행한다.
 
 ## Manual Consolidation (중복/고아 데이터 정리)
 

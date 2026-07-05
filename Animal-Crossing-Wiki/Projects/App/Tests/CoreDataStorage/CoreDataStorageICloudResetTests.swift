@@ -324,6 +324,56 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         XCTAssertTrue(storage.isWithinRecoveryGracePeriod)
     }
 
+    func testCorruptedProgressListNormalizedOnToDomain() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        let userCollection = try insertUserCollection(in: context)
+        let taskEntity = try insertDailyTask(in: context, linkedTo: userCollection)
+        taskEntity.amount = 6
+        taskEntity.progressList = [] as NSArray // CloudKit 부분 import로 손상된 상태
+        try context.save()
+
+        let domain = taskEntity.toDomain()
+
+        XCTAssertEqual(domain.progressList.count, 6)
+        XCTAssertEqual(domain.progressList, Array(repeating: false, count: 6))
+    }
+
+    func testToggleCompletedOnCorruptedProgressListDoesNotCrashAndHeals() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+
+        let userCollection = try insertUserCollection(in: context)
+        let taskEntity = try insertDailyTask(in: context, linkedTo: userCollection)
+        taskEntity.amount = 6
+        taskEntity.progressList = [] as NSArray
+        try context.save()
+
+        var domainTask = taskEntity.toDomain()
+
+        // 모델 toggle — 손상 길이에서도 크래시 없이 보정 후 토글
+        domainTask.toggleCompleted(5)
+        XCTAssertEqual(domainTask.progressList.count, 6)
+        XCTAssertTrue(domainTask.progressList[5])
+
+        // 저장소 toggle — background context에서 보정 후 저장되는지 폴링으로 확인
+        let taskStorage = CoreDataDailyTaskStorage(coreDataStorage: storage)
+        taskStorage.toggleCompleted(domainTask, progressIndex: 5)
+
+        let deadline = Date().addingTimeInterval(5)
+        var healed = false
+        while !healed && Date() < deadline {
+            context.refreshAllObjects()
+            if let stored = taskEntity.progressList as? [Bool], stored.count == 6, stored[5] {
+                healed = true
+            } else {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+            }
+        }
+        XCTAssertTrue(healed, "storage toggleCompleted should heal corrupted progressList without crashing")
+    }
+
     func testSyncProtectionStateDetectsSuppressedEmptyCollection() throws {
         let storage = try makeStorage()
         let context = storage.persistentContainer.viewContext

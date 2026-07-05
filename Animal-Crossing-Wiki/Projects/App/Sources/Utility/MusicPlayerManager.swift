@@ -23,8 +23,10 @@ final class MusicPlayerManager {
     static let shared = MusicPlayerManager()
 
     private let disposeBag = DisposeBag()
+    private var backgroundDisposeBag = DisposeBag()
     private var player: AVPlayer?
     private var timer: Timer?
+    private var endPlaybackObserver: NSObjectProtocol?
 
     private let isPlaying = BehaviorRelay<Bool?>(value: nil)
     private let currentSong = BehaviorRelay<Item?>(value: nil)
@@ -54,6 +56,9 @@ final class MusicPlayerManager {
             .compactMap { URL(string: $0) }
             .subscribe(with: self, onNext: { owner, musicURL in
                 owner.player = AVPlayer(url: musicURL)
+                // 곡이 바뀔 때마다(player 재생성) 종료 알림 옵저버를 재등록해
+                // 자동 다음 곡/반복 재생이 끊기지 않도록 보장한다.
+                owner.setUpNotification()
             }).disposed(by: disposeBag)
 
         currentSong
@@ -144,14 +149,23 @@ final class MusicPlayerManager {
     }
 
     private func setUpNotification() {
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        
-        NotificationCenter.default.addObserver(
+        // block 기반 옵저버는 removeObserver(self,...)로 제거되지 않으므로 토큰을 보관해 제거한다.
+        // object를 특정 AVPlayerItem에 바인딩하면 곡 전환(changeSong) 후 알림을 못 받으므로
+        // object: nil로 등록하고 핸들러에서 현재 재생 item인지 확인한다.
+        if let endPlaybackObserver {
+            NotificationCenter.default.removeObserver(endPlaybackObserver)
+        }
+
+        endPlaybackObserver = NotificationCenter.default.addObserver(
             forName: .AVPlayerItemDidPlayToEndTime,
-            object: player?.currentItem,
+            object: nil,
             queue: .main
-        ) { [weak self] _ in
+        ) { [weak self] notification in
             guard let owner = self else {
+                return
+            }
+            guard let endedItem = notification.object as? AVPlayerItem,
+                  endedItem === owner.player?.currentItem else {
                 return
             }
             owner.playerProgress.accept(0)
@@ -180,6 +194,9 @@ final class MusicPlayerManager {
             playingInfo[MPMediaItemPropertyAlbumTitle] = "K.K. Slider"
             playingInfo[MPMediaItemPropertyTitle] = currentSong.translations.localizedName()
 
+            // 곡 전환 시 이전 곡의 아트워크 다운로드를 취소해, 늦게 도착한 이미지가
+            // 잠금화면 now playing 정보를 덮어쓰는 것을 방지한다.
+            backgroundDisposeBag = DisposeBag()
             UIImage.downloadImage(urlString: currentSong.image ?? "")
                 .compactMap { $0 }
                 .subscribe(onNext: { image in
@@ -189,7 +206,7 @@ final class MusicPlayerManager {
                         }
                     )
                     MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
-                }).disposed(by: disposeBag)
+                }).disposed(by: backgroundDisposeBag)
         }
     }
 
@@ -295,7 +312,6 @@ extension MusicPlayerManager {
         close()
         currentSong.accept(item)
         isPlaying.accept(true)
-        setUpNotification()
     }
 
     func close() {
@@ -309,9 +325,12 @@ extension MusicPlayerManager {
         elapsedTime.accept("0:00")
         durationTime.accept("0:00")
         playerProgress.accept(0)
-        
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        
+
+        if let endPlaybackObserver {
+            NotificationCenter.default.removeObserver(endPlaybackObserver)
+            self.endPlaybackObserver = nil
+        }
+
         try? AVAudioSession.sharedInstance().setActive(false, options: [])
     }
 }

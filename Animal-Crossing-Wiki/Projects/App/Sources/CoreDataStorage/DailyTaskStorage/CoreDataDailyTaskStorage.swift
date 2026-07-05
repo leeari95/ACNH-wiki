@@ -90,6 +90,13 @@ final class CoreDataDailyTaskStorage: DailyTaskStorage {
                 let itemEntities = object.dailyTasks?.allObjects as? [DailyTaskEntity] ?? []
                 if let index = itemEntities.firstIndex(where: { $0.id == task.id }) {
                     var progressList = (itemEntities[index].progressList as? [Bool]) ?? []
+
+                    // CloudKit 부분 import 후 저장된 progressList가 짧을 수 있음 — 길이를 보정해
+                    // index out of range 크래시를 방지하고 손상된 데이터를 자가 치유한다.
+                    if progressList.count <= progressIndex {
+                        let padding = progressIndex + 1 - progressList.count
+                        progressList.append(contentsOf: Array(repeating: false, count: padding))
+                    }
                     progressList[progressIndex] = !progressList[progressIndex]
                     itemEntities[index].progressList = progressList as NSArray
                 }
