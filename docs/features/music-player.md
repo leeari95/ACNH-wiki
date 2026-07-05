@@ -61,5 +61,5 @@ PlayerViewController UI 업데이트
 
 ## 주의사항
 
-- 별도 Coordinator를 만들지 말 것 → [gotchas.md](../gotchas.md) #10
+- 별도 Coordinator를 만들지 말 것 → [gotchas.md](../gotchas.md) #11
 - `PlayerReactor`의 coordinator 타입은 `AppCoordinator`

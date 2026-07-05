@@ -4,7 +4,7 @@
 
 - macOS, Xcode 16+
 - Mise (toolchain manager)
-- Tuist 4.115.1 (`.mise.toml`에 고정)
+- Tuist 4.152.0 (`.mise.toml`에 고정)
 
 ## Setup
 
@@ -38,9 +38,16 @@ xcodebuild \
   -destination generic/platform="iOS Simulator" \
   -configuration Debug \
   build
+
+# 특정 유닛 테스트 실행
+make test
 ```
 
 > 설정 변경 후 반드시 `mise x -- tuist generate` 재실행
+
+Apple Silicon + Xcode 26.5 환경에서는 iOS 26.5 simulator runtime을 설치하고 arm64 simulator로 빌드한다.
+`EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64`를 되살리면 Xcode가 실제 simulator destination을 찾지 못하고
+`Any iOS Simulator Device` placeholder만 표시할 수 있다.
 
 ## SwiftLint
 
@@ -66,7 +73,7 @@ swiftlint --config .swiftlint.yml --fix
 | 항목 | 값 |
 |------|---|
 | 최소 길이 (warning) | **2자** |
-| 최소 길이 (error) | **4자** |
+| 최소 길이 (error) | — |
 | 최대 길이 | 40자 (기본값) |
 | 예외 허용 | `a`, `b` |
 
@@ -183,8 +190,11 @@ make ci
 |------|---|
 | Trigger | PR to `develop` 또는 PR 코멘트 `/build` |
 | Runner | `macos-26` |
-| Xcode | 26.1.1 |
+| Xcode | 26.5 |
 | Swift | 6.2 |
+
+CI는 `develop-build.yml`에서 빌드 후 `ACNH-wikiTests/CoreDataStorageICloudResetTests`를 실행하여
+iCloud 동기화 초기화 회귀 테스트를 PR 체크에 포함한다.
 
 ## Project Config Files
 

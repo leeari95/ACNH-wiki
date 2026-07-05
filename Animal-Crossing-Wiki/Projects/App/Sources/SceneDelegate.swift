@@ -14,13 +14,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
     private var isAppSetup = false
+    private var hasShownSyncProtectionNotice = false
     private var importObserver: NSObjectProtocol?
+    private var pendingFirstImportCompletionReason: CoreDataStorage.FirstImportWaitCompletionReason?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
         window = UIWindow(windowScene: windowScene)
+
+        if AppEnvironment.isUnitTesting {
+            window?.rootViewController = UIViewController()
+            window?.makeKeyAndVisible()
+            return
+        }
 
         os_log(.info, log: .default, "🚀 App launch — checking fresh install")
         let isFresh = CoreDataStorage.shared.isFreshInstall()
@@ -30,7 +38,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CoreDataStorage.shared.markWaitingForFirstImport()
             showSplashScreen()
             window?.makeKeyAndVisible()
-            waitForCloudKitImport(timeout: 10) { [weak self] in
+            waitForCloudKitImport(timeout: 10) { [weak self] reason in
+                self?.pendingFirstImportCompletionReason = reason
                 self?.setupApp()
             }
         } else {
@@ -43,7 +52,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func setupApp() {
         isAppSetup = true
 
-        CoreDataStorage.shared.clearWaitingForFirstImport()
+        if let reason = pendingFirstImportCompletionReason {
+            CoreDataStorage.shared.completeFirstImportWait(reason: reason)
+            pendingFirstImportCompletionReason = nil
+        } else {
+            CoreDataStorage.shared.clearWaitingForFirstImport()
+        }
         CoreDataStorage.shared.logSyncDiagnostics(phase: "Pre-setup")
 
         appCoordinator = AppCoordinator()
@@ -122,11 +136,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = CloudSyncSplashViewController()
     }
 
-    private func waitForCloudKitImport(timeout: TimeInterval, completion: @escaping () -> Void) {
+    private func waitForCloudKitImport(
+        timeout: TimeInterval,
+        completion: @escaping (CoreDataStorage.FirstImportWaitCompletionReason) -> Void
+    ) {
         var hasCompleted = false
 
         // hasCompleted 접근을 main queue로 한정하여 race condition 방지
-        let complete: (String) -> Void = { [weak self] reason in
+        let complete: (CoreDataStorage.FirstImportWaitCompletionReason) -> Void = { [weak self] reason in
             DispatchQueue.main.async {
                 guard !hasCompleted else {
                     return
@@ -137,16 +154,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     NotificationCenter.default.removeObserver(observer)
                     self?.importObserver = nil
                 }
-                os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", reason)
-                completion()
+                os_log(.info, log: .default, "🚀 CloudKit wait finished (%{public}@) — launching app", "\(reason)")
+                completion(reason)
             }
         }
 
         // iCloud 계정 확인 — 미로그인이면 Import 대기 불필요
         CoreDataStorage.shared.checkiCloudAccountStatus { status in
-            if status != .available {
-                os_log(.info, log: .default, "🚀 iCloud not available (status=%d) — skipping wait", status.rawValue)
-                complete("no-icloud")
+            if let reason = Self.firstImportWaitCompletionReason(for: status) {
+                os_log(.info, log: .default,
+                       "🚀 iCloud wait completed from account status=%d reason=%{public}@",
+                       status.rawValue, "\(reason)")
+                complete(reason)
             }
         }
 
@@ -155,11 +174,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             object: nil,
             queue: .main
         ) { _ in
-            complete("import-arrived")
+            complete(.importArrived)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
-            complete("timeout")
+            complete(.timeout)
+        }
+    }
+
+    static func firstImportWaitCompletionReason(
+        for status: CKAccountStatus
+    ) -> CoreDataStorage.FirstImportWaitCompletionReason? {
+        switch status {
+        case .available:
+            return nil
+        case .noAccount, .restricted:
+            return .noICloud
+        case .couldNotDetermine, .temporarilyUnavailable:
+            return .timeout
+        @unknown default:
+            return .timeout
         }
     }
 
@@ -268,6 +302,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         DispatchQueue.main.async { [weak self] in
+            guard let owner = self else {
+                return
+            }
+
             let message: String
             switch reason {
             case "quota_exceeded":
@@ -275,12 +313,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             case "not_authenticated":
                 message = "iCloud is not signed in. Data will be saved locally only.".localized
             default:
-                return
+                // 반복 sync 실패로 컬렉션 생성이 보호 모드에 들어가 빈 화면이 유지되는 상태라면,
+                // 세션당 한 번 보호 중임을 안내한다 (조용한 빈 컬렉션 방지).
+                guard owner.isAppSetup,
+                      !owner.hasShownSyncProtectionNotice,
+                      CoreDataStorage.shared.isAwaitingCloudDataWithoutCollection else {
+                    return
+                }
+
+                owner.hasShownSyncProtectionNotice = true
+                // swiftlint:disable:next line_length
+                message = "iCloud sync keeps failing. Creating new data is paused to protect your existing iCloud data. Please check your iCloud sign-in and storage.".localized
             }
 
             let alert = UIAlertController(title: "iCloud".localized, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK".localized, style: .default))
-            self?.presentAlert(alert)
+            owner.presentAlert(alert)
         }
     }
 

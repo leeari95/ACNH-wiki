@@ -18,12 +18,13 @@ final class SafetySnapshotService {
     // MARK: - File Location
 
     private static let fileName = "local_safety_snapshot.plist"
+    private static let snapshotFileProtection: FileProtectionType = .completeUntilFirstUserAuthentication
 
     var snapshotURL: URL {
-        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            fatalError("Documents directory unavailable")
+        guard let directory = snapshotDirectoryProvider() else {
+            fatalError("Safety snapshot directory unavailable")
         }
-        return documents.appendingPathComponent(Self.fileName)
+        return directory.appendingPathComponent(Self.fileName)
     }
 
     var snapshotExists: Bool {
@@ -48,9 +49,33 @@ final class SafetySnapshotService {
     private let queue = DispatchQueue(label: "app.safety.snapshot", qos: .utility)
     private var pendingWorkItem: DispatchWorkItem?
     private var observers: [NSObjectProtocol] = []
+    private let containerProvider: () -> NSPersistentContainer
+    private let snapshotDirectoryProvider: () -> URL?
+    private let fileAttributeSetter: (URL, [FileAttributeKey: Any]) throws -> Void
+
+    #if DEBUG
+    /// 테스트 전용 fault-injection seam. `restore()`가 기존 데이터를 wipe한 직후,
+    /// 스냅샷을 적용하기 직전에 호출한다. production 빌드에는 컴파일되지 않으므로
+    /// 복원 경로에 죽은 코드가 남지 않는다.
+    var beforeApplyingSnapshotForTesting: ((NSManagedObjectContext) throws -> Void)?
+    #endif
+
+    init(
+        containerProvider: @escaping () -> NSPersistentContainer = { CoreDataStorage.shared.persistentContainer },
+        snapshotDirectoryProvider: @escaping () -> URL? = {
+            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        },
+        fileAttributeSetter: @escaping (URL, [FileAttributeKey: Any]) throws -> Void = { url, attributes in
+            try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path)
+        }
+    ) {
+        self.containerProvider = containerProvider
+        self.snapshotDirectoryProvider = snapshotDirectoryProvider
+        self.fileAttributeSetter = fileAttributeSetter
+    }
 
     private var container: NSPersistentContainer {
-        CoreDataStorage.shared.persistentContainer
+        containerProvider()
     }
 
     /// 앱 시작 시 1회 호출 — 다음 이벤트에 대해 모두 스냅샷 작성을 예약:
@@ -131,7 +156,11 @@ final class SafetySnapshotService {
         do {
             let snapshot = try UserCollectionSnapshot.dump(from: context)
             let data = try snapshot.toData()
-            try data.write(to: snapshotURL, options: [.atomic])
+            // CloudKit can deliver background imports while the device is locked. The snapshot must
+            // remain writable after the first unlock so a sync-reset flush can preserve recent data.
+            try data.write(to: snapshotURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            try fileAttributeSetter(snapshotURL, [.protectionKey: Self.snapshotFileProtection])
+            applySnapshotResourceValues()
             updateMetadataCache(createdAt: snapshot.createdAt, childCount: snapshot.totalChildCount)
             os_log(.info, log: .default,
                    "🛟 SafetySnapshot written: %d children, %d bytes",
@@ -143,6 +172,22 @@ final class SafetySnapshotService {
             os_log(.error, log: .default,
                    "🛟 SafetySnapshot write failed: %{public}@",
                    error.localizedDescription)
+        }
+    }
+
+    private func applySnapshotResourceValues() {
+        var url = snapshotURL
+        var values = URLResourceValues()
+        values.isExcludedFromBackup = true
+        do {
+            try url.setResourceValues(values)
+        } catch {
+            // 백업 제외(isExcludedFromBackup) 회귀를 Crashlytics에서 관측할 수 있도록 비치명 에러로 보고한다.
+            // 파일 보호 등급은 write 옵션 + setAttributes로 이미 적용되므로 암호화 경계 자체는 유지된다.
+            Log.error(
+                name: "SafetySnapshotBackupExclusion",
+                reason: error.localizedDescription
+            )
         }
     }
 
@@ -158,12 +203,17 @@ final class SafetySnapshotService {
     /// **파괴적 동작** — 호출 전 사용자 명시적 동의 필요.
     func restore(completion: @escaping (RestoreOutcome) -> Void) {
         container.performBackgroundTask { [weak self] context in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             let outcome: RestoreOutcome
             do {
                 let data = try Data(contentsOf: self.snapshotURL)
                 let snapshot = try UserCollectionSnapshot.from(data: data)
                 try Self.wipeExistingCollection(in: context)
+                #if DEBUG
+                try self.beforeApplyingSnapshotForTesting?(context)
+                #endif
                 try snapshot.apply(to: context)
                 try context.save()
                 os_log(.error, log: .default,
@@ -173,6 +223,7 @@ final class SafetySnapshotService {
             } catch let error as NSError where error.domain == NSCocoaErrorDomain && error.code == NSFileReadNoSuchFileError {
                 outcome = .noSnapshot
             } catch {
+                context.rollback()
                 os_log(.error, log: .default,
                        "🛟 SafetySnapshot restore FAILED: %{public}@",
                        error.localizedDescription)
@@ -189,14 +240,10 @@ final class SafetySnapshotService {
             "UserCollectionEntity"
         ]
         for name in entityNames {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: name)
-            let delete = NSBatchDeleteRequest(fetchRequest: request)
-            delete.resultType = .resultTypeObjectIDs
-            if let result = try context.execute(delete) as? NSBatchDeleteResult,
-               let objectIDs = result.result as? [NSManagedObjectID], !objectIDs.isEmpty {
-                let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: objectIDs]
-                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-            }
+            let request = NSFetchRequest<NSManagedObject>(entityName: name)
+            request.includesPropertyValues = false
+            let objects = try context.fetch(request)
+            objects.forEach(context.delete)
         }
     }
 
@@ -230,7 +277,9 @@ final class SafetySnapshotService {
     }
 
     private func readMetadataFromFile() -> Metadata? {
-        guard snapshotExists else { return nil }
+        guard snapshotExists else {
+            return nil
+        }
         do {
             let data = try Data(contentsOf: snapshotURL)
             let snapshot = try UserCollectionSnapshot.from(data: data)

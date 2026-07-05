@@ -73,10 +73,15 @@ Dashboard 폴더 안이지만 **앱 전체에서 사용**됨. 이동하지 말 �
 
 ## 9. Tuist 버전
 
-`.mise.toml`에 `tuist = "4.115.1"` 지정. 항상 `mise x -- tuist` 접두어로 명령어 실행.
+`.mise.toml`에 `tuist = "4.152.0"` 지정. 항상 `mise x -- tuist` 접두어로 명령어 실행.
 직접 `tuist` 호출 시 다른 버전이 실행될 수 있음.
 
-## 10. MusicPlayer에는 Coordinator가 없음
+## 10. Apple Silicon simulator는 arm64 필요
+
+Xcode 26.5의 iOS simulator runtime은 arm64 destination으로 잡힌다.
+`EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64` 설정을 추가하면 실제 simulator가 destination 목록에서 사라져 테스트가 실행되지 않을 수 있음.
+
+## 11. MusicPlayer에는 Coordinator가 없음
 
 `PlayerViewController`는 **AppCoordinator**가 직접 관리.
 탭바 위에 오버레이로 표시되며 `showMusicPlayer()`, `minimize()`, `maximize()`, `removePlayerViewController()`로 제어.

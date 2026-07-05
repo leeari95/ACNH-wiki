@@ -11,13 +11,13 @@
 # Usage:
 #   make          — Show available targets
 #   make setup    — One-time project bootstrap
-#   make ci       — Full CI pipeline (lint + validate + build)
+#   make ci       — Full CI pipeline (lint + validate + test + build)
 #
 # ============================================================================
 
 .DEFAULT_GOAL := help
 
-.PHONY: setup build lint lint-fix validate-arch validate-patterns validate-docs validate ci hooks help
+.PHONY: setup build test lint lint-fix validate-arch validate-patterns validate-docs validate ci hooks help
 
 # ----------------------------------------------------------------------------
 # Setup
@@ -38,6 +38,15 @@ hooks: ## Configure git to use .githooks/ directory
 
 build: ## Build the project with Tuist
 	mise x -- tuist build
+
+test: ## Run focused unit tests
+	xcodebuild \
+		-workspace Animal-Crossing-Wiki.xcworkspace \
+		-scheme ACNH-wiki \
+		-destination 'platform=iOS Simulator,name=iPhone 17' \
+		-configuration Debug \
+		-only-testing:ACNH-wikiTests/CoreDataStorageICloudResetTests \
+		test
 
 # ----------------------------------------------------------------------------
 # Lint
@@ -68,7 +77,7 @@ validate: validate-arch validate-patterns validate-docs ## Run all validations (
 # CI
 # ----------------------------------------------------------------------------
 
-ci: lint validate build ## Full CI check: lint + validate + build
+ci: lint validate test build ## Full CI check: lint + validate + test + build
 
 # ----------------------------------------------------------------------------
 # Help

@@ -8,11 +8,11 @@ excluded: # 린트 과정에서 무시할 파일 경로. `included`보다 우선
   - Tuist
   - Workspace.swift
   - Animal-Crossing-Wiki/Projects/*/Project.swift
+  - Animal-Crossing-Wiki/Projects/App/build
 
 identifier_name:
     min_length:
       - 2  # only min_length
-    error: 4 # only error
     excluded: # 제외할 문자열 목록 사용
       - a
       - b
