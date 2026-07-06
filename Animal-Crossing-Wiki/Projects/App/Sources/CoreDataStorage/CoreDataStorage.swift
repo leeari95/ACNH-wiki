@@ -108,6 +108,7 @@ final class CoreDataStorage {
     /// 의도적 데이터 초기화 시 호출 — 새 UC 생성을 다시 허용
     func clearHasEverHadUserCollection() {
         hasEverHadUserCollection = false
+        clearUCMissingObservation()
         Log.info("hasEverHadUserCollection cleared (intentional reset)")
     }
 
@@ -143,6 +144,25 @@ final class CoreDataStorage {
         return true
     }
 
+    // MARK: - UC Missing Self-Heal
+
+    private static let ucMissingFirstObservedAtKey = "CoreDataStorage_ucMissingFirstObservedAt"
+
+    /// UC 부재 상태(hasEverHadUC=true && UC=0)가 이 시간 이상 지속되면
+    /// import 성공 여부와 무관하게 새 UC 생성을 허용하는 백스톱 (24시간)
+    private static let ucMissingSelfHealSeconds: TimeInterval = 60 * 60 * 24
+
+    /// 마지막으로 확인한 iCloud 계정 상태 — checkiCloudAccountStatus()에서 갱신.
+    /// 계정이 없으면 CloudKit re-import가 영원히 오지 않으므로 self-heal 판정에 사용.
+    private let _lastKnownAccountStatus = OSAllocatedUnfairLock<CKAccountStatus?>(initialState: nil)
+    private(set) var lastKnownAccountStatus: CKAccountStatus? {
+        get { _lastKnownAccountStatus.withLock { $0 } }
+        set { _lastKnownAccountStatus.withLock { $0 = newValue } }
+    }
+
+    /// Import 완료 후에도 UC가 없을 때 grace period 만료 직후 Path-B 갱신을 재트리거하는 타이머
+    private var selfHealRecheckWorkItem: DispatchWorkItem?
+
     /// 첫 Import 완료 후 UC 생성/기본 데이터 생성을 유예하는 시간 (초)
     private static let gracePeriodSeconds: TimeInterval = 120
 
@@ -158,6 +178,55 @@ final class CoreDataStorage {
     ///       여기에 포함하면 기존 유저의 DailyTask 자동 생성이 영구적으로 차단됨
     var shouldSuppressDataCreation: Bool {
         isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress || isWithinGracePeriod
+    }
+
+    // MARK: - UC Missing Self-Heal Judgement
+
+    /// "기존 유저인데 UC가 0개"인 상태에서 CloudKit re-import가 UC를 되돌려줄 가능성이
+    /// 사실상 없다고 판단되면 self-heal(새 UC 생성 허용) 사유를 반환한다. 아니면 nil.
+    ///
+    /// 이 판정이 없으면 클라우드에 UC가 없는 사용자는 모든 저장이 영구적으로 실패하는
+    /// 브릭 상태에 빠진다 (설정 화면 "iCloud 데이터 대기 중..."이 영원히 지속).
+    private func ucMissingSelfHealReason() -> String? {
+        // 이 세션에서 CloudKit Import가 성공적으로 완료됐는데도 UC가 없음.
+        // grace period(첫 Import 후 120초)를 이미 통과한 뒤에만 도달하므로,
+        // 후속 import batch를 기다릴 만큼 기다린 상태 → 클라우드에 복원할 UC가 없다고 판단.
+        if lastSuccessfulImportDate != nil {
+            return "import_settled"
+        }
+        // iCloud 계정이 없거나 제한됨 — re-import 자체가 올 수 없으므로 즉시 허용.
+        // (계정 미로그인 시 NSPersistentCloudKitContainer가 로컬 미러 데이터를 제거하는
+        //  경우가 있어, 이 케이스를 막으면 비 iCloud 사용자는 앱을 아예 쓸 수 없게 됨)
+        if let status = lastKnownAccountStatus, status == .noAccount || status == .restricted {
+            return "no_icloud_account"
+        }
+        // 백스톱: UC 부재 상태가 24시간 넘게 지속 (오프라인 등 위 조건으로 못 잡는 케이스)
+        let observedAt = UserDefaults.standard.double(forKey: Self.ucMissingFirstObservedAtKey)
+        if observedAt > 0 {
+            let elapsed = Date().timeIntervalSince1970 - observedAt
+            if elapsed > Self.ucMissingSelfHealSeconds {
+                return "persisted_24h"
+            }
+            if elapsed < 0 {
+                // 시계 역행 — 타임스탬프 재기록
+                markUCMissingObserved(force: true)
+            }
+        }
+        return nil
+    }
+
+    /// UC 부재 상태를 처음 관측한 시각을 기록 (24시간 백스톱 판정용, 최초 1회만)
+    private func markUCMissingObserved(force: Bool = false) {
+        let defaults = UserDefaults.standard
+        guard force || defaults.double(forKey: Self.ucMissingFirstObservedAtKey) <= 0 else { return }
+        defaults.set(Date().timeIntervalSince1970, forKey: Self.ucMissingFirstObservedAtKey)
+    }
+
+    /// UC가 정상적으로 조회되면 부재 관측 기록을 정리
+    private func clearUCMissingObservation() {
+        let defaults = UserDefaults.standard
+        guard defaults.object(forKey: Self.ucMissingFirstObservedAtKey) != nil else { return }
+        defaults.removeObject(forKey: Self.ucMissingFirstObservedAtKey)
     }
 
     // MARK: - Private API Notification Names (fragile)
@@ -211,10 +280,11 @@ final class CoreDataStorage {
     // MARK: - iCloud Account Status
 
     func checkiCloudAccountStatus(completion: ((CKAccountStatus) -> Void)? = nil) {
-        CKContainer(identifier: "iCloud.leeari.NookPortalPlus").accountStatus { status, error in
+        CKContainer(identifier: "iCloud.leeari.NookPortalPlus").accountStatus { [weak self] status, error in
             if let error {
                 os_log(.error, log: .default, "iCloud account status check failed: %{public}@", error.localizedDescription)
             }
+            self?.lastKnownAccountStatus = status
             DispatchQueue.main.async {
                 completion?(status)
             }
@@ -415,6 +485,8 @@ final class CoreDataStorage {
                     object: nil,
                     userInfo: hasChanges ? ["hasChanges": true] : nil
                 )
+
+                scheduleSelfHealRecheckIfNeeded()
             }
             if event.type == .export {
                 if event.error != nil {
@@ -428,6 +500,35 @@ final class CoreDataStorage {
             if event.type == .import {
                 isImportInProgress = true
                 NotificationCenter.default.post(name: Self.didStartCloudImport, object: nil)
+            }
+        }
+    }
+
+    // MARK: - UC Self-Heal Recheck
+
+    /// Import가 끝났는데 UC가 여전히 없으면, grace period 만료 직후 Path-B 갱신을
+    /// 한 번 더 트리거한다. 이 시점의 getUserCollection()에서 self-heal 조건
+    /// (import_settled)이 충족되어 새 UC가 생성되고 UI가 채워진다.
+    /// 이 재트리거가 없으면 사용자가 화면을 조작할 때까지 앱이 빈 상태로 남는다.
+    private func scheduleSelfHealRecheckIfNeeded() {
+        guard hasEverHadUserCollection else { return }
+        persistentContainer.performBackgroundTask { [weak self] context in
+            guard let self else { return }
+            let ucCount = (try? context.count(for: UserCollectionEntity.fetchRequest())) ?? 0
+            guard ucCount == 0 else { return }
+
+            DispatchQueue.main.async {
+                self.selfHealRecheckWorkItem?.cancel()
+                let workItem = DispatchWorkItem {
+                    os_log(.info, log: .default,
+                           "🔄 Self-heal recheck — re-triggering data refresh after grace period")
+                    NotificationCenter.default.post(name: Self.didReceiveRemoteChanges, object: nil)
+                }
+                self.selfHealRecheckWorkItem = workItem
+                DispatchQueue.main.asyncAfter(
+                    deadline: .now() + Self.gracePeriodSeconds + 5,
+                    execute: workItem
+                )
             }
         }
     }
@@ -898,6 +999,7 @@ extension CoreDataStorage {
             if !hasEverHadUserCollection {
                 hasEverHadUserCollection = true
             }
+            clearUCMissingObservation()
             return existing
         }
 
@@ -939,8 +1041,26 @@ extension CoreDataStorage {
                 logSyncDiagnostics(phase: "UC-created-recovery", throttled: false)
                 return UserCollectionEntity(UserInfo(), context: context)
             }
+
+            // Self-heal: CloudKit re-import가 UC를 되돌려줄 가능성이 없다고 판단되면
+            // 새 UC 생성을 허용한다. 이 판정이 없으면 클라우드에 UC가 없는 사용자는
+            // 모든 저장/동기화가 영구적으로 실패하는 브릭 상태에 빠진다.
+            // (새 UC는 새 CKRecord로 export되므로 클라우드의 기존 UC를 덮어쓰지 않으며,
+            //  이후 import로 기존 UC가 도착해도 relationship이 많은 쪽을 우선 조회 +
+            //  수동 "중복/고아 데이터 정리"로 병합 가능)
+            if let healReason = ucMissingSelfHealReason() {
+                Log.warning("UC missing self-heal — creating new UC (reason=\(healReason))")
+                Log.event(.ucCreated, parameters: [
+                    Log.Param.path: UCCreationPath.selfHeal.rawValue,
+                    Log.Param.reason: healReason
+                ])
+                logSyncDiagnostics(phase: "UC-created-self-heal", throttled: false)
+                return UserCollectionEntity(UserInfo(), context: context)
+            }
+
             // 핵심 데이터 유실 증상: "기존 유저인데 UC가 사라짐".
             // 3.2.0 이후 클레임의 주 증상으로 추정되는 상태.
+            markUCMissingObserved()
             Log.warning("UC missing but hasEverHadUC=true — user data appears reset, blocking empty UC to protect cloud")
             Log.event(.ucMissing)
             logSyncDiagnostics(phase: "UC-missing", throttled: false)
@@ -1059,6 +1179,7 @@ extension CoreDataStorage {
 private enum UCCreationPath: String {
     case freshUser = "fresh_user"
     case recoveryGrace = "recovery_grace"
+    case selfHeal = "self_heal"
 }
 
 private enum SuppressionReason: String {
