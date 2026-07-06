@@ -167,7 +167,7 @@ waitForCloudKitImport(timeout: 10)
 2. `isImportInProgress` — Import가 진행 중 (timeout 후에도 import가 끝나지 않은 경우)
 3. `isSyncResetInProgress` — Change Token Expired 후 re-import 대기
 4. `_firstImportCompletedAt` grace period — 첫 Import 완료 후 120초간 UC 생성 유예
-5. `hasEverHadUserCollection` — 기존 유저 보호 (아래 참조)
+5. `hasEverHadUserCollection` — 기존 유저 보호 (아래 참조, Self-Heal 예외 있음)
 
 모든 Storage 호출은 `.notFound` 에러를 graceful하게 처리 (`try?` → nil, do-catch → `os_log`).
 Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 정상 로드됨.
@@ -181,6 +181,30 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 - 이후 UC가 0개여도 빈 UC를 생성하지 않고 `.notFound`를 throw
 - CloudKit re-import이 완료되면 정상 복구됨
 - `performCloudKitRecovery()`에서도 플래그 유지 (복구 = 기존 유저)
+
+### UC Missing Self-Heal (영구 브릭 방지)
+
+**문제**: `hasEverHadUserCollection=true`인데 CloudKit re-import가 UC를 되돌려주지 못하는 경우
+(클라우드에 UC가 없음, iCloud 로그아웃/제한, 계정 전환으로 인한 로컬 미러 purge 등),
+`getUserCollection()`이 영구히 `.notFound`를 throw하여 **모든 저장이 조용히 실패**하는 브릭 상태가 됨.
+설정 화면은 "iCloud 데이터 대기 중..."이 영원히 지속되고, 매 실행마다 fresh-install 스플래시가 뜸.
+
+**해결**: re-import가 올 가능성이 사실상 없다고 판단되면 새 UC 생성을 허용 (`ucMissingSelfHealReason()`):
+
+| 사유 (Analytics `reason`) | 조건 |
+|---------------------------|------|
+| `import_settled` | 이 세션에서 CloudKit Import가 성공했고 grace period(120초)도 지났는데 UC가 없음 → 클라우드에 복원할 UC가 없다고 판단 |
+| `no_icloud_account` | 마지막 확인된 계정 상태가 `.noAccount`/`.restricted` → re-import 자체가 불가능 |
+| `persisted_24h` | UC 부재 상태가 24시간 이상 지속 (UserDefaults 타임스탬프 기반 백스톱) |
+
+- 새 UC는 새 CKRecord로 Export되므로 클라우드의 기존 UC 레코드를 **덮어쓰지 않음** — 이후 import로
+  기존 UC가 도착하면 relationship이 많은 쪽을 우선 조회하고, 수동 "중복/고아 데이터 정리"로 병합 가능
+- UC 부재 최초 관측 시각은 `CoreDataStorage_ucMissingFirstObservedAt`(UserDefaults)에 기록,
+  UC가 정상 조회되면 자동 정리
+- 계정 상태는 `checkiCloudAccountStatus()` 호출 시 `lastKnownAccountStatus`에 캐싱
+- **Import 후 재확인**: Import가 끝났는데 UC가 없으면 grace period 만료 직후(125초 후)
+  `didReceiveRemoteChanges`를 한 번 더 post하여 Path-B가 self-heal된 UC를 UI에 반영
+  (`scheduleSelfHealRecheckIfNeeded()`)
 
 **`shouldSuppressDataCreation` 통합 프로퍼티**: DailyTask 등 외부 Storage에서도 기본값 생성 억제 판단에 사용:
 - `isWaitingForFirstImport || isImportInProgress || isSyncResetInProgress` 중 하나라도 true
@@ -318,7 +342,7 @@ Crashlytics(세션 breadcrumb + custom keys + 비치명 에러)와 Analytics(집
 | `sync_recovery_triggered` | `performCloudKitRecovery` 성공 — 사용자가 설정에서 복원 실행 |
 | `sync_orphan_cleanup` | `cleanupOrphanedEntities`가 실제로 레코드 삭제 (entity/count 파라미터) |
 | `sync_uc_consolidated` | 중복 UC가 통합됨 (uc_total/kept_relationships) |
-| `sync_uc_created` | 새 UC 생성 (path: fresh_user \| recovery_grace) |
+| `sync_uc_created` | 새 UC 생성 (path: fresh_user \| recovery_grace \| self_heal, self_heal은 reason 파라미터 포함) |
 | `sync_uc_creation_suppressed` | UC 생성이 억제됨 (reason: sync_in_progress \| grace_period) |
 | `sync_token_expired` | `NSCloudKitMirroringDelegateWillReset` 감지 |
 | `sync_user_collection_missing` | **핵심 증상**: hasEverHadUC=true인데 UC=0 |
