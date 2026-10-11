@@ -1,5 +1,6 @@
 import XCTest
 import CoreData
+import CloudKit
 import RxSwift
 @testable import ACNH_wiki
 
@@ -188,7 +189,8 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
             snapshotDirectoryProvider: { snapshotDirectory },
             fileAttributeSetter: { _, attributes in
                 appliedProtection = attributes[.protectionKey] as? FileProtectionType
-            }
+            },
+            userDefaults: testDefaults
         )
 
         service.flushNow()
@@ -217,7 +219,8 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
 
         let service = SafetySnapshotService(
             containerProvider: { storage.persistentContainer },
-            snapshotDirectoryProvider: { snapshotDirectory }
+            snapshotDirectoryProvider: { snapshotDirectory },
+            userDefaults: testDefaults
         )
         service.beforeApplyingSnapshotForTesting = { _ in throw InjectedRestoreFailure.failure }
 
@@ -389,6 +392,204 @@ final class CoreDataStorageICloudResetTests: XCTestCase {
         try context.save()
         XCTAssertFalse(storage.isAwaitingCloudDataWithoutCollection)
     }
+
+    // MARK: - Persistent History Token Expired (134301)
+
+    func testSyncFailureReasonClassifiesHistoryTokenExpired() {
+        let tokenExpired = NSError(domain: NSCocoaErrorDomain, code: NSPersistentHistoryTokenExpiredError)
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: tokenExpired), "history_token_expired")
+
+        // 같은 코드라도 다른 도메인이면 history token 만료로 오분류하지 않는다
+        let otherDomain = NSError(domain: "SomeOtherDomain", code: NSPersistentHistoryTokenExpiredError)
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: otherDomain), "unknown")
+
+        // CloudKit 이벤트 에러에 감싸져 와도 분류한다
+        let wrapped = NSError(domain: "SomeWrapper", code: 1, userInfo: [NSUnderlyingErrorKey: tokenExpired])
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: wrapped), "history_token_expired")
+
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: CKError(.quotaExceeded)), "quota_exceeded")
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: CKError(.notAuthenticated)), "not_authenticated")
+        XCTAssertEqual(CoreDataStorage.syncFailureReason(for: CKError(.networkUnavailable)), "network")
+    }
+
+    // MARK: - SafetySnapshot Sync Reset Hold
+
+    func testSafetySnapshotResetHoldKeepsPreResetBackupWhenReimportIsPartial() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        // willReset 직전 flush → reset 이전 상태(3개)를 백업하고 hold 설정
+        service.simulateSyncResetImminentForTesting()
+        XCTAssertEqual(service.resetHoldChildCount, 3)
+        XCTAssertEqual(service.readMetadata()?.totalChildCount, 3)
+
+        // purge 후 일부만 re-import된 상태 (1개)
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        // 부분 상태의 스냅샷은 reset 이전 백업을 덮어쓰지 않는다
+        service.flushNow()
+        XCTAssertEqual(service.readMetadata()?.totalChildCount, 3)
+        XCTAssertEqual(try snapshotFileChildCount(of: service), 3)
+        XCTAssertEqual(service.currentChildCount(), 1)
+        XCTAssertEqual(service.currentChildCountIfBelowResetHold(), 1)
+    }
+
+    func testSafetySnapshotResetHoldReleasesOnceDataRecovers() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<2).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.simulateSyncResetImminentForTesting()
+        XCTAssertEqual(service.resetHoldChildCount, 2)
+
+        // re-import가 끝까지 도착 + 새 수집 1개 → reset 이전 수준 이상으로 회복
+        tasks.forEach { context.delete($0) }
+        try context.save()
+        for _ in 0..<3 {
+            try insertDailyTask(in: context, linkedTo: userCollection)
+        }
+        try context.save()
+
+        service.flushNow()
+        XCTAssertNil(service.resetHoldChildCount)
+        XCTAssertEqual(service.readMetadata()?.totalChildCount, 3)
+        XCTAssertNil(service.currentChildCountIfBelowResetHold())
+    }
+
+    func testSafetySnapshotRepeatedSyncResetDuringPartialStateKeepsOriginalBackup() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.simulateSyncResetImminentForTesting()
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        // 부분 상태에서 reset이 한 번 더 일어나도 원래 백업/hold 기준을 잃지 않는다
+        service.simulateSyncResetImminentForTesting()
+        XCTAssertEqual(service.resetHoldChildCount, 3)
+        XCTAssertEqual(try snapshotFileChildCount(of: service), 3)
+    }
+
+    func testSafetySnapshotRestoreReleasesResetHold() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.simulateSyncResetImminentForTesting()
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        let expectation = expectation(description: "restore completes")
+        service.restore { outcome in
+            if case .success(let restored) = outcome {
+                XCTAssertEqual(restored, 3)
+            } else {
+                XCTFail("Expected restore success, got \(outcome)")
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+
+        XCTAssertNil(service.resetHoldChildCount)
+        XCTAssertEqual(service.currentChildCount(), 3)
+        XCTAssertNil(service.currentChildCountIfBelowResetHold())
+    }
+
+    func testSafetySnapshotExplicitReleaseLetsSnapshotFollowCurrentData() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.simulateSyncResetImminentForTesting()
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        // 사용자가 "현재 데이터 유지"를 선택 → 이후 스냅샷은 현재 상태를 따른다
+        service.releaseResetHold()
+        service.flushNow()
+        XCTAssertNil(service.resetHoldChildCount)
+        XCTAssertEqual(service.readMetadata()?.totalChildCount, 1)
+        XCTAssertNil(service.currentChildCountIfBelowResetHold())
+    }
+
+    func testSafetySnapshotHoldWithoutBackupFileDoesNotBlockNewBackups() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.simulateSyncResetImminentForTesting()
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        // 보존할 백업 파일이 사라졌다면 hold 때문에 백업이 영영 비어 있으면 안 된다
+        try FileManager.default.removeItem(at: service.snapshotURL)
+        XCTAssertNil(service.currentChildCountIfBelowResetHold())
+
+        service.flushNow()
+        XCTAssertNil(service.resetHoldChildCount)
+        XCTAssertEqual(try snapshotFileChildCount(of: service), 1)
+    }
+
+    func testSafetySnapshotWithoutSyncResetFollowsCurrentData() throws {
+        let storage = try makeStorage()
+        let context = storage.persistentContainer.viewContext
+        let userCollection = try insertUserCollection(in: context)
+        let tasks = try (0..<3).map { _ in try insertDailyTask(in: context, linkedTo: userCollection) }
+        try context.save()
+
+        let snapshotDirectory = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: snapshotDirectory) }
+        let service = makeSnapshotService(storage: storage, directory: snapshotDirectory)
+
+        service.flushNow()
+        tasks.dropFirst().forEach { context.delete($0) }
+        try context.save()
+
+        // sync reset이 없었다면 사용자의 일반 편집(항목 감소)은 그대로 백업에 반영된다
+        service.flushNow()
+        XCTAssertNil(service.resetHoldChildCount)
+        XCTAssertEqual(service.readMetadata()?.totalChildCount, 1)
+        XCTAssertNil(service.currentChildCountIfBelowResetHold())
+    }
 }
 
 // MARK: - Helpers
@@ -533,6 +734,20 @@ extension CoreDataStorageICloudResetTests {
             return
         }
         assertNotFound(underlying, file: file, line: line)
+    }
+
+    private func makeSnapshotService(storage: CoreDataStorage, directory: URL) -> SafetySnapshotService {
+        SafetySnapshotService(
+            containerProvider: { storage.persistentContainer },
+            snapshotDirectoryProvider: { directory },
+            fileAttributeSetter: { _, _ in },
+            userDefaults: testDefaults
+        )
+    }
+
+    private func snapshotFileChildCount(of service: SafetySnapshotService) throws -> Int {
+        let data = try Data(contentsOf: service.snapshotURL)
+        return try UserCollectionSnapshot.from(data: data).totalChildCount
     }
 
     private func makeTemporaryDirectory() throws -> URL {
