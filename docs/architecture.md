@@ -61,7 +61,7 @@
 - **Rule**: Presentation, Networking을 import하지 않음. Entity ↔ Domain 변환은 매핑 extension에서 처리.
 - **Pattern**: Storage 프로토콜 → CoreData 구현체 → Entity 매핑
 - **Key files**:
-  - `CoreDataStorage.swift` - 싱글톤. `NSPersistentCloudKitContainer`. 자동 lightweight migration. CloudKit 이벤트 감지, iCloud 계정 확인, Persistent History 정리. → [features/icloud-sync.md](features/icloud-sync.md)
+  - `CoreDataStorage.swift` - 싱글톤. `NSPersistentCloudKitContainer`. 자동 lightweight migration. CloudKit 이벤트 감지, iCloud 계정 확인, Persistent History 보존(삭제 금지). → [features/icloud-sync.md](features/icloud-sync.md)
   - `ItemsStorage/` - `ItemsStorage` 프로토콜 + `CoreDataItemsStorage` 구현
   - `UserInfoStorage/`, `DailyTaskStorage/`, `VariantsStorage/`, `VillagersLikeStorage/`, `VillagersHouseStorage/`, `NPCLikeStorage/`
 - **Root entity**: `UserCollectionEntity` (모든 컬렉션의 부모)
