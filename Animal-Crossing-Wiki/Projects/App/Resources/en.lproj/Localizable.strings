@@ -77,6 +77,8 @@ Find the villagers you have visited and tap the home icon on the villager's page
 "Local backup detected message" = "Your local data appears to have been wiped by CloudKit sync. Restore from local backup saved %@ (%d items)?\n\nYou can wait for iCloud or restore from the local backup right now.";
 "Wait for iCloud" = "Wait for iCloud";
 "Restore local backup" = "Restore local backup";
+"Local backup larger than current message" = "After an iCloud sync reset, your current data (%d items) is smaller than the local backup saved %@ (%d items). Restore from the local backup?\n\nRestoring replaces your current data with the backup, so changes made on other devices after the backup will be lost. You can also wait for iCloud to deliver the rest, or keep your current data.";
+"Keep current data" = "Keep current data";
 "Restore complete" = "Restore complete";
 "Restored %d items" = "Restored %d items.";
 "Restore failed" = "Restore failed";

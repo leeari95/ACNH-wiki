@@ -246,7 +246,7 @@ struct UserCollectionSnapshot {
         return set.map { attributeDict(of: $0) }
     }
 
-    private static func relationshipCount(of uc: NSManagedObject) -> Int {
+    static func relationshipCount(of uc: NSManagedObject) -> Int {
         let keys = ["critters", "dailyTasks", "villagersLike", "villagersHouse", "npcLike", "variants"]
         return keys.reduce(0) { acc, key in
             let count = (uc.value(forKey: key) as? Set<NSManagedObject>)?.count ?? 0

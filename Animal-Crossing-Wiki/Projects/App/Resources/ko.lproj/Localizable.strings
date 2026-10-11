@@ -79,6 +79,8 @@
 "Local backup detected message" = "CloudKit 동기화로 로컬 데이터가 사라진 것 같습니다. %@에 저장된 로컬 백업(항목 %d개)에서 복원하시겠어요?\n\niCloud에서 가져오기를 기다려도 되고, 지금 바로 로컬 백업에서 복원해도 됩니다.";
 "Wait for iCloud" = "iCloud 기다리기";
 "Restore local backup" = "로컬 백업에서 복원";
+"Local backup larger than current message" = "iCloud 동기화가 재설정된 뒤 현재 기록(항목 %d개)이 %@에 저장된 로컬 백업(항목 %d개)보다 적습니다. 로컬 백업에서 복원하시겠어요?\n\n복원하면 현재 기록은 백업 내용으로 교체되며, 백업 이후 다른 기기에서 추가·변경한 기록은 사라집니다. iCloud에서 나머지를 가져오기를 기다리거나, 현재 데이터를 그대로 유지할 수도 있습니다.";
+"Keep current data" = "현재 데이터 유지";
 "Restore complete" = "복원 완료";
 "Restored %d items" = "%d개 항목을 복원했습니다.";
 "Restore failed" = "복원 실패";
