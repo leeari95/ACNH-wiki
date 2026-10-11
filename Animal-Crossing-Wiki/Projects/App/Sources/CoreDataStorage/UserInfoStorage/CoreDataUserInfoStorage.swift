@@ -52,6 +52,8 @@ final class CoreDataUserInfoStorage: UserInfoStorage {
             context.saveContext()
             // 의도적 초기화이므로 기존 유저 플래그를 리셋하여 새 UC 생성을 허용
             self.coreDataStorage.clearHasEverHadUserCollection()
+            // sync reset 이전 백업 보존도 해제 — 새로 쌓는 데이터가 다시 로컬 백업에 반영되도록
+            SafetySnapshotService.shared.releaseResetHold()
         }
     }
 }

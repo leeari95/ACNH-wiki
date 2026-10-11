@@ -9,6 +9,11 @@
 > 때문에 **자동 호출을 모두 제거**했습니다. 중복 정리 및 복원은 설정 화면에서 사용자가 명시적으로
 > 트리거해야 합니다. 상세는 아래 "Manual Consolidation" / "Data Recovery" 섹션 참조.
 > (중기 계획 — `docs/plans/local-backup-split.md` 참조: 로컬/백업 store 분리 아키텍처로 이관 예정)
+>
+> **sync reset의 트리거 제거**: 앱 시작마다 7일 이전 persistent history를 삭제하던 코드가
+> CloudKit 미러의 history token을 만료(134301)시켜 sync reset → 로컬 purge를 유발하고 있었습니다.
+> history 삭제를 제거했고, reset 이후 부분 re-import 상태가 로컬 안전 스냅샷을 덮어쓰지 않도록
+> reset hold를 추가했습니다. 상세는 "Persistent History" / "Sync Reset Hold" 섹션 참조.
 
 ## Architecture
 
@@ -32,13 +37,13 @@ Device A                    CloudKit Server               Device B
 
 | File | 역할 |
 |------|------|
-| `CoreDataStorage.swift` | `NSPersistentCloudKitContainer` 설정, CloudKit 이벤트 감지, iCloud 계정 확인, UC 중복 방지, 기존 유저 보호, 동기화 상태 조회, Persistent History 정리 |
+| `CoreDataStorage.swift` | `NSPersistentCloudKitContainer` 설정, CloudKit 이벤트 감지, iCloud 계정 확인, UC 중복 방지, 기존 유저 보호, 동기화 상태 조회, Persistent History 보존(삭제 금지) |
 | `SceneDelegate.swift` | 신규 설치 감지 + CloudKit Import 대기, iCloud 계정/에러 알림, ToastManager 연동 |
 | `Items.swift` | `didReceiveRemoteChanges` 구독 (debounce 2s) → `setUpUserCollection()` |
 | `ToastManager.swift` | 전용 UIWindow 기반 토스트 매니저. 레퍼런스 카운팅, 타임아웃, 백그라운드 dismiss |
 | `ToastView.swift` | Import 상태 토스트 UI (캡슐형 디자인, ActivityIndicator + Label, slide 애니메이션) |
 | `CloudSyncSplashViewController.swift` | 신규 설치 시 CloudKit Import 대기 스플래시 화면 |
-| `SafetySnapshotService.swift` | CloudKit purge/reset에 대비한 로컬 안전 스냅샷 작성 및 수동 복원 |
+| `SafetySnapshotService.swift` | CloudKit purge/reset에 대비한 로컬 안전 스냅샷 작성, sync reset hold, 수동 복원 |
 
 ## Data Sync Flow
 
@@ -106,7 +111,8 @@ setUpUserCollection() → BehaviorRelay.accept() → UI 자동 갱신
 | `.quotaExceeded` | Alert: "iCloud 저장 공간이 가득 찼습니다" |
 | `.notAuthenticated` | Alert: "iCloud에 로그인되어 있지 않습니다" |
 | `.networkFailure` / `.networkUnavailable` | 로그 기록 (자동 재시도 대기) |
-| Export 134301 (merge error) | `retryExportAfterMergeError()` — 최대 3회 지수 백오프 재시도 (5s, 10s, 15s) |
+| Cocoa 134301 `NSPersistentHistoryTokenExpiredError` | reason `history_token_expired`로 telemetry 분류. 곧 sync reset(HistoryExpired) → 로컬 purge로 이어지는 신호 — 아래 "Persistent History" 참조 |
+| 기타 Export 실패 | `retryExportAfterMergeError()` — 최대 3회 지수 백오프 재시도 (5s, 10s, 15s) |
 | Change Token Expired (CKError 21) | sync reset 감지 → orphan cleanup/UC 생성 억제 (아래 참조) |
 | 기타 | `os_log(.error)` 기록 + 보호 모드 안내 (아래) |
 
@@ -231,8 +237,32 @@ Import 완료 후 Path-B(`setUpUserCollection`)가 재실행되어 데이터가 
 ## Persistent History
 
 - `NSPersistentHistoryTrackingKey` 활성화 (CloudKit 필수)
-- 앱 시작 시 `cleanupPersistentHistory()` 호출 → 7일 이전 기록 삭제
-- DB 비대화 방지
+- **앱에서 history를 삭제하지 않는다** (`deleteHistory(before:)` 금지)
+- `initializeHistoryToken()`은 전체 트랜잭션을 fetch하지 않고 `currentPersistentHistoryToken(fromStores:)`로 현재 토큰만 조회한다
+
+### 왜 삭제하면 안 되는가 (3.2.0~3.2.4 "데이터 초기화"의 직접 원인)
+
+`NSCloudKitMirroringDelegate`는 persistent history로 "마지막 export 이후의 로컬 변경"을 추적한다.
+미러가 아직 처리하지 않은 구간(또는 미러 토큰이 가리키는 트랜잭션)을 앱이 지우면:
+
+```text
+앱 시작 → deleteHistory(before: 7일 전)        ← 3.2.0(#156)~3.2.4의 SceneDelegate.setupApp()
+    ↓
+CloudKit Export 실패: Cocoa 134301 "Persistent History Token is expired"
+    ↓
+NSCloudKitMirroringDelegate.recoverFromError → WillResetSync (reason: HistoryExpired)
+    ↓
+로컬 store purge → CloudKit 전체 re-import
+    ↓
+re-import 실패/지연/부분 도착 시 로컬 데이터 소실 — export되지 못한 변경분은 iCloud에도 없어 영구 유실
+```
+
+- 7일 넘게 앱을 열지 않은 사용자(시즌 단위로 게임을 하는 사용자, 업데이트 후 오랜만에 실행하는 사용자)가
+  다시 앱을 켜는 순간 재현된다. "업데이트 후 초기화", "어느 날 갑자기 사라짐" 제보 패턴과 일치.
+- 3.2.0 이전에는 history 삭제가 없었고, 클레임은 3.2.0 이후 시작됨.
+- Apple 엔지니어 가이드: history를 남겨두는 것은 일반적으로 문제가 없으며, 미러가 처리하기 전에 지우면 로컬 변경이 동기화되지 않는다.
+  이 앱의 데이터 규모(수백~수천 레코드)에서는 history 증가가 실질적 부담이 아니다.
+- 향후 정리가 꼭 필요해지면 "미러가 처리한 지점"을 확인할 수 있는 단일 gatekeeper 설계가 선행되어야 한다 (시간 기준 삭제 금지).
 
 ## Background Task
 
@@ -276,6 +306,31 @@ CloudKit import, remote change, sync reset 직전에는 최신 로컬 상태를 
 - debounce용 `pendingWorkItem`은 CoreData 저장 알림(임의 스레드)·main 스레드·sync-reset 알림이
   동시에 접근하므로 `OSAllocatedUnfairLock`으로 보호하고, `flushNow()`는 debounce 쓰기와
   파일 I/O가 겹치지 않도록 전용 queue에서 동기 실행한다.
+
+#### Sync Reset Hold (부분 re-import로 백업이 덮어써지는 문제 방지)
+
+sync reset 뒤 re-import가 일부만 도착한 상태도 "Import 성공"으로 끝날 수 있다. 이전에는 이 상태가
+30초 debounce 후 스냅샷으로 저장되어 **reset 이전의 정상 백업을 덮어썼고**, UC가 1개라도 있으면
+복원 프롬프트도 뜨지 않아 마지막 안전망이 사라졌다.
+
+- `willReset` 수신 시 `handleSyncResetImminent()`가 같은 queue에서 flush → `establishResetHold()`를 동기 실행.
+  그 시점 백업의 항목 수를 `SafetySnapshot_resetHoldChildCount`(UserDefaults)에 기록한다.
+  이미 hold 중이면 더 큰 값을 유지 (부분 상태에서 reset이 반복돼도 원래 기준 보존).
+- hold 중에는 현재 항목 수가 hold보다 적은 스냅샷 쓰기를 건너뛴다 (`🛟 SafetySnapshot skipped: ... (holding)`).
+- 해제 조건:
+  - 현재 데이터가 hold 이상으로 회복되어 스냅샷이 정상 기록됨 (자동)
+  - 로컬 백업 복원 성공 (`restore()`)
+  - 사용자가 프롬프트에서 "현재 데이터 유지" 선택
+  - 의도적 데이터 초기화 (`CoreDataUserInfoStorage.resetUserInfo()`)
+- 앱 시작 프롬프트(`SceneDelegate.offerSafetySnapshotRestoreIfNeeded`) 조건:
+  1. 기존 유저인데 UC가 없음 (`hasEverHadUserCollection && isFreshInstall`) — 기존 동작
+  2. hold 중이고 현재 항목 수 < hold (`currentChildCountIfBelowResetHold() != nil`) — 부분 re-import
+  - 2번(부분 re-import)일 때만 "현재 데이터 유지" 버튼을 추가로 노출한다. UC가 통째로 없는 1번에서는 유지할
+    현재 데이터가 없으므로 노출하지 않는다 (백업 보존 유지).
+  - 부분 re-import 상태의 복원은 기존 로컬 복원과 같이 **현재 데이터를 백업으로 교체**한다 (병합 아님).
+    백업 이후 다른 기기에서 추가한 기록이 사라질 수 있음을 프롬프트 문구에 명시한다.
+- 보존할 백업 파일이 없으면(삭제 등) hold는 쓰기를 막지 않고, 다음 기록 시 해제된다.
+- 트레이드오프: hold 중에는 백업이 reset 시점 상태로 고정되어, 그 사이 편집은 회복/명시적 결정 전까지 백업에 반영되지 않는다.
 
 ## Manual Consolidation (중복/고아 데이터 정리)
 
@@ -351,7 +406,7 @@ Crashlytics(세션 breadcrumb + custom keys + 비치명 에러)와 Analytics(집
 | `sync_uc_creation_suppressed` | UC 생성이 억제됨 (reason: sync_in_progress \| grace_period) |
 | `sync_token_expired` | `NSCloudKitMirroringDelegateWillReset` 감지 |
 | `sync_user_collection_missing` | **핵심 증상**: hasEverHadUC=true인데 UC=0 |
-| `sync_cloud_failed` | CloudKit Export/Import 실패 (reason/code) |
+| `sync_cloud_failed` | CloudKit Export/Import 실패 (reason/code). reason `history_token_expired` = 134301 (sync reset 전조) |
 
 ### Crashlytics Custom Keys (세션 스냅샷)
 

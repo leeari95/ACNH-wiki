@@ -345,21 +345,14 @@ final class CoreDataStorage {
         Log.info("completeFirstImportWait reason=\(reason)")
     }
 
-    // MARK: - Persistent History Cleanup
-
-    func cleanupPersistentHistory() {
-        persistentContainer.performBackgroundTask { context in
-            guard let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) else {
-                return
-            }
-            let request = NSPersistentHistoryChangeRequest.deleteHistory(before: sevenDaysAgo)
-            do {
-                try context.execute(request)
-            } catch {
-                os_log(.error, log: .default, "Persistent history cleanup failed: %{public}@", error.localizedDescription)
-            }
-        }
-    }
+    // MARK: - Persistent History Retention
+    //
+    // Persistent history를 앱에서 삭제(`deleteHistory(before:)`)하지 않는다.
+    // NSCloudKitMirroringDelegate는 이 history로 "마지막 export 이후 변경"을 추적하므로,
+    // 미러가 처리하지 않은 구간을 지우면 export가 NSPersistentHistoryTokenExpiredError(134301)로
+    // 실패하고 → sync reset(HistoryExpired) → 로컬 store purge → CloudKit re-import가 일어난다.
+    // 3.2.0~3.2.4는 앱 시작마다 7일 이전 history를 지워, 7일 이상 앱을 열지 않은 유저가
+    // 다시 실행하는 순간 이 경로로 로컬 데이터가 초기화되었다 (미 export 변경분은 영구 유실).
 
     // MARK: - Remote Changes
 
@@ -378,18 +371,12 @@ final class CoreDataStorage {
 
     // MARK: - Persistent History Change Detection
 
-    /// 컨테이너 초기화 시 현재 히스토리 토큰을 기록하여 이후 변경만 감지
+    /// 컨테이너 초기화 시 현재 히스토리 토큰을 기록하여 이후 변경만 감지.
+    /// history를 더 이상 주기적으로 삭제하지 않으므로, 전체 트랜잭션을 fetch하지 않고
+    /// coordinator의 현재 토큰을 바로 조회한다 (메인 스레드 lazy 초기화 경로에서 호출됨).
     private func initializeHistoryToken(container: NSPersistentCloudKitContainer) {
-        let context = container.newBackgroundContext()
-        context.performAndWait {
-            let request = NSPersistentHistoryChangeRequest.fetchHistory(after: nil as NSPersistentHistoryToken?)
-            request.resultType = .transactionsOnly
-            if let result = try? context.execute(request) as? NSPersistentHistoryResult,
-               let transactions = result.result as? [NSPersistentHistoryTransaction],
-               let token = transactions.last?.token {
-                self._lastHistoryToken.withLock { $0 = token }
-            }
-        }
+        let token = container.persistentStoreCoordinator.currentPersistentHistoryToken(fromStores: nil)
+        _lastHistoryToken.withLock { $0 = token }
     }
 
     /// Import 완료 후 persistent history를 조회하여 실제 데이터 변경 여부를 확인
@@ -584,26 +571,7 @@ final class CoreDataStorage {
 
     private func postSyncFailureIfNeeded(_ error: Error) {
         let nsError = error as NSError
-        var reason = "unknown"
-
-        if let ckError = error as? CKError {
-            switch ckError.code {
-            case .quotaExceeded:
-                reason = "quota_exceeded"
-            case .notAuthenticated:
-                reason = "not_authenticated"
-            case .networkFailure, .networkUnavailable:
-                reason = "network"
-            default:
-                reason = ckError.code.rawValue.description
-            }
-        } else if nsError.domain == CKError.errorDomain {
-            if nsError.code == CKError.quotaExceeded.rawValue {
-                reason = "quota_exceeded"
-            } else if nsError.code == CKError.notAuthenticated.rawValue {
-                reason = "not_authenticated"
-            }
-        }
+        let reason = Self.syncFailureReason(for: error)
 
         NotificationCenter.default.post(
             name: Self.cloudSyncDidFail,
@@ -638,6 +606,48 @@ final class CoreDataStorage {
                 userInfo: ["status": status.rawValue]
             )
         }
+    }
+}
+
+// MARK: - Sync Failure Reason
+
+extension CoreDataStorage {
+
+    /// CloudKit 이벤트 에러를 telemetry/알림용 reason 문자열로 분류한다.
+    /// `history_token_expired`(134301)는 곧 sync reset → 로컬 store purge로 이어지는 신호이므로 별도로 구분한다.
+    static func syncFailureReason(for error: Error) -> String {
+        let nsError = error as NSError
+
+        let underlying = nsError.userInfo[NSUnderlyingErrorKey] as? NSError
+        if [nsError, underlying].contains(where: {
+            $0?.domain == NSCocoaErrorDomain && $0?.code == NSPersistentHistoryTokenExpiredError
+        }) {
+            return "history_token_expired"
+        }
+
+        if let ckError = error as? CKError {
+            switch ckError.code {
+            case .quotaExceeded:
+                return "quota_exceeded"
+            case .notAuthenticated:
+                return "not_authenticated"
+            case .networkFailure, .networkUnavailable:
+                return "network"
+            default:
+                return ckError.code.rawValue.description
+            }
+        }
+
+        if nsError.domain == CKError.errorDomain {
+            if nsError.code == CKError.quotaExceeded.rawValue {
+                return "quota_exceeded"
+            }
+            if nsError.code == CKError.notAuthenticated.rawValue {
+                return "not_authenticated"
+            }
+        }
+
+        return "unknown"
     }
 }
 

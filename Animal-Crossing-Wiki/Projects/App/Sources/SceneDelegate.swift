@@ -68,7 +68,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         observeCloudSyncErrors()
         observeAccountChanges()
         checkiCloudAccount()
-        CoreDataStorage.shared.cleanupPersistentHistory()
+        // Persistent history는 삭제하지 않는다 — 삭제 시 CloudKit mirror의 history token이 만료되어
+        // sync reset(로컬 store purge)을 유발한다. CoreDataStorage "Persistent History Retention" 참조.
 
         SafetySnapshotService.shared.startObserving()
 
@@ -77,30 +78,65 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         offerSafetySnapshotRestoreIfNeeded()
     }
 
+    private enum SafetySnapshotPromptReason {
+        /// UC가 통째로 사라짐 (fresh install처럼 보이지만 기존 유저)
+        case collectionMissing
+        /// sync reset 후 UC는 있지만 reset 이전 백업보다 항목이 적음 (부분 re-import)
+        case partialAfterSyncReset(currentCount: Int)
+    }
+
     private func offerSafetySnapshotRestoreIfNeeded() {
-        guard CoreDataStorage.shared.hasEverHadUserCollection,
-              CoreDataStorage.shared.isFreshInstall(),
-              let metadata = SafetySnapshotService.shared.readMetadata() else {
+        let snapshotService = SafetySnapshotService.shared
+        let reason: SafetySnapshotPromptReason
+        if CoreDataStorage.shared.hasEverHadUserCollection, CoreDataStorage.shared.isFreshInstall() {
+            reason = .collectionMissing
+        } else if let currentCount = snapshotService.currentChildCountIfBelowResetHold() {
+            reason = .partialAfterSyncReset(currentCount: currentCount)
+        } else {
             return
         }
+
+        guard let metadata = snapshotService.readMetadata() else {
+            return
+        }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.presentSafetySnapshotPrompt(metadata: metadata)
+            self?.presentSafetySnapshotPrompt(metadata: metadata, reason: reason)
         }
     }
 
-    private func presentSafetySnapshotPrompt(metadata: SafetySnapshotService.Metadata) {
+    private func presentSafetySnapshotPrompt(
+        metadata: SafetySnapshotService.Metadata,
+        reason: SafetySnapshotPromptReason
+    ) {
         guard let root = window?.rootViewController else { return }
         let relative = DateFormatters.syncRelativeDate.localizedString(for: metadata.createdAt, relativeTo: Date())
-        let message = String(
-            format: "Local backup detected message".localized,
-            relative, metadata.totalChildCount
-        )
+        let message: String
+        switch reason {
+        case .collectionMissing:
+            message = String(
+                format: "Local backup detected message".localized,
+                relative, metadata.totalChildCount
+            )
+        case .partialAfterSyncReset(let currentCount):
+            message = String(
+                format: "Local backup larger than current message".localized,
+                currentCount, relative, metadata.totalChildCount
+            )
+        }
         let alert = UIAlertController(
             title: "Local backup detected".localized,
             message: message,
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "Wait for iCloud".localized, style: .cancel))
+        // 부분 re-import 상태에서만: 현재 데이터를 기준으로 삼고 reset 이전 백업 보존을 해제하는 명시적 선택지.
+        // UC가 통째로 없는 경우엔 "유지할 현재 데이터"가 없으므로 노출하지 않는다 (백업 보존 유지).
+        if case .partialAfterSyncReset = reason {
+            alert.addAction(UIAlertAction(title: "Keep current data".localized, style: .default) { _ in
+                SafetySnapshotService.shared.releaseResetHold()
+            })
+        }
         alert.addAction(UIAlertAction(title: "Restore local backup".localized, style: .destructive) { [weak self] _ in
             self?.performSafetySnapshotRestore()
         })

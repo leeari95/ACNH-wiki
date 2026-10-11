@@ -54,6 +54,8 @@ final class SafetySnapshotService {
     private let containerProvider: () -> NSPersistentContainer
     private let snapshotDirectoryProvider: () -> URL?
     private let fileAttributeSetter: (URL, [FileAttributeKey: Any]) throws -> Void
+    /// 메타데이터 캐시·reset hold 저장소. production은 `.standard`, 테스트는 격리된 suite를 주입한다.
+    private let userDefaults: UserDefaults
 
     #if DEBUG
     /// 테스트 전용 fault-injection seam. `restore()`가 기존 데이터를 wipe한 직후,
@@ -69,11 +71,13 @@ final class SafetySnapshotService {
         },
         fileAttributeSetter: @escaping (URL, [FileAttributeKey: Any]) throws -> Void = { url, attributes in
             try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path)
-        }
+        },
+        userDefaults: UserDefaults = .standard
     ) {
         self.containerProvider = containerProvider
         self.snapshotDirectoryProvider = snapshotDirectoryProvider
         self.fileAttributeSetter = fileAttributeSetter
+        self.userDefaults = userDefaults
     }
 
     private var container: NSPersistentContainer {
@@ -84,7 +88,7 @@ final class SafetySnapshotService {
     /// 1. 로컬 context save (사용자 편집)
     /// 2. CloudKit Import 완료 (원격 기기의 변경을 수신)
     /// 3. 원격 persistent store 변경 알림
-    /// 4. CloudKit Sync Reset 임박 (iOS가 로컬 purge 직전에 마지막 flush)
+    /// 4. CloudKit Sync Reset 임박 (iOS가 로컬 purge 직전에 마지막 flush + reset hold 설정)
     /// 또한 즉시 **initial snapshot**을 비동기로 작성하여, 이번 세션 중 아무 편집이 없더라도
     /// 최신 상태의 백업이 Documents/에 존재하도록 보장한다.
     func startObserving() {
@@ -118,8 +122,7 @@ final class SafetySnapshotService {
         let willResetObserver = NotificationCenter.default.addObserver(
             forName: CoreDataStorage.SyncResetNotification.willReset, object: nil, queue: nil
         ) { [weak self] _ in
-            os_log(.error, log: .default, "🛟 SafetySnapshot: sync-reset imminent — flushing immediately")
-            self?.flushNow()
+            self?.handleSyncResetImminent()
         }
         observers.append(willResetObserver)
 
@@ -153,19 +156,44 @@ final class SafetySnapshotService {
     /// 강제 저장 — 앱 종료 직전/sync-reset 직전 등에서 flushing 용도.
     /// debounce 중인 쓰기와 파일 I/O가 겹치지 않도록 queue에서 동기 실행한다.
     func flushNow() {
+        cancelPendingSnapshot()
+        queue.sync { [weak self] in
+            self?.writeSnapshotNow()
+        }
+    }
+
+    /// iOS purge 직전(willReset): 현재 상태를 flush한 뒤 reset hold를 설정한다.
+    /// 알림을 보낸 스레드에서 동기로 끝나야 purge 전에 파일이 기록된다.
+    private func handleSyncResetImminent() {
+        os_log(.error, log: .default, "🛟 SafetySnapshot: sync-reset imminent — flushing immediately")
+        cancelPendingSnapshot()
+        queue.sync { [weak self] in
+            self?.writeSnapshotNow()
+            self?.establishResetHold()
+        }
+    }
+
+    private func cancelPendingSnapshot() {
         _pendingWorkItem.withLock { item in
             item?.cancel()
             item = nil
-        }
-        queue.sync { [weak self] in
-            self?.writeSnapshotNow()
         }
     }
 
     private func writeSnapshotNow() {
         let context = container.newBackgroundContext()
         do {
+            // hold는 dump 이전에 읽는다 — dump 도중 restore()가 hold를 해제해도 부분 상태로 덮어쓰지 않도록.
+            // 보존할 백업 파일 자체가 없으면 hold는 의미가 없으므로 현재 상태를 기록한다.
+            let heldChildCount = snapshotExists ? resetHoldChildCount : nil
             let snapshot = try UserCollectionSnapshot.dump(from: context)
+            if let heldChildCount, snapshot.totalChildCount < heldChildCount {
+                // sync reset 후 아직(또는 영영) 회복되지 않은 부분 상태 — reset 이전 백업을 덮어쓰지 않는다.
+                os_log(.error, log: .default,
+                       "🛟 SafetySnapshot skipped: %d children < pre-reset backup %d (holding)",
+                       snapshot.totalChildCount, heldChildCount)
+                return
+            }
             let data = try snapshot.toData()
             // CloudKit can deliver background imports while the device is locked. The snapshot must
             // remain writable after the first unlock so a sync-reset flush can preserve recent data.
@@ -173,6 +201,10 @@ final class SafetySnapshotService {
             try fileAttributeSetter(snapshotURL, [.protectionKey: Self.snapshotFileProtection])
             applySnapshotResourceValues()
             updateMetadataCache(createdAt: snapshot.createdAt, childCount: snapshot.totalChildCount)
+            if resetHoldChildCount != nil {
+                // 현재 데이터가 reset 이전 수준 이상으로 회복됐거나 보존할 파일이 없었음 — 보존 해제
+                releaseResetHold()
+            }
             os_log(.info, log: .default,
                    "🛟 SafetySnapshot written: %d children, %d bytes",
                    snapshot.totalChildCount, data.count)
@@ -227,6 +259,8 @@ final class SafetySnapshotService {
                 #endif
                 try snapshot.apply(to: context)
                 try context.save()
+                // 사용자가 reset 이전 백업으로 되돌렸으므로 보존 목적 달성 — 이후 스냅샷은 복원된 상태를 기준으로 갱신
+                self.releaseResetHold()
                 os_log(.error, log: .default,
                        "🛟 SafetySnapshot RESTORED: %d children",
                        snapshot.totalChildCount)
@@ -258,6 +292,67 @@ final class SafetySnapshotService {
         }
     }
 
+    // MARK: - Sync Reset Hold
+    //
+    // sync reset(로컬 store purge → CloudKit re-import) 뒤에는 re-import가 일부만 도착한 상태가
+    // "정상 import 완료"처럼 보일 수 있다. 그 상태로 debounce 스냅샷이 기존 백업을 덮어쓰면 마지막 안전망이 사라진다.
+    // 그래서 willReset 직전 flush 시점의 항목 수를 hold로 기록하고, 현재 데이터가 그 수 이상으로 회복되거나
+    // 사용자가 명시적으로 결정(로컬 복원 / 현재 데이터 유지 / 데이터 초기화)할 때까지 더 적은 항목의
+    // 스냅샷으로 덮어쓰지 않는다. purge 직후 재실행되는 경우가 많으므로 UserDefaults에 영속화한다.
+
+    private static let resetHoldChildCountKey = "SafetySnapshot_resetHoldChildCount"
+
+    /// sync reset 이전 백업을 보존 중이면 그 백업의 항목 수, 아니면 nil
+    var resetHoldChildCount: Int? {
+        guard userDefaults.object(forKey: Self.resetHoldChildCountKey) != nil else {
+            return nil
+        }
+        return userDefaults.integer(forKey: Self.resetHoldChildCountKey)
+    }
+
+    /// 사용자가 현재 데이터를 기준으로 삼기로 명시적으로 결정했을 때(현재 데이터 유지, 데이터 초기화) 호출.
+    /// 이후 스냅샷은 다시 현재 상태로 갱신된다.
+    func releaseResetHold() {
+        guard resetHoldChildCount != nil else {
+            return
+        }
+        userDefaults.removeObject(forKey: Self.resetHoldChildCountKey)
+        os_log(.info, log: .default, "🛟 SafetySnapshot reset hold released")
+    }
+
+    /// willReset 직전 flush 이후 호출. 이미 hold 중이면 더 큰 값을 유지한다
+    /// (부분 상태에서 reset이 연속으로 일어나도 원래 백업 기준을 잃지 않기 위해).
+    private func establishResetHold() {
+        guard let metadata = readMetadata(), metadata.totalChildCount > 0 else {
+            return
+        }
+        let heldChildCount = max(resetHoldChildCount ?? 0, metadata.totalChildCount)
+        userDefaults.set(heldChildCount, forKey: Self.resetHoldChildCountKey)
+        os_log(.error, log: .default, "🛟 SafetySnapshot reset hold established: %d children", heldChildCount)
+    }
+
+    /// sync reset 이후 현재 데이터가 보존 중인 백업보다 적으면 현재 항목 수를, 아니면 nil을 반환한다.
+    /// non-nil이면 사용자에게 로컬 백업 복원을 제안할 상황이다.
+    func currentChildCountIfBelowResetHold() -> Int? {
+        guard let heldChildCount = resetHoldChildCount, snapshotExists else {
+            return nil
+        }
+        let current = currentChildCount()
+        return current < heldChildCount ? current : nil
+    }
+
+    /// 현재 store의 항목 수 — 스냅샷 `totalChildCount`와 같은 기준(관계가 가장 많은 UC의 자식 수).
+    func currentChildCount() -> Int {
+        let context = container.newBackgroundContext()
+        var count = 0
+        context.performAndWait {
+            let request: NSFetchRequest<UserCollectionEntity> = UserCollectionEntity.fetchRequest()
+            let collections = (try? context.fetch(request)) ?? []
+            count = collections.map { UserCollectionSnapshot.relationshipCount(of: $0) }.max() ?? 0
+        }
+        return count
+    }
+
     // MARK: - Metadata for UI
 
     struct Metadata {
@@ -275,10 +370,10 @@ final class SafetySnapshotService {
     }
 
     private func readCachedMetadata() -> Metadata? {
-        guard let createdAt = UserDefaults.standard.object(forKey: Self.metadataCreatedAtKey) as? Date else {
+        guard let createdAt = userDefaults.object(forKey: Self.metadataCreatedAtKey) as? Date else {
             return nil
         }
-        let count = UserDefaults.standard.integer(forKey: Self.metadataChildCountKey)
+        let count = userDefaults.integer(forKey: Self.metadataChildCountKey)
         // 파일이 외부에서 삭제된 경우 캐시가 stale할 수 있으므로 실제 파일 존재 여부 확인
         guard snapshotExists else {
             clearMetadataCache()
@@ -305,14 +400,21 @@ final class SafetySnapshotService {
     }
 
     private func updateMetadataCache(createdAt: Date, childCount: Int) {
-        UserDefaults.standard.set(createdAt, forKey: Self.metadataCreatedAtKey)
-        UserDefaults.standard.set(childCount, forKey: Self.metadataChildCountKey)
+        userDefaults.set(createdAt, forKey: Self.metadataCreatedAtKey)
+        userDefaults.set(childCount, forKey: Self.metadataChildCountKey)
     }
 
     private func clearMetadataCache() {
-        UserDefaults.standard.removeObject(forKey: Self.metadataCreatedAtKey)
-        UserDefaults.standard.removeObject(forKey: Self.metadataChildCountKey)
+        userDefaults.removeObject(forKey: Self.metadataCreatedAtKey)
+        userDefaults.removeObject(forKey: Self.metadataChildCountKey)
     }
+
+    #if DEBUG
+    /// 테스트 전용 — willReset 알림 수신과 동일한 경로(flush + reset hold)를 실행한다.
+    func simulateSyncResetImminentForTesting() {
+        handleSyncResetImminent()
+    }
+    #endif
 
     /// 복원 완료 후 또는 사용자가 의도적으로 지울 때.
     func deleteSnapshot() {
